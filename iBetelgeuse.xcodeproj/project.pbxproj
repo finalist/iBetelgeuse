@@ -198,6 +198,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
 				INFOPLIST_FILE = Resources/Info.plist;
+				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = iBetelgeuse;
 			};
 			name = Debug;
