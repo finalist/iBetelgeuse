@@ -1,0 +1,4 @@
+build/
+lcov/
+iBetelgeuse.xcodeproj/*.pbxuser
+iBetelgeuse.xcodeproj/*.perspectivev3
