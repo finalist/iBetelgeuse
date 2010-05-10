@@ -6,6 +6,21 @@
 	objectVersion = 45;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		95E77FD9119812C100A1F2B9 /* iBetelgeuseTests with coverage report */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 95E77FDC119812D300A1F2B9 /* Build configuration list for PBXAggregateTarget "iBetelgeuseTests with coverage report" */;
+			buildPhases = (
+				95E77FD8119812C100A1F2B9 /* ShellScript */,
+			);
+			dependencies = (
+				95E77FE4119812FA00A1F2B9 /* PBXTargetDependency */,
+			);
+			name = "iBetelgeuseTests with coverage report";
+			productName = "iBetelgeuseTests with coverage report";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		1D3623260D0F684500981E51 /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* ARAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -19,6 +34,16 @@
 		95E77EF711980A0400A1F2B9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77E401198094800A1F2B9 /* Foundation.framework */; };
 		95E77EF811980A0400A1F2B9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77EC51198097400A1F2B9 /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		95E77FE3119812FA00A1F2B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 95E77EE0119809D200A1F2B9 /* iBetelgeuseTests */;
+			remoteInfo = iBetelgeuseTests;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -218,6 +243,7 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* iBetelgeuse */,
 				95E77EE0119809D200A1F2B9 /* iBetelgeuseTests */,
+				95E77FD9119812C100A1F2B9 /* iBetelgeuseTests with coverage report */,
 			);
 		};
 /* End PBXProject section */
@@ -231,6 +257,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		95E77FD8119812C100A1F2B9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PATH=\"/usr/local/bin:$PATH\"\n\nBUILD_DIR=\"$CONFIGURATION_BUILD_DIR\"\nOBJS_DIR=\"$CONFIGURATION_TEMP_DIR/iBetelgeuseTests.build/Objects-normal/$NATIVE_ARCH_ACTUAL\"\nLCOV_DIR=\"lcov\"\n\nmkdir -p \"$LCOV_DIR\"\nlcov -d \"$OBJS_DIR\" --zerocounters\nGHUNIT_CLI=\"YES\" \"$BUILD_DIR/iBetelgeuseTests\"\nlcov -d \"$OBJS_DIR\" --capture --output-file \"$LCOV_DIR/iBetelgeuseTests.info\"\ngenhtml -o \"$LCOV_DIR\" \"$LCOV_DIR/iBetelgeuseTests.info\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
@@ -251,6 +294,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		95E77FE4119812FA00A1F2B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 95E77EE0119809D200A1F2B9 /* iBetelgeuseTests */;
+			targetProxy = 95E77FE3119812FA00A1F2B9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
@@ -289,17 +340,15 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_VERSION = 4.0;
 				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
+				OTHER_LDFLAGS = "-lgcov";
 				PREBINDING = NO;
 				PRODUCT_NAME = iBetelgeuseTests;
 				SDKROOT = "";
@@ -314,18 +363,41 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_VERSION = 4.0;
 				INSTALL_PATH = /usr/local/bin;
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					AppKit,
-				);
+				OTHER_LDFLAGS = "-lgcov";
 				PREBINDING = NO;
 				PRODUCT_NAME = iBetelgeuseTests;
+				SDKROOT = "";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		95E77FDA119812C100A1F2B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "iBetelgeuseTests with coverage report";
+				SDKROOT = "";
+			};
+			name = Debug;
+		};
+		95E77FDB119812C100A1F2B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "iBetelgeuseTests with coverage report";
 				SDKROOT = "";
 				ZERO_LINK = NO;
 			};
@@ -375,6 +447,15 @@
 			buildConfigurations = (
 				95E77EE3119809D300A1F2B9 /* Debug */,
 				95E77EE4119809D300A1F2B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95E77FDC119812D300A1F2B9 /* Build configuration list for PBXAggregateTarget "iBetelgeuseTests with coverage report" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95E77FDA119812C100A1F2B9 /* Debug */,
+				95E77FDB119812C100A1F2B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
