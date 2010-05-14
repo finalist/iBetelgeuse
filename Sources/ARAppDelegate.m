@@ -22,11 +22,13 @@
 //
 
 #import "ARAppDelegate.h"
+#import "ARMainController.h"
 
 
 @interface ARAppDelegate ()
 
 @property(nonatomic, readonly) UIWindow *window;
+@property(nonatomic, readonly) UIViewController *viewController;
 
 @end
 
@@ -37,6 +39,7 @@
 
 - (void)dealloc {
 	[window release];
+	[viewController release];
 	
 	[super dealloc];
 }
@@ -53,8 +56,17 @@
 - (UIWindow *)window {
 	if (window == nil) {
 		window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+		[window addSubview:[[self viewController] view]];
 	}
 	return window;
+}
+
+- (UIViewController *)viewController {
+	if (viewController == nil) {
+		ARMainController *controller = [[ARMainController alloc] init];
+		viewController = controller;
+	}
+	return viewController;
 }
 
 @end

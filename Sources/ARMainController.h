@@ -1,8 +1,7 @@
 //
-//  ARAppDelegate.h
+//  ARMainController.h
 //  iBetelgeuse
 //
-//  Created by Dennis Stevense on 10/05/10.
 //  Copyright 2010 Finalist IT Group. All rights reserved.
 //
 //  This file is part of iBetelgeuse.
@@ -24,10 +23,15 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ARAppDelegate : NSObject <UIApplicationDelegate> {
+@interface ARMainController : UIViewController {
 @private
-	UIWindow *window;
-    UIViewController *viewController;
+	//ARDimension *dimension;
+	UIImagePickerController *cameraViewController;
+	UIView *featureContainerView;
+	UIView *overlayContainerView;
+	//ARRadarView *radarView;
 }
+
+- (void)loadView;
 
 @end
