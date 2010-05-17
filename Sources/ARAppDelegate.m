@@ -1,8 +1,7 @@
 //
 //  ARAppDelegate.m
 //  iBetelgeuse
-//
-//  Created by Dennis Stevense on 10/05/10.
+
 //  Copyright 2010 Finalist IT Group. All rights reserved.
 //
 //  This file is part of iBetelgeuse.
