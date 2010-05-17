@@ -152,6 +152,8 @@
 			children = (
 				1D3623240D0F684500981E51 /* ARAppDelegate.h */,
 				1D3623250D0F684500981E51 /* ARAppDelegate.m */,
+				C33462BF119D7B3B00228C9A /* ARMainController.h */,
+				C33462C0119D7B3B00228C9A /* ARMainController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -159,8 +161,6 @@
 		95E77C421198031A00A1F2B9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C33462BF119D7B3B00228C9A /* ARMainController.h */,
-				C33462C0119D7B3B00228C9A /* ARMainController.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
