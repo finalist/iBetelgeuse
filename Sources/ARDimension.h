@@ -24,6 +24,10 @@
 #import <CoreLocation/CoreLocation.h>
 
 
+extern const NSTimeInterval ARDimensionRefreshTimeInfinite;
+extern const CLLocationDistance ARDimensionRefreshDistanceInfinite;
+
+
 @interface ARDimension : NSObject {
 @private
 	NSArray *features;

@@ -24,6 +24,10 @@
 #import "TCXMLParserDelegate+Protected.h"
 
 
+const NSTimeInterval ARDimensionRefreshTimeInfinite = 0.0;
+const CLLocationDistance ARDimensionRefreshDistanceInfinite = 0.0;
+
+
 @interface ARDimension ()
 
 @property(nonatomic, readwrite, copy) NSArray *features;
