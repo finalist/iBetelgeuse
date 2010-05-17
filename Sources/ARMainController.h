@@ -32,6 +32,4 @@
 	//ARRadarView *radarView;
 }
 
-- (void)loadView;
-
 @end

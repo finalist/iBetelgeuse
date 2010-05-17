@@ -62,11 +62,10 @@
 	cameraViewController = [[UIImagePickerController alloc] init];
 	[cameraViewController setSourceType:UIImagePickerControllerSourceTypeCamera];
 	[cameraViewController setShowsCameraControls:NO];
+	[cameraViewController setCameraViewTransform:CGAffineTransformTranslate(CGAffineTransformMakeScale(CAMERA_VIEW_SCALE, CAMERA_VIEW_SCALE), 0, CAMERA_CONTROLS_HEIGHT / 2)];
 	
 	UIView *cameraView = [cameraViewController view];
 	[view addSubview:cameraView];
-	
-	[cameraViewController setCameraViewTransform:CGAffineTransformTranslate(CGAffineTransformMakeScale(CAMERA_VIEW_SCALE, CAMERA_VIEW_SCALE), 0, CAMERA_CONTROLS_HEIGHT / 2)];
 }
 
 - (void)viewDidUnload {
@@ -79,25 +78,25 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
-	[cameraViewController viewWillAppear:animated];
+	[[self cameraViewController] viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
-	[cameraViewController viewDidAppear:animated];
+	[[self cameraViewController] viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	
-	[cameraViewController viewWillDisappear:animated];
+	[[self cameraViewController] viewWillDisappear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	
-	[cameraViewController viewDidDisappear:animated];
+	[[self cameraViewController] viewDidDisappear:animated];
 }
 
 @end
