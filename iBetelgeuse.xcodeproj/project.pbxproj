@@ -27,6 +27,12 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
+		95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
+		95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */; };
+		95B9BF1111A139A200EDD870 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95B9BF1011A139A200EDD870 /* CoreLocation.framework */; };
+		95B9BF3911A13A5200EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
+		95B9BF8511A13DC600EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
 		95E77C461198041200A1F2B9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77C451198041200A1F2B9 /* QuartzCore.framework */; };
 		95E77C4A1198042000A1F2B9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77C491198042000A1F2B9 /* CoreLocation.framework */; };
 		95E77EF3119809F500A1F2B9 /* GHUnitTestMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */; };
@@ -56,13 +62,23 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCXMLParserDelegate.h; sourceTree = "<group>"; };
+		95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCXMLParserDelegate.m; sourceTree = "<group>"; };
+		95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
+		95B9BEAB11A1291600EDD870 /* ARDimension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDimension.h; sourceTree = "<group>"; };
+		95B9BEAC11A1291600EDD870 /* ARDimension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDimension.m; sourceTree = "<group>"; };
+		95B9BECC11A12AF600EDD870 /* ARDimensionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDimensionTest.h; sourceTree = "<group>"; };
+		95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDimensionTest.m; sourceTree = "<group>"; };
+		95B9BEEE11A1362700EDD870 /* ARDimensionTestBare.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestBare.xml; sourceTree = "<group>"; };
+		95B9BF1011A139A200EDD870 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = /System/Library/Frameworks/CoreLocation.framework; sourceTree = "<absolute>"; };
+		95B9BFDD11A1412500EDD870 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		95E77C451198041200A1F2B9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		95E77C491198042000A1F2B9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		95E77DFF1198084800A1F2B9 /* GHUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnit.framework; path = /Library/Frameworks/GHUnit.framework; sourceTree = "<absolute>"; };
 		95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHUnitTestMain.m; sourceTree = "<group>"; };
 		95E77E401198094800A1F2B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		95E77EC51198097400A1F2B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		C33462BF119D7B3B00228C9A /* ARMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMainController.h; sourceTree = "<group>"; };
 		C33462C0119D7B3B00228C9A /* ARMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMainController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,6 +103,7 @@
 				95E77EF711980A0400A1F2B9 /* Foundation.framework in Frameworks */,
 				95E77EF811980A0400A1F2B9 /* Cocoa.framework in Frameworks */,
 				95E77EF6119809FE00A1F2B9 /* GHUnit.framework in Frameworks */,
+				95B9BF1111A139A200EDD870 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107310486CEB800E47090 /* Info.plist */,
+				95B9BEED11A1361400EDD870 /* Tests */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -146,6 +164,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		95B9BEED11A1361400EDD870 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				95B9BEEE11A1362700EDD870 /* ARDimensionTestBare.xml */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		95E77C41119802FD00A1F2B9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +186,11 @@
 		95E77C421198031A00A1F2B9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */,
+				95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */,
+				95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */,
+				95B9BEAB11A1291600EDD870 /* ARDimension.h */,
+				95B9BEAC11A1291600EDD870 /* ARDimension.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -183,7 +214,10 @@
 		95E77E1D1198085900A1F2B9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				95B9BFDD11A1412500EDD870 /* Prefix.pch */,
 				95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */,
+				95B9BECC11A12AF600EDD870 /* ARDimensionTest.h */,
+				95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -194,6 +228,7 @@
 				95E77DFF1198084800A1F2B9 /* GHUnit.framework */,
 				95E77E401198094800A1F2B9 /* Foundation.framework */,
 				95E77EC51198097400A1F2B9 /* Cocoa.framework */,
+				95B9BF1011A139A200EDD870 /* CoreLocation.framework */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -288,6 +323,8 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ARAppDelegate.m in Sources */,
 				C33462C1119D7B3B00228C9A /* ARMainController.m in Sources */,
+				95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */,
+				95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +333,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				95E77EF3119809F500A1F2B9 /* GHUnitTestMain.m in Sources */,
+				95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */,
+				95B9BF3911A13A5200EDD870 /* ARDimension.m in Sources */,
+				95B9BF8511A13DC600EDD870 /* TCXMLParserDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +391,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREFIX_HEADER = Sources/Tests/Prefix.pch;
 				GCC_VERSION = 4.0;
 				INSTALL_PATH = /usr/local/bin;
 				OTHER_LDFLAGS = "-lgcov";
@@ -373,7 +413,7 @@
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				GCC_PREFIX_HEADER = Sources/Tests/Prefix.pch;
 				GCC_VERSION = 4.0;
 				INSTALL_PATH = /usr/local/bin;
 				OTHER_LDFLAGS = "-lgcov";
