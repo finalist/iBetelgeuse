@@ -46,10 +46,14 @@
 @synthesize overlayContainerView;
 //@synthesize radarView;
 
+#pragma mark NSObject
+
 - (void)dealloc {
 	[cameraViewController release];
 	[super dealloc];
 }
+
+#pragma mark UIViewController
 
 - (void)loadView {
 	[super loadView];
