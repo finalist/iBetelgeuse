@@ -31,7 +31,7 @@
 	NSDictionary *locations;
 	NSDictionary *assets;
 	BOOL relativeAltitude;
-	NSString *refreshURL;
+	NSURL *refreshURL;
 	NSTimeInterval refreshTime;
 	CLLocationDistance refreshDistance;
 }
@@ -43,7 +43,7 @@
 @property(nonatomic, readonly, copy) NSDictionary *locations;
 @property(nonatomic, readonly, copy) NSDictionary *assets;
 @property(nonatomic, readonly) BOOL relativeAltitude;
-@property(nonatomic, readonly, copy) NSString *refreshURL;
+@property(nonatomic, readonly, retain) NSURL *refreshURL;
 @property(nonatomic, readonly) NSTimeInterval refreshTime;
 @property(nonatomic, readonly) CLLocationDistance refreshDistance;
 

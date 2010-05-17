@@ -31,7 +31,7 @@
 @property(nonatomic, readwrite, copy) NSDictionary *locations;
 @property(nonatomic, readwrite, copy) NSDictionary *assets;
 @property(nonatomic, readwrite) BOOL relativeAltitude;
-@property(nonatomic, readwrite, copy) NSString *refreshURL;
+@property(nonatomic, readwrite, retain) NSURL *refreshURL;
 @property(nonatomic, readwrite) NSTimeInterval refreshTime;
 @property(nonatomic, readwrite) CLLocationDistance refreshDistance;
 
