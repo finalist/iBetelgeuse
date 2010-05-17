@@ -28,5 +28,5 @@
 #ifdef DEBUG
 	#define DebugLog(s, ...) NSLog((@"%p %s (%@:%d) " s), self, __func__, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, ## __VA_ARGS__)
 #else
-	#define DebugLog(s, ...) NSLog(@"hoi")
+	#define DebugLog(s, ...)
 #endif
