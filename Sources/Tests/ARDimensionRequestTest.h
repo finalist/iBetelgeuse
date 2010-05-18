@@ -29,6 +29,7 @@
 @interface ARDimensionRequestTest : GHAsyncTestCase {
 @private
 	ARLocation *currentLocation;
+	NSString *event;
 }
 
 @end

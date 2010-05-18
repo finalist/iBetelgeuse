@@ -40,6 +40,8 @@
 
 @interface ARDimensionRequestTest () <ARDimensionRequestDelegate>
 
+- (void)performBareRequestWithType:(ARDimensionRequestType)type;
+
 @end
 
 
@@ -98,11 +100,52 @@
 }
 
 - (void)testDidFail {
+	[self performBareRequestWithType:ARDimensionRequestTypeInit];
+}
+
+- (void)testTypes {
+	[self performBareRequestWithType:ARDimensionRequestTypeInit];
+	GHAssertEqualObjects(event, @"init", nil);
+	
+	[self performBareRequestWithType:ARDimensionRequestTypeTimeRefresh];
+	GHAssertEqualObjects(event, @"refreshOnTime", nil);
+	
+	[self performBareRequestWithType:ARDimensionRequestTypeDistanceRefresh];
+	GHAssertEqualObjects(event, @"refreshOnDistance", nil);
+	
+	[self performBareRequestWithType:ARDimensionRequestTypeActionRefresh];
+	GHAssertEqualObjects(event, @"refreshOnPress", nil);
+}
+
+// Note: this test isn't reliable with the GHMockNSURLConnection
+//- (void)testCancel {
+//	// Necessary for GHAsyncTestCase
+//	[self prepare];
+//	
+//	// Build a dimension request
+//	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:DIMENSION_URL] location:currentLocation type:ARDimensionRequestTypeInit];
+//	[request setDelegate:self];
+//	
+//	// Start the request, cancel it and wait for it to timeout
+//	[request start];
+//	[request cancel];
+//	[self waitForTimeout:0.5];
+//	
+//	// Start the request and wait for it to finish, just to make sure this does work
+//	[request start];
+//	[self waitForStatus:kGHUnitWaitStatusSuccess timeout:1.0];
+//
+//	[request release];
+//}
+
+#pragma mark ARDimensionRequestTest
+
+- (void)performBareRequestWithType:(ARDimensionRequestType)type {
 	// Necessary for GHAsyncTestCase
 	[self prepare];
 	
-	// Build a bare dimension request, doesn't really matter
-	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:DIMENSION_URL] location:currentLocation type:ARDimensionRequestTypeInit];
+	// Build a dimension request
+	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:DIMENSION_URL] location:currentLocation type:type];
 	[request setDelegate:self];
 	
 	// Start the request and wait for it to finish
@@ -169,6 +212,20 @@
 	}
 	else if ([self currentSelector] == @selector(testDidFail)) {
 		[connection failWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:nil] afterDelay:0.1];
+	}
+	else if ([self currentSelector] == @selector(testTypes)) {
+		// Check the post data
+		NSString *postString = [[NSString alloc] initWithData:[urlRequest HTTPBody] encoding:NSUTF8StringEncoding];
+		NSDictionary *postData = [NSURLRequest ar_dictionaryWithFormURLEncodedString:postString];
+		
+		[event release];
+		event = [[postData objectForKey:@"event"] copy];
+		[postString release];
+		
+		[connection failWithError:nil afterDelay:0.1];
+	}
+	else if ([self currentSelector] == @selector(testCancel)) {		
+		[connection failWithError:nil afterDelay:0.25];
 	}
 	
 	return [connection autorelease];
