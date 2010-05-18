@@ -1,7 +1,7 @@
 //
 //  ARAppDelegate.m
 //  iBetelgeuse
-
+//
 //  Copyright 2010 Finalist IT Group. All rights reserved.
 //
 //  This file is part of iBetelgeuse.
