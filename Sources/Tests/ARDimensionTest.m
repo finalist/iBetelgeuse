@@ -22,9 +22,10 @@
 
 #import "ARDimensionTest.h"
 #import "ARDimension.h"
-
-
-#define TEST_RESOURCES_PATH @"Resources/Tests"
+#import "ARFeature.h"
+#import "AROverlay.h"
+#import "ARLocation.h"
+#import "ARAsset.h"
 
 
 @interface ARDimensionTest () <NSXMLParserDelegate>
@@ -39,6 +40,28 @@
 - (void)setUp {
 	[dimension release];
 	dimension = nil;
+}
+
+- (void)testParseComplete {
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARDimensionTestComplete.xml"]];
+	[parser setDelegate:self];
+	[parser parse];
+	
+	GHAssertNotNil(dimension, nil);
+	GHAssertEquals([[dimension features] count], (NSUInteger)2, nil);
+	GHAssertTrue([[[dimension features] objectAtIndex:0] isKindOfClass:[ARFeature class]], nil);
+	GHAssertEquals([[dimension overlays] count], (NSUInteger)2, nil);
+	GHAssertTrue([[[dimension overlays] objectAtIndex:0] isKindOfClass:[AROverlay class]], nil);
+	GHAssertEquals([[dimension locations] count], (NSUInteger)2, nil);
+	GHAssertTrue([[[[dimension locations] objectEnumerator] nextObject] isKindOfClass:[ARLocation class]], nil);
+	GHAssertEquals([[dimension assets] count], (NSUInteger)2, nil);
+	GHAssertTrue([[[[dimension assets] objectEnumerator] nextObject] isKindOfClass:[ARAsset class]], nil);
+	GHAssertTrue([dimension relativeAltitude], nil);
+	GHAssertEqualObjects([dimension refreshURL], [NSURL URLWithString:@"http://www.example.org/"], nil);
+	GHAssertEquals([dimension refreshTime], (NSTimeInterval)1.0, nil);
+	GHAssertEquals([dimension refreshDistance], (CLLocationDistance)1000.0, nil);
+	
+	[parser release];
 }
 
 - (void)testParseBare {

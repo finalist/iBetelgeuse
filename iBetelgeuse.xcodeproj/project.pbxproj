@@ -33,6 +33,30 @@
 		95B9BF1111A139A200EDD870 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95B9BF1011A139A200EDD870 /* CoreLocation.framework */; };
 		95B9BF3911A13A5200EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
 		95B9BF8511A13DC600EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
+		95B9C0ED11A1611200EDD870 /* AROverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0EC11A1611200EDD870 /* AROverlay.m */; };
+		95B9C0EE11A1611200EDD870 /* AROverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0EC11A1611200EDD870 /* AROverlay.m */; };
+		95B9C0F111A1617200EDD870 /* ARImageOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0F011A1617200EDD870 /* ARImageOverlay.m */; };
+		95B9C0F211A1617200EDD870 /* ARImageOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0F011A1617200EDD870 /* ARImageOverlay.m */; };
+		95B9C0F511A1617B00EDD870 /* ARTextOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0F411A1617B00EDD870 /* ARTextOverlay.m */; };
+		95B9C0F611A1617B00EDD870 /* ARTextOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0F411A1617B00EDD870 /* ARTextOverlay.m */; };
+		95B9C11511A1654D00EDD870 /* ARTextOverlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C11411A1654D00EDD870 /* ARTextOverlayTest.m */; };
+		95B9C11611A1654D00EDD870 /* ARTextOverlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C11411A1654D00EDD870 /* ARTextOverlayTest.m */; };
+		95B9C11811A1691100EDD870 /* ARTextOverlayTestComplete.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11711A1691100EDD870 /* ARTextOverlayTestComplete.xml */; };
+		95B9C11A11A16C7200EDD870 /* ARTextOverlayTestBare.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11911A16C7200EDD870 /* ARTextOverlayTestBare.xml */; };
+		95B9C12111A16CE200EDD870 /* ARTextOverlayTestFailText.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11D11A16CE200EDD870 /* ARTextOverlayTestFailText.xml */; };
+		95B9C12211A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11E11A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml */; };
+		95B9C12311A16CE200EDD870 /* ARTextOverlayTestFailX.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11F11A16CE200EDD870 /* ARTextOverlayTestFailX.xml */; };
+		95B9C12411A16CE200EDD870 /* ARTextOverlayTestFailY.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C12011A16CE200EDD870 /* ARTextOverlayTestFailY.xml */; };
+		95B9C1B311A17A5200EDD870 /* ARImageOverlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C1B211A17A5200EDD870 /* ARImageOverlayTest.m */; };
+		95B9C1FF11A17CAB00EDD870 /* ARAnchor.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C1FE11A17CAB00EDD870 /* ARAnchor.m */; };
+		95B9C20011A17CAB00EDD870 /* ARAnchor.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C1FE11A17CAB00EDD870 /* ARAnchor.m */; };
+		95B9C27211A1834E00EDD870 /* ARAnchorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C27111A1834E00EDD870 /* ARAnchorTest.m */; };
+		95B9C56F11A2937500EDD870 /* ARDimensionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */; };
+		95B9C57011A2937500EDD870 /* ARDimensionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */; };
+		95B9C58811A2977400EDD870 /* ARDimensionRequestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C58711A2977400EDD870 /* ARDimensionRequestTest.m */; };
+		95D3CFC411A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */; };
+		95D3CFC511A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */; };
+		95D3CFCB11A2BB46007B7148 /* ARFormURLEncodingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFCA11A2BB46007B7148 /* ARFormURLEncodingTest.m */; };
 		95E77C461198041200A1F2B9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77C451198041200A1F2B9 /* QuartzCore.framework */; };
 		95E77C4A1198042000A1F2B9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77C491198042000A1F2B9 /* CoreLocation.framework */; };
 		95E77EF3119809F500A1F2B9 /* GHUnitTestMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */; };
@@ -40,6 +64,24 @@
 		95E77EF711980A0400A1F2B9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77E401198094800A1F2B9 /* Foundation.framework */; };
 		95E77EF811980A0400A1F2B9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77EC51198097400A1F2B9 /* Cocoa.framework */; };
 		C33462C1119D7B3B00228C9A /* ARMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = C33462C0119D7B3B00228C9A /* ARMainController.m */; };
+		C334645E11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
+		C334645F11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
+		C334647111A14CD200228C9A /* ARLocationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C334647011A14CD200228C9A /* ARLocationTest.m */; };
+		C334647211A14CD200228C9A /* ARLocationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C334647011A14CD200228C9A /* ARLocationTest.m */; };
+		C33465C311A16EDD00228C9A /* ARAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465C211A16EDD00228C9A /* ARAsset.m */; };
+		C33465C811A1724B00228C9A /* ARAssetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465C711A1724B00228C9A /* ARAssetTest.m */; };
+		C33465FE11A1795200228C9A /* ARAction.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465FD11A1795200228C9A /* ARAction.m */; };
+		C334661511A17D1C00228C9A /* ARActionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C334661411A17D1C00228C9A /* ARActionTest.m */; };
+		C33466A411A187BF00228C9A /* ARFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = C33466A311A187BF00228C9A /* ARFeature.m */; };
+		C33466A511A187BF00228C9A /* ARFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = C33466A311A187BF00228C9A /* ARFeature.m */; };
+		C33466AC11A187DC00228C9A /* ARTextFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = C33466AB11A187DC00228C9A /* ARTextFeature.m */; };
+		C33466AD11A187DC00228C9A /* ARTextFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = C33466AB11A187DC00228C9A /* ARTextFeature.m */; };
+		C33467DF11A285B500228C9A /* ARPoint3D.m in Sources */ = {isa = PBXBuildFile; fileRef = C33467DE11A285B500228C9A /* ARPoint3D.m */; };
+		C33467E011A285B500228C9A /* ARPoint3D.m in Sources */ = {isa = PBXBuildFile; fileRef = C33467DE11A285B500228C9A /* ARPoint3D.m */; };
+		C33467F711A2873F00228C9A /* ARTextFeatureTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C33467F611A2873F00228C9A /* ARTextFeatureTest.m */; };
+		C334693411A29C1F00228C9A /* ARImageFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = C334693311A29C1F00228C9A /* ARImageFeature.m */; };
+		C334693511A29C1F00228C9A /* ARImageFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = C334693311A29C1F00228C9A /* ARImageFeature.m */; };
+		C334693811A29C3300228C9A /* ARImageFeatureTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C334693711A29C3300228C9A /* ARImageFeatureTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,8 +112,44 @@
 		95B9BECC11A12AF600EDD870 /* ARDimensionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDimensionTest.h; sourceTree = "<group>"; };
 		95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDimensionTest.m; sourceTree = "<group>"; };
 		95B9BEEE11A1362700EDD870 /* ARDimensionTestBare.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestBare.xml; sourceTree = "<group>"; };
+		95B9BEEF11A1362700EDD870 /* ARDimensionTestComplete.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestComplete.xml; sourceTree = "<group>"; };
 		95B9BF1011A139A200EDD870 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = /System/Library/Frameworks/CoreLocation.framework; sourceTree = "<absolute>"; };
 		95B9BFDD11A1412500EDD870 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
+		95B9C0EB11A1611200EDD870 /* AROverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROverlay.h; sourceTree = "<group>"; };
+		95B9C0EC11A1611200EDD870 /* AROverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROverlay.m; sourceTree = "<group>"; };
+		95B9C0EF11A1617200EDD870 /* ARImageOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageOverlay.h; sourceTree = "<group>"; };
+		95B9C0F011A1617200EDD870 /* ARImageOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageOverlay.m; sourceTree = "<group>"; };
+		95B9C0F311A1617B00EDD870 /* ARTextOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextOverlay.h; sourceTree = "<group>"; };
+		95B9C0F411A1617B00EDD870 /* ARTextOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextOverlay.m; sourceTree = "<group>"; };
+		95B9C0F711A1638E00EDD870 /* AROverlay+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AROverlay+Protected.h"; sourceTree = "<group>"; };
+		95B9C11311A1654D00EDD870 /* ARTextOverlayTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextOverlayTest.h; sourceTree = "<group>"; };
+		95B9C11411A1654D00EDD870 /* ARTextOverlayTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextOverlayTest.m; sourceTree = "<group>"; };
+		95B9C11711A1691100EDD870 /* ARTextOverlayTestComplete.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextOverlayTestComplete.xml; sourceTree = "<group>"; };
+		95B9C11911A16C7200EDD870 /* ARTextOverlayTestBare.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextOverlayTestBare.xml; sourceTree = "<group>"; };
+		95B9C11D11A16CE200EDD870 /* ARTextOverlayTestFailText.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextOverlayTestFailText.xml; sourceTree = "<group>"; };
+		95B9C11E11A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextOverlayTestFailWidth.xml; sourceTree = "<group>"; };
+		95B9C11F11A16CE200EDD870 /* ARTextOverlayTestFailX.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextOverlayTestFailX.xml; sourceTree = "<group>"; };
+		95B9C12011A16CE200EDD870 /* ARTextOverlayTestFailY.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextOverlayTestFailY.xml; sourceTree = "<group>"; };
+		95B9C1B111A17A5200EDD870 /* ARImageOverlayTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageOverlayTest.h; sourceTree = "<group>"; };
+		95B9C1B211A17A5200EDD870 /* ARImageOverlayTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageOverlayTest.m; sourceTree = "<group>"; };
+		95B9C1B411A17B0600EDD870 /* ARImageOverlayTestBare.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageOverlayTestBare.xml; sourceTree = "<group>"; };
+		95B9C1B511A17B0600EDD870 /* ARImageOverlayTestComplete.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageOverlayTestComplete.xml; sourceTree = "<group>"; };
+		95B9C1B611A17B0600EDD870 /* ARImageOverlayTestFailAssetIdentifier.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageOverlayTestFailAssetIdentifier.xml; sourceTree = "<group>"; };
+		95B9C1B811A17B0600EDD870 /* ARImageOverlayTestFailX.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageOverlayTestFailX.xml; sourceTree = "<group>"; };
+		95B9C1B911A17B0600EDD870 /* ARImageOverlayTestFailY.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageOverlayTestFailY.xml; sourceTree = "<group>"; };
+		95B9C1FD11A17CAB00EDD870 /* ARAnchor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnchor.h; sourceTree = "<group>"; };
+		95B9C1FE11A17CAB00EDD870 /* ARAnchor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnchor.m; sourceTree = "<group>"; };
+		95B9C27011A1834E00EDD870 /* ARAnchorTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnchorTest.h; sourceTree = "<group>"; };
+		95B9C27111A1834E00EDD870 /* ARAnchorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnchorTest.m; sourceTree = "<group>"; };
+		95B9C56D11A2937500EDD870 /* ARDimensionRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDimensionRequest.h; sourceTree = "<group>"; };
+		95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDimensionRequest.m; sourceTree = "<group>"; };
+		95B9C58611A2977400EDD870 /* ARDimensionRequestTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDimensionRequestTest.h; sourceTree = "<group>"; };
+		95B9C58711A2977400EDD870 /* ARDimensionRequestTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDimensionRequestTest.m; sourceTree = "<group>"; };
+		95D3CFC211A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+ARFormURLEncoding.h"; sourceTree = "<group>"; };
+		95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+ARFormURLEncoding.m"; sourceTree = "<group>"; };
+		95D3CFC911A2BB46007B7148 /* ARFormURLEncodingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFormURLEncodingTest.h; sourceTree = "<group>"; };
+		95D3CFCA11A2BB46007B7148 /* ARFormURLEncodingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFormURLEncodingTest.m; sourceTree = "<group>"; };
+		95D3D05B11A2C51A007B7148 /* ARDimensionRequestTest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionRequestTest.xml; sourceTree = "<group>"; };
 		95E77C451198041200A1F2B9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		95E77C491198042000A1F2B9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		95E77DFF1198084800A1F2B9 /* GHUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnit.framework; path = /Library/Frameworks/GHUnit.framework; sourceTree = "<absolute>"; };
@@ -81,6 +159,50 @@
 		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		C33462BF119D7B3B00228C9A /* ARMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMainController.h; sourceTree = "<group>"; };
 		C33462C0119D7B3B00228C9A /* ARMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMainController.m; sourceTree = "<group>"; };
+		C334645C11A1495D00228C9A /* ARLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocation.h; sourceTree = "<group>"; };
+		C334645D11A1495D00228C9A /* ARLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocation.m; sourceTree = "<group>"; };
+		C334646F11A14CD200228C9A /* ARLocationTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocationTest.h; sourceTree = "<group>"; };
+		C334647011A14CD200228C9A /* ARLocationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocationTest.m; sourceTree = "<group>"; };
+		C334648011A159D100228C9A /* ARLocationTestComplete.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARLocationTestComplete.xml; sourceTree = "<group>"; };
+		C334648111A159D100228C9A /* ARLocationTestFailAltitude.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARLocationTestFailAltitude.xml; sourceTree = "<group>"; };
+		C334648311A159D100228C9A /* ARLocationTestFailLatitude.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARLocationTestFailLatitude.xml; sourceTree = "<group>"; };
+		C334648411A159D100228C9A /* ARLocationTestFailLongitude.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARLocationTestFailLongitude.xml; sourceTree = "<group>"; };
+		C33465C111A16EDD00228C9A /* ARAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAsset.h; sourceTree = "<group>"; };
+		C33465C211A16EDD00228C9A /* ARAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAsset.m; sourceTree = "<group>"; };
+		C33465C611A1724B00228C9A /* ARAssetTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAssetTest.h; sourceTree = "<group>"; };
+		C33465C711A1724B00228C9A /* ARAssetTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAssetTest.m; sourceTree = "<group>"; };
+		C33465DF11A1766E00228C9A /* ARAssetTestBare.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARAssetTestBare.xml; sourceTree = "<group>"; };
+		C33465E011A1766E00228C9A /* ARAssetTestComplete.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARAssetTestComplete.xml; sourceTree = "<group>"; };
+		C33465E111A1766E00228C9A /* ARAssetTestFailIdentifier.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARAssetTestFailIdentifier.xml; sourceTree = "<group>"; };
+		C33465E211A1766E00228C9A /* ARAssetTestFailURL.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARAssetTestFailURL.xml; sourceTree = "<group>"; };
+		C33465E311A1766E00228C9A /* ARLocationTestFailIdentifier.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARLocationTestFailIdentifier.xml; sourceTree = "<group>"; };
+		C33465FC11A1795200228C9A /* ARAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAction.h; sourceTree = "<group>"; };
+		C33465FD11A1795200228C9A /* ARAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAction.m; sourceTree = "<group>"; };
+		C334661311A17D1C00228C9A /* ARActionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARActionTest.h; sourceTree = "<group>"; };
+		C334661411A17D1C00228C9A /* ARActionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARActionTest.m; sourceTree = "<group>"; };
+		C33466A211A187BF00228C9A /* ARFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeature.h; sourceTree = "<group>"; };
+		C33466A311A187BF00228C9A /* ARFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeature.m; sourceTree = "<group>"; };
+		C33466AA11A187DC00228C9A /* ARTextFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextFeature.h; sourceTree = "<group>"; };
+		C33466AB11A187DC00228C9A /* ARTextFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextFeature.m; sourceTree = "<group>"; };
+		C33466AE11A1880400228C9A /* ARFeature+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARFeature+Protected.h"; sourceTree = "<group>"; };
+		C33467DD11A285B500228C9A /* ARPoint3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPoint3D.h; sourceTree = "<group>"; };
+		C33467DE11A285B500228C9A /* ARPoint3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPoint3D.m; sourceTree = "<group>"; };
+		C33467F511A2873F00228C9A /* ARTextFeatureTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextFeatureTest.h; sourceTree = "<group>"; };
+		C33467F611A2873F00228C9A /* ARTextFeatureTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextFeatureTest.m; sourceTree = "<group>"; };
+		C33467FC11A28A3000228C9A /* ARTextFeatureTestComplete.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestComplete.xml; sourceTree = "<group>"; };
+		C334681C11A28C0C00228C9A /* ARTextFeatureTestBareLocation.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestBareLocation.xml; sourceTree = "<group>"; };
+		C334681D11A28C0C00228C9A /* ARTextFeatureTestBareLocationId.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestBareLocationId.xml; sourceTree = "<group>"; };
+		C334693211A29C1F00228C9A /* ARImageFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageFeature.h; sourceTree = "<group>"; };
+		C334693311A29C1F00228C9A /* ARImageFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageFeature.m; sourceTree = "<group>"; };
+		C334693611A29C3300228C9A /* ARImageFeatureTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageFeatureTest.h; sourceTree = "<group>"; };
+		C334693711A29C3300228C9A /* ARImageFeatureTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageFeatureTest.m; sourceTree = "<group>"; };
+		C334696011A2A0A700228C9A /* ARImageFeatureTestBareLocation.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageFeatureTestBareLocation.xml; sourceTree = "<group>"; };
+		C334696111A2A0A700228C9A /* ARImageFeatureTestBareLocationId.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageFeatureTestBareLocationId.xml; sourceTree = "<group>"; };
+		C334696211A2A0A700228C9A /* ARImageFeatureTestComplete.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageFeatureTestComplete.xml; sourceTree = "<group>"; };
+		C334696311A2A0A700228C9A /* ARImageFeatureTestFailAssetId.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageFeatureTestFailAssetId.xml; sourceTree = "<group>"; };
+		C334696411A2A0A700228C9A /* ARImageFeatureTestFailLocation.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageFeatureTestFailLocation.xml; sourceTree = "<group>"; };
+		C334696511A2A0A700228C9A /* ARTextFeatureTestFailLocation.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestFailLocation.xml; sourceTree = "<group>"; };
+		C334696611A2A0A700228C9A /* ARTextFeatureTestFailText.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestFailText.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,9 +289,86 @@
 		95B9BEED11A1361400EDD870 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C334696011A2A0A700228C9A /* ARImageFeatureTestBareLocation.xml */,
+				C334696111A2A0A700228C9A /* ARImageFeatureTestBareLocationId.xml */,
+				C334696211A2A0A700228C9A /* ARImageFeatureTestComplete.xml */,
+				C334696311A2A0A700228C9A /* ARImageFeatureTestFailAssetId.xml */,
+				C334696411A2A0A700228C9A /* ARImageFeatureTestFailLocation.xml */,
+				C334696511A2A0A700228C9A /* ARTextFeatureTestFailLocation.xml */,
+				C334696611A2A0A700228C9A /* ARTextFeatureTestFailText.xml */,
+				C334681C11A28C0C00228C9A /* ARTextFeatureTestBareLocation.xml */,
+				C334681D11A28C0C00228C9A /* ARTextFeatureTestBareLocationId.xml */,
+				C33467FC11A28A3000228C9A /* ARTextFeatureTestComplete.xml */,
+				C33465DF11A1766E00228C9A /* ARAssetTestBare.xml */,
+				C33465E011A1766E00228C9A /* ARAssetTestComplete.xml */,
+				C33465E111A1766E00228C9A /* ARAssetTestFailIdentifier.xml */,
+				C33465E211A1766E00228C9A /* ARAssetTestFailURL.xml */,
+				C334648011A159D100228C9A /* ARLocationTestComplete.xml */,
+				C33465E311A1766E00228C9A /* ARLocationTestFailIdentifier.xml */,
+				C334648111A159D100228C9A /* ARLocationTestFailAltitude.xml */,
+				C334648311A159D100228C9A /* ARLocationTestFailLatitude.xml */,
+				C334648411A159D100228C9A /* ARLocationTestFailLongitude.xml */,
+				95B9BEEF11A1362700EDD870 /* ARDimensionTestComplete.xml */,
 				95B9BEEE11A1362700EDD870 /* ARDimensionTestBare.xml */,
+				95B9C11711A1691100EDD870 /* ARTextOverlayTestComplete.xml */,
+				95B9C11911A16C7200EDD870 /* ARTextOverlayTestBare.xml */,
+				95B9C11D11A16CE200EDD870 /* ARTextOverlayTestFailText.xml */,
+				95B9C11E11A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml */,
+				95B9C11F11A16CE200EDD870 /* ARTextOverlayTestFailX.xml */,
+				95B9C12011A16CE200EDD870 /* ARTextOverlayTestFailY.xml */,
+				95B9C1B511A17B0600EDD870 /* ARImageOverlayTestComplete.xml */,
+				95B9C1B411A17B0600EDD870 /* ARImageOverlayTestBare.xml */,
+				95B9C1B611A17B0600EDD870 /* ARImageOverlayTestFailAssetIdentifier.xml */,
+				95B9C1B811A17B0600EDD870 /* ARImageOverlayTestFailX.xml */,
+				95B9C1B911A17B0600EDD870 /* ARImageOverlayTestFailY.xml */,
+				95D3D05B11A2C51A007B7148 /* ARDimensionRequestTest.xml */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		95D3D0CB11A2CA59007B7148 /* Dimension */ = {
+			isa = PBXGroup;
+			children = (
+				95B9BEAB11A1291600EDD870 /* ARDimension.h */,
+				95B9BEAC11A1291600EDD870 /* ARDimension.m */,
+				C334645C11A1495D00228C9A /* ARLocation.h */,
+				C334645D11A1495D00228C9A /* ARLocation.m */,
+				C33465C111A16EDD00228C9A /* ARAsset.h */,
+				C33465C211A16EDD00228C9A /* ARAsset.m */,
+				C33465FC11A1795200228C9A /* ARAction.h */,
+				C33465FD11A1795200228C9A /* ARAction.m */,
+				95D3D0CF11A2CA84007B7148 /* Overlay */,
+				95D3D0D011A2CA8E007B7148 /* Feature */,
+			);
+			name = Dimension;
+			sourceTree = "<group>";
+		};
+		95D3D0CF11A2CA84007B7148 /* Overlay */ = {
+			isa = PBXGroup;
+			children = (
+				95B9C0EB11A1611200EDD870 /* AROverlay.h */,
+				95B9C0F711A1638E00EDD870 /* AROverlay+Protected.h */,
+				95B9C0EC11A1611200EDD870 /* AROverlay.m */,
+				95B9C0F311A1617B00EDD870 /* ARTextOverlay.h */,
+				95B9C0F411A1617B00EDD870 /* ARTextOverlay.m */,
+				95B9C0EF11A1617200EDD870 /* ARImageOverlay.h */,
+				95B9C0F011A1617200EDD870 /* ARImageOverlay.m */,
+			);
+			name = Overlay;
+			sourceTree = "<group>";
+		};
+		95D3D0D011A2CA8E007B7148 /* Feature */ = {
+			isa = PBXGroup;
+			children = (
+				C33466A211A187BF00228C9A /* ARFeature.h */,
+				C33466AE11A1880400228C9A /* ARFeature+Protected.h */,
+				C33466A311A187BF00228C9A /* ARFeature.m */,
+				C33466AA11A187DC00228C9A /* ARTextFeature.h */,
+				C33466AB11A187DC00228C9A /* ARTextFeature.m */,
+				C334693211A29C1F00228C9A /* ARImageFeature.h */,
+				C334693311A29C1F00228C9A /* ARImageFeature.m */,
+			);
+			name = Feature;
 			sourceTree = "<group>";
 		};
 		95E77C41119802FD00A1F2B9 /* Controller */ = {
@@ -186,11 +385,18 @@
 		95E77C421198031A00A1F2B9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C33467DD11A285B500228C9A /* ARPoint3D.h */,
+				C33467DE11A285B500228C9A /* ARPoint3D.m */,
+				95B9C1FD11A17CAB00EDD870 /* ARAnchor.h */,
+				95B9C1FE11A17CAB00EDD870 /* ARAnchor.m */,
+				95B9C56D11A2937500EDD870 /* ARDimensionRequest.h */,
+				95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */,
+				95D3D0CB11A2CA59007B7148 /* Dimension */,
+				95D3CFC211A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.h */,
+				95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */,
 				95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */,
 				95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */,
 				95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */,
-				95B9BEAB11A1291600EDD870 /* ARDimension.h */,
-				95B9BEAC11A1291600EDD870 /* ARDimension.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -214,10 +420,30 @@
 		95E77E1D1198085900A1F2B9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C334693611A29C3300228C9A /* ARImageFeatureTest.h */,
+				C334693711A29C3300228C9A /* ARImageFeatureTest.m */,
 				95B9BFDD11A1412500EDD870 /* Prefix.pch */,
 				95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */,
 				95B9BECC11A12AF600EDD870 /* ARDimensionTest.h */,
 				95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */,
+				C334646F11A14CD200228C9A /* ARLocationTest.h */,
+				C334647011A14CD200228C9A /* ARLocationTest.m */,
+				C33465C611A1724B00228C9A /* ARAssetTest.h */,
+				C33465C711A1724B00228C9A /* ARAssetTest.m */,
+				95B9C27011A1834E00EDD870 /* ARAnchorTest.h */,
+				95B9C27111A1834E00EDD870 /* ARAnchorTest.m */,
+				C334661311A17D1C00228C9A /* ARActionTest.h */,
+				C334661411A17D1C00228C9A /* ARActionTest.m */,
+				95B9C11311A1654D00EDD870 /* ARTextOverlayTest.h */,
+				95B9C11411A1654D00EDD870 /* ARTextOverlayTest.m */,
+				95B9C1B111A17A5200EDD870 /* ARImageOverlayTest.h */,
+				95B9C1B211A17A5200EDD870 /* ARImageOverlayTest.m */,
+				C33467F511A2873F00228C9A /* ARTextFeatureTest.h */,
+				C33467F611A2873F00228C9A /* ARTextFeatureTest.m */,
+				95B9C58611A2977400EDD870 /* ARDimensionRequestTest.h */,
+				95B9C58711A2977400EDD870 /* ARDimensionRequestTest.m */,
+				95D3CFC911A2BB46007B7148 /* ARFormURLEncodingTest.h */,
+				95D3CFCA11A2BB46007B7148 /* ARFormURLEncodingTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -293,6 +519,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95B9C11811A1691100EDD870 /* ARTextOverlayTestComplete.xml in Resources */,
+				95B9C11A11A16C7200EDD870 /* ARTextOverlayTestBare.xml in Resources */,
+				95B9C12111A16CE200EDD870 /* ARTextOverlayTestFailText.xml in Resources */,
+				95B9C12211A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml in Resources */,
+				95B9C12311A16CE200EDD870 /* ARTextOverlayTestFailX.xml in Resources */,
+				95B9C12411A16CE200EDD870 /* ARTextOverlayTestFailY.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,6 +557,19 @@
 				C33462C1119D7B3B00228C9A /* ARMainController.m in Sources */,
 				95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */,
 				95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */,
+				C334645E11A1495D00228C9A /* ARLocation.m in Sources */,
+				C334647211A14CD200228C9A /* ARLocationTest.m in Sources */,
+				95B9C0ED11A1611200EDD870 /* AROverlay.m in Sources */,
+				95B9C0F111A1617200EDD870 /* ARImageOverlay.m in Sources */,
+				95B9C0F611A1617B00EDD870 /* ARTextOverlay.m in Sources */,
+				95B9C11611A1654D00EDD870 /* ARTextOverlayTest.m in Sources */,
+				95B9C20011A17CAB00EDD870 /* ARAnchor.m in Sources */,
+				C33466A511A187BF00228C9A /* ARFeature.m in Sources */,
+				C33466AC11A187DC00228C9A /* ARTextFeature.m in Sources */,
+				C33467DF11A285B500228C9A /* ARPoint3D.m in Sources */,
+				C334693511A29C1F00228C9A /* ARImageFeature.m in Sources */,
+				95B9C57011A2937500EDD870 /* ARDimensionRequest.m in Sources */,
+				95D3CFC411A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +581,29 @@
 				95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */,
 				95B9BF3911A13A5200EDD870 /* ARDimension.m in Sources */,
 				95B9BF8511A13DC600EDD870 /* TCXMLParserDelegate.m in Sources */,
+				C334645F11A1495D00228C9A /* ARLocation.m in Sources */,
+				C334647111A14CD200228C9A /* ARLocationTest.m in Sources */,
+				C33465C311A16EDD00228C9A /* ARAsset.m in Sources */,
+				C33465C811A1724B00228C9A /* ARAssetTest.m in Sources */,
+				C33465FE11A1795200228C9A /* ARAction.m in Sources */,
+				C334661511A17D1C00228C9A /* ARActionTest.m in Sources */,
+				95B9C0EE11A1611200EDD870 /* AROverlay.m in Sources */,
+				95B9C0F211A1617200EDD870 /* ARImageOverlay.m in Sources */,
+				95B9C0F511A1617B00EDD870 /* ARTextOverlay.m in Sources */,
+				95B9C11511A1654D00EDD870 /* ARTextOverlayTest.m in Sources */,
+				95B9C1B311A17A5200EDD870 /* ARImageOverlayTest.m in Sources */,
+				95B9C1FF11A17CAB00EDD870 /* ARAnchor.m in Sources */,
+				95B9C27211A1834E00EDD870 /* ARAnchorTest.m in Sources */,
+				C33466A411A187BF00228C9A /* ARFeature.m in Sources */,
+				C33466AD11A187DC00228C9A /* ARTextFeature.m in Sources */,
+				C33467E011A285B500228C9A /* ARPoint3D.m in Sources */,
+				C33467F711A2873F00228C9A /* ARTextFeatureTest.m in Sources */,
+				C334693411A29C1F00228C9A /* ARImageFeature.m in Sources */,
+				C334693811A29C3300228C9A /* ARImageFeatureTest.m in Sources */,
+				95B9C56F11A2937500EDD870 /* ARDimensionRequest.m in Sources */,
+				95B9C58811A2977400EDD870 /* ARDimensionRequestTest.m in Sources */,
+				95D3CFC511A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */,
+				95D3CFCB11A2BB46007B7148 /* ARFormURLEncodingTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

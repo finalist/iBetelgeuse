@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<featureImg id="aFeature">
+	<assetId>Foo</assetId>
+	<locationId>aLocation</locationId>
+	<location id="aLocation">
+		<lat>1.2</lat>
+		<lon>2.3</lon>
+		<alt>3.4</alt>
+	</location>
+	<anchor>CC</anchor>
+	<onPress>refresh</onPress>
+	<xLoc>12.34</xLoc>
+	<yLoc>23.45</yLoc>
+	<zLoc>34.56</zLoc>
+	<showInRadar>False</showInRadar>
+</featureImg>

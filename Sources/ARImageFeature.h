@@ -1,5 +1,5 @@
 //
-//  Prefix.pch
+//  ARImageFeature.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,20 +20,14 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#if GCC_VERSION < 40200
-	// Dirty hack to fix compilation
-	#define NS_NONATOMIC_IPHONEONLY nonatomic
-#endif
+#import "ARFeature.h"
 
-#ifdef __OBJC__
-	#import <Foundation/Foundation.h>
-	#import <AppKit/AppKit.h>
-#endif
 
-#ifdef DEBUG
-	#define DebugLog(s, ...) NSLog((@"%p %s (%@:%d) " s), self, __func__, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, ## __VA_ARGS__)
-#else
-	#define DebugLog(s, ...)
-#endif
+@interface ARImageFeature : ARFeature {
+@private
+	NSString *assetIdentifier;
+}
 
-#define TEST_RESOURCES_PATH @"Resources/Tests"
+@property(nonatomic, readonly, copy) NSString *assetIdentifier;
+
+@end

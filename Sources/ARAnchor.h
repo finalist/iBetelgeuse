@@ -1,5 +1,5 @@
 //
-//  Prefix.pch
+//  ARAnchor.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,20 +20,23 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#if GCC_VERSION < 40200
-	// Dirty hack to fix compilation
-	#define NS_NONATOMIC_IPHONEONLY nonatomic
-#endif
+#import <Foundation/Foundation.h>
 
-#ifdef __OBJC__
-	#import <Foundation/Foundation.h>
-	#import <AppKit/AppKit.h>
-#endif
+/**
+ * An anchor of an object is given as a point in unit coordinate space.
+ */
+typedef CGPoint ARAnchor;
 
-#ifdef DEBUG
-	#define DebugLog(s, ...) NSLog((@"%p %s (%@:%d) " s), self, __func__, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, ## __VA_ARGS__)
-#else
-	#define DebugLog(s, ...)
-#endif
+static inline ARAnchor ARAnchorMake(CGFloat x, CGFloat y) {
+	return CGPointMake(x, y);
+}
 
-#define TEST_RESOURCES_PATH @"Resources/Tests"
+/**
+ * Returns the anchor represented by the given Gamaray XML string, which is one of TL, TC, TR, CL, CC, CR, BL, BC and BR.
+ *
+ * @param string The string to parse. May not be nil.
+ * @param valid Upon return of this method, the referenced variable will indicate whether the given string was valid. May be NULL if this value is not needed.
+ *
+ * @return The anchor, or (0.5, 0.5) if the given string was not valid.
+ */
+ARAnchor ARAnchorMakeWithXMLString(NSString *string, BOOL *valid);

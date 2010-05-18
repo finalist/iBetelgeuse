@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dimension version="1.0">
+	<relativeAltitude>true</relativeAltitude>
+	<refreshUrl>http://www.example.org/</refreshUrl>
+	<refreshTime><validFor>1000</validFor><waitForAssets>false</waitForAssets></refreshTime>
+	<refreshDistance><validWithinRange>1000</validWithinRange></refreshDistance>
+	<locations>
+		<location id="location1">
+			<lat>0</lat>
+			<lon>0</lon>
+			<alt>0</alt>
+		</location>
+		<location id="location2">
+			<lat>0</lat>
+			<lon>0</lon>
+			<alt>0</alt>
+		</location>
+	</locations>
+	<assets>
+		<asset id="asset1">
+			<format>JPG</format>
+			<url>http://www.example.org/</url>
+		</asset>
+		<asset id="asset2">
+			<format>JPG</format>
+			<url>http://www.example.org/</url>
+		</asset>
+	</assets>
+	<features>
+		<featureImg id="featureImg">
+			<assetId>asset1</assetId>
+			<locationId>location1</locationId>
+		</featureImg>
+		<featureTxt id="featureTxt">
+			<text>Foo</text>
+			<locationId>location2</locationId>
+		</featureTxt>
+	</features>
+	<overlays>
+		<overlayImg>
+			<assetId>asset1</assetId>
+			<x>0</x>
+			<y>0</y>
+		</overlayImg>
+		<overlayTxt>
+			<text>Bar</text>
+			<width>1</width>
+			<x>0</x>
+			<y>0</y>
+		</overlayTxt>
+	</overlays>
+</dimension>

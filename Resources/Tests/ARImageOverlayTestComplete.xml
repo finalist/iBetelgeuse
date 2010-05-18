@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overlayImg id="anOverlay">
+	<assetId>anAsset</assetId>
+	<x>10</x>
+	<y>20</y>
+	<anchor>CC</anchor>
+	<onPress>refresh</onPress>
+</overlayImg>

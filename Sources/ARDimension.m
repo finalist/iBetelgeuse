@@ -21,6 +21,12 @@
 //
 
 #import "ARDimension.h"
+#import "ARLocation.h"
+#import "ARAsset.h"
+#import "ARImageOverlay.h"
+#import "ARTextOverlay.h"
+#import "ARImageFeature.h"
+#import "ARTextFeature.h"
 #import "TCXMLParserDelegate+Protected.h"
 
 
@@ -42,9 +48,26 @@ const CLLocationDistance ARDimensionRefreshDistanceInfinite = 0.0;
 @end
 
 
+typedef enum {
+	ARDimensionXMLParserDelegateStateRoot,
+	ARDimensionXMLParserDelegateStateRefreshTime,
+	ARDimensionXMLParserDelegateStateRefreshDistance,
+	ARDimensionXMLParserDelegateStateLocations,
+	ARDimensionXMLParserDelegateStateAssets,
+	ARDimensionXMLParserDelegateStateFeatures,
+	ARDimensionXMLParserDelegateStateOverlays,
+} ARDimensionXMLParserDelegateState;
+
+
 @interface ARDimensionXMLParserDelegate : TCXMLParserDelegate {
 @private
 	ARDimension *dimension;
+	ARDimensionXMLParserDelegateState state;
+	
+	NSMutableDictionary *locations;
+	NSMutableDictionary *assets;
+	NSMutableArray *features;
+	NSMutableArray *overlays;
 }
 
 @end
@@ -84,6 +107,11 @@ const CLLocationDistance ARDimensionRefreshDistanceInfinite = 0.0;
 - (void)dealloc {
 	[dimension release];
 	
+	[locations release];
+	[assets release];
+	[features release];
+	[overlays release];
+	
 	[super dealloc];
 }
 
@@ -92,9 +120,230 @@ const CLLocationDistance ARDimensionRefreshDistanceInfinite = 0.0;
 - (void)parsingDidStartWithElement:(NSString *)name attributes:(NSDictionary *)attributes {
 	[dimension release];
 	dimension = [[ARDimension alloc] init];
+	state = ARDimensionXMLParserDelegateStateRoot;
+	
+	[locations release];
+	locations = [[NSMutableDictionary alloc] init];
+	[assets release];
+	assets = [[NSMutableDictionary alloc] init];
+	[features release];
+	features = [[NSMutableArray alloc] init];
+	[overlays release];
+	overlays = [[NSMutableArray alloc] init];
+}
+
+- (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
+	// Indicates whether we handed of parsing this element to another parser
+	BOOL didHandOff = NO;
+	
+	switch (state) {
+		case ARDimensionXMLParserDelegateStateRoot:
+			if ([elementName isEqualToString:@"refreshTime"]) {
+				state = ARDimensionXMLParserDelegateStateRefreshTime;
+			}
+			else if ([elementName isEqualToString:@"refreshDistance"]) {
+				state = ARDimensionXMLParserDelegateStateRefreshDistance;
+			}
+			else if ([elementName isEqualToString:@"locations"]) {
+				state = ARDimensionXMLParserDelegateStateLocations;
+			}
+			else if ([elementName isEqualToString:@"assets"]) {
+				state = ARDimensionXMLParserDelegateStateAssets;
+			}
+			else if ([elementName isEqualToString:@"features"]) {
+				state = ARDimensionXMLParserDelegateStateFeatures;
+			}
+			else if ([elementName isEqualToString:@"overlays"]) {
+				state = ARDimensionXMLParserDelegateStateOverlays;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateLocations:
+			if ([elementName isEqualToString:@"location"]) {
+				[ARLocation startParsingWithXMLParser:parser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(parserDidFindLocation:) userInfo:nil];
+				didHandOff = YES;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateAssets:
+			if ([elementName isEqualToString:@"asset"]) {
+				[ARAsset startParsingWithXMLParser:parser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(parserDidFindAsset:) userInfo:nil];
+				didHandOff = YES;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateFeatures:
+			if ([elementName isEqualToString:@"featureImg"]) {
+				[ARImageFeature startParsingWithXMLParser:parser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(parserDidFindFeature:) userInfo:nil];
+				didHandOff = YES;
+			}
+			else if ([elementName isEqualToString:@"featureTxt"]) {
+				[ARTextFeature startParsingWithXMLParser:parser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(parserDidFindFeature:) userInfo:nil];
+				didHandOff = YES;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateOverlays:
+			if ([elementName isEqualToString:@"overlayImg"]) {
+				[ARImageOverlay startParsingWithXMLParser:parser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(parserDidFindOverlay:) userInfo:nil];
+				didHandOff = YES;
+			}
+			else if ([elementName isEqualToString:@"overlayTxt"]) {
+				[ARTextOverlay startParsingWithXMLParser:parser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(parserDidFindOverlay:) userInfo:nil];
+				didHandOff = YES;
+			}
+			break;
+	}
+	
+	// Only call the super implementation when the element wasn't handed off
+	if (!didHandOff) {
+		[super parser:parser didStartElement:elementName namespaceURI:namespaceURI qualifiedName:qualifiedName attributes:attributeDict];
+	}
+}
+
+- (void)parsingDidFindSimpleElement:(NSString *)name attributes:(NSDictionary *)attributes content:(NSString *)content {
+	switch (state) {
+		case ARDimensionXMLParserDelegateStateRoot:
+			if ([name isEqualToString:@"relativeAltitude"]) {
+				if ([content compare:@"true" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+					[dimension setRelativeAltitude:YES];
+				}
+				else if ([content compare:@"false" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+					[dimension setRelativeAltitude:NO];
+				}
+				else {
+					DebugLog(@"Invalid value for relativeAltitude element: %@", content);
+				}
+			}
+			else if ([name isEqualToString:@"refreshUrl"]) {
+				NSURL *url = [NSURL URLWithString:content];
+				if (url == nil) {
+					DebugLog(@"Invalid URL for refreshUrl: %@", content);
+				}
+				else {
+					[dimension setRefreshURL:url];
+				}
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateRefreshTime:
+			if ([name isEqualToString:@"validFor"]) {
+				double value = [content doubleValue];
+				if (value == 0.0 || value == HUGE_VAL || value == -HUGE_VAL) {
+					DebugLog(@"Invalid value for validFor element: %@", content);
+				}
+				else {
+					[dimension setRefreshTime:value / 1000.0];
+				}
+			}
+			else if ([name isEqualToString:@"waitForAssets"]) {
+				DebugLog(@"The option waitForAssets is ignored.");
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateRefreshDistance:
+			if ([name isEqualToString:@"validWithinRange"]) {
+				double value = [content doubleValue];
+				if (value == 0.0 || value == HUGE_VAL || value == -HUGE_VAL) {
+					DebugLog(@"Invalid value for validWithinRange element: %@", content);
+				}
+				else {
+					[dimension setRefreshDistance:value];
+				}
+			}
+			break;
+	}
+}
+
+- (void)parserDidFindLocation:(ARLocation *)location {
+	if (location == nil) {
+		DebugLog(@"Got invalid location");
+	}
+	else if ([location identifier] == nil) {
+		DebugLog(@"Skipping location without identifier");
+	}
+	else {
+		[locations setObject:location forKey:[location identifier]];
+	}
+}
+
+- (void)parserDidFindAsset:(ARAsset *)asset {
+	if (asset == nil) {
+		DebugLog(@"Got invalid asset");
+	}
+	else if ([asset identifier] == nil) {
+		DebugLog(@"Skipping asset without identifier");
+	}
+	else {
+		[assets setObject:asset forKey:[asset identifier]];
+	}
+}
+
+- (void)parserDidFindFeature:(ARFeature *)feature {
+	if (feature == nil) {
+		DebugLog(@"Got invalid feature");
+	}
+	else {
+		[features addObject:feature];
+	}
+}
+
+- (void)parserDidFindOverlay:(AROverlay *)overlay {
+	if (overlay == nil) {
+		DebugLog(@"Got invalid overlay");
+	}
+	else {
+		[overlays addObject:overlay];
+	}
+}
+
+- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+	[super parser:parser didEndElement:elementName namespaceURI:namespaceURI qualifiedName:qName];
+	
+	switch (state) {
+		case ARDimensionXMLParserDelegateStateRefreshTime:
+			if ([elementName isEqualToString:@"refreshTime"]) {
+				state = ARDimensionXMLParserDelegateStateRoot;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateRefreshDistance:
+			if ([elementName isEqualToString:@"refreshDistance"]) {
+				state = ARDimensionXMLParserDelegateStateRoot;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateLocations:
+			if ([elementName isEqualToString:@"locations"]) {
+				state = ARDimensionXMLParserDelegateStateRoot;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateAssets:
+			if ([elementName isEqualToString:@"assets"]) {
+				state = ARDimensionXMLParserDelegateStateRoot;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateFeatures:
+			if ([elementName isEqualToString:@"features"]) {
+				state = ARDimensionXMLParserDelegateStateRoot;
+			}
+			break;
+			
+		case ARDimensionXMLParserDelegateStateOverlays:
+			if ([elementName isEqualToString:@"overlays"]) {
+				state = ARDimensionXMLParserDelegateStateRoot;
+			}
+			break;
+	}
 }
 
 - (id)parsingDidEndWithElementContent:(NSString *)content {
+	[dimension setLocations:locations];
+	[dimension setAssets:assets];
+	[dimension setFeatures:features];
+	[dimension setOverlays:overlays];
 	return dimension;
 }
 

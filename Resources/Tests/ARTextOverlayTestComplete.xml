@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overlayTxt id="anOverlay">
+	<text>Foo</text>
+	<width>100</width>
+	<x>10</x>
+	<y>20</y>
+	<anchor>CC</anchor>
+	<onPress>refresh</onPress>
+</overlayTxt>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<overlayTxt id="anOverlay">
+	<text>Foo</text>
+	<width>100</width>
+	<x>10</x>
+</overlayTxt>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<featureImg id="aFeature">
+	<assetId>Foo</assetId>
+	<anchor>CC</anchor>
+	<onPress>refresh</onPress>
+	<xLoc>12.34</xLoc>
+	<yLoc>23.45</yLoc>
+	<zLoc>34.56</zLoc>
+	<showInRadar>False</showInRadar>
+</featureImg>

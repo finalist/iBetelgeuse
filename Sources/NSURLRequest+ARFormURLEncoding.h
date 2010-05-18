@@ -1,5 +1,5 @@
 //
-//  Prefix.pch
+//  NSURLRequest+ARFormURLEncoding.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,20 +20,15 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#if GCC_VERSION < 40200
-	// Dirty hack to fix compilation
-	#define NS_NONATOMIC_IPHONEONLY nonatomic
-#endif
+#import <Foundation/Foundation.h>
 
-#ifdef __OBJC__
-	#import <Foundation/Foundation.h>
-	#import <AppKit/AppKit.h>
-#endif
 
-#ifdef DEBUG
-	#define DebugLog(s, ...) NSLog((@"%p %s (%@:%d) " s), self, __func__, [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, ## __VA_ARGS__)
-#else
-	#define DebugLog(s, ...)
-#endif
+@interface NSURLRequest (ARFormURLEncoding)
 
-#define TEST_RESOURCES_PATH @"Resources/Tests"
++ (NSString *)ar_formURLEncodedStringWithDictionary:(NSDictionary *)dictionary;
++ (NSDictionary *)ar_dictionaryWithFormURLEncodedString:(NSString *)string;
+
++ (NSString *)ar_stringByURLEncodingString:(NSString *)string;
++ (NSString *)ar_stringByURLDecodingString:(NSString *)string;
+
+@end
