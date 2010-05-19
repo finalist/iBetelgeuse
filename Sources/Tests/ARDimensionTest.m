@@ -82,6 +82,28 @@
 	[parser release];
 }
 
+- (void)testParseSkipLocationWithoutIdentifier {
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARDimensionTestSkipLocationIdentifier.xml"]];
+	[parser setDelegate:self];
+	[parser parse];
+	
+	GHAssertNotNil(dimension, nil);
+	GHAssertEquals([[dimension locations] count], (NSUInteger)0, nil);
+	
+	[parser release];
+}
+
+- (void)testParseSkipAssetWithoutIdentifier {
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARDimensionTestSkipAssetIdentifier.xml"]];
+	[parser setDelegate:self];
+	[parser parse];
+	
+	GHAssertNotNil(dimension, nil);
+	GHAssertEquals([[dimension assets] count], (NSUInteger)0, nil);
+	
+	[parser release];
+}
+
 #pragma mark NSXMLParserDelegate
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {

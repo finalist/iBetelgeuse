@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dimension version="1.0">
+	<locations>
+		<location>
+			<lat>12.34</lat>
+			<lon>23.45</lon>
+			<alt>34.56</alt>
+		</location>
+	</locations>
+</dimension>

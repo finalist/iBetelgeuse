@@ -140,6 +140,20 @@
 	[parser release];
 }
 
+- (void)testParseBare {
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARLocationTestBare.xml"]];
+	[parser setDelegate:self];
+	[parser parse];
+	
+	GHAssertNotNil(location, nil);
+	GHAssertNil([location identifier], nil);
+	GHAssertEquals([location latitude], (CLLocationDegrees)12.34, nil);
+	GHAssertEquals([location longitude], (CLLocationDegrees)23.45, nil);
+	GHAssertEquals([location altitude], (CLLocationDistance)34.56, nil);
+	
+	[parser release];
+}
+
 - (void)testParseFail {
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARLocationTestFailIdentifier.xml"];
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARLocationTestFailLatitude.xml"];

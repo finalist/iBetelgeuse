@@ -170,7 +170,7 @@
 }
 
 - (id)parsingDidEndWithElementContent:(NSString *)content {
-	if (![location identifier] || !latitudeSet || !longitudeSet || !altitudeSet) {
+	if (!latitudeSet || !longitudeSet || !altitudeSet) {
 		return nil;
 	} else {
 		return location;

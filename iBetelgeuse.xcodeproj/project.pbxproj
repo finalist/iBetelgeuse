@@ -105,6 +105,8 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCNetworkActivityIndicator.h; sourceTree = "<group>"; };
 		95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCNetworkActivityIndicator.m; sourceTree = "<group>"; };
+		95919F0711A41D86006FCDFC /* ARDimensionTestSkipAssetIdentifier.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestSkipAssetIdentifier.xml; sourceTree = "<group>"; };
+		95919F0811A41D86006FCDFC /* ARDimensionTestSkipLocationIdentifier.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestSkipLocationIdentifier.xml; sourceTree = "<group>"; };
 		95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCXMLParserDelegate.h; sourceTree = "<group>"; };
 		95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCXMLParserDelegate.m; sourceTree = "<group>"; };
 		95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
@@ -176,7 +178,7 @@
 		C33465E011A1766E00228C9A /* ARAssetTestComplete.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARAssetTestComplete.xml; sourceTree = "<group>"; };
 		C33465E111A1766E00228C9A /* ARAssetTestFailIdentifier.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARAssetTestFailIdentifier.xml; sourceTree = "<group>"; };
 		C33465E211A1766E00228C9A /* ARAssetTestFailURL.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARAssetTestFailURL.xml; sourceTree = "<group>"; };
-		C33465E311A1766E00228C9A /* ARLocationTestFailIdentifier.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARLocationTestFailIdentifier.xml; sourceTree = "<group>"; };
+		C33465E311A1766E00228C9A /* ARLocationTestBare.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARLocationTestBare.xml; sourceTree = "<group>"; };
 		C33465FC11A1795200228C9A /* ARAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAction.h; sourceTree = "<group>"; };
 		C33465FD11A1795200228C9A /* ARAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAction.m; sourceTree = "<group>"; };
 		C334661311A17D1C00228C9A /* ARActionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARActionTest.h; sourceTree = "<group>"; };
@@ -309,12 +311,14 @@
 				C33465E111A1766E00228C9A /* ARAssetTestFailIdentifier.xml */,
 				C33465E211A1766E00228C9A /* ARAssetTestFailURL.xml */,
 				C334648011A159D100228C9A /* ARLocationTestComplete.xml */,
-				C33465E311A1766E00228C9A /* ARLocationTestFailIdentifier.xml */,
+				C33465E311A1766E00228C9A /* ARLocationTestBare.xml */,
 				C334648111A159D100228C9A /* ARLocationTestFailAltitude.xml */,
 				C334648311A159D100228C9A /* ARLocationTestFailLatitude.xml */,
 				C334648411A159D100228C9A /* ARLocationTestFailLongitude.xml */,
 				95B9BEEF11A1362700EDD870 /* ARDimensionTestComplete.xml */,
 				95B9BEEE11A1362700EDD870 /* ARDimensionTestBare.xml */,
+				95919F0711A41D86006FCDFC /* ARDimensionTestSkipAssetIdentifier.xml */,
+				95919F0811A41D86006FCDFC /* ARDimensionTestSkipLocationIdentifier.xml */,
 				95B9C11711A1691100EDD870 /* ARTextOverlayTestComplete.xml */,
 				95B9C11911A16C7200EDD870 /* ARTextOverlayTestBare.xml */,
 				95B9C11D11A16CE200EDD870 /* ARTextOverlayTestFailText.xml */,
