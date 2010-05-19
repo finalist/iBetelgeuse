@@ -48,6 +48,13 @@
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo;
 
 /**
+ * Initializes the receiver with the given values.
+ *
+ * @return The receiver.
+ */
+- (id)initWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude altitude:(CLLocationDistance)altitude;
+
+/**
  * Initializes the receiver with the coordinate and altitude of the given CoreLocation location.
  *
  * @param location Must be non-nil.

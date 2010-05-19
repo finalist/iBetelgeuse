@@ -51,6 +51,15 @@
 
 #pragma mark NSObject
 
+- (id)initWithLatitude:(CLLocationDegrees)aLatitude longitude:(CLLocationDegrees)aLongitude altitude:(CLLocationDistance)anAltitude {
+	if (self = [super init]) {
+		latitude = aLatitude;
+		longitude = aLongitude;
+		altitude = anAltitude;
+	}
+	return self;
+}
+
 - (id)initWithCLLocation:(CLLocation *)location {
 	NSAssert(location != nil, @"Expected non-nil location.");
 	

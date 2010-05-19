@@ -50,6 +50,82 @@
 	[parser release];
 }
 
+- (void)testInitWithLatitude {
+	// Test postconditions
+	ARLocation *l = [[ARLocation alloc] initWithLatitude:10.0 longitude:20.0 altitude:30.0];
+	GHAssertEquals([l latitude], (CLLocationDegrees)10.0, nil);
+	GHAssertEquals([l longitude], (CLLocationDegrees)20.0, nil);
+	GHAssertEquals([l altitude], (CLLocationDistance)30.0, nil);
+	[l release];
+}
+
+- (void)testInitWithCLLocation {
+	// Test preconditions
+	GHAssertThrows([[[ARLocation alloc] initWithCLLocation:nil] autorelease], nil);
+
+	// Create a CLLocation
+	CLLocationCoordinate2D coordinate;
+	coordinate.latitude = 10.0;
+	coordinate.longitude = 20.0;
+	CLLocation *cl = [[CLLocation alloc] initWithCoordinate:coordinate altitude:30.0 horizontalAccuracy:0.0 verticalAccuracy:0.0 timestamp:nil];
+	
+	// Test postconditions
+	ARLocation *l = [[ARLocation alloc] initWithCLLocation:cl];
+	GHAssertEquals([l latitude], coordinate.latitude, nil);
+	GHAssertEquals([l longitude], coordinate.longitude, nil);
+	GHAssertEquals([l altitude], [cl altitude], nil);
+	[l release];
+	
+	[cl release];
+}
+
+- (void)testIdentity {
+	ARLocation *l = [[ARLocation alloc] initWithLatitude:10.0 longitude:20.0 altitude:30.0];
+	
+	// Test equality with same parameters
+	ARLocation *m = [[ARLocation alloc] initWithLatitude:10.0 longitude:20.0 altitude:30.0];
+	GHAssertTrue([l isEqual:m], nil);
+	GHAssertTrue([m isEqual:l], nil);
+	GHAssertTrue([l hash] == [m hash], nil);
+	[m release];
+	
+	// Test equality with different latitude
+	m = [[ARLocation alloc] initWithLatitude:0.0 longitude:20.0 altitude:30.0];
+	GHAssertFalse([l isEqual:m], nil);
+	GHAssertFalse([m isEqual:l], nil);
+	[m release];
+	
+	// Test equality with different longitude
+	m = [[ARLocation alloc] initWithLatitude:10.0 longitude:0.0 altitude:30.0];
+	GHAssertFalse([l isEqual:m], nil);
+	GHAssertFalse([m isEqual:l], nil);
+	[m release];
+	
+	// Test equality with different altitude
+	m = [[ARLocation alloc] initWithLatitude:10.0 longitude:20.0 altitude:0.0];
+	GHAssertFalse([l isEqual:m], nil);
+	GHAssertFalse([m isEqual:l], nil);
+	[m release];
+	
+	// Test equality with nil
+	GHAssertFalse([l isEqual:nil], nil);
+	
+	// Test equality with random object
+	GHAssertFalse([l isEqual:@"hoi"], nil);
+	
+	[l release];
+}
+
+- (void)testCopying {
+	// Test postconditions
+	ARLocation *original = [[ARLocation alloc] initWithLatitude:10.0 longitude:20.0 altitude:30.0];
+	ARLocation *copy = [original copy];
+	GHAssertTrue(original != copy && [original isEqual:copy], nil);
+	GHAssertEquals([copy retainCount], (NSUInteger)1, nil);
+	[copy release];
+	[original release];
+}
+
 - (void)testParseComplete {
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARLocationTestComplete.xml"]];
 	[parser setDelegate:self];
