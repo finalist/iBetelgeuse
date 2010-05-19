@@ -27,6 +27,9 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		95919E2211A40C38006FCDFC /* TCNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */; };
+		95919E3A11A40E6F006FCDFC /* ARAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465C211A16EDD00228C9A /* ARAsset.m */; };
+		95919E4511A40E70006FCDFC /* ARAction.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465FD11A1795200228C9A /* ARAction.m */; };
 		95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
 		95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
 		95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */; };
@@ -100,6 +103,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCNetworkActivityIndicator.h; sourceTree = "<group>"; };
+		95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCXMLParserDelegate.h; sourceTree = "<group>"; };
 		95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCXMLParserDelegate.m; sourceTree = "<group>"; };
 		95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
@@ -397,6 +402,8 @@
 				95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */,
 				95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */,
 				95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */,
+				95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */,
+				95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -570,6 +577,7 @@
 				C3346A7A11A2B38800228C9A /* ARAction.m in Sources */,
 				C3346BB311A2C20700228C9A /* AROverlayView.m in Sources */,
 				C3346BB611A2C21400228C9A /* ARTextOverlayView.m in Sources */,
+				95919E2211A40C38006FCDFC /* TCNetworkActivityIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

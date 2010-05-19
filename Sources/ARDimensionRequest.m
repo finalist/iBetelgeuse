@@ -27,6 +27,7 @@
 
 #if TARGET_OS_IPHONE
 	#import <UIKit/UIDevice.h>
+	#import "TCNetworkActivityIndicator.h"
 #endif
 
 
@@ -61,6 +62,11 @@
 }
 
 - (void)dealloc {
+#if TARGET_OS_IPHONE
+	// To be sure
+	[[TCNetworkActivityIndicator sharedIndicator] releaseWithToken:self];
+#endif
+	
 	[url release];
 	[location release];
 	[source release];
@@ -141,6 +147,10 @@
 }
 
 - (void)start {
+#if TARGET_OS_IPHONE
+	[[TCNetworkActivityIndicator sharedIndicator] retainWithToken:self];
+#endif
+	
 	[connection release];
 	if ([delegate respondsToSelector:@selector(dimensionRequest:connectionWithRequest:delegate:)]) {
 		connection = [[delegate dimensionRequest:self connectionWithRequest:[self prepareRequest] delegate:self] retain];
@@ -157,6 +167,10 @@
 	[connection cancel];
 	[connection release];
 	connection = nil;
+	
+#if TARGET_OS_IPHONE
+	[[TCNetworkActivityIndicator sharedIndicator] releaseWithToken:self];
+#endif
 }
 
 #pragma mark NSURLConnectionDelegate
@@ -179,10 +193,18 @@
 	[parser parse];
 	
 	[delegate dimensionRequest:self didFinishWithDimension:dimension];
+	
+#if TARGET_OS_IPHONE
+	[[TCNetworkActivityIndicator sharedIndicator] releaseWithToken:self];
+#endif
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 	[delegate dimensionRequest:self didFailWithError:error];
+	
+#if TARGET_OS_IPHONE
+	[[TCNetworkActivityIndicator sharedIndicator] releaseWithToken:self];
+#endif
 }
 
 #pragma mark NSXMLParserDelegate
