@@ -1,5 +1,5 @@
 //
-//  ARMainController.h
+//  AROverlayView.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,17 +20,29 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <UIKit/UIKit.h>
-#import "ARDimensionRequest.h"
+#import "AROverlayView.h"
+//#import "ARImageOverlayView.h"
+#import "ARTextOverlayView.h"
+#import "ARTextOverlay.h"
+
+@class ARTextOverlay;
 
 
-@interface ARMainController : UIViewController <ARDimensionRequestDelegate> {
-@private
-	ARDimension *dimension;
-	UIImagePickerController *cameraViewController;
-	UIView *featureContainerView; // Non-retained instance variable
-	UIView *overlayContainerView; // Non-retained instance variable
-	//ARRadarView *radarView;
+@implementation AROverlayView
+
++ (AROverlayView *)viewForOverlay:(AROverlay *)overlay {
+	NSAssert(overlay != nil, @"Expected non-nil overlay.");
+	
+//	if ([[overlay class] isSubclassOfClass:ARImageOverlay]) {
+//		return [[[ARImageOverlayView alloc] initWithOverlay:(ARImageOverlay *)overlay] autorelease];
+//	}
+//	else ...
+	if ([overlay isKindOfClass:[ARTextOverlay class]]) {
+		return [[[ARTextOverlayView alloc] initWithOverlay:(ARTextOverlay *)overlay] autorelease];
+	} else {
+		DebugLog(@"Unknown overlay type: %@", [overlay class]);
+		return nil;
+	}
 }
 
 @end

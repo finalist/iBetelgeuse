@@ -40,13 +40,6 @@
 		95B9C0F511A1617B00EDD870 /* ARTextOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0F411A1617B00EDD870 /* ARTextOverlay.m */; };
 		95B9C0F611A1617B00EDD870 /* ARTextOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0F411A1617B00EDD870 /* ARTextOverlay.m */; };
 		95B9C11511A1654D00EDD870 /* ARTextOverlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C11411A1654D00EDD870 /* ARTextOverlayTest.m */; };
-		95B9C11611A1654D00EDD870 /* ARTextOverlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C11411A1654D00EDD870 /* ARTextOverlayTest.m */; };
-		95B9C11811A1691100EDD870 /* ARTextOverlayTestComplete.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11711A1691100EDD870 /* ARTextOverlayTestComplete.xml */; };
-		95B9C11A11A16C7200EDD870 /* ARTextOverlayTestBare.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11911A16C7200EDD870 /* ARTextOverlayTestBare.xml */; };
-		95B9C12111A16CE200EDD870 /* ARTextOverlayTestFailText.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11D11A16CE200EDD870 /* ARTextOverlayTestFailText.xml */; };
-		95B9C12211A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11E11A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml */; };
-		95B9C12311A16CE200EDD870 /* ARTextOverlayTestFailX.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C11F11A16CE200EDD870 /* ARTextOverlayTestFailX.xml */; };
-		95B9C12411A16CE200EDD870 /* ARTextOverlayTestFailY.xml in Resources */ = {isa = PBXBuildFile; fileRef = 95B9C12011A16CE200EDD870 /* ARTextOverlayTestFailY.xml */; };
 		95B9C1B311A17A5200EDD870 /* ARImageOverlayTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C1B211A17A5200EDD870 /* ARImageOverlayTest.m */; };
 		95B9C1FF11A17CAB00EDD870 /* ARAnchor.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C1FE11A17CAB00EDD870 /* ARAnchor.m */; };
 		95B9C20011A17CAB00EDD870 /* ARAnchor.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C1FE11A17CAB00EDD870 /* ARAnchor.m */; };
@@ -67,7 +60,6 @@
 		C334645E11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
 		C334645F11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
 		C334647111A14CD200228C9A /* ARLocationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C334647011A14CD200228C9A /* ARLocationTest.m */; };
-		C334647211A14CD200228C9A /* ARLocationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C334647011A14CD200228C9A /* ARLocationTest.m */; };
 		C33465C311A16EDD00228C9A /* ARAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465C211A16EDD00228C9A /* ARAsset.m */; };
 		C33465C811A1724B00228C9A /* ARAssetTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465C711A1724B00228C9A /* ARAssetTest.m */; };
 		C33465FE11A1795200228C9A /* ARAction.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465FD11A1795200228C9A /* ARAction.m */; };
@@ -82,6 +74,10 @@
 		C334693411A29C1F00228C9A /* ARImageFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = C334693311A29C1F00228C9A /* ARImageFeature.m */; };
 		C334693511A29C1F00228C9A /* ARImageFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = C334693311A29C1F00228C9A /* ARImageFeature.m */; };
 		C334693811A29C3300228C9A /* ARImageFeatureTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C334693711A29C3300228C9A /* ARImageFeatureTest.m */; };
+		C3346A7911A2B38700228C9A /* ARAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465C211A16EDD00228C9A /* ARAsset.m */; };
+		C3346A7A11A2B38800228C9A /* ARAction.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465FD11A1795200228C9A /* ARAction.m */; };
+		C3346BB311A2C20700228C9A /* AROverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346BB211A2C20700228C9A /* AROverlayView.m */; };
+		C3346BB611A2C21400228C9A /* ARTextOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346BB511A2C21400228C9A /* ARTextOverlayView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,7 +152,7 @@
 		95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHUnitTestMain.m; sourceTree = "<group>"; };
 		95E77E401198094800A1F2B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		95E77EC51198097400A1F2B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		C33462BF119D7B3B00228C9A /* ARMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMainController.h; sourceTree = "<group>"; };
 		C33462C0119D7B3B00228C9A /* ARMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMainController.m; sourceTree = "<group>"; };
 		C334645C11A1495D00228C9A /* ARLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocation.h; sourceTree = "<group>"; };
@@ -203,6 +199,10 @@
 		C334696411A2A0A700228C9A /* ARImageFeatureTestFailLocation.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARImageFeatureTestFailLocation.xml; sourceTree = "<group>"; };
 		C334696511A2A0A700228C9A /* ARTextFeatureTestFailLocation.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestFailLocation.xml; sourceTree = "<group>"; };
 		C334696611A2A0A700228C9A /* ARTextFeatureTestFailText.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestFailText.xml; sourceTree = "<group>"; };
+		C3346BB111A2C20700228C9A /* AROverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROverlayView.h; sourceTree = "<group>"; };
+		C3346BB211A2C20700228C9A /* AROverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROverlayView.m; sourceTree = "<group>"; };
+		C3346BB411A2C21400228C9A /* ARTextOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextOverlayView.h; sourceTree = "<group>"; };
+		C3346BB511A2C21400228C9A /* ARTextOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextOverlayView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -404,6 +404,10 @@
 		95E77C431198031E00A1F2B9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C3346BB111A2C20700228C9A /* AROverlayView.h */,
+				C3346BB211A2C20700228C9A /* AROverlayView.m */,
+				C3346BB411A2C21400228C9A /* ARTextOverlayView.h */,
+				C3346BB511A2C21400228C9A /* ARTextOverlayView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -519,12 +523,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95B9C11811A1691100EDD870 /* ARTextOverlayTestComplete.xml in Resources */,
-				95B9C11A11A16C7200EDD870 /* ARTextOverlayTestBare.xml in Resources */,
-				95B9C12111A16CE200EDD870 /* ARTextOverlayTestFailText.xml in Resources */,
-				95B9C12211A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml in Resources */,
-				95B9C12311A16CE200EDD870 /* ARTextOverlayTestFailX.xml in Resources */,
-				95B9C12411A16CE200EDD870 /* ARTextOverlayTestFailY.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,11 +556,9 @@
 				95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */,
 				95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */,
 				C334645E11A1495D00228C9A /* ARLocation.m in Sources */,
-				C334647211A14CD200228C9A /* ARLocationTest.m in Sources */,
 				95B9C0ED11A1611200EDD870 /* AROverlay.m in Sources */,
 				95B9C0F111A1617200EDD870 /* ARImageOverlay.m in Sources */,
 				95B9C0F611A1617B00EDD870 /* ARTextOverlay.m in Sources */,
-				95B9C11611A1654D00EDD870 /* ARTextOverlayTest.m in Sources */,
 				95B9C20011A17CAB00EDD870 /* ARAnchor.m in Sources */,
 				C33466A511A187BF00228C9A /* ARFeature.m in Sources */,
 				C33466AC11A187DC00228C9A /* ARTextFeature.m in Sources */,
@@ -570,6 +566,10 @@
 				C334693511A29C1F00228C9A /* ARImageFeature.m in Sources */,
 				95B9C57011A2937500EDD870 /* ARDimensionRequest.m in Sources */,
 				95D3CFC411A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */,
+				C3346A7911A2B38700228C9A /* ARAsset.m in Sources */,
+				C3346A7A11A2B38800228C9A /* ARAction.m in Sources */,
+				C3346BB311A2C20700228C9A /* AROverlayView.m in Sources */,
+				C3346BB611A2C21400228C9A /* ARTextOverlayView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
