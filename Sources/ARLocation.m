@@ -21,6 +21,7 @@
 //
 
 #import "ARLocation.h"
+#import "ARWGS84.h"
 #import "TCXMLParserDelegate+Protected.h"
 
 
@@ -111,6 +112,10 @@
 	ARLocationXMLParserDelegate *delegate = [[ARLocationXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
+}
+
+- (ARPoint3D)ECEFCoordinate {
+	return ARWGS84GetECEF(latitude, longitude, altitude);
 }
 
 @end

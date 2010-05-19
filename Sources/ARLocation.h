@@ -22,6 +22,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "ARPoint3D.h"
 
 
 /**
@@ -67,5 +68,7 @@
 @property(nonatomic, readonly) CLLocationDegrees latitude;
 @property(nonatomic, readonly) CLLocationDegrees longitude;
 @property(nonatomic, readonly) CLLocationDistance altitude;
+
+- (ARPoint3D)ECEFCoordinate;
 
 @end
