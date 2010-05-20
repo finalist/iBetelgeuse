@@ -45,6 +45,8 @@
  */
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo;
 
+- (id)initWithURL:(NSURL *)url format:(NSString *)format;
+
 @property(nonatomic, readonly, copy) NSString *identifier;
 @property(nonatomic, readonly, copy) NSString *format;
 @property(nonatomic, readonly, copy) NSURL *URL;

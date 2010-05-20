@@ -50,6 +50,17 @@
 	[parser release];
 }
 
+- (void)testInitWithURLAndFormat {
+	NSURL *url = [NSURL URLWithString:@"http://www.foo.org/"];
+	NSString *format = @"jpeg";
+	
+	ARAsset *a = [[ARAsset alloc] initWithURL:url format:format];
+	GHAssertNil([a identifier], nil);
+	GHAssertEqualObjects([a format], format, nil);
+	GHAssertEqualObjects([a URL], url, nil);
+	[a release];
+}
+
 - (void)testParseComplete {
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARAssetTestComplete.xml"]];
 	[parser setDelegate:self];

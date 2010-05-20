@@ -47,6 +47,14 @@
 
 #pragma mark NSObject
 
+- (id)initWithURL:(NSURL *)aURL format:(NSString *)aFormat {
+	if (self = [super init]) {
+		format = [aFormat copy];
+		URL = [aURL retain];
+	}
+	return self;
+}
+
 - (void)dealloc {
 	[identifier release];
 	[format release];
