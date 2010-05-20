@@ -22,6 +22,10 @@
 #import "ARAssetManager.h"
 #import "ARAsset.h"
 
+#if TARGET_OS_IPHONE
+	#import "TCNetworkActivityIndicator.h"
+#endif
+
 
 NSString *const ARAssetManagerErrorDomain = @"ARAssetManagerErrorDomain";
 const NSInteger ARAssetManagerErrorUnknown = 0;
@@ -78,6 +82,11 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 @property(nonatomic, readonly) NSMutableDictionary *operations;
 @property(nonatomic, readonly) NSMutableDictionary *operationsIfAvailable;
 
+- (void)unregisterOperationForAsset:(ARAsset *)asset;
+- (void)unregisterOperationForKey:(ARAssetManagerOperationKey *)key;
+
+- (void)hideNetworkActivityIndicatorIfNeeded;
+
 @end
 
 
@@ -97,19 +106,19 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 #pragma mark ARAssetManagerOperationDelegate
 
 - (void)assetManagerOperation:(ARAssetManagerOperation *)operation didFinishWithData:(NSData *)data {
-	ARAssetManagerOperationKey *key = [[ARAssetManagerOperationKey alloc] initWithAsset:[operation asset]];
-	[[self operations] removeObjectForKey:key];
-	[key release];
+	[self unregisterOperationForAsset:[operation asset]];
 	
 	[delegate assetManager:self didLoadData:data forAsset:[operation asset]];
+	
+	[self hideNetworkActivityIndicatorIfNeeded];
 }
 
 - (void)assetManagerOperation:(ARAssetManagerOperation *)operation didFinishWithError:(NSError *)error {
-	ARAssetManagerOperationKey *key = [[ARAssetManagerOperationKey alloc] initWithAsset:[operation asset]];
-	[[self operations] removeObjectForKey:key];
-	[key release];
+	[self unregisterOperationForAsset:[operation asset]];
 	
 	[delegate assetManager:self didFailWithError:error forAsset:[operation asset]];
+	
+	[self hideNetworkActivityIndicatorIfNeeded];
 }
 
 - (NSData *)assetManagerOperation:(ARAssetManagerOperation *)operation respondToSynchronousRequest:(NSURLRequest *)request withResponse:(NSURLResponse **)response error:(NSError **)error {
@@ -145,6 +154,10 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 }
 
 - (void)startLoadingAsset:(ARAsset *)asset {
+#if TARGET_OS_IPHONE
+	[[TCNetworkActivityIndicator sharedIndicator] retainWithToken:self];
+#endif
+	
 	ARAssetManagerOperationKey *key = [[ARAssetManagerOperationKey alloc] initWithAsset:asset];
 	if ([[self operationsIfAvailable] objectForKey:key]) {
 		DebugLog(@"Received request to start loading asset that is already loading: %@", key);
@@ -161,10 +174,29 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 
 - (void)cancelLoadingAsset:(ARAsset *)asset {
 	ARAssetManagerOperationKey *key = [[ARAssetManagerOperationKey alloc] initWithAsset:asset];
-	ARAssetManagerOperation *operation = [[self operationsIfAvailable] objectForKey:key];
-	[operation cancel];
-	[[self operationsIfAvailable] removeObjectForKey:key];
+	[[[self operationsIfAvailable] objectForKey:key] cancel];
+	[self unregisterOperationForKey:key];
 	[key release];
+	
+	[self hideNetworkActivityIndicatorIfNeeded];
+}
+
+- (void)unregisterOperationForAsset:(ARAsset *)asset {
+	ARAssetManagerOperationKey *key = [[ARAssetManagerOperationKey alloc] initWithAsset:asset];
+	[self unregisterOperationForKey:key];
+	[key release];
+}
+
+- (void)unregisterOperationForKey:(ARAssetManagerOperationKey *)key {
+	[[self operationsIfAvailable] removeObjectForKey:key];
+}
+
+- (void)hideNetworkActivityIndicatorIfNeeded {
+#if TARGET_OS_IPHONE
+	if ([[self operationsIfAvailable] count] == 0) {
+		[[TCNetworkActivityIndicator sharedIndicator] releaseWithToken:self];
+	}
+#endif
 }
 
 @end
