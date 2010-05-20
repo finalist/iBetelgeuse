@@ -54,6 +54,19 @@
 
 #pragma mark NSObject
 
+- (id)init {
+	return [self initWithURL:nil];
+}
+
+- (id)initWithURL:(NSURL *)aURL {
+	if (self = [super init]) {
+		if (aURL != nil) {
+			DebugLog(@"Ignoring given URL: %@", aURL);
+		}
+	}
+	return self;
+}
+
 - (void)dealloc {
 	[dimension release];
 	[cameraViewController release];

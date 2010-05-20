@@ -25,6 +25,8 @@
 
 @interface ARAppDelegate : NSObject <UIApplicationDelegate> {
 @private
+	NSURL *initialURL;
+	
 	UIWindow *window;
     UIViewController *viewController;
 }

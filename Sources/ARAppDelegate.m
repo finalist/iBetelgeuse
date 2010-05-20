@@ -26,6 +26,8 @@
 
 @interface ARAppDelegate ()
 
+@property(nonatomic, retain) NSURL *initialURL;
+
 @property(nonatomic, readonly) UIWindow *window;
 @property(nonatomic, readonly) UIViewController *viewController;
 
@@ -34,9 +36,13 @@
 
 @implementation ARAppDelegate
 
+@synthesize initialURL;
+
 #pragma mark NSObject
 
 - (void)dealloc {
+	[initialURL release];
+	
 	[window release];
 	[viewController release];
 	
@@ -45,9 +51,29 @@
 
 #pragma mark UIApplicationDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	BOOL didHandleURL = YES;
+	
+	// Check if we were launched with a URL
+	NSURL *url;
+	if (url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]) {
+		// Check if it is a URL that we recognize
+		if ([[url scheme] isEqualToString:@"gamaray"] && [url host]) {
+			// Change the scheme of the URL to http
+			NSString *urlString = [url absoluteString];
+			NSRange urlSchemeRange = [urlString rangeOfString:[url scheme] options:NSAnchoredSearch];
+			NSString *httpURLString = [urlString stringByReplacingCharactersInRange:urlSchemeRange withString:@"http"];
+			[self setInitialURL:[NSURL URLWithString:httpURLString]];
+		}
+		else {
+			didHandleURL = NO;
+		}
+	}
+	
+	// Show the main window
     [[self window] makeKeyAndVisible];
-	return YES;
+	
+	return didHandleURL;
 }
 
 #pragma mark ARAppDelegate
@@ -62,7 +88,7 @@
 
 - (UIViewController *)viewController {
 	if (viewController == nil) {
-		ARMainController *controller = [[ARMainController alloc] init];
+		ARMainController *controller = [[ARMainController alloc] initWithURL:[self initialURL]];
 		viewController = controller;
 	}
 	return viewController;

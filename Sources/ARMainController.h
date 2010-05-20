@@ -33,4 +33,13 @@
 	//ARRadarView *radarView;
 }
 
+/**
+ * Initialize the receiver with the given URL. If a URL is given, the controller will start loading the dimension at that URL as soon as it becomes visible.
+ *
+ * @param url A URL to start loading a dimension from. May be nil.
+ *
+ * @return The receiver.
+ */
+- (id)initWithURL:(NSURL *)url;
+
 @end
