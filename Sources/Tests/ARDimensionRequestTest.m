@@ -176,8 +176,9 @@
 		GHFail(@"This request shouldn't've failed.");
 	}
 	else if ([self currentSelector] == @selector(testDidFail)) {
-		GHAssertEqualObjects([error domain], NSURLErrorDomain, nil);
-		GHAssertEquals([error code], (NSInteger)NSURLErrorBadServerResponse, nil);
+		GHAssertEqualObjects([error domain], ARDimensionRequestErrorDomain, nil);
+		GHAssertEquals([error code], ARDimensionRequestErrorHTTP, nil);
+		GHAssertEqualObjects([[error userInfo] objectForKey:ARDimensionRequestErrorHTTPStatusCodeKey], [NSNumber numberWithInteger:404], nil);
 	}
 	
 	// Notify that we're done
@@ -211,7 +212,7 @@
 		[connection receiveData:responseData statusCode:200 MIMEType:@"application/xml" afterDelay:0.1];
 	}
 	else if ([self currentSelector] == @selector(testDidFail)) {
-		[connection failWithError:[NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:nil] afterDelay:0.1];
+		[connection receiveData:[NSData data] statusCode:404 MIMEType:@"text/html" afterDelay:0.1];
 	}
 	else if ([self currentSelector] == @selector(testTypes)) {
 		// Check the post data

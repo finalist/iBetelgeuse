@@ -31,6 +31,11 @@
 #endif
 
 
+NSString *const ARDimensionRequestErrorDomain = @"ARDimensionRequestErrorDomain";
+const NSInteger ARDimensionRequestErrorHTTP = 1;
+NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
+
+
 @interface ARDimensionRequest ()
 
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
@@ -72,6 +77,7 @@
 	[source release];
 	
 	[connection release];
+	[response release];
 	[responseData release];
 	[parser release];
 	
@@ -159,8 +165,6 @@
 	else {
 		connection = [[NSURLConnection alloc] initWithRequest:[self prepareRequest] delegate:self];
 	}
-	
-	[connection start];
 }
 
 - (void)cancel {
@@ -175,8 +179,11 @@
 
 #pragma mark NSURLConnectionDelegate
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-	NSUInteger capacity = [response expectedContentLength] == NSURLResponseUnknownLength ? 0 : [response expectedContentLength];
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)aResponse {
+	NSUInteger capacity = [aResponse expectedContentLength] == NSURLResponseUnknownLength ? 0 : [aResponse expectedContentLength];
+	
+	[response release];
+	response = [aResponse retain];
 	
 	[responseData release];
 	responseData = [[NSMutableData alloc] initWithCapacity:capacity];
@@ -187,12 +194,22 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-	[parser release];
-	parser = [[NSXMLParser alloc] initWithData:responseData];
-	[parser setDelegate:self];
-	[parser parse];
-	
-	[delegate dimensionRequest:self didFinishWithDimension:dimension];
+	if ([response isKindOfClass:[NSHTTPURLResponse class]] && [(NSHTTPURLResponse *)response statusCode] != 200) {
+		NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+		
+		NSString *errorDescription = [NSString stringWithFormat:NSLocalizedString(@"Received HTTP %@.", @"dimension request error descriptoin"), [NSHTTPURLResponse localizedStringForStatusCode:statusCode]];
+		NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:errorDescription, NSLocalizedDescriptionKey, [NSNumber numberWithInteger:statusCode], ARDimensionRequestErrorHTTPStatusCodeKey, nil];
+		NSError *error = [NSError errorWithDomain:ARDimensionRequestErrorDomain code:ARDimensionRequestErrorHTTP userInfo:errorInfo];
+		[delegate dimensionRequest:self didFailWithError:error];
+	}
+	else {
+		[parser release];
+		parser = [[NSXMLParser alloc] initWithData:responseData];
+		[parser setDelegate:self];
+		[parser parse];
+		
+		[delegate dimensionRequest:self didFinishWithDimension:dimension];
+	}
 	
 #if TARGET_OS_IPHONE
 	[[TCNetworkActivityIndicator sharedIndicator] releaseWithToken:self];

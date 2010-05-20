@@ -23,6 +23,11 @@
 #import <Foundation/Foundation.h>
 
 
+extern NSString *const ARDimensionRequestErrorDomain;
+extern const NSInteger ARDimensionRequestErrorHTTP;
+extern NSString *const ARDimensionRequestErrorHTTPStatusCodeKey;
+
+
 @class ARDimension, ARLocation;
 @protocol ARDimensionRequestDelegate;
 
@@ -48,6 +53,7 @@ typedef enum {
 	CGSize screenSize;
 	
 	NSURLConnection *connection;
+	NSURLResponse *response;
 	NSMutableData *responseData;
 	NSXMLParser *parser;
 	ARDimension *dimension;
@@ -115,7 +121,11 @@ typedef enum {
 @optional
 
 /**
- * Optional method that allows the delegate to inject a specific kind of NSURLConnection. Useful for testing.
+ * Optional method that allows the delegate to inject a specific kind of NSURLConnection, which is useful for testing.
+ *
+ * @note This method may be called on a thread other than the main thread.
+ *
+ * @return An instance of NSURLConnection or a subclass that has been started.
  */
 - (NSURLConnection *)dimensionRequest:(ARDimensionRequest *)request connectionWithRequest:(NSURLRequest *)urlRequest delegate:(id)delegate;
 
