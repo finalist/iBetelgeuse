@@ -1,5 +1,5 @@
 //
-//  ARPoint3D.m
+//  ARTransform3DTest.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,7 +20,11 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARPoint3D.h"
+#import <GHUnit/GHUnit.h>
 
 
-const ARPoint3D ARPoint3DZero = {0, 0, 0};
+@interface ARTransform3DTest : GHTestCase {
+@private
+}
+
+@end
