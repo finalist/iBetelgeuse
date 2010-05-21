@@ -114,7 +114,7 @@
 	[delegate release];
 }
 
-- (ARPoint3D)ECEFCoordinate {
+- (ARPoint3D)positionInEcefCoordinates {
 	return ARWGS84GetECEF(latitude, longitude, altitude);
 }
 

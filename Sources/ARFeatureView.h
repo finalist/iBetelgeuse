@@ -1,5 +1,5 @@
 //
-//  ARMainController.h
+//  ARFeatureView.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,29 +20,19 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <UIKit/UIKit.h>
-#import "ARDimensionRequest.h"
-#import "ARSpatialStateManager.h"
+#import <Foundation/Foundation.h>
+
+@class ARFeature;
+@class ARSpatialStateManager;
 
 
-@interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARSpatialStateManagerDelegate> {
-@private
-	ARDimension *dimension;
-	UIImagePickerController *cameraViewController;
-	UIView *featureContainerView; // Non-retained instance variable
-	UIView *overlayContainerView; // Non-retained instance variable
-	//ARRadarView *radarView;
+@interface ARFeatureView : UIView {
 	
-	ARSpatialStateManager *spatialStateManager;
 }
 
-/**
- * Initialize the receiver with the given URL. If a URL is given, the controller will start loading the dimension at that URL as soon as it becomes visible.
- *
- * @param url A URL to start loading a dimension from. May be nil.
- *
- * @return The receiver.
- */
-- (id)initWithURL:(NSURL *)url;
+- (ARFeature *)feature;
+
++ (ARFeatureView *)viewForFeature:(ARFeature *)feature;
+- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState;
 
 @end

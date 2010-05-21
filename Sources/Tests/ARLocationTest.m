@@ -161,9 +161,9 @@
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARLocationTestFailAltitude.xml"];
 }
 
-- (void)testECEFCoordinate {
+- (void)testPositionInEcefCoordinates {
 	ARLocation *l = [[ARLocation alloc] initWithLatitude:52.469397 longitude:5.509644 altitude:10.0];
-	ARPoint3D ecef = [l ECEFCoordinate];
+	ARPoint3D ecef = [l positionInEcefCoordinates];
 	GHAssertEqualsWithAccuracy(ecef.x, 3875688., 0.5, nil);
 	GHAssertEqualsWithAccuracy(ecef.y, 373845., 0.5, nil);
 	GHAssertEqualsWithAccuracy(ecef.z, 5034799., 0.5, nil);

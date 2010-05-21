@@ -27,13 +27,13 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
-		95919E2211A40C38006FCDFC /* TCNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */; };
 		95919EE311A41A61006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE411A41A67006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE711A41B0B006FCDFC /* ARWGS84Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE611A41B0B006FCDFC /* ARWGS84Test.m */; };
 		95A26CB111A51EF5000C0876 /* ARAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB011A51EF5000C0876 /* ARAssetManager.m */; };
 		95A26CB211A51EF5000C0876 /* ARAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB011A51EF5000C0876 /* ARAssetManager.m */; };
 		95A26CB911A52489000C0876 /* ARAssetManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB811A52489000C0876 /* ARAssetManagerTest.m */; };
+		95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */; };
 		95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
 		95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
 		95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */; };
@@ -85,11 +85,14 @@
 		C3346A7A11A2B38800228C9A /* ARAction.m in Sources */ = {isa = PBXBuildFile; fileRef = C33465FD11A1795200228C9A /* ARAction.m */; };
 		C3346BB311A2C20700228C9A /* AROverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346BB211A2C20700228C9A /* AROverlayView.m */; };
 		C3346BB611A2C21400228C9A /* ARTextOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346BB511A2C21400228C9A /* ARTextOverlayView.m */; };
+		C3346D7B11A3C22400228C9A /* ARFeatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346D7A11A3C22400228C9A /* ARFeatureView.m */; };
+		C3346D7E11A3C22C00228C9A /* ARTextFeatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346D7D11A3C22C00228C9A /* ARTextFeatureView.m */; };
 		C3346DB011A3CA2D00228C9A /* ARPoint3DTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346DAF11A3CA2D00228C9A /* ARPoint3DTest.m */; };
 		C3346E4811A3DD1D00228C9A /* ARTransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346E4711A3DD1D00228C9A /* ARTransform3D.m */; };
 		C3346E4911A3DD1D00228C9A /* ARTransform3D.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346E4711A3DD1D00228C9A /* ARTransform3D.m */; };
 		C3346E6A11A3E63900228C9A /* ARTransform3DTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346E6911A3E63900228C9A /* ARTransform3DTest.m */; };
 		C3346ECE11A3FFD600228C9A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3346ECD11A3FFD600228C9A /* QuartzCore.framework */; };
+		C33474BA11A54E2200228C9A /* ARSpatialStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C33474B911A54E2200228C9A /* ARSpatialStateManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,6 +230,10 @@
 		C3346BB211A2C20700228C9A /* AROverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROverlayView.m; sourceTree = "<group>"; };
 		C3346BB411A2C21400228C9A /* ARTextOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextOverlayView.h; sourceTree = "<group>"; };
 		C3346BB511A2C21400228C9A /* ARTextOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextOverlayView.m; sourceTree = "<group>"; };
+		C3346D7911A3C22400228C9A /* ARFeatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeatureView.h; sourceTree = "<group>"; };
+		C3346D7A11A3C22400228C9A /* ARFeatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeatureView.m; sourceTree = "<group>"; };
+		C3346D7C11A3C22C00228C9A /* ARTextFeatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTextFeatureView.h; sourceTree = "<group>"; };
+		C3346D7D11A3C22C00228C9A /* ARTextFeatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextFeatureView.m; sourceTree = "<group>"; };
 		C3346DAE11A3CA2D00228C9A /* ARPoint3DTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPoint3DTest.h; sourceTree = "<group>"; };
 		C3346DAF11A3CA2D00228C9A /* ARPoint3DTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPoint3DTest.m; sourceTree = "<group>"; };
 		C3346E4611A3DD1D00228C9A /* ARTransform3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTransform3D.h; sourceTree = "<group>"; };
@@ -234,6 +241,8 @@
 		C3346E6811A3E63900228C9A /* ARTransform3DTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTransform3DTest.h; sourceTree = "<group>"; };
 		C3346E6911A3E63900228C9A /* ARTransform3DTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTransform3DTest.m; sourceTree = "<group>"; };
 		C3346ECD11A3FFD600228C9A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
+		C33474B811A54E2200228C9A /* ARSpatialStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpatialStateManager.h; sourceTree = "<group>"; };
+		C33474B911A54E2200228C9A /* ARSpatialStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpatialStateManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -440,6 +449,8 @@
 				95A26CB011A51EF5000C0876 /* ARAssetManager.m */,
 				C3346E4611A3DD1D00228C9A /* ARTransform3D.h */,
 				C3346E4711A3DD1D00228C9A /* ARTransform3D.m */,
+				C33474B811A54E2200228C9A /* ARSpatialStateManager.h */,
+				C33474B911A54E2200228C9A /* ARSpatialStateManager.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -451,6 +462,10 @@
 				C3346BB211A2C20700228C9A /* AROverlayView.m */,
 				C3346BB411A2C21400228C9A /* ARTextOverlayView.h */,
 				C3346BB511A2C21400228C9A /* ARTextOverlayView.m */,
+				C3346D7911A3C22400228C9A /* ARFeatureView.h */,
+				C3346D7A11A3C22400228C9A /* ARFeatureView.m */,
+				C3346D7C11A3C22C00228C9A /* ARTextFeatureView.h */,
+				C3346D7D11A3C22C00228C9A /* ARTextFeatureView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -621,10 +636,13 @@
 				C3346A7A11A2B38800228C9A /* ARAction.m in Sources */,
 				C3346BB311A2C20700228C9A /* AROverlayView.m in Sources */,
 				C3346BB611A2C21400228C9A /* ARTextOverlayView.m in Sources */,
-				95919E2211A40C38006FCDFC /* TCNetworkActivityIndicator.m in Sources */,
 				95919EE311A41A61006FCDFC /* ARWGS84.m in Sources */,
 				95A26CB211A51EF5000C0876 /* ARAssetManager.m in Sources */,
+				C3346D7B11A3C22400228C9A /* ARFeatureView.m in Sources */,
+				C3346D7E11A3C22C00228C9A /* ARTextFeatureView.m in Sources */,
 				C3346E4811A3DD1D00228C9A /* ARTransform3D.m in Sources */,
+				C33474BA11A54E2200228C9A /* ARSpatialStateManager.m in Sources */,
+				95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

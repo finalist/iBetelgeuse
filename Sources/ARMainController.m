@@ -25,11 +25,21 @@
 #import "AROverlay.h"
 #import "AROverlayView.h"
 #import "ARFeature.h"
+#import "ARFeatureView.h"
+#import "ARTransform3D.h"
+#import "ARSpatialStateManager.h"
+#import "ARWGS84.h"
+#import "ARLocation.h"
 #import <QuartzCore/QuartzCore.h>
 
 
+#define SCREEN_SIZE_X 320
+#define SCREEN_SIZE_Y 480
 #define CAMERA_CONTROLS_HEIGHT (53.)
-#define CAMERA_VIEW_SCALE (480. / (480. - CAMERA_CONTROLS_HEIGHT))
+#define CAMERA_VIEW_SCALE (SCREEN_SIZE_Y / (SCREEN_SIZE_Y - CAMERA_CONTROLS_HEIGHT))
+#define CAMERA_FOCAL_LENGTH (3.85e-3)
+#define CAMERA_SENSOR_SIZE_X (2.69e-3)
+#define CAMERA_SENSOR_SIZE_Y (3.58e-3)
 
 
 @interface ARMainController ()
@@ -40,7 +50,11 @@
 @property(nonatomic, readonly) UIView *overlayContainerView;
 //@property(nonatomic, readonly) ARRadarView *radarView;
 
+- (UIImagePickerController *)cameraViewController;
+- (CATransform3D)perspectiveTransform;
 - (void)createOverlayViews;
+- (void)createFeatureViews;
+- (void)updateFeatureViews;
 
 @end
 
@@ -85,12 +99,21 @@
 #endif
 
 	featureContainerView = [[UIView alloc] init];
+	[featureContainerView setFrame:[view bounds]];
+	[featureContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+	[[featureContainerView layer] setAnchorPoint:CGPointMake(0, 0)];
 	[view addSubview:featureContainerView];
 	[featureContainerView release];
 	
 	overlayContainerView = [[UIView alloc] init];
+	[overlayContainerView setFrame:[view bounds]];
+	[overlayContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 	[view addSubview:overlayContainerView];
 	[overlayContainerView release];
+	
+	spatialStateManager = [[ARSpatialStateManager alloc] init];
+	[spatialStateManager setDelegate:self];
+	[spatialStateManager startUpdating];
 }
 
 - (void)viewDidUnload {
@@ -155,12 +178,60 @@
 	return cameraViewController;
 }
 
+- (CATransform3D)screenTransform {
+	return CATransform3DMakeScale(
+		SCREEN_SIZE_Y/2.,
+		-SCREEN_SIZE_Y/2., // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
+		1.);
+
+}
+
+- (CATransform3D)perspectiveTransform {
+	CATransform3D perspectiveTransform = CATransform3DIdentity;
+	perspectiveTransform.m34 = -.5 * CAMERA_SENSOR_SIZE_Y / CAMERA_FOCAL_LENGTH; // Inverted because the depth increases as the Z axis decreases (0 to negative values)
+	perspectiveTransform.m44 = 0.;
+	return perspectiveTransform;
+}
+
 - (void)createOverlayViews {
 	for (AROverlay *overlay in [dimension overlays]) {
 		AROverlayView* view = [AROverlayView viewForOverlay:overlay];
 		[[view layer] setPosition:[overlay origin]];
 		[overlayContainerView addSubview:view];
 	}
+}
+
+- (void)createFeatureViews {
+	for (ARFeature *feature in [dimension features]) {
+		ARFeatureView* featureView = [ARFeatureView viewForFeature:feature];
+		[[featureView layer] setPosition:CGPointZero];
+		[featureContainerView addSubview:featureView];
+	}
+	
+	[self updateFeatureViews];
+}
+
+- (void)updateFeatureViews {
+	CATransform3D featureContrainerTransform = CATransform3DIdentity;
+	featureContrainerTransform = CATransform3DConcat(featureContrainerTransform, [spatialStateManager ecefToEnuTransform]);
+	featureContrainerTransform = CATransform3DConcat(featureContrainerTransform, [spatialStateManager enuToDeviceTransform]);
+	featureContrainerTransform = CATransform3DConcat(featureContrainerTransform, [self perspectiveTransform]);
+	featureContrainerTransform = CATransform3DConcat(featureContrainerTransform, [self screenTransform]);
+	
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
+	[[featureContainerView layer] setSublayerTransform:featureContrainerTransform];
+	[CATransaction commit];
+	
+	for (ARFeatureView *featureView in [featureContainerView subviews]) {
+		NSAssert([featureView isKindOfClass:[ARFeatureView class]], nil);
+		
+		[featureView updateWithSpatialState:spatialStateManager];
+	}
+}
+
+- (void)spatialStateManagerDidUpdate:(ARSpatialStateManager *)manager {
+	[self updateFeatureViews];
 }
 
 @end
