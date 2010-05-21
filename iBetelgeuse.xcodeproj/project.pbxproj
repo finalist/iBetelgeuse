@@ -34,6 +34,7 @@
 		95A26CB211A51EF5000C0876 /* ARAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB011A51EF5000C0876 /* ARAssetManager.m */; };
 		95A26CB911A52489000C0876 /* ARAssetManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB811A52489000C0876 /* ARAssetManagerTest.m */; };
 		95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */; };
+		95A2747D11A6E546000C0876 /* ARImageOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A2747C11A6E546000C0876 /* ARImageOverlayView.m */; };
 		95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
 		95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
 		95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */; };
@@ -127,6 +128,9 @@
 		95A26CB011A51EF5000C0876 /* ARAssetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAssetManager.m; sourceTree = "<group>"; };
 		95A26CB711A52489000C0876 /* ARAssetManagerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAssetManagerTest.h; sourceTree = "<group>"; };
 		95A26CB811A52489000C0876 /* ARAssetManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAssetManagerTest.m; sourceTree = "<group>"; };
+		95A2747B11A6E546000C0876 /* ARImageOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageOverlayView.h; sourceTree = "<group>"; };
+		95A2747C11A6E546000C0876 /* ARImageOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageOverlayView.m; sourceTree = "<group>"; };
+		95A2747F11A6E55E000C0876 /* ARAssetDataUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAssetDataUser.h; sourceTree = "<group>"; };
 		95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCXMLParserDelegate.h; sourceTree = "<group>"; };
 		95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCXMLParserDelegate.m; sourceTree = "<group>"; };
 		95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
@@ -470,6 +474,7 @@
 				95D3D0CB11A2CA59007B7148 /* Dimension */,
 				95A272F011A6DC81000C0876 /* Managers */,
 				95A272EF11A6DC63000C0876 /* Math */,
+				95A2747F11A6E55E000C0876 /* ARAssetDataUser.h */,
 				95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */,
 				95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */,
 				95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */,
@@ -484,6 +489,8 @@
 			children = (
 				C3346BB111A2C20700228C9A /* AROverlayView.h */,
 				C3346BB211A2C20700228C9A /* AROverlayView.m */,
+				95A2747B11A6E546000C0876 /* ARImageOverlayView.h */,
+				95A2747C11A6E546000C0876 /* ARImageOverlayView.m */,
 				C3346BB411A2C21400228C9A /* ARTextOverlayView.h */,
 				C3346BB511A2C21400228C9A /* ARTextOverlayView.m */,
 				C3346D7911A3C22400228C9A /* ARFeatureView.h */,
@@ -667,6 +674,7 @@
 				C3346E4811A3DD1D00228C9A /* ARTransform3D.m in Sources */,
 				C33474BA11A54E2200228C9A /* ARSpatialStateManager.m in Sources */,
 				95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */,
+				95A2747D11A6E546000C0876 /* ARImageOverlayView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

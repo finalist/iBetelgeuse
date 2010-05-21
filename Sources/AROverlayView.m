@@ -21,25 +21,29 @@
 //
 
 #import "AROverlayView.h"
-//#import "ARImageOverlayView.h"
-#import "ARTextOverlayView.h"
+#import "ARImageOverlay.h"
+#import "ARImageOverlayView.h"
 #import "ARTextOverlay.h"
-
-@class ARTextOverlay;
+#import "ARTextOverlayView.h"
 
 
 @implementation AROverlayView
 
-+ (AROverlayView *)viewForOverlay:(AROverlay *)overlay {
+@dynamic overlay; // Should be implemented by subclasses
+
+#pragma mark AROverlayView
+
+// Consult The Objective-C Programming Language > Allocating and Initializing Objects > Implementing an Initializer > Constraints and Conventions to see why we use id as a return type.
++ (id)viewForOverlay:(AROverlay *)overlay {
 	NSAssert(overlay != nil, @"Expected non-nil overlay.");
-	
-//	if ([[overlay class] isSubclassOfClass:ARImageOverlay]) {
-//		return [[[ARImageOverlayView alloc] initWithOverlay:(ARImageOverlay *)overlay] autorelease];
-//	}
-//	else ...
-	if ([overlay isKindOfClass:[ARTextOverlay class]]) {
-		return [[[ARTextOverlayView alloc] initWithOverlay:(ARTextOverlay *)overlay] autorelease];
-	} else {
+
+	if ([overlay isKindOfClass:[ARImageOverlay class]]) {
+		return [[[ARImageOverlayView alloc] initWithImageOverlay:(ARImageOverlay *)overlay] autorelease];
+	}
+	else if ([overlay isKindOfClass:[ARTextOverlay class]]) {
+		return [[[ARTextOverlayView alloc] initWithTextOverlay:(ARTextOverlay *)overlay] autorelease];
+	}
+	else {
 		DebugLog(@"Unknown overlay type: %@", [overlay class]);
 		return nil;
 	}

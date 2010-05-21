@@ -1,5 +1,5 @@
 //
-//  ARTextOverlayView.h
+//  ARImageOverlayView.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,18 +20,19 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <Foundation/Foundation.h>
 #import "AROverlayView.h"
+#import "ARAssetDataUser.h"
 
 
-@class ARTextOverlay;
+@class ARImageOverlay;
 
 
-@interface ARTextOverlayView : AROverlayView {
-	ARTextOverlay *overlay;
-	UILabel *label;
+@interface ARImageOverlayView : AROverlayView <ARAssetDataUser> {
+@private
+	ARImageOverlay *overlay;
+	UIImageView *imageView;
 }
 
-- (id)initWithTextOverlay:(ARTextOverlay *)overlay;
+- (id)initWithImageOverlay:(ARImageOverlay *)overlay;
 
 @end

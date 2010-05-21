@@ -29,7 +29,7 @@
 
 #pragma mark NSObject
 
-- (id)initWithOverlay:(ARTextOverlay *)anOverlay {
+- (id)initWithTextOverlay:(ARTextOverlay *)anOverlay {
 	NSAssert(anOverlay != nil, @"Expected non-nil overlay.");
 	
 	if (self = [super init]) {

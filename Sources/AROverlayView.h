@@ -20,15 +20,30 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 
 @class AROverlay;
 
 
+/**
+ * Abstract superclass for views that display some sort of AROverlay.
+ */
 @interface AROverlayView : UIView {
 }
 
-+ (AROverlayView *)viewForOverlay:(AROverlay *)overlay;
+/**
+ * Creates and returns the right type of view for the given overlay.
+ *
+ * @param overlay The overlay. May not be nil.
+ *
+ * @return A view, or nil if no suitable view type was found.
+ */
++ (id)viewForOverlay:(AROverlay *)overlay;
+
+/**
+ * The overlay that is displayed in this view.
+ */
+@property(nonatomic, readonly) AROverlay *overlay;
 
 @end
