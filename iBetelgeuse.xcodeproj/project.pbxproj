@@ -276,6 +276,7 @@
 		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				95A2730511A6DC94000C0876 /* Extensions */,
 				95E77C421198031A00A1F2B9 /* Model */,
 				95E77C431198031E00A1F2B9 /* View */,
 				95E77C41119802FD00A1F2B9 /* Controller */,
@@ -328,6 +329,41 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		95A272EF11A6DC63000C0876 /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				95919EE111A41A61006FCDFC /* ARWGS84.h */,
+				95919EE211A41A61006FCDFC /* ARWGS84.m */,
+				C33467DD11A285B500228C9A /* ARPoint3D.h */,
+				C33467DE11A285B500228C9A /* ARPoint3D.m */,
+				C3346E4611A3DD1D00228C9A /* ARTransform3D.h */,
+				C3346E4711A3DD1D00228C9A /* ARTransform3D.m */,
+			);
+			name = Math;
+			sourceTree = "<group>";
+		};
+		95A272F011A6DC81000C0876 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				C33474B811A54E2200228C9A /* ARSpatialStateManager.h */,
+				C33474B911A54E2200228C9A /* ARSpatialStateManager.m */,
+				95B9C56D11A2937500EDD870 /* ARDimensionRequest.h */,
+				95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */,
+				95A26CAF11A51EF5000C0876 /* ARAssetManager.h */,
+				95A26CB011A51EF5000C0876 /* ARAssetManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		95A2730511A6DC94000C0876 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				95D3CFC211A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.h */,
+				95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		95B9BEED11A1361400EDD870 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -377,6 +413,8 @@
 				95B9BEAC11A1291600EDD870 /* ARDimension.m */,
 				C334645C11A1495D00228C9A /* ARLocation.h */,
 				C334645D11A1495D00228C9A /* ARLocation.m */,
+				95B9C1FD11A17CAB00EDD870 /* ARAnchor.h */,
+				95B9C1FE11A17CAB00EDD870 /* ARAnchor.m */,
 				C33465C111A16EDD00228C9A /* ARAsset.h */,
 				C33465C211A16EDD00228C9A /* ARAsset.m */,
 				C33465FC11A1795200228C9A /* ARAction.h */,
@@ -429,28 +467,14 @@
 		95E77C421198031A00A1F2B9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C33467DD11A285B500228C9A /* ARPoint3D.h */,
-				C33467DE11A285B500228C9A /* ARPoint3D.m */,
-				95B9C1FD11A17CAB00EDD870 /* ARAnchor.h */,
-				95B9C1FE11A17CAB00EDD870 /* ARAnchor.m */,
-				95B9C56D11A2937500EDD870 /* ARDimensionRequest.h */,
-				95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */,
 				95D3D0CB11A2CA59007B7148 /* Dimension */,
-				95D3CFC211A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.h */,
-				95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */,
+				95A272F011A6DC81000C0876 /* Managers */,
+				95A272EF11A6DC63000C0876 /* Math */,
 				95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */,
 				95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */,
 				95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */,
 				95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */,
 				95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */,
-				95919EE111A41A61006FCDFC /* ARWGS84.h */,
-				95919EE211A41A61006FCDFC /* ARWGS84.m */,
-				95A26CAF11A51EF5000C0876 /* ARAssetManager.h */,
-				95A26CB011A51EF5000C0876 /* ARAssetManager.m */,
-				C3346E4611A3DD1D00228C9A /* ARTransform3D.h */,
-				C3346E4711A3DD1D00228C9A /* ARTransform3D.m */,
-				C33474B811A54E2200228C9A /* ARSpatialStateManager.h */,
-				C33474B911A54E2200228C9A /* ARSpatialStateManager.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -482,18 +506,18 @@
 		95E77E1D1198085900A1F2B9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C334693611A29C3300228C9A /* ARImageFeatureTest.h */,
-				C334693711A29C3300228C9A /* ARImageFeatureTest.m */,
 				95B9BFDD11A1412500EDD870 /* Prefix.pch */,
 				95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */,
+				95D3CFC911A2BB46007B7148 /* ARFormURLEncodingTest.h */,
+				95D3CFCA11A2BB46007B7148 /* ARFormURLEncodingTest.m */,
 				95B9BECC11A12AF600EDD870 /* ARDimensionTest.h */,
 				95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */,
 				C334646F11A14CD200228C9A /* ARLocationTest.h */,
 				C334647011A14CD200228C9A /* ARLocationTest.m */,
-				C33465C611A1724B00228C9A /* ARAssetTest.h */,
-				C33465C711A1724B00228C9A /* ARAssetTest.m */,
 				95B9C27011A1834E00EDD870 /* ARAnchorTest.h */,
 				95B9C27111A1834E00EDD870 /* ARAnchorTest.m */,
+				C33465C611A1724B00228C9A /* ARAssetTest.h */,
+				C33465C711A1724B00228C9A /* ARAssetTest.m */,
 				C334661311A17D1C00228C9A /* ARActionTest.h */,
 				C334661411A17D1C00228C9A /* ARActionTest.m */,
 				95B9C11311A1654D00EDD870 /* ARTextOverlayTest.h */,
@@ -502,14 +526,14 @@
 				95B9C1B211A17A5200EDD870 /* ARImageOverlayTest.m */,
 				C33467F511A2873F00228C9A /* ARTextFeatureTest.h */,
 				C33467F611A2873F00228C9A /* ARTextFeatureTest.m */,
+				C334693611A29C3300228C9A /* ARImageFeatureTest.h */,
+				C334693711A29C3300228C9A /* ARImageFeatureTest.m */,
 				95B9C58611A2977400EDD870 /* ARDimensionRequestTest.h */,
 				95B9C58711A2977400EDD870 /* ARDimensionRequestTest.m */,
-				95D3CFC911A2BB46007B7148 /* ARFormURLEncodingTest.h */,
-				95D3CFCA11A2BB46007B7148 /* ARFormURLEncodingTest.m */,
-				95919EE511A41B0B006FCDFC /* ARWGS84Test.h */,
-				95919EE611A41B0B006FCDFC /* ARWGS84Test.m */,
 				95A26CB711A52489000C0876 /* ARAssetManagerTest.h */,
 				95A26CB811A52489000C0876 /* ARAssetManagerTest.m */,
+				95919EE511A41B0B006FCDFC /* ARWGS84Test.h */,
+				95919EE611A41B0B006FCDFC /* ARWGS84Test.m */,
 				C3346DAE11A3CA2D00228C9A /* ARPoint3DTest.h */,
 				C3346DAF11A3CA2D00228C9A /* ARPoint3DTest.m */,
 				C3346E6811A3E63900228C9A /* ARTransform3DTest.h */,
