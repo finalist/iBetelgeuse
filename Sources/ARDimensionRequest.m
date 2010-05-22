@@ -156,6 +156,8 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 #if TARGET_OS_IPHONE
 	[[TCNetworkActivityIndicator sharedIndicator] retainWithToken:self];
 #endif
+
+	DebugLog(@"Starting dimension request with URL: %@", url);
 	
 	[connection release];
 	if ([delegate respondsToSelector:@selector(dimensionRequest:connectionWithRequest:delegate:)]) {
@@ -171,6 +173,8 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 	[connection cancel];
 	[connection release];
 	connection = nil;
+	
+	DebugLog(@"Cancelled dimension request with URL: %@", url);
 	
 #if TARGET_OS_IPHONE
 	[[TCNetworkActivityIndicator sharedIndicator] releaseWithToken:self];
@@ -197,6 +201,8 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 	if ([response isKindOfClass:[NSHTTPURLResponse class]] && [(NSHTTPURLResponse *)response statusCode] != 200) {
 		NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
 		
+		DebugLog(@"Failed dimension request, received HTTP %d", statusCode);
+		
 		NSString *errorDescription = [NSString stringWithFormat:NSLocalizedString(@"Received HTTP %@.", @"dimension request error descriptoin"), [NSHTTPURLResponse localizedStringForStatusCode:statusCode]];
 		NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:errorDescription, NSLocalizedDescriptionKey, [NSNumber numberWithInteger:statusCode], ARDimensionRequestErrorHTTPStatusCodeKey, nil];
 		NSError *error = [NSError errorWithDomain:ARDimensionRequestErrorDomain code:ARDimensionRequestErrorHTTP userInfo:errorInfo];
@@ -208,6 +214,8 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 		[parser setDelegate:self];
 		[parser parse];
 		
+		DebugLog(@"Finished dimension request");
+		
 		[delegate dimensionRequest:self didFinishWithDimension:dimension];
 	}
 	
@@ -217,6 +225,8 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+	DebugLog(@"Failed dimension request, received error %@", error);
+	
 	[delegate dimensionRequest:self didFailWithError:error];
 	
 #if TARGET_OS_IPHONE

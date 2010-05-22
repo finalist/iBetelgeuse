@@ -62,6 +62,8 @@
 	[rawLocation release];
 	rawLocation = [newRawLocation retain];
 	
+	DebugLog(@"Got location location fix: %@", newRawLocation);
+	
 	[delegate spatialStateManagerDidUpdate:self];
 }
 

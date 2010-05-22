@@ -70,6 +70,8 @@
 	
 	[retainingTokens addObject:token];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+	
+	DebugLog(@"Updated network activity indicator visibility to %d", [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible]);
 }
 
 - (void)releaseWithToken:(id)token {
@@ -77,6 +79,8 @@
 	
 	[retainingTokens removeObject:token];
 	[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:[retainingTokens count] > 0];
+	
+	DebugLog(@"Updated network activity indicator visibility to %d", [[UIApplication sharedApplication] isNetworkActivityIndicatorVisible]);
 }
 
 @end
