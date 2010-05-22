@@ -27,12 +27,14 @@
 
 @interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARSpatialStateManagerDelegate> {
 @private
+	NSURL *dimensionURL;
 	ARDimension *dimension;
 	UIImagePickerController *cameraViewController;
 	UIView *featureContainerView; // Non-retained instance variable
 	UIView *overlayContainerView; // Non-retained instance variable
 	//ARRadarView *radarView;
 	
+	ARDimensionRequest *dimensionRequest;
 	ARSpatialStateManager *spatialStateManager;
 }
 

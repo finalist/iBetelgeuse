@@ -44,12 +44,14 @@
 
 @interface ARMainController ()
 
+@property(nonatomic, retain) NSURL *dimensionURL;
 @property(nonatomic, retain) ARDimension *dimension;
 @property(nonatomic, readonly) UIImagePickerController *cameraViewController;
 @property(nonatomic, readonly) UIView *featureContainerView;
 @property(nonatomic, readonly) UIView *overlayContainerView;
 //@property(nonatomic, readonly) ARRadarView *radarView;
 
+@property(nonatomic, retain) ARDimensionRequest *dimensionRequest;
 - (UIImagePickerController *)cameraViewController;
 - (CATransform3D)perspectiveTransform;
 - (void)createOverlayViews;
@@ -61,10 +63,13 @@
 
 @implementation ARMainController
 
+@synthesize dimensionURL;
 @synthesize dimension;
 @synthesize featureContainerView;
 @synthesize overlayContainerView;
 //@synthesize radarView;
+
+@synthesize dimensionRequest;
 
 #pragma mark NSObject
 
@@ -74,17 +79,29 @@
 
 - (id)initWithURL:(NSURL *)aURL {
 	if (self = [super init]) {
-		if (aURL != nil) {
-			DebugLog(@"Ignoring given URL: %@", aURL);
+		dimensionURL = [aURL retain];
+		
+		if (dimensionURL) {
+			// FIXME: Send request only after first location fix
+			ARLocation *fakeLocation = [[ARLocation alloc] initWithLatitude:0.0 longitude:0.0 altitude:0.0];
+			ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:aURL location:fakeLocation type:ARDimensionRequestTypeInit];
+			[request setDelegate:self];
+			[self setDimensionRequest:request];
+			[request release];
+			[fakeLocation release];
+			
+			[request start];
 		}
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[dimensionURL release];
 	[dimension release];
 	[cameraViewController release];
 	
+	[dimensionRequest release];
 	[super dealloc];
 }
 
@@ -153,14 +170,21 @@
 
 - (void)dimensionRequest:(ARDimensionRequest *)request didFinishWithDimension:(ARDimension *)aDimension {
 	[self setDimension:aDimension];
+	[self setDimensionRequest:nil];
+	
 	[self createOverlayViews];
+	[self createFeatureViews];
 }
 
 - (void)dimensionRequest:(ARDimensionRequest *)request didFailWithError:(NSError *)error {
-	// TODO
-	// Note: why can't we hold on to the dimension we had?
-//	[dimension release];
-//	dimension = nil;
+	[self setDimensionRequest:nil];
+	
+	UIAlertView *alert = [[UIAlertView alloc] init];
+	[alert setTitle:NSLocalizedString(@"Could not update dimension", @"main controller alert title")];
+	[alert setMessage:[error localizedDescription]];
+	[alert addButtonWithTitle:NSLocalizedString(@"Close", @"main controller alert button")];
+	[alert show];
+	[alert release];
 }
 
 #pragma mark ARMainController
