@@ -20,20 +20,23 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARPoint3D.h"
-#import <QuartzCore/QuartzCore.h>
+#import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <QuartzCore/QuartzCore.h>
+#import "ARPoint3D.h"
 
+
+@class ARLocation;
 @protocol ARSpatialStateManagerDelegate;
 
 
 @interface ARSpatialStateManager : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate> {
 @private
 	id <ARSpatialStateManagerDelegate> delegate;
-	
-	UIAccelerometer *accelerometer;
+
 	CLLocationManager *locationManager;
 	
+	BOOL updating;
 	UIAcceleration *rawAcceleration;
 	CLLocation *rawLocation;
 	CLHeading *rawHeading;
@@ -41,15 +44,18 @@
 
 @property(nonatomic, assign) id <ARSpatialStateManagerDelegate> delegate;
 
-@property(nonatomic, readonly) UIAcceleration *rawAcceleration;
-@property(nonatomic, readonly) CLLocation *rawLocation;
-@property(nonatomic, readonly) CLHeading *rawHeading;
+@property(nonatomic, readonly, getter=isUpdating) BOOL updating;
+@property(nonatomic, readonly, retain) UIAcceleration *rawAcceleration;
+@property(nonatomic, readonly, retain) CLLocation *rawLocation;
+@property(nonatomic, readonly, retain) CLHeading *rawHeading;
 
 - (void)startUpdating;
 - (void)stopUpdating;
-- (ARPoint3D)positionInEcefCoordinates;
-- (CATransform3D)enuToDeviceTransform;
-- (CATransform3D)ecefToEnuTransform;
+
+- (ARLocation *)location;
+- (ARPoint3D)locationAsECEFCoordinate;
+- (CATransform3D)ENUToDeviceSpaceTransform;
+- (CATransform3D)ECEFToENUSpaceTransform;
 
 @end
 
@@ -60,9 +66,9 @@
 @protocol ARSpatialStateManagerDelegate <NSObject>
 
 /**
- * Sent whenever the acceleration, location, or heading changed.
+ * Sent whenever the acceleration, location or heading has changed.
  * 
- * @param manager the ARSpatialStateManager that sent this message
+ * @param manager The sender of the message.
  */
 - (void)spatialStateManagerDidUpdate:(ARSpatialStateManager *)manager;
 

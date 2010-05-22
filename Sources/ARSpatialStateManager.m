@@ -21,30 +21,51 @@
 //
 
 #import "ARSpatialStateManager.h"
+#import "ARLocation.h"
 #import "ARTransform3D.h"
 #import "ARWGS84.h"
+
+
+#define ACCELEROMETER_UPDATE_FREQUENCY 30 // Hz
+#define LOCATION_EXPIRATION 60 // seconds
+
+
+@interface ARSpatialStateManager ()
+
+@property(nonatomic, readwrite, getter=isUpdating) BOOL updating;
+@property(nonatomic, readwrite, retain) UIAcceleration *rawAcceleration;
+@property(nonatomic, readwrite, retain) CLLocation *rawLocation;
+@property(nonatomic, readwrite, retain) CLHeading *rawHeading;
+
+- (ARPoint3D)upDirectionInDeviceSpace;
+- (ARPoint3D)northDirectionInDeviceSpace;
+- (ARPoint3D)northDirectionInECEFSpace;
+- (CATransform3D)ENUToECEFSpaceTransform;
+
+@end
+
 
 @implementation ARSpatialStateManager
 
 @synthesize delegate;
-@synthesize rawAcceleration, rawLocation, rawHeading;
+@synthesize updating, rawAcceleration, rawLocation, rawHeading;
 
 #pragma mark NSObject
 
 - (void)dealloc {
-	[super dealloc];
 	[locationManager release];
 	
 	[rawAcceleration release];
 	[rawLocation release];
 	[rawHeading release];
+	
+	[super dealloc];
 }
 
 #pragma mark UIAccelerometerDelegate
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)newRawAcceleration {
-	[rawAcceleration release];
-	rawAcceleration = [newRawAcceleration retain];
+	[self setRawAcceleration:newRawAcceleration];
 	
 	[delegate spatialStateManagerDidUpdate:self];
 }
@@ -52,17 +73,20 @@
 #pragma mark CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newRawHeading {
-	[rawHeading release];
-	rawHeading = [newRawHeading retain];
+	[self setRawHeading:newRawHeading];
 	
 	[delegate spatialStateManagerDidUpdate:self];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newRawLocation fromLocation:(CLLocation *)previousRawLocation {
-	[rawLocation release];
-	rawLocation = [newRawLocation retain];
+	// Ignore invalid or old locations
+	if (signbit([newRawLocation horizontalAccuracy]) || [[newRawLocation timestamp] timeIntervalSinceNow] < -LOCATION_EXPIRATION) {
+		return;
+	}
 	
 	DebugLog(@"Got location location fix: %@", newRawLocation);
+	
+	[self setRawLocation:newRawLocation];
 	
 	[delegate spatialStateManagerDidUpdate:self];
 }
@@ -70,56 +94,101 @@
 #pragma mark ARSpatialStateManager
 
 - (void)startUpdating {
-	NSAssert(!accelerometer, @"Spatial state manager updating has already been started.");
-	NSAssert(!locationManager, nil);
-	
-	accelerometer = [UIAccelerometer sharedAccelerometer];
+	if ([self isUpdating]) {
+		return;
+	}
+	else {
+		[self setUpdating:YES];
+	}
+
+#if !TARGET_IPHONE_SIMULATOR
+	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	[accelerometer setDelegate:self];
-	[accelerometer setUpdateInterval:.001];
-	
+	[accelerometer setUpdateInterval:1. / ACCELEROMETER_UPDATE_FREQUENCY];
+
+	[locationManager release];
 	locationManager = [[CLLocationManager alloc] init];
 	[locationManager setDelegate:self];
+	[locationManager setDistanceFilter:kCLDistanceFilterNone];
+	[locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
 	[locationManager startUpdatingLocation];
-	[locationManager startUpdatingHeading];
+	if ([locationManager headingAvailable]) {
+		[locationManager startUpdatingHeading];
+	}
+#endif
 }
 
 - (void)stopUpdating {
-	accelerometer = nil;
-	
 	[locationManager release];
 	locationManager = nil;
+	
+	[self setUpdating:NO];
 }
 
-- (ARPoint3D)upDirectionInDeviceCoordinates {
-	if (!rawAcceleration)
+- (ARPoint3D)upDirectionInDeviceSpace {
+	if (rawAcceleration) {
+		// The up vector is opposite to the gravity indicated by the accelerometer
+		return ARPoint3DCreate(-[rawAcceleration x], -[rawAcceleration y], -[rawAcceleration z]);
+	}
+	else {
+		// Assume the device is being held perpendicular to the floor with the home button to the bottom
 		return ARPoint3DCreate(0., 1., 0.);
-	return ARPoint3DCreate(-[rawAcceleration x], -[rawAcceleration y], -[rawAcceleration z]);
+	}
 }
 
-- (ARPoint3D)northDirectionInDeviceCoordinates {
-	if (!rawHeading)
-		return ARPoint3DCreate(0., 0., 1.);
-	return ARPoint3DCreate([rawHeading x], [rawHeading y], [rawHeading z]);
+- (ARPoint3D)northDirectionInDeviceSpace {
+	if (rawHeading) {
+		// The north vector is approximated using the magnetic north indicated by the magnetometer
+		return ARPoint3DCreate([rawHeading x], [rawHeading y], [rawHeading z]);
+	}
+	else {
+		// Assume the back of the device is pointed towards magnetic north
+		return ARPoint3DCreate(0., 0., -1.);
+	}
 }
 
-- (ARPoint3D)northDirectionInEcefCoordinates {
+- (ARPoint3D)northDirectionInECEFSpace {
+	// By definition of ECEF, the North pole is located along the z-axis
 	return ARPoint3DCreate(0., 0., 1.);
 }
 
-- (ARPoint3D)positionInEcefCoordinates {
-	return ARWGS84GetECEF([rawLocation coordinate].latitude, [rawLocation coordinate].longitude, [rawLocation altitude]);
+- (ARLocation *)location {
+	if (rawLocation) {
+		return [[[ARLocation alloc] initWithCLLocation:rawLocation] autorelease];
+	}
+	else {
+		return nil;
+	}
 }
 
-- (CATransform3D)enuToDeviceTransform {
-	return ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceCoordinates], [self northDirectionInDeviceCoordinates]);
+- (ARPoint3D)locationAsECEFCoordinate {
+	if (rawLocation) {
+		return ARWGS84GetECEF([rawLocation coordinate].latitude, [rawLocation coordinate].longitude, [rawLocation altitude]);
+	}
+	else {
+		// Fallback to the intersection of the equator and the prime meridian (somewhere in the Atlantic below Ghana...)
+		return ARWGS84GetECEF(0, 0, 0);
+	}
 }
 
-- (CATransform3D)enuToEcefTransform {
-	return ARTransform3DLookAtRelative([self positionInEcefCoordinates], [self positionInEcefCoordinates], [self northDirectionInEcefCoordinates]);
+- (CATransform3D)ENUToDeviceSpaceTransform {
+	// The ENU coordinate space is defined in device coordinate space by looking:
+	// * from the device, which is at [0 0 0] in device coordinates;
+	// * towards the sky, which is given by the up vector; and
+	// * oriented towards the North pole, which is given by the north vector.
+	return ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace]);
 }
 
-- (CATransform3D)ecefToEnuTransform {
-	return CATransform3DInvert([self enuToEcefTransform]);
+- (CATransform3D)ENUToECEFSpaceTransform {
+	// The ENU coordinate space is defined in ECEF coordinate space by looking:
+	// * from the device, which is given by the GPS after conversion to ECEF;
+	// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
+	// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
+	return ARTransform3DLookAtRelative([self locationAsECEFCoordinate], [self locationAsECEFCoordinate], [self northDirectionInECEFSpace]);
+}
+
+- (CATransform3D)ECEFToENUSpaceTransform {
+	return CATransform3DInvert([self ENUToECEFSpaceTransform]);
 }
 
 @end

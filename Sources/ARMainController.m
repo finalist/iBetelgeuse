@@ -52,6 +52,8 @@
 //@property(nonatomic, readonly) ARRadarView *radarView;
 
 @property(nonatomic, retain) ARDimensionRequest *dimensionRequest;
+@property(nonatomic, readonly) ARSpatialStateManager *spatialStateManager;
+
 - (UIImagePickerController *)cameraViewController;
 - (CATransform3D)perspectiveTransform;
 - (void)createOverlayViews;
@@ -102,6 +104,8 @@
 	[cameraViewController release];
 	
 	[dimensionRequest release];
+	[spatialStateManager release];
+	
 	[super dealloc];
 }
 
@@ -127,10 +131,6 @@
 	[overlayContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 	[view addSubview:overlayContainerView];
 	[overlayContainerView release];
-	
-	spatialStateManager = [[ARSpatialStateManager alloc] init];
-	[spatialStateManager setDelegate:self];
-	[spatialStateManager startUpdating];
 }
 
 - (void)viewDidUnload {
@@ -146,6 +146,8 @@
 	[super viewWillAppear:animated];
 	
 	[[self cameraViewController] viewWillAppear:animated];
+	
+	[[self spatialStateManager] startUpdating];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -158,6 +160,8 @@
 	[super viewWillDisappear:animated];
 	
 	[[self cameraViewController] viewWillDisappear:animated];
+	
+	[[self spatialStateManager] stopUpdating];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -187,6 +191,12 @@
 	[alert release];
 }
 
+#pragma mark ARSpatialStateManagerDelegate
+
+- (void)spatialStateManagerDidUpdate:(ARSpatialStateManager *)manager {
+	[self updateFeatureViews];
+}
+
 #pragma mark ARMainController
 
 - (UIImagePickerController *)cameraViewController {
@@ -202,22 +212,34 @@
 	return cameraViewController;
 }
 
-- (CATransform3D)screenTransform {
-	return CATransform3DMakeScale(
-		SCREEN_SIZE_Y/2.,
-		-SCREEN_SIZE_Y/2., // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
-		1.);
+- (ARSpatialStateManager *)spatialStateManager {
+	if (spatialStateManager == nil) {
+		spatialStateManager = [[ARSpatialStateManager alloc] init];
+		[spatialStateManager setDelegate:self];
+	}
+	return spatialStateManager;
+}
 
+- (CATransform3D)screenTransform {
+	// Invert the y-axis because the view y-axis extends towards the bottom, not the top, of the device
+	return CATransform3DMakeScale(SCREEN_SIZE_Y / 2., -SCREEN_SIZE_Y / 2., 1.);
 }
 
 - (CATransform3D)perspectiveTransform {
 	CATransform3D perspectiveTransform = CATransform3DIdentity;
-	perspectiveTransform.m34 = -.5 * CAMERA_SENSOR_SIZE_Y / CAMERA_FOCAL_LENGTH; // Inverted because the depth increases as the Z axis decreases (0 to negative values)
+	// Inverted because the depth increases as the z-axis decreases (going from 0 towards negative values)
+	perspectiveTransform.m34 = -.5 * CAMERA_SENSOR_SIZE_Y / CAMERA_FOCAL_LENGTH; 
 	perspectiveTransform.m44 = 0.;
 	return perspectiveTransform;
 }
 
 - (void)createOverlayViews {
+	// Remove all existing overlay views
+	UIView *view;
+	while (view = [[overlayContainerView subviews] lastObject]) {
+		[view removeFromSuperview];
+	}
+	
 	for (AROverlay *overlay in [dimension overlays]) {
 		AROverlayView* view = [AROverlayView viewForOverlay:overlay];
 		[[view layer] setPosition:[overlay origin]];
@@ -226,36 +248,38 @@
 }
 
 - (void)createFeatureViews {
+	// Remove all existing feature views
+	UIView *view;
+	while (view = [[featureContainerView subviews] lastObject]) {
+		[view removeFromSuperview];
+	}
+	
 	for (ARFeature *feature in [dimension features]) {
-		ARFeatureView* featureView = [ARFeatureView viewForFeature:feature];
-		[[featureView layer] setPosition:CGPointZero];
-		[featureContainerView addSubview:featureView];
+		[featureContainerView addSubview:[ARFeatureView viewForFeature:feature]];
 	}
 	
 	[self updateFeatureViews];
 }
 
 - (void)updateFeatureViews {
-	CATransform3D featureContrainerTransform = CATransform3DIdentity;
-	featureContrainerTransform = CATransform3DConcat(featureContrainerTransform, [spatialStateManager ecefToEnuTransform]);
-	featureContrainerTransform = CATransform3DConcat(featureContrainerTransform, [spatialStateManager enuToDeviceTransform]);
-	featureContrainerTransform = CATransform3DConcat(featureContrainerTransform, [self perspectiveTransform]);
-	featureContrainerTransform = CATransform3DConcat(featureContrainerTransform, [self screenTransform]);
+	CATransform3D featureContainerTransform = CATransform3DIdentity;
+	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [spatialStateManager ECEFToENUSpaceTransform]);
+	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [spatialStateManager ENUToDeviceSpaceTransform]);
+	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [self perspectiveTransform]);
+	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [self screenTransform]);
 	
+	// Disable implicit animations
 	[CATransaction begin];
 	[CATransaction setDisableActions:YES];
-	[[featureContainerView layer] setSublayerTransform:featureContrainerTransform];
-	[CATransaction commit];
 	
+	[[featureContainerView layer] setSublayerTransform:featureContainerTransform];
+
 	for (ARFeatureView *featureView in [featureContainerView subviews]) {
-		NSAssert([featureView isKindOfClass:[ARFeatureView class]], nil);
-		
+		NSAssert([featureView isKindOfClass:[ARFeatureView class]], nil);		
 		[featureView updateWithSpatialState:spatialStateManager];
 	}
-}
 
-- (void)spatialStateManagerDidUpdate:(ARSpatialStateManager *)manager {
-	[self updateFeatureViews];
+	[CATransaction commit];
 }
 
 @end
