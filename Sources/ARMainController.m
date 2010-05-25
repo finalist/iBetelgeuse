@@ -41,6 +41,8 @@
 #define CAMERA_FOCAL_LENGTH (3.85e-3)
 #define CAMERA_SENSOR_SIZE_X (2.69e-3)
 #define CAMERA_SENSOR_SIZE_Y (3.58e-3)
+#define INVERTED_DISTANCE_TO_VIEW_PLANE (.5 * CAMERA_SENSOR_SIZE_Y / CAMERA_FOCAL_LENGTH)
+#define DISTANCE_FACTOR (INVERTED_DISTANCE_TO_VIEW_PLANE / (SCREEN_SIZE_Y / 2.)) // Factor that is used to undo the view and projection transformations
 
 
 @interface ARMainController ()
@@ -277,7 +279,7 @@
 - (CATransform3D)perspectiveTransform {
 	CATransform3D perspectiveTransform = CATransform3DIdentity;
 	// Inverted because the depth increases as the z-axis decreases (going from 0 towards negative values)
-	perspectiveTransform.m34 = -.5 * CAMERA_SENSOR_SIZE_Y / CAMERA_FOCAL_LENGTH; 
+	perspectiveTransform.m34 = -INVERTED_DISTANCE_TO_VIEW_PLANE; 
 	perspectiveTransform.m44 = 0.;
 	return perspectiveTransform;
 }
@@ -356,7 +358,7 @@
 
 	for (ARFeatureView *featureView in [featureContainerView subviews]) {
 		NSAssert([featureView isKindOfClass:[ARFeatureView class]], nil);
-		[featureView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
+		[featureView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude] withDistanceFactor:DISTANCE_FACTOR];
 	}
 
 	[CATransaction commit];

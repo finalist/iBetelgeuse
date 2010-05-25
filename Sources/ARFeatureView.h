@@ -58,6 +58,6 @@
 /**
  * Updates the position and transform in the ECEF space using the given spatial state.
  */
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude;
+- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor;
 
 @end
