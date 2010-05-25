@@ -23,15 +23,23 @@
 #import "NSURLRequest+ARFormURLEncoding.h"
 
 
+@interface NSURLRequest (_ARFormURLEncoding)
+
++ (NSString *)_ar_stringByURLEncodingString:(NSString *)string;
++ (NSString *)_ar_stringByURLDecodingString:(NSString *)string;
+
+@end
+
+
 @implementation NSURLRequest (ARFormURLEncoding)
 
 + (NSString *)ar_formURLEncodedStringWithDictionary:(NSDictionary *)dictionary {
 	NSMutableString *result = [[NSMutableString alloc] init];
 	
 	for (NSString *key in [dictionary keyEnumerator]) {
-		[result appendString:[self ar_stringByURLEncodingString:key]];
+		[result appendString:[self _ar_stringByURLEncodingString:key]];
 		[result appendString:@"="];
-		[result appendString:[self ar_stringByURLEncodingString:[[dictionary objectForKey:key] description]]];
+		[result appendString:[self _ar_stringByURLEncodingString:[[dictionary objectForKey:key] description]]];
 		[result appendString:@"&"];
 	}
 	
@@ -44,11 +52,11 @@
 	NSScanner *scanner = [[NSScanner alloc] initWithString:string];
 	NSString *buffer;
 	while ([scanner scanUpToString:@"=" intoString:&buffer]) {
-		NSString *key = [self ar_stringByURLDecodingString:buffer];
+		NSString *key = [self _ar_stringByURLDecodingString:buffer];
 		
 		[scanner scanString:@"=" intoString:NULL];
 		if ([scanner scanUpToString:@"&" intoString:&buffer]) {
-			NSString *value = [self ar_stringByURLDecodingString:buffer];
+			NSString *value = [self _ar_stringByURLDecodingString:buffer];
 			[result setObject:value forKey:key];
 			
 			[scanner scanString:@"&" intoString:NULL];
@@ -59,12 +67,13 @@
 	return [result autorelease];
 }
 
-+ (NSString *)ar_stringByURLEncodingString:(NSString *)string {
-	CFStringRef result = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, NULL, CFSTR("?=&+"), kCFStringEncodingUTF8);
++ (NSString *)_ar_stringByURLEncodingString:(NSString *)string {
+	// We don't use stringByAddingPercentEscapesUsingEncoding: because we explicitly need to additionally encode = and & characters
+	CFStringRef result = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, NULL, CFSTR("=&"), kCFStringEncodingUTF8);
 	return [(NSString *)result autorelease];
 }
 
-+ (NSString *)ar_stringByURLDecodingString:(NSString *)string {
++ (NSString *)_ar_stringByURLDecodingString:(NSString *)string {
 	return [string stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 

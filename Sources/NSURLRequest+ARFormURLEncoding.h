@@ -25,10 +25,22 @@
 
 @interface NSURLRequest (ARFormURLEncoding)
 
+/**
+ * Encodes the given keys and values into a application/x-www-form-urlencoded encoded string.
+ *
+ * @param dictionary A dictionary. May be nil, in which case an empty string is returned.
+ *
+ * @return An application/x-www-form-urlencoded encoded string.
+ */
 + (NSString *)ar_formURLEncodedStringWithDictionary:(NSDictionary *)dictionary;
-+ (NSDictionary *)ar_dictionaryWithFormURLEncodedString:(NSString *)string;
 
-+ (NSString *)ar_stringByURLEncodingString:(NSString *)string;
-+ (NSString *)ar_stringByURLDecodingString:(NSString *)string;
+/**
+ * Decodes the given application/x-www-form-urlencoded encoded string into keys and values.
+ *
+ * @param string A application/x-www-form-urlencoded encoded string. May be nil, in which case an empty dictionary is returned.
+ *
+ * @return A dictionary.
+ */
++ (NSDictionary *)ar_dictionaryWithFormURLEncodedString:(NSString *)string;
 
 @end
