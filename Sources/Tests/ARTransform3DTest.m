@@ -54,7 +54,8 @@
 }
 
 - (void)testLookAt {
-	GHAssertTrue(CATransform3DEqualToTransform(ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0., 0., 1.), ARPoint3DCreate(0., 1., 0.)), CATransform3DIdentity), nil);
+	GHAssertTrue(CATransform3DEqualToTransform(ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0., 0., 1.), ARPoint3DCreate(0., 1., 0.), ARPoint3DZero), CATransform3DIdentity), nil);
+	GHAssertTrue(CATransform3DEqualToTransform(ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0., 0., 1.), ARPoint3DCreate(0., 0., 1.), ARPoint3DCreate(0., 1., 0.)), CATransform3DIdentity), nil);
 	
 	ARTransform3D correctTransform = {
 		sqrt(1./2.),  sqrt(1./2.),  0.,          0.,
@@ -62,7 +63,7 @@
 		sqrt(1./3.),  -sqrt(1./3.), sqrt(1./3.), 0.,
 		-10.5,        20.5,         30.5,        1.,
 	};
-	ARTransform3D testTransform = ARTransform3DLookAt(ARPoint3DCreate(-10.5, 20.5, 30.5), ARPoint3DCreate(-0.5, 10.5, 40.5), ARPoint3DCreate(0., 0., 1.));
+	ARTransform3D testTransform = ARTransform3DLookAt(ARPoint3DCreate(-10.5, 20.5, 30.5), ARPoint3DCreate(-0.5, 10.5, 40.5), ARPoint3DCreate(0., 0., 1.), ARPoint3DZero);
 	GHAssertEqualsWithAccuracy(testTransform.m11, correctTransform.m11, 0.000001, nil);
 	GHAssertEqualsWithAccuracy(testTransform.m12, correctTransform.m12, 0.000001, nil);
 	GHAssertEqualsWithAccuracy(testTransform.m13, correctTransform.m13, 0.000001, nil);
@@ -97,6 +98,32 @@
 	
 	GHAssertTrue(CATransform3DEqualToTransform(ARTransform3DTranspose(transform), transposedTransform), nil);
 	GHAssertTrue(CATransform3DEqualToTransform(ARTransform3DTranspose(transposedTransform), transform), nil);
+}
+
+- (void)testHomogeneousVectorMatrixMultipy {
+	static const ARTransform3D transform = {
+		1.1, 1.2, 1.3, 1.4,
+		2.1, 2.2, 2.3, 2.4,
+		3.1, 3.2, 3.3, 3.4,
+		4.1, 4.2, 4.3, 4.4,
+	};
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DCreate(0., 0., 0.), transform), ARPoint3DCreate(4.1, 4.2, 4.3)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DCreate(1., 0., 0.), transform), ARPoint3DCreate(4.1+1.1, 4.2+1.2, 4.3+1.3)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DCreate(0., -2., 0.), transform), ARPoint3DCreate(4.1-2.*2.1, 4.2-2.*2.2, 4.3-2.*2.3)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DCreate(0., 0., 3.), transform), ARPoint3DCreate(4.1+3.*3.1, 4.2+3.*3.2, 4.3+3.*3.3)), nil);
+}
+
+- (void)testNonhomogeneousVectorMatrixMultipy {
+	static const ARTransform3D transform = {
+		1.1, 1.2, 1.3, 1.4,
+		2.1, 2.2, 2.3, 2.4,
+		3.1, 3.2, 3.3, 3.4,
+		4.1, 4.2, 4.3, 4.4,
+	};
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3DCreate(0., 0., 0.), transform), ARPoint3DCreate(0., 0., 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3DCreate(1., 0., 0.), transform), ARPoint3DCreate(1.1, 1.2, 1.3)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3DCreate(0., -2., 0.), transform), ARPoint3DCreate(-2.*2.1, -2.*2.2, -2.*2.3)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3DCreate(0., 0., 3.), transform), ARPoint3DCreate(3.*3.1, 3.*3.2, 3.*3.3)), nil);
 }
 
 @end

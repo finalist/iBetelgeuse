@@ -49,23 +49,23 @@ ARTransform3D ARTransform3DMakeFromAxes(ARPoint3D xAxis, ARPoint3D yAxis, ARPoin
 	return ARTransform3DMakeFromAxesAndTranslation(xAxis, yAxis, zAxis, ARPoint3DZero);
 }
 
-ARTransform3D ARTransform3DLookAt(ARPoint3D origin, ARPoint3D target, ARPoint3D upDirection) {
-	return ARTransform3DLookAtRelative(origin, ARPoint3DSubtract(target, origin), upDirection);
+ARTransform3D ARTransform3DLookAt(ARPoint3D origin, ARPoint3D target, ARPoint3D upDirection, ARPoint3D alternativeUpDirection) {
+	return ARTransform3DLookAtRelative(origin, ARPoint3DSubtract(target, origin), upDirection, alternativeUpDirection);
 }
 
-ARTransform3D ARTransform3DLookAtRelative(ARPoint3D origin, ARPoint3D targetDirection, ARPoint3D upDirection) {
+ARTransform3D ARTransform3DLookAtRelative(ARPoint3D origin, ARPoint3D targetDirection, ARPoint3D upDirection, ARPoint3D alternativeUpDirection) {
 	NSCAssert(!ARPoint3DEquals(targetDirection, ARPoint3DCreate(0., 0., 0.)), nil);
 	NSCAssert(!ARPoint3DEquals(upDirection, ARPoint3DCreate(0., 0., 0.)), nil);
 	
 	ARPoint3D zAxis = targetDirection;
 	ARPoint3D xAxis = ARPoint3DCrossProduct(upDirection, zAxis);
+	if (ARPoint3DLength(xAxis) == 0.)
+		xAxis = ARPoint3DCrossProduct(alternativeUpDirection, zAxis);
 	ARPoint3D yAxis = ARPoint3DCrossProduct(zAxis, xAxis);
 	
 	xAxis = ARPoint3DNormalize(xAxis);
 	yAxis = ARPoint3DNormalize(yAxis);
 	zAxis = ARPoint3DNormalize(zAxis);
-	
-	// TODO: Properly handle the case that upDirection == targetDirection.
 	
 	return ARTransform3DMakeFromAxesAndTranslation(xAxis, yAxis, zAxis, origin);
 }
@@ -88,5 +88,23 @@ ARTransform3D ARTransform3DTranspose(ARTransform3D transform) {
 	result.m42 = transform.m24;
 	result.m43 = transform.m34;
 	result.m44 = transform.m44;
+	return result;
+}
+
+ARPoint3D ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b) {
+	ARPoint3D result = {
+		b.m11*a.x + b.m21*a.y + b.m31*a.z + b.m41,
+		b.m12*a.x + b.m22*a.y + b.m32*a.z + b.m42,
+		b.m13*a.x + b.m23*a.y + b.m33*a.z + b.m43,
+	};
+	return result;
+}
+
+ARPoint3D ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b) {
+	ARPoint3D result = {
+		b.m11*a.x + b.m21*a.y + b.m31*a.z,
+		b.m12*a.x + b.m22*a.y + b.m32*a.z,
+		b.m13*a.x + b.m23*a.y + b.m33*a.z,
+	};
 	return result;
 }

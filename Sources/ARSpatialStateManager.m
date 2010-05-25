@@ -40,7 +40,6 @@
 - (ARPoint3D)upDirectionInDeviceSpace;
 - (ARPoint3D)northDirectionInDeviceSpace;
 - (ARPoint3D)northDirectionInECEFSpace;
-- (CATransform3D)ENUToECEFSpaceTransform;
 
 @end
 
@@ -176,7 +175,7 @@
 	// * from the device, which is at [0 0 0] in device coordinates;
 	// * towards the sky, which is given by the up vector; and
 	// * oriented towards the North pole, which is given by the north vector.
-	return ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace]);
+	return ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace], ARPoint3DZero);
 }
 
 - (CATransform3D)ENUToECEFSpaceTransform {
@@ -184,11 +183,15 @@
 	// * from the device, which is given by the GPS after conversion to ECEF;
 	// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
 	// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
-	return ARTransform3DLookAtRelative([self locationAsECEFCoordinate], [self locationAsECEFCoordinate], [self northDirectionInECEFSpace]);
+	return ARTransform3DLookAtRelative([self locationAsECEFCoordinate], [self locationAsECEFCoordinate], [self northDirectionInECEFSpace], ARPoint3DZero);
 }
 
 - (CATransform3D)ECEFToENUSpaceTransform {
 	return CATransform3DInvert([self ENUToECEFSpaceTransform]);
+}
+
+- (CLLocationDistance)altitude {
+	return [rawLocation altitude];
 }
 
 @end

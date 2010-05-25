@@ -96,6 +96,22 @@ static inline double ARPoint3DLength(ARPoint3D point) {
 }
 
 /**
+ * Adds the x, y, and z components of a point to another point.
+ * 
+ * @param a first point
+ * @param b second point
+ * @return the resulting point "a + b"
+ */
+static inline ARPoint3D ARPoint3DAdd(ARPoint3D a, ARPoint3D b) {
+	ARPoint3D result = {
+		a.x + b.x,
+		a.y + b.y,
+		a.z + b.z,
+	};
+	return result;
+}
+
+/**
  * Subtracts the x, y, and z components of a point from another point.
  * 
  * @param a first point

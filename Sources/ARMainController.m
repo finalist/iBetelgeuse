@@ -275,8 +275,8 @@
 	[[featureContainerView layer] setSublayerTransform:featureContainerTransform];
 
 	for (ARFeatureView *featureView in [featureContainerView subviews]) {
-		NSAssert([featureView isKindOfClass:[ARFeatureView class]], nil);		
-		[featureView updateWithSpatialState:spatialStateManager];
+		NSAssert([featureView isKindOfClass:[ARFeatureView class]], nil);
+		[featureView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
 	}
 
 	[CATransaction commit];

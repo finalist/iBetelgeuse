@@ -52,13 +52,20 @@
 	}
 }
 
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState {
+- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
+	// This function uses ECEF coordinates for all variables unless specified otherwise.
 	ARPoint3D featurePosition = [[[self feature] location] ECEFCoordinate];
 	ARPoint3D devicePosition = [spatialState locationAsECEFCoordinate];
 	ARPoint3D upDirection = ARPoint3DNormalize(devicePosition);
-	
+
+	ARPoint3D offsetInENUCoordinates = [[self feature] offset];
+	if (useRelativeAltitude)
+		offsetInENUCoordinates.z += [spatialState altitude];
+	ARPoint3D offset = ARTransform3DNonhomogeneousVectorMatrixMultiply(offsetInENUCoordinates, [spatialState ENUToECEFSpaceTransform]);
+	featurePosition = ARPoint3DAdd(featurePosition, offset);
+
 	[[self layer] setPosition:CGPointZero];
-	[[self layer] setTransform:CATransform3DConcat(CATransform3DMakeScale(1., -1., 1.), ARTransform3DLookAt(featurePosition, devicePosition, upDirection))]; // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
+	[[self layer] setTransform:CATransform3DConcat(CATransform3DMakeScale(1., -1., 1.), ARTransform3DLookAt(featurePosition, devicePosition, upDirection, ARPoint3DCreate(0., 0., 1.)))]; // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
 }
 
 @end

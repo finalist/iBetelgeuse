@@ -50,8 +50,12 @@ static const ARPoint3D b = {.5, .5, .5};
 	GHAssertTrue(ARPoint3DEquals(ARPoint3DCreate(0., -0., 0.), ARPoint3DCreate(-0., 0., -0.)), nil); // This case fails using a direct memcmp, but should succeed.
 }
 
+- (void)testAdd {
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DAdd(ARPoint3DCreate(12.34, -23.45, 34.56), ARPoint3DCreate(-45.67, -56.78, 67.89)), ARPoint3DCreate(-33.33, -80.23, 102.45)), nil);
+}
+
 - (void)testSubtract {
-	// TODO: Implement
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DSubtract(ARPoint3DCreate(12.34, -23.45, 34.56), ARPoint3DCreate(45.67, 56.78, -67.89)), ARPoint3DCreate(-33.33, -80.23, 102.45)), nil);
 }
 
 - (void)testDotProduct {

@@ -33,6 +33,6 @@
 - (ARFeature *)feature;
 
 + (ARFeatureView *)viewForFeature:(ARFeature *)feature;
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState;
+- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude;
 
 @end

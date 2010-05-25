@@ -56,6 +56,8 @@
 - (ARPoint3D)locationAsECEFCoordinate;
 - (CATransform3D)ENUToDeviceSpaceTransform;
 - (CATransform3D)ECEFToENUSpaceTransform;
+- (CATransform3D)ENUToECEFSpaceTransform;
+- (CLLocationDistance)altitude;
 
 @end
 

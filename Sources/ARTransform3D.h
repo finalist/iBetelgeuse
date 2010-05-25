@@ -66,17 +66,15 @@ ARTransform3D ARTransform3DMakeFromAxes(ARPoint3D xAxis, ARPoint3D yAxis, ARPoin
  * direction of the z axis. The upDirection determines the roll (rotation
  * around the z axis) of A.
  * 
- * This function assumes that origin != target and that upVector is not
- * parallel to (target - origin).
- * 
- * This function is equivalent to ARTransform3DLookAtRelative(origin, target - origin, upDirection)
+ * This function is equivalent to ARTransform3DLookAtRelative(origin, target - origin, upDirection, alternativeUpDirection)
  * 
  * @param origin the location of the object
- * @param target the location the object should look at
+ * @param target the location the object should look at. May not be equal to origin.
  * @param upDirection a vector pointing upwards, to determine the roll of the object. Its length does not matter.
+ * @param alternativeUpDirection a vector to determine the roll of the object if the targetDirection and upDirection are parallel. Its length does not matter. If this vector is zero or parallel to upDirection, the resulting matrix may contain NAN values if the targetDirection and upDirection are parallel.
  * @return the matrix that was constructed
  */
-ARTransform3D ARTransform3DLookAt(ARPoint3D origin, ARPoint3D target, ARPoint3D upDirection);
+ARTransform3D ARTransform3DLookAt(ARPoint3D origin, ARPoint3D target, ARPoint3D upDirection, ARPoint3D alternativeUpDirection);
 
 /**
  * Construct an orthogonal transformation matrix A with a translation
@@ -84,15 +82,13 @@ ARTransform3D ARTransform3DLookAt(ARPoint3D origin, ARPoint3D target, ARPoint3D 
  * direction of the z axis. The upDirection determines the roll (rotation
  * around the z axis) of A.
  * 
- * This function assumes that targetDirection and that upDirection is not
- * parallel to targetDirection.
- * 
  * @param origin the location of the object
- * @param targetDirection a vector pointing in the direction of the target.
+ * @param targetDirection a vector pointing in the direction of the target. May not be zero.
  * @param upDirection a vector pointing upwards, to determine the roll of the object. Its length does not matter.
+ * @param alternativeUpDirection a vector to determine the roll of the object if the targetDirection and upDirection are parallel. Its length does not matter. If this vector is zero or parallel to upDirection, the resulting matrix may contain NAN values if the targetDirection and upDirection are parallel.
  * @return the matrix that was constructed
  */
-ARTransform3D ARTransform3DLookAtRelative(ARPoint3D origin, ARPoint3D targetDirection, ARPoint3D upDirection);
+ARTransform3D ARTransform3DLookAtRelative(ARPoint3D origin, ARPoint3D targetDirection, ARPoint3D upDirection, ARPoint3D alternativeUpDirection);
 
 /**
  * Transposes the matrix, changing rows into columns and vice-versa.
@@ -103,3 +99,30 @@ ARTransform3D ARTransform3DLookAtRelative(ARPoint3D origin, ARPoint3D targetDire
  * @result the transformed matrix
  */
 ARTransform3D ARTransform3DTranspose(ARTransform3D transform);
+
+/**
+ * Multiplies a column vector by a matrix.
+ * 
+ * Since vector-matrix multiplication needs the vector to consist of four
+ * elements, the fourth element is assumed to be 1. In a 3D transformation
+ * matrix, this means that the matrix' translation is applied on the output
+ * vector.
+ * 
+ * @param a column vector
+ * @param b matrix
+ * @return vector * matrix
+ */
+ARPoint3D ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b);
+
+/**
+ * Multiplies a column vector by a matrix.
+ * 
+ * Since vector-matrix multiplication needs the vector to consist of four
+ * elements, the fourth element is assumed to be 0. In a 3D transformation
+ * matrix, this means that the matrix' translation is ignored.
+ * 
+ * @param a column vector
+ * @param b matrix
+ * @return vector * matrix
+ */
+ARPoint3D ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b);
