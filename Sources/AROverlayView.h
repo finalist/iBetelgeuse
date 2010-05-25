@@ -42,6 +42,15 @@
 + (id)viewForOverlay:(AROverlay *)overlay;
 
 /**
+ * Abstract method that initializes the receiver with the given overlay. This message may only be sent to subclasses.
+ *
+ * @param overlay The overlay. May not be nil.
+ *
+ * @return The receiver.
+ */
+- (id)initWithOverlay:(AROverlay *)overlay;
+
+/**
  * The overlay that is displayed in this view.
  */
 @property(nonatomic, readonly) AROverlay *overlay;

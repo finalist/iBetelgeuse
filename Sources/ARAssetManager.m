@@ -97,6 +97,8 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 #pragma mark NSObject
 
 - (void)dealloc {
+	[self cancelLoadingAllAssets];
+	
 	[operationQueue release];
 	[operations release];
 	
@@ -108,6 +110,8 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 - (void)assetManagerOperation:(ARAssetManagerOperation *)operation didFinishWithData:(NSData *)data {
 	[self unregisterOperationForAsset:[operation asset]];
 	
+	DebugLog(@"Finished loading asset with identifier: %@", [[operation asset] identifier]);
+	
 	[delegate assetManager:self didLoadData:data forAsset:[operation asset]];
 	
 	[self hideNetworkActivityIndicatorIfNeeded];
@@ -115,6 +119,8 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 
 - (void)assetManagerOperation:(ARAssetManagerOperation *)operation didFinishWithError:(NSError *)error {
 	[self unregisterOperationForAsset:[operation asset]];
+	
+	DebugLog(@"Failed loading asset with identifier: %@\n%@", [[operation asset] identifier], error);
 	
 	[delegate assetManager:self didFailWithError:error forAsset:[operation asset]];
 	
@@ -160,7 +166,7 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 	
 	ARAssetManagerOperationKey *key = [[ARAssetManagerOperationKey alloc] initWithAsset:asset];
 	if ([[self operationsIfAvailable] objectForKey:key]) {
-		DebugLog(@"Received request to start loading asset that is already loading: %@", key);
+		DebugLog(@"Received request to start loading asset that is already loading: %@", [asset identifier]);
 	}
 	else {
 		ARAssetManagerOperation *operation = [[ARAssetManagerOperation alloc] initWithAsset:asset];
@@ -168,6 +174,8 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 		[[self operationQueue] addOperation:operation];
 		[[self operations] setObject:operation forKey:key];
 		[operation release];
+		
+		DebugLog(@"Starting loading asset with identifier: %@", [asset identifier]);
 	}
 	[key release];
 }
@@ -177,6 +185,17 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 	[[[self operationsIfAvailable] objectForKey:key] cancel];
 	[self unregisterOperationForKey:key];
 	[key release];
+	
+	DebugLog(@"Cancelled loading asset with identifier: %@", [asset identifier]);
+	
+	[self hideNetworkActivityIndicatorIfNeeded];
+}
+
+- (void)cancelLoadingAllAssets {
+	[[self operationsIfAvailable] removeAllObjects];
+	[operationQueue cancelAllOperations];
+	
+	DebugLog(@"Starting loading all assets");
 	
 	[self hideNetworkActivityIndicatorIfNeeded];
 }

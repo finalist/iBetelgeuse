@@ -22,10 +22,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ARDimensionRequest.h"
+#import "ARAssetManager.h"
 #import "ARSpatialStateManager.h"
 
 
-@interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARSpatialStateManagerDelegate> {
+@interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate> {
 @private
 	NSURL *dimensionURL;
 	ARDimension *dimension;
@@ -35,6 +36,7 @@
 	//ARRadarView *radarView;
 	
 	ARDimensionRequest *dimensionRequest;
+	ARAssetManager *assetManager;
 	ARSpatialStateManager *spatialStateManager;
 }
 

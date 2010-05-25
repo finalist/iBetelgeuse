@@ -58,6 +58,11 @@ extern NSString *const ARAssetManagerErrorHTTPStatusCodeKey;
  */
 - (void)cancelLoadingAsset:(ARAsset *)asset;
 
+/**
+ * Cancels loading all assets. The delegate will not be notified anymore unless startLoadingAsset: is called again.
+ */
+- (void)cancelLoadingAllAssets;
+
 @end
 
 

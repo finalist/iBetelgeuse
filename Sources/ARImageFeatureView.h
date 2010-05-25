@@ -1,5 +1,5 @@
 //
-//  ARImageOverlayView.h
+//  ARImageFeatureView.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,16 +20,16 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "AROverlayView.h"
+#import "ARFeatureView.h"
 #import "ARAssetDataUser.h"
 
 
-@class ARImageOverlay;
+@class ARImageFeature;
 
 
-@interface ARImageOverlayView : AROverlayView <ARAssetDataUser> {
+@interface ARImageFeatureView : ARFeatureView <ARAssetDataUser> {
 @private
-	ARImageOverlay *overlay;
+	ARImageFeature *feature;
 	UIActivityIndicatorView *activityIndicatorView;
 	UIImageView *imageView;
 }

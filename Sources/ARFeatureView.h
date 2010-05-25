@@ -26,13 +26,38 @@
 @class ARSpatialStateManager;
 
 
+/**
+ * Abstract superclass for views that display some sort of ARFeature.
+ */
 @interface ARFeatureView : UIView {
-	
 }
 
-- (ARFeature *)feature;
+/**
+ * Creates and returns the right type of view for the given feature.
+ *
+ * @param feature The feature. May not be nil.
+ *
+ * @return A view, or nil if no suitable view type was found.
+ */
++ (id)viewForFeature:(ARFeature *)feature;
 
-+ (ARFeatureView *)viewForFeature:(ARFeature *)feature;
+/**
+ * Abstract method that initializes the receiver with the given feature. This message may only be sent to subclasses.
+ *
+ * @param feature The feature. May not be nil.
+ *
+ * @return The receiver.
+ */
+- (id)initWithFeature:(ARFeature *)feature;
+
+/**
+ * The feature that is displayed in this view.
+ */
+@property(nonatomic, readonly) ARFeature *feature;
+
+/**
+ * Updates the position and transform in the ECEF space using the given spatial state.
+ */
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude;
 
 @end

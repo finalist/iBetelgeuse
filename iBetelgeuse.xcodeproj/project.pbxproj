@@ -27,6 +27,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958DF27A11ABB40000047790 /* ARImageFeatureView.m */; };
 		95919EE311A41A61006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE411A41A67006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE711A41B0B006FCDFC /* ARWGS84Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE611A41B0B006FCDFC /* ARWGS84Test.m */; };
@@ -116,6 +117,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		958DF27911ABB40000047790 /* ARImageFeatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageFeatureView.h; sourceTree = "<group>"; };
+		958DF27A11ABB40000047790 /* ARImageFeatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageFeatureView.m; sourceTree = "<group>"; };
 		95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCNetworkActivityIndicator.h; sourceTree = "<group>"; };
 		95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		95919EE111A41A61006FCDFC /* ARWGS84.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84.h; sourceTree = "<group>"; };
@@ -495,6 +498,8 @@
 				C3346BB511A2C21400228C9A /* ARTextOverlayView.m */,
 				C3346D7911A3C22400228C9A /* ARFeatureView.h */,
 				C3346D7A11A3C22400228C9A /* ARFeatureView.m */,
+				958DF27911ABB40000047790 /* ARImageFeatureView.h */,
+				958DF27A11ABB40000047790 /* ARImageFeatureView.m */,
 				C3346D7C11A3C22C00228C9A /* ARTextFeatureView.h */,
 				C3346D7D11A3C22C00228C9A /* ARTextFeatureView.m */,
 			);
@@ -675,6 +680,7 @@
 				C33474BA11A54E2200228C9A /* ARSpatialStateManager.m in Sources */,
 				95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */,
 				95A2747D11A6E546000C0876 /* ARImageOverlayView.m in Sources */,
+				958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

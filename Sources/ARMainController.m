@@ -30,6 +30,7 @@
 #import "ARSpatialStateManager.h"
 #import "ARWGS84.h"
 #import "ARLocation.h"
+#import "ARAssetDataUser.h"
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -52,6 +53,8 @@
 //@property(nonatomic, readonly) ARRadarView *radarView;
 
 @property(nonatomic, retain) ARDimensionRequest *dimensionRequest;
+@property(nonatomic, readonly) ARAssetManager *assetManager;
+@property(nonatomic, readonly) ARAssetManager *assetManagerIfAvailable;
 @property(nonatomic, readonly) ARSpatialStateManager *spatialStateManager;
 
 - (UIImagePickerController *)cameraViewController;
@@ -104,6 +107,7 @@
 	[cameraViewController release];
 	
 	[dimensionRequest release];
+	[assetManager release];
 	[spatialStateManager release];
 	
 	[super dealloc];
@@ -176,6 +180,8 @@
 	[self setDimension:aDimension];
 	[self setDimensionRequest:nil];
 	
+	[[self assetManagerIfAvailable] cancelLoadingAllAssets];
+
 	[self createOverlayViews];
 	[self createFeatureViews];
 }
@@ -189,6 +195,36 @@
 	[alert addButtonWithTitle:NSLocalizedString(@"Close", @"main controller alert button")];
 	[alert show];
 	[alert release];
+}
+
+#pragma mark ARAssetManagerDelegate
+
+- (void)assetManager:(ARAssetManager *)manager didLoadData:(NSData *)data forAsset:(ARAsset *)asset {
+	// Find overlays that need this data
+	// TODO: Refactor
+	for (UIView *view in [overlayContainerView subviews]) {
+		if ([view conformsToProtocol:@protocol(ARAssetDataUser)]) {
+			id <ARAssetDataUser> user = (id <ARAssetDataUser>)view;
+			if ([[user assetIdentifiersForNeededData] containsObject:[asset identifier]]) {
+				[user useData:data forAssetIdentifier:[asset identifier]];
+			}
+		}
+	}
+	
+	// Find features that need this data
+	// TODO: Refactor
+	for (UIView *view in [featureContainerView subviews]) {
+		if ([view conformsToProtocol:@protocol(ARAssetDataUser)]) {
+			id <ARAssetDataUser> user = (id <ARAssetDataUser>)view;
+			if ([[user assetIdentifiersForNeededData] containsObject:[asset identifier]]) {
+				[user useData:data forAssetIdentifier:[asset identifier]];
+			}
+		}
+	}
+}
+
+- (void)assetManager:(ARAssetManager *)manager didFailWithError:(NSError *)error forAsset:(ARAsset *)asset {
+	// TODO: What to do with the overlay/feature views?
 }
 
 #pragma mark ARSpatialStateManagerDelegate
@@ -210,6 +246,19 @@
 #endif
 	}
 	return cameraViewController;
+}
+
+- (ARAssetManager *)assetManager {
+	if (assetManager == nil) {
+		assetManager = [[ARAssetManager alloc] init];
+		[assetManager setDelegate:self];
+	}
+	return assetManager;
+}
+
+- (ARAssetManager *)assetManagerIfAvailable {
+	// This is an accessor that doesn't attempt to lazily create an asset manager
+	return assetManager;
 }
 
 - (ARSpatialStateManager *)spatialStateManager {
@@ -244,6 +293,21 @@
 		AROverlayView* view = [AROverlayView viewForOverlay:overlay];
 		[[view layer] setPosition:[overlay origin]];
 		[overlayContainerView addSubview:view];
+		
+		// Start loading any needed asset data
+		// TODO: Refactor this (see createFeatureViews)
+		if ([view conformsToProtocol:@protocol(ARAssetDataUser)]) {
+			id <ARAssetDataUser> user = (id <ARAssetDataUser>)view;
+			for (NSString *identifier in [user assetIdentifiersForNeededData]) {
+				ARAsset *asset = [[dimension assets] objectForKey:identifier];
+				if (asset == nil) {
+					DebugLog(@"Overlay view wants asset with non-existent identifier: %@", identifier);
+				}
+				else {
+					[[self assetManager] startLoadingAsset:asset];
+				}
+			}
+		}
 	}
 }
 
@@ -255,7 +319,23 @@
 	}
 	
 	for (ARFeature *feature in [dimension features]) {
-		[featureContainerView addSubview:[ARFeatureView viewForFeature:feature]];
+		ARFeatureView *view = [ARFeatureView viewForFeature:feature];
+		[featureContainerView addSubview:view];
+		
+		// Start loading any needed asset data
+		// TODO: Refactor this (see createOverlayViews)
+		if ([view conformsToProtocol:@protocol(ARAssetDataUser)]) {
+			id <ARAssetDataUser> user = (id <ARAssetDataUser>)view;
+			for (NSString *identifier in [user assetIdentifiersForNeededData]) {
+				ARAsset *asset = [[dimension assets] objectForKey:identifier];
+				if (asset == nil) {
+					DebugLog(@"Feature view wants asset with non-existent identifier: %@", identifier);
+				}
+				else {
+					[[self assetManager] startLoadingAsset:asset];
+				}
+			}
+		}
 	}
 	
 	[self updateFeatureViews];

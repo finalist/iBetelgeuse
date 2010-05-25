@@ -20,7 +20,6 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <Foundation/Foundation.h>
 #import "AROverlayView.h"
 
 
@@ -28,10 +27,9 @@
 
 
 @interface ARTextOverlayView : AROverlayView {
+@private
 	ARTextOverlay *overlay;
 	UILabel *label;
 }
-
-- (id)initWithTextOverlay:(ARTextOverlay *)overlay;
 
 @end

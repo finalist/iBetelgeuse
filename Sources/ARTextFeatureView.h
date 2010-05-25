@@ -20,21 +20,16 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <Foundation/Foundation.h>
 #import "ARFeatureView.h"
+
 
 @class ARTextFeature;
 
 
 @interface ARTextFeatureView : ARFeatureView {
-	
+@private
 	ARTextFeature *feature;
 	UILabel *label;
-	
 }
-
-@property(nonatomic, readonly) ARFeature *feature;
-
-- (ARTextFeatureView *)initWithFeature:(ARTextFeature *)feature;
 
 @end

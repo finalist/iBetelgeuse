@@ -27,9 +27,9 @@
 
 @implementation ARTextFeatureView
 
-#pragma mark NSObject
-
 @synthesize feature;
+
+#pragma mark NSObject
 
 - (void)dealloc {
 	[feature release];
@@ -50,10 +50,12 @@
 
 #pragma mark ARTextFeatureView
 
-- (ARTextFeatureView *)initWithFeature:(ARTextFeature *)aFeature {
+- (id)initWithFeature:(ARFeature *)aFeature {
+	NSAssert([aFeature isKindOfClass:[ARTextFeature class]], @"Expected text feature.");
+	
 	if (self = [super init])
 	{
-		feature = [aFeature retain];
+		feature = (ARTextFeature *)[aFeature retain];
 		
 		[[self layer] setAnchorPoint:[feature anchor]];
 		

@@ -114,9 +114,9 @@
 	
 	[self prepare];
 	[manager startLoadingAsset:goodAsset];
+	pendingDidLoads = 1;
 	usleep(10000);
 	[manager cancelLoadingAsset:goodAsset];
-	pendingDidLoads = 1;
 	[self waitForTimeout:0.5];
 	
 	[manager release];
@@ -132,6 +132,22 @@
 	pendingDidLoads = 1;
 	pendingDidFails = 1;
 	[self waitForStatus:kGHUnitWaitStatusSuccess timeout:0.5];
+	
+	[manager release];
+}
+
+- (void)testCancelLoadingAllAssets {
+	ARAssetManager *manager = [[ARAssetManager alloc] init];
+	[manager setDelegate:self];
+	
+	[self prepare];
+	[manager startLoadingAsset:goodAsset];
+	[manager startLoadingAsset:badAsset];
+	pendingDidLoads = 1;
+	pendingDidFails = 1;
+	usleep(10000);
+	[manager cancelLoadingAllAssets];
+	[self waitForTimeout:0.5];
 	
 	[manager release];
 }

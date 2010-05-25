@@ -29,14 +29,12 @@
 
 #pragma mark NSObject
 
-- (id)initWithTextOverlay:(ARTextOverlay *)anOverlay {
-	NSAssert(anOverlay != nil, @"Expected non-nil overlay.");
+- (id)initWithOverlay:(AROverlay *)anOverlay {
+	NSAssert([anOverlay isKindOfClass:[ARTextOverlay class]], @"Expected text overlay.");
 	
-	if (self = [super init]) {
-		overlay = [anOverlay retain];
-		
-		[[self layer] setAnchorPoint:[overlay anchor]];
-		
+	if (self = [super initWithOverlay:anOverlay]) {
+		overlay = (ARTextOverlay *)[anOverlay retain];
+
 		label = [[UILabel alloc] init];
 		[label setFont:[UIFont systemFontOfSize:15]]; // TODO: Get rid of magic number
 		[label setText:[overlay text]];

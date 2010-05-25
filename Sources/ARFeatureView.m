@@ -21,7 +21,8 @@
 //
 
 #import "ARFeatureView.h"
-//#import "ARImageFeatureView.h"
+#import "ARImageFeatureView.h"
+#import "ARImageFeature.h"
 #import "ARTextFeatureView.h"
 #import "ARTextFeature.h"
 #import "ARSpatialStateManager.h"
@@ -34,22 +35,51 @@
 
 @implementation ARFeatureView
 
-- (ARFeature *)feature {
-	NSAssert(NO, @"Expected implementation in subclass of this abstract class.");
-	return nil;
+@dynamic feature; // Should be implemented by subclasses
+
+#pragma mark NSObject
+
+- (id)init {
+	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of invalid initializer; use initWithOverlay: instead.");
+	
+	return [super init];
 }
 
-+ (ARFeatureView *)viewForFeature:(ARFeature *)feature {
-	//	if ([[feature class] isSubclassOfClass:ARImageFeature]) {
-	//		return [[[ARImageFeatureView alloc] initWithFeature:(ARImageFeature *)feature] autorelease];
-	//	}
-	//	else ...
-	if ([feature isKindOfClass:[ARTextFeature class]]) {
-		return [[[ARTextFeatureView alloc] initWithFeature:(ARTextFeature *)feature] autorelease];
-	} else {
+#pragma mark UIView
+
+- (void)sizeToFit {
+	// For this view class, we only want the size our bounds to change (default implementation acts on the frame)
+	CGRect bounds = [self bounds];
+	bounds.size = [self sizeThatFits:bounds.size];
+	[self setBounds:bounds];
+}
+
+#pragma mark ARFeatureView
+
+// Consult The Objective-C Programming Language > Allocating and Initializing Objects > Implementing an Initializer > Constraints and Conventions to see why we use id as a return type.
++ (id)viewForFeature:(ARFeature *)feature {
+	NSAssert(feature != nil, @"Expected non-nil feature.");
+	
+	if ([feature isKindOfClass:[ARImageFeature class]]) {
+		return [[[ARImageFeatureView alloc] initWithFeature:feature] autorelease];
+	}
+	else if ([feature isKindOfClass:[ARTextFeature class]]) {
+		return [[[ARTextFeatureView alloc] initWithFeature:feature] autorelease];
+	}
+	else {
 		DebugLog(@"Unknown feature type: %@", [feature class]);
 		return nil;
 	}
+}
+
+- (id)initWithFeature:(ARFeature *)feature {
+	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of abstract method.");
+	NSAssert(feature != nil, @"Expected non-nil overlay.");
+	
+	if (self = [super initWithFrame:CGRectZero]) {
+		[[self layer] setAnchorPoint:[feature anchor]];
+	}
+	return self;
 }
 
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {

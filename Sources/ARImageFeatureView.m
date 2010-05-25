@@ -1,5 +1,5 @@
 //
-//  ARImageOverlayView.m
+//  ARImageFeatureView.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,14 +20,14 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARImageOverlayView.h"
-#import "ARImageOverlay.h"
+#import "ARImageFeatureView.h"
+#import "ARImageFeature.h"
 
 
-#define ACTIVITY_INDICATOR_SIZE 12.0
+#define ACTIVITY_INDICATOR_SIZE 2.0
 
 
-@interface ARImageOverlayView ()
+@interface ARImageFeatureView ()
 
 - (void)showActivityIndicatorView;
 - (void)showImageViewWithImage:(UIImage *)image;
@@ -35,17 +35,17 @@
 @end
 
 
-@implementation ARImageOverlayView
+@implementation ARImageFeatureView
 
-@synthesize overlay;
+@synthesize feature;
 
 #pragma mark NSObject
 
-- (id)initWithOverlay:(AROverlay *)anOverlay {
-	NSAssert([anOverlay isKindOfClass:[ARImageOverlay class]], @"Expected image overlay.");
+- (id)initWithFeature:(ARFeature *)aFeature {
+	NSAssert([aFeature isKindOfClass:[ARImageFeature class]], @"Expected image overlay.");
 	
-	if (self = [super initWithOverlay:anOverlay]) {
-		overlay = (ARImageOverlay *)[anOverlay retain];
+	if (self = [super initWithFeature:aFeature]) {
+		feature = (ARImageFeature *)[aFeature retain];
 		
 		[self showActivityIndicatorView];
 	}
@@ -53,8 +53,8 @@
 }
 
 - (void)dealloc {
-	[overlay release];
-
+	[feature release];
+	
 	[super dealloc];
 }
 
@@ -82,8 +82,8 @@
 #pragma mark ARAssetDataUser
 
 - (NSSet *)assetIdentifiersForNeededData {
-	if ([overlay assetIdentifier] && [imageView image] == nil) {
-		return [NSSet setWithObject:[overlay assetIdentifier]];
+	if ([feature assetIdentifier] && [imageView image] == nil) {
+		return [NSSet setWithObject:[feature assetIdentifier]];
 	}
 	else {
 		return [NSSet set];
@@ -93,7 +93,7 @@
 - (void)useData:(NSData *)data forAssetIdentifier:(NSString *)identifier {
 	NSAssert(identifier != nil, @"Expected non-nil identifier.");
 	
-	if ([identifier isEqual:[overlay assetIdentifier]]) {
+	if ([identifier isEqual:[feature assetIdentifier]]) {
 		UIImage *image = [UIImage imageWithData:data]; // imageWithData: returns nil when data is nil
 		if (data != nil && image == nil) {
 			DebugLog(@"Image could not be initialized from asset data");

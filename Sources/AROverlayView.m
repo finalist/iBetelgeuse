@@ -25,11 +25,29 @@
 #import "ARImageOverlayView.h"
 #import "ARTextOverlay.h"
 #import "ARTextOverlayView.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @implementation AROverlayView
 
 @dynamic overlay; // Should be implemented by subclasses
+
+#pragma mark NSObject
+
+- (id)init {
+	NSAssert([self class] != [AROverlayView class], @"Unexpected invocation of invalid initializer; use initWithOverlay: instead.");
+	
+	return [super init];
+}
+
+#pragma mark UIView
+
+- (void)sizeToFit {
+	// For this view class, we only want the size our bounds to change (default implementation acts on the frame)
+	CGRect bounds = [self bounds];
+	bounds.size = [self sizeThatFits:bounds.size];
+	[self setBounds:bounds];
+}
 
 #pragma mark AROverlayView
 
@@ -38,15 +56,25 @@
 	NSAssert(overlay != nil, @"Expected non-nil overlay.");
 
 	if ([overlay isKindOfClass:[ARImageOverlay class]]) {
-		return [[[ARImageOverlayView alloc] initWithImageOverlay:(ARImageOverlay *)overlay] autorelease];
+		return [[[ARImageOverlayView alloc] initWithOverlay:overlay] autorelease];
 	}
 	else if ([overlay isKindOfClass:[ARTextOverlay class]]) {
-		return [[[ARTextOverlayView alloc] initWithTextOverlay:(ARTextOverlay *)overlay] autorelease];
+		return [[[ARTextOverlayView alloc] initWithOverlay:overlay] autorelease];
 	}
 	else {
 		DebugLog(@"Unknown overlay type: %@", [overlay class]);
 		return nil;
 	}
+}
+
+- (id)initWithOverlay:(AROverlay *)overlay {
+	NSAssert([self class] != [AROverlayView class], @"Unexpected invocation of abstract method.");
+	NSAssert(overlay != nil, @"Expected non-nil overlay.");
+	
+	if (self = [super initWithFrame:CGRectZero]) {
+		[[self layer] setAnchorPoint:[overlay anchor]];
+	}
+	return self;
 }
 
 @end
