@@ -119,6 +119,7 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		958DF27911ABB40000047790 /* ARImageFeatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageFeatureView.h; sourceTree = "<group>"; };
 		958DF27A11ABB40000047790 /* ARImageFeatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageFeatureView.m; sourceTree = "<group>"; };
+		958DF36211ABC6FD00047790 /* ARDimensionRequestInvalidTest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionRequestInvalidTest.xml; sourceTree = "<group>"; };
 		95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCNetworkActivityIndicator.h; sourceTree = "<group>"; };
 		95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		95919EE111A41A61006FCDFC /* ARWGS84.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84.h; sourceTree = "<group>"; };
@@ -409,6 +410,7 @@
 				95B9C1B811A17B0600EDD870 /* ARImageOverlayTestFailX.xml */,
 				95B9C1B911A17B0600EDD870 /* ARImageOverlayTestFailY.xml */,
 				95D3D05B11A2C51A007B7148 /* ARDimensionRequestTest.xml */,
+				958DF36211ABC6FD00047790 /* ARDimensionRequestInvalidTest.xml */,
 			);
 			path = Tests;
 			sourceTree = "<group>";

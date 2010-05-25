@@ -212,11 +212,16 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 		[parser release];
 		parser = [[NSXMLParser alloc] initWithData:responseData];
 		[parser setDelegate:self];
-		[parser parse];
-		
-		DebugLog(@"Finished dimension request");
-		
-		[delegate dimensionRequest:self didFinishWithDimension:dimension];
+		if ([parser parse]) {
+			DebugLog(@"Finished dimension request");
+			
+			[delegate dimensionRequest:self didFinishWithDimension:dimension];
+		}
+		else {
+			DebugLog(@"Failed to parse response to dimension request, received error %@", [parser parserError]);
+			
+			[delegate dimensionRequest:self didFailWithError:[parser parserError]];
+		}
 	}
 	
 #if TARGET_OS_IPHONE

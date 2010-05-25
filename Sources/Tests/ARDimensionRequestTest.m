@@ -99,7 +99,11 @@
 	[request release];
 }
 
-- (void)testDidFail {
+- (void)testDidFailNotFound {
+	[self performBareRequestWithType:ARDimensionRequestTypeInit];
+}
+
+- (void)testDidFailInvalid {
 	[self performBareRequestWithType:ARDimensionRequestTypeInit];
 }
 
@@ -163,7 +167,7 @@
 		GHAssertNotNil(dimension, nil);
 		GHAssertEqualObjects([dimension refreshURL], [NSURL URLWithString:@"http://www.hoi.nl/"], nil);
 	}
-	else if ([self currentSelector] == @selector(testDidFail)) {
+	else if ([self currentSelector] == @selector(testDidFailNotFound) || [self currentSelector] == @selector(testDidFailInvalid)) {
 		GHFail(@"This request should've failed.");
 	}
 	
@@ -175,10 +179,13 @@
 	if ([self currentSelector] == @selector(testDidFinishComplete)) {
 		GHFail(@"This request shouldn't've failed.");
 	}
-	else if ([self currentSelector] == @selector(testDidFail)) {
+	else if ([self currentSelector] == @selector(testDidFailNotFound)) {
 		GHAssertEqualObjects([error domain], ARDimensionRequestErrorDomain, nil);
 		GHAssertEquals([error code], ARDimensionRequestErrorHTTP, nil);
 		GHAssertEqualObjects([[error userInfo] objectForKey:ARDimensionRequestErrorHTTPStatusCodeKey], [NSNumber numberWithInteger:404], nil);
+	}
+	else if ([self currentSelector] == @selector(testDidFailInvalid)) {
+		GHAssertEqualObjects([error domain], NSXMLParserErrorDomain, nil);
 	}
 	
 	// Notify that we're done
@@ -211,8 +218,12 @@
 		NSData *responseData = [NSData dataWithContentsOfFile:TEST_RESOURCES_PATH @"/ARDimensionRequestTest.xml"];
 		[connection receiveData:responseData statusCode:200 MIMEType:@"application/xml" afterDelay:0.1];
 	}
-	else if ([self currentSelector] == @selector(testDidFail)) {
+	else if ([self currentSelector] == @selector(testDidFailNotFound)) {
 		[connection receiveData:[NSData data] statusCode:404 MIMEType:@"text/html" afterDelay:0.1];
+	}
+	else if ([self currentSelector] == @selector(testDidFailInvalid)) {
+		NSData *responseData = [NSData dataWithContentsOfFile:TEST_RESOURCES_PATH @"/ARDimensionRequestInvalidTest.xml"];
+		[connection receiveData:responseData statusCode:200 MIMEType:@"application/xml" afterDelay:0.1];
 	}
 	else if ([self currentSelector] == @selector(testTypes)) {
 		// Check the post data
