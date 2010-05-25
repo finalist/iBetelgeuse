@@ -52,6 +52,20 @@
 #pragma mark UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+#ifdef DEBUG
+	// If no URL was given, try to find the default dimension in the bundle
+	if (![launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]) {
+		NSString *defaultDimension = [[NSBundle mainBundle] pathForResource:@"DefaultDimension" ofType:@"xml"];
+		if (defaultDimension && [[NSFileManager defaultManager] fileExistsAtPath:defaultDimension]) {
+			NSMutableDictionary *fakedLaunchOptions = launchOptions ? [launchOptions mutableCopy] : [[NSMutableDictionary alloc] init];
+			[fakedLaunchOptions setObject:[NSURL fileURLWithPath:defaultDimension] forKey:UIApplicationLaunchOptionsURLKey];
+			launchOptions = [fakedLaunchOptions autorelease];
+			
+			DebugLog(@"Falling back to default dimension");
+		}
+	}
+#endif
+
 	BOOL didHandleURL = YES;
 	
 	// Check if we were launched with a URL
@@ -64,6 +78,9 @@
 			NSRange urlSchemeRange = [urlString rangeOfString:[url scheme] options:NSAnchoredSearch];
 			NSString *httpURLString = [urlString stringByReplacingCharactersInRange:urlSchemeRange withString:@"http"];
 			[self setInitialURL:[NSURL URLWithString:httpURLString]];
+		}
+		else if ([url isFileURL]) {
+			[self setInitialURL:url];
 		}
 		else {
 			didHandleURL = NO;
