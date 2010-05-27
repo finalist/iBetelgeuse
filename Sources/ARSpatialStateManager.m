@@ -93,9 +93,17 @@
 	[self setRawLocation:newRawLocation];
 	
 	[delegate spatialStateManagerDidUpdate:self];
+	if (delegateRespondsToLocationDidUpdate) {
+		[delegate spatialStateManagerLocationDidUpdate:self];
+	}
 }
 
 #pragma mark ARSpatialStateManager
+
+- (void)setDelegate:(id <ARSpatialStateManagerDelegate>)aDelegate {
+	delegate = aDelegate;
+	delegateRespondsToLocationDidUpdate = [delegate respondsToSelector:@selector(spatialStateManagerLocationDidUpdate:)];
+}
 
 - (void)startUpdating {
 	if ([self isUpdating]) {
@@ -107,7 +115,7 @@
 
 #if TARGET_IPHONE_SIMULATOR
 	[updateTimer invalidate];
-	updateTimer = [[NSTimer scheduledTimerWithTimeInterval:1. / ACCELEROMETER_UPDATE_FREQUENCY target:self selector:@selector(updateTimerDidFire) userInfo:nil repeats:YES] retain];
+	updateTimer = [[NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(updateTimerDidFire) userInfo:nil repeats:YES] retain];
 #else
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	[accelerometer setDelegate:self];
@@ -148,6 +156,9 @@
 
 - (void)updateTimerDidFire {
 	[delegate spatialStateManagerDidUpdate:self];
+	if (delegateRespondsToLocationDidUpdate) {
+		[delegate spatialStateManagerLocationDidUpdate:self];
+	}
 }
 
 #endif

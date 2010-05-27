@@ -70,5 +70,6 @@
 @property(nonatomic, readonly) CLLocationDistance altitude;
 
 - (ARPoint3D)ECEFCoordinate;
+- (CLLocationDistance)straightLineDistanceToLocation:(ARLocation *)location;
 
 @end

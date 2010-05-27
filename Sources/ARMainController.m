@@ -59,6 +59,8 @@
 @property(nonatomic, readonly) ARAssetManager *assetManagerIfAvailable;
 @property(nonatomic, readonly) ARSpatialStateManager *spatialStateManager;
 @property(nonatomic, retain) NSTimer *refreshTimer;
+@property(nonatomic, getter=isRefreshingOnDistance) BOOL refreshingOnDistance;
+@property(nonatomic, retain) ARLocation *refreshLocation;
 
 - (UIImagePickerController *)cameraViewController;
 - (CATransform3D)perspectiveTransform;
@@ -67,7 +69,10 @@
 - (void)updateFeatureViews;
 
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type;
-- (void)startRefreshTimer;
+- (void)startRefreshingOnTime;
+- (void)stopRefreshingOnTime;
+- (void)startRefreshingOnDistanceResetLocation:(BOOL)reset;
+- (void)stopRefreshingOnDistance;
 
 @end
 
@@ -82,6 +87,8 @@
 
 @synthesize dimensionRequest;
 @synthesize refreshTimer;
+@synthesize refreshingOnDistance;
+@synthesize refreshLocation;
 
 #pragma mark NSObject
 
@@ -110,6 +117,7 @@
 	[spatialStateManager release];
 	[refreshTimer invalidate];
 	[refreshTimer release];
+	[refreshLocation release];
 	
 	[super dealloc];
 }
@@ -190,15 +198,16 @@
 	[self createOverlayViews];
 	[self createFeatureViews];
 	
-	[self startRefreshTimer];
+	[self startRefreshingOnTime];
+	[self startRefreshingOnDistanceResetLocation:YES];
 }
 
 - (void)dimensionRequest:(ARDimensionRequest *)request didFailWithError:(NSError *)error {
 	// Forget the dimension request
 	[self setDimensionRequest:nil];
-	
-	// Restart the refresh timer if necessary
-	[self startRefreshTimer];
+
+	[self startRefreshingOnTime];
+	[self startRefreshingOnDistanceResetLocation:NO];
 	
 	UIAlertView *alert = [[UIAlertView alloc] init];
 	[alert setTitle:NSLocalizedString(@"Could not update dimension", @"main controller alert title")];
@@ -241,21 +250,32 @@
 #pragma mark ARSpatialStateManagerDelegate
 
 - (void)spatialStateManagerDidUpdate:(ARSpatialStateManager *)manager {
+	[self updateFeatureViews];
+}
+
+- (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager {
 	// If we have a location fix, send a request for any pending URL
 	if ([self pendingDimensionURL] && [manager location]) {
 		[self startDimensionRequestWithURL:[self pendingDimensionURL] type:ARDimensionRequestTypeInit];
 		[self setPendingDimensionURL:nil];
 	}
-
-	[self updateFeatureViews];
+	
+	// Deal with the refresh location
+	if ([self isRefreshingOnDistance] && [manager location]) {
+		// If we don't have a refresh location yet, set it now
+		if (![self refreshLocation]) {
+			[self setRefreshLocation:[manager location]];
+		}
+		else if ([[manager location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
+			[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeDistanceRefresh];
+			[self stopRefreshingOnDistance];
+		}
+	}
 }
 
 #pragma mark NSTimerInvocation
 
 - (void)refreshTimerDidFire:(NSTimer *)aTimer {
-	NSAssert([self dimension], @"Expected to have a dimension.");
-	NSAssert([[self dimension] refreshURL], @"Expected dimension to have a URL.");
-	
 	[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeTimeRefresh];
 }
 
@@ -399,11 +419,14 @@
 }
 
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type {
+	NSAssert(aURL, @"Expected non-nil URL.");
+	
 	// Cancel loading any assets
 	[[self assetManagerIfAvailable] cancelLoadingAllAssets];
 	
 	// Make sure to kill any timer, since we don't want it firing when we're already refreshing
-	[self setRefreshTimer:nil];
+	[self stopRefreshingOnTime];
+	[self stopRefreshingOnDistance];
 
 	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:aURL location:[[self spatialStateManager] location] type:type];
 	[request setDelegate:self];
@@ -413,7 +436,7 @@
 	[request start];
 }
 
-- (void)startRefreshTimer {
+- (void)startRefreshingOnTime {
 	if (![[self dimension] refreshURL] || [[self dimension] refreshTime] == ARDimensionRefreshTimeInfinite) {
 		[self setRefreshTimer:nil];
 		
@@ -425,6 +448,27 @@
 		
 		DebugLog(@"Scheduling dimension refresh timer with timeout %fs", [[self dimension] refreshTime]);
 	}
+}
+
+- (void)stopRefreshingOnTime {
+	[self setRefreshTimer:nil];
+}
+
+- (void)startRefreshingOnDistanceResetLocation:(BOOL)reset {
+	if (![[self dimension] refreshURL] || [[self dimension] refreshDistance] == ARDimensionRefreshDistanceInfinite) {
+		[self setRefreshingOnDistance:NO];
+	}
+	else {
+		[self setRefreshingOnDistance:YES];
+		
+		if (reset) {
+			[self setRefreshLocation:[[self spatialStateManager] location]];
+		}
+	}
+}
+
+- (void)stopRefreshingOnDistance {
+	[self setRefreshingOnDistance:NO];
 }
 
 @end

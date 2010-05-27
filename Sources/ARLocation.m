@@ -118,6 +118,12 @@
 	return ARWGS84GetECEF(latitude, longitude, altitude);
 }
 
+- (CLLocationDistance)straightLineDistanceToLocation:(ARLocation *)location {
+	ARPoint3D a = [self ECEFCoordinate];
+	ARPoint3D b = [location ECEFCoordinate];
+	return ARPoint3DLength(ARPoint3DSubtract(a, b));
+}
+
 @end
 
 

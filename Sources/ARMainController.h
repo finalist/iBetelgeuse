@@ -26,6 +26,9 @@
 #import "ARSpatialStateManager.h"
 
 
+@class ARLocation;
+
+
 @interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate> {
 @private
 	NSURL *pendingDimensionURL;
@@ -39,6 +42,8 @@
 	ARAssetManager *assetManager;
 	ARSpatialStateManager *spatialStateManager;
 	NSTimer *refreshTimer;
+	BOOL refreshingOnDistance;
+	ARLocation *refreshLocation;
 }
 
 /**

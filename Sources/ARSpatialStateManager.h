@@ -33,6 +33,7 @@
 @interface ARSpatialStateManager : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate> {
 @private
 	id <ARSpatialStateManagerDelegate> delegate;
+	BOOL delegateRespondsToLocationDidUpdate;
 
 #if TARGET_IPHONE_SIMULATOR
 	NSTimer *updateTimer;
@@ -77,5 +78,12 @@
  * @param manager The sender of the message.
  */
 - (void)spatialStateManagerDidUpdate:(ARSpatialStateManager *)manager;
+
+@optional
+
+/**
+ * Sent in addition to spatialStateManagerDidUpdate: when the location has changed. This method will be called less often and therefore allows 
+ */
+- (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager;
 
 @end
