@@ -52,7 +52,12 @@
 #pragma mark NSObject
 
 - (void)dealloc {
+#if TARGET_IPHONE_SIMULATOR
+	[updateTimer invalidate];
+	[updateTimer release];
+#else
 	[locationManager release];
+#endif
 	
 	[rawAcceleration release];
 	[rawLocation release];
@@ -100,7 +105,10 @@
 		[self setUpdating:YES];
 	}
 
-#if !TARGET_IPHONE_SIMULATOR
+#if TARGET_IPHONE_SIMULATOR
+	[updateTimer invalidate];
+	updateTimer = [[NSTimer scheduledTimerWithTimeInterval:1. / ACCELEROMETER_UPDATE_FREQUENCY target:self selector:@selector(updateTimerDidFire) userInfo:nil repeats:YES] retain];
+#else
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	[accelerometer setDelegate:self];
 	[accelerometer setUpdateInterval:1. / ACCELEROMETER_UPDATE_FREQUENCY];
@@ -118,11 +126,31 @@
 }
 
 - (void)stopUpdating {
+#if TARGET_IPHONE_SIMULATOR
+	[updateTimer invalidate];
+	[updateTimer release];
+	updateTimer = nil;
+#else
+	// Make sure the accelerometer stops calling us
+	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
+	if ([accelerometer delegate] == self) {
+		[accelerometer setDelegate:nil];
+	}
+
 	[locationManager release];
 	locationManager = nil;
+#endif
 	
 	[self setUpdating:NO];
 }
+
+#if TARGET_IPHONE_SIMULATOR
+
+- (void)updateTimerDidFire {
+	[delegate spatialStateManagerDidUpdate:self];
+}
+
+#endif
 
 - (ARPoint3D)upDirectionInDeviceSpace {
 	if (rawAcceleration) {
@@ -152,12 +180,16 @@
 }
 
 - (ARLocation *)location {
+#if TARGET_IPHONE_SIMULATOR
+	return [[[ARLocation alloc] initWithLatitude:0 longitude:0 altitude:0] autorelease];
+#else
 	if (rawLocation) {
 		return [[[ARLocation alloc] initWithCLLocation:rawLocation] autorelease];
 	}
 	else {
 		return nil;
 	}
+#endif
 }
 
 - (ARPoint3D)locationAsECEFCoordinate {

@@ -34,7 +34,11 @@
 @private
 	id <ARSpatialStateManagerDelegate> delegate;
 
+#if TARGET_IPHONE_SIMULATOR
+	NSTimer *updateTimer;
+#else
 	CLLocationManager *locationManager;
+#endif
 	
 	BOOL updating;
 	UIAcceleration *rawAcceleration;
