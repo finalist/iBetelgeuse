@@ -28,7 +28,7 @@
 
 @interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate> {
 @private
-	NSURL *dimensionURL;
+	NSURL *pendingDimensionURL;
 	ARDimension *dimension;
 	UIImagePickerController *cameraViewController;
 	UIView *featureContainerView; // Non-retained instance variable
@@ -38,6 +38,7 @@
 	ARDimensionRequest *dimensionRequest;
 	ARAssetManager *assetManager;
 	ARSpatialStateManager *spatialStateManager;
+	NSTimer *refreshTimer;
 }
 
 /**
