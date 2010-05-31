@@ -95,6 +95,7 @@
 		C3346E6A11A3E63900228C9A /* ARTransform3DTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346E6911A3E63900228C9A /* ARTransform3DTest.m */; };
 		C3346ECE11A3FFD600228C9A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3346ECD11A3FFD600228C9A /* QuartzCore.framework */; };
 		C33474BA11A54E2200228C9A /* ARSpatialStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C33474B911A54E2200228C9A /* ARSpatialStateManager.m */; };
+		C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C62E8611ABE7D500553407 /* ARRadarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,7 +188,7 @@
 		95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHUnitTestMain.m; sourceTree = "<group>"; };
 		95E77E401198094800A1F2B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		95E77EC51198097400A1F2B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		C33462BF119D7B3B00228C9A /* ARMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMainController.h; sourceTree = "<group>"; };
 		C33462C0119D7B3B00228C9A /* ARMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMainController.m; sourceTree = "<group>"; };
 		C334645C11A1495D00228C9A /* ARLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocation.h; sourceTree = "<group>"; };
@@ -251,6 +252,8 @@
 		C3346ECD11A3FFD600228C9A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		C33474B811A54E2200228C9A /* ARSpatialStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpatialStateManager.h; sourceTree = "<group>"; };
 		C33474B911A54E2200228C9A /* ARSpatialStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpatialStateManager.m; sourceTree = "<group>"; };
+		C3C62E8511ABE7D500553407 /* ARRadarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRadarView.h; sourceTree = "<group>"; };
+		C3C62E8611ABE7D500553407 /* ARRadarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRadarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -504,6 +507,8 @@
 				958DF27A11ABB40000047790 /* ARImageFeatureView.m */,
 				C3346D7C11A3C22C00228C9A /* ARTextFeatureView.h */,
 				C3346D7D11A3C22C00228C9A /* ARTextFeatureView.m */,
+				C3C62E8511ABE7D500553407 /* ARRadarView.h */,
+				C3C62E8611ABE7D500553407 /* ARRadarView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -683,6 +688,7 @@
 				95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */,
 				95A2747D11A6E546000C0876 /* ARImageOverlayView.m in Sources */,
 				958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */,
+				C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

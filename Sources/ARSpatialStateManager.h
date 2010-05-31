@@ -63,6 +63,7 @@
 - (CATransform3D)ECEFToENUSpaceTransform;
 - (CATransform3D)ENUToECEFSpaceTransform;
 - (CLLocationDistance)altitude;
+- (ARPoint3D)upDirectionInDeviceSpace;
 
 @end
 

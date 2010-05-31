@@ -30,6 +30,7 @@
 #import "ARSpatialStateManager.h"
 #import "ARWGS84.h"
 #import "ARLocation.h"
+#import "ARRadarView.h"
 #import "ARAssetDataUser.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -139,6 +140,11 @@
 	[view addSubview:featureContainerView];
 	[featureContainerView release];
 	
+	radarView = [[ARRadarView alloc] init];
+	[radarView setFrame:CGRectMake(10, 480-100-10, 100, 100)];
+	[view addSubview:radarView];
+	[radarView release];
+	
 	overlayContainerView = [[UIView alloc] init];
 	[overlayContainerView setFrame:[view bounds]];
 	[overlayContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
@@ -197,6 +203,7 @@
 	
 	[self createOverlayViews];
 	[self createFeatureViews];
+	[radarView setFeatures:[dimension features]];
 	
 	[self startRefreshingOnTime];
 	[self startRefreshingOnDistanceResetLocation:YES];
@@ -416,6 +423,8 @@
 	}
 
 	[CATransaction commit];
+	
+	[radarView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
 }
 
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type {

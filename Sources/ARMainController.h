@@ -25,6 +25,8 @@
 #import "ARAssetManager.h"
 #import "ARSpatialStateManager.h"
 
+@class ARRadarView;
+
 
 @class ARLocation;
 
@@ -36,7 +38,7 @@
 	UIImagePickerController *cameraViewController;
 	UIView *featureContainerView; // Non-retained instance variable
 	UIView *overlayContainerView; // Non-retained instance variable
-	//ARRadarView *radarView;
+	ARRadarView *radarView;
 	
 	ARDimensionRequest *dimensionRequest;
 	ARAssetManager *assetManager;
