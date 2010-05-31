@@ -40,8 +40,19 @@
 - (id)init {
 	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of invalid initializer; use initWithOverlay: instead.");
 	
-	[self setHidden:true];
 	return [super init];
+}
+
+- (id)initWithFeature:(ARFeature *)feature {
+	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of abstract method.");
+	NSAssert(feature != nil, @"Expected non-nil overlay.");
+	
+	if (self = [super initWithFrame:CGRectZero]) {
+		[[self layer] setAnchorPoint:[feature anchor]];
+		
+		[self setHidden:YES];
+	}
+	return self;
 }
 
 #pragma mark UIView
@@ -71,16 +82,6 @@
 	}
 }
 
-- (id)initWithFeature:(ARFeature *)feature {
-	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of abstract method.");
-	NSAssert(feature != nil, @"Expected non-nil overlay.");
-	
-	if (self = [super initWithFrame:CGRectZero]) {
-		[[self layer] setAnchorPoint:[feature anchor]];
-	}
-	return self;
-}
-
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor {
 	// This function uses EF coordinates for all variables unless specified otherwise.
 	ARPoint3D featurePosition = ARPoint3DSubtract([[[self feature] location] locationInECEFSpace], [spatialState EFToECEFSpaceOffset]);
@@ -94,7 +95,7 @@
 	featurePosition = ARPoint3DAdd(featurePosition, offset);
 	
 	if (ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) == 0.) {
-		[self setHidden:true];
+		[self setHidden:YES];
 	} else {
 		const float scale = ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) * distanceFactor; // This is done so that feature coordinates are measured in pixels, not in meters (by undoing screen and perspective transform)
 		
