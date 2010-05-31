@@ -126,3 +126,12 @@ ARPoint3D ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3
  * @return vector * matrix
  */
 ARPoint3D ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b);
+
+#ifdef DEBUG
+
+/**
+ * Returns a string representing the given matrix that is suitable for pasting into MATLAB.
+ */
+NSString *ARTransform3DGetMATLABString(CATransform3D t);
+
+#endif
