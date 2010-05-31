@@ -36,16 +36,28 @@
 
 @synthesize features;
 
+- (id)initWithFrame:(CGRect)aFrame {
+	if (self = [super initWithFrame:aFrame]) {
+		[self setClearsContextBeforeDrawing:NO];
+		[self setOpaque:NO];
+	}
+	return self;
+}
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	point.x -= RADAR_SCREEN_RANGE;
+	point.y -= RADAR_SCREEN_RANGE;
+	return point.x * point.x + point.y * point.y <= RADAR_SCREEN_RANGE * RADAR_SCREEN_RANGE;
+}
+
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
 	altitudeOffset = useRelativeAltitude ? [spatialState altitude] : 0.;
 	EFToECEFSpaceOffset = [spatialState EFToECEFSpaceOffset];
 	EFToENUSpaceTransform = [spatialState EFToENUSpaceTransform];
 	DeviceToENUSpaceTransform = ARTransform3DTranspose([spatialState ENUToDeviceSpaceTransform]);
 	upDirectionInDeviceSpace = [spatialState upDirectionInDeviceSpace];
-	isSpatialStateDefined = true;
-	
-	[self setBackgroundColor:[UIColor clearColor]];
-	[self setClearsContextBeforeDrawing:NO];
+	isSpatialStateDefined = YES;
+
 	[self setNeedsDisplay];
 }
 
@@ -88,7 +100,8 @@
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	
 	// Draw the outer radar circle
-	CGContextSetFillColorWithColor(ctx, [[UIColor darkGrayColor] CGColor]);
+	CGContextSetBlendMode(ctx, kCGBlendModeCopy);
+	CGContextSetGrayFillColor(ctx, 0.333, 0.667);
 	CGContextFillEllipseInRect(ctx, [self bounds]);
 	
 	// Prepare the screen transformation for drawing radar blibs

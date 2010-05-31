@@ -56,6 +56,8 @@
 		95B9C56F11A2937500EDD870 /* ARDimensionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */; };
 		95B9C57011A2937500EDD870 /* ARDimensionRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */; };
 		95B9C58811A2977400EDD870 /* ARDimensionRequestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C58711A2977400EDD870 /* ARDimensionRequestTest.m */; };
+		95C7569411B3B2CF00B71931 /* ARFeatureContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C7569311B3B2CF00B71931 /* ARFeatureContainerView.m */; };
+		95C758E911B3D5F000B71931 /* AROverlayContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C758E811B3D5F000B71931 /* AROverlayContainerView.m */; };
 		95D3CFC411A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */; };
 		95D3CFC511A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */; };
 		95D3CFCB11A2BB46007B7148 /* ARFormURLEncodingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFCA11A2BB46007B7148 /* ARFormURLEncodingTest.m */; };
@@ -177,6 +179,10 @@
 		95B9C56E11A2937500EDD870 /* ARDimensionRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDimensionRequest.m; sourceTree = "<group>"; };
 		95B9C58611A2977400EDD870 /* ARDimensionRequestTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDimensionRequestTest.h; sourceTree = "<group>"; };
 		95B9C58711A2977400EDD870 /* ARDimensionRequestTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDimensionRequestTest.m; sourceTree = "<group>"; };
+		95C7569211B3B2CF00B71931 /* ARFeatureContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeatureContainerView.h; sourceTree = "<group>"; };
+		95C7569311B3B2CF00B71931 /* ARFeatureContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeatureContainerView.m; sourceTree = "<group>"; };
+		95C758E711B3D5F000B71931 /* AROverlayContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROverlayContainerView.h; sourceTree = "<group>"; };
+		95C758E811B3D5F000B71931 /* AROverlayContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROverlayContainerView.m; sourceTree = "<group>"; };
 		95D3CFC211A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+ARFormURLEncoding.h"; sourceTree = "<group>"; };
 		95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+ARFormURLEncoding.m"; sourceTree = "<group>"; };
 		95D3CFC911A2BB46007B7148 /* ARFormURLEncodingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFormURLEncodingTest.h; sourceTree = "<group>"; };
@@ -495,12 +501,16 @@
 		95E77C431198031E00A1F2B9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				95C758E711B3D5F000B71931 /* AROverlayContainerView.h */,
+				95C758E811B3D5F000B71931 /* AROverlayContainerView.m */,
 				C3346BB111A2C20700228C9A /* AROverlayView.h */,
 				C3346BB211A2C20700228C9A /* AROverlayView.m */,
 				95A2747B11A6E546000C0876 /* ARImageOverlayView.h */,
 				95A2747C11A6E546000C0876 /* ARImageOverlayView.m */,
 				C3346BB411A2C21400228C9A /* ARTextOverlayView.h */,
 				C3346BB511A2C21400228C9A /* ARTextOverlayView.m */,
+				95C7569211B3B2CF00B71931 /* ARFeatureContainerView.h */,
+				95C7569311B3B2CF00B71931 /* ARFeatureContainerView.m */,
 				C3346D7911A3C22400228C9A /* ARFeatureView.h */,
 				C3346D7A11A3C22400228C9A /* ARFeatureView.m */,
 				958DF27911ABB40000047790 /* ARImageFeatureView.h */,
@@ -689,6 +699,8 @@
 				95A2747D11A6E546000C0876 /* ARImageOverlayView.m in Sources */,
 				958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */,
 				C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */,
+				95C7569411B3B2CF00B71931 /* ARFeatureContainerView.m in Sources */,
+				95C758E911B3D5F000B71931 /* AROverlayContainerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

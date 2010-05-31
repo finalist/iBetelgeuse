@@ -29,7 +29,7 @@
 /**
  * Abstract superclass for views that display some sort of AROverlay.
  */
-@interface AROverlayView : UIView {
+@interface AROverlayView : UIControl {
 }
 
 /**

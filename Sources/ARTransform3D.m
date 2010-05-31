@@ -92,10 +92,11 @@ ARTransform3D ARTransform3DTranspose(ARTransform3D transform) {
 }
 
 ARPoint3D ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b) {
+	CGFloat inverseOfSuperfluousCoordinate = 1. / (b.m14 * a.x + b.m24 * a.y + b.m34 * a.z + b.m44);
 	ARPoint3D result = {
-		b.m11*a.x + b.m21*a.y + b.m31*a.z + b.m41,
-		b.m12*a.x + b.m22*a.y + b.m32*a.z + b.m42,
-		b.m13*a.x + b.m23*a.y + b.m33*a.z + b.m43,
+		(b.m11 * a.x + b.m21 * a.y + b.m31 * a.z + b.m41) * inverseOfSuperfluousCoordinate,
+		(b.m12 * a.x + b.m22 * a.y + b.m32 * a.z + b.m42) * inverseOfSuperfluousCoordinate,
+		(b.m13 * a.x + b.m23 * a.y + b.m33 * a.z + b.m43) * inverseOfSuperfluousCoordinate,
 	};
 	return result;
 }

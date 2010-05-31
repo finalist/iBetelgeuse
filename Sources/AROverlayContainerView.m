@@ -1,5 +1,5 @@
 //
-//  ARRadarView.h
+//  AROverlayContainerView.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,26 +20,31 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARPoint3D.h"
-#import <QuartzCore/QuartzCore.h>
-
-@class ARSpatialStateManager;
+#import "AROverlayContainerView.h"
 
 
-@interface ARRadarView : UIView {
-@private
-	NSArray *features;
-	
-	float altitudeOffset;
-	ARPoint3D EFToECEFSpaceOffset;
-	CATransform3D EFToENUSpaceTransform;
-	CATransform3D DeviceToENUSpaceTransform;
-	ARPoint3D upDirectionInDeviceSpace;
-	BOOL isSpatialStateDefined;
+@implementation AROverlayContainerView
+
+#pragma mark NSObject
+
+- (id)initWithFrame:(CGRect)aFrame {
+	if (self = [super initWithFrame:aFrame]) {
+		[self setClearsContextBeforeDrawing:NO];
+		[self setOpaque:NO];
+	}
+	return self;
 }
 
-@property(nonatomic, readwrite, copy) NSArray *features;
+#pragma mark UIView
 
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude;
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+	UIView *hitView = [super hitTest:point withEvent:event];
+	if (hitView == self) {
+		return nil;
+	}
+	else {
+		return hitView;
+	}
+}
 
 @end

@@ -62,7 +62,7 @@ typedef enum {
 /**
  * Initializes the receiver with the given values.
  *
- * @param url The URL to which the request will be sent, must be non-nil.
+ * @param url The URL to which the request will be sent, must be non-nil. Supported URL schemes are http, gamaray and file.
  * @param location The current location of the device that will be sent to the server, must be non-nil.
  * @param type The type of request that will be sent to the server.
  *

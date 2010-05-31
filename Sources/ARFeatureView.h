@@ -29,7 +29,7 @@
 /**
  * Abstract superclass for views that display some sort of ARFeature.
  */
-@interface ARFeatureView : UIView {
+@interface ARFeatureView : UIControl {
 }
 
 /**

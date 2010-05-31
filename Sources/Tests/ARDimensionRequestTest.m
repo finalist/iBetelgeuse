@@ -72,6 +72,11 @@
 
 	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:nil location:currentLocation type:ARDimensionRequestTypeDistanceRefresh] autorelease], @"Successful initialization despite nil URL.");
 	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:url location:nil type:ARDimensionRequestTypeDistanceRefresh] autorelease], @"Successful initialization despite nil locatio.");
+	
+	// Test different URL schemes
+	GHAssertNoThrow([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"http://hoi"] location:currentLocation type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
+	GHAssertNoThrow([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"gamaray://hoi"] location:currentLocation type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
+	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"blaat://hoi"] location:currentLocation type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
 
 	// Test accessors after initializing with satisfiable arguments
 	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:url location:currentLocation type:ARDimensionRequestTypeDistanceRefresh];
@@ -86,7 +91,7 @@
 	[self prepare];
 	
 	// Build a complete dimension request
-	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:DIMENSION_URL] location:currentLocation type:ARDimensionRequestTypeTimeRefresh];
+	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"gamaray://www.foobar.com/?baz=1"] location:currentLocation type:ARDimensionRequestTypeTimeRefresh];
 	[request setDelegate:self];
 	[request setSource:DIMENSION_SOURCE];
 	[request setScreenSize:CGSizeMake(DIMENSION_SCREEN_WIDTH, DIMENSION_SCREEN_HEIGHT)];
