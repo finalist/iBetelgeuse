@@ -42,6 +42,10 @@
 #define CAMERA_CONTROLS_HEIGHT (53.)
 #define CAMERA_VIEW_SCALE (SCREEN_SIZE_Y / (SCREEN_SIZE_Y - CAMERA_CONTROLS_HEIGHT))
 
+// Fraction of the refresh rate of the screen at which to update
+// Note: a frame interval of 2 results in 30 FPS and seems smooth enough
+#define FRAME_INTERVAL 2
+
 
 @interface ARMainController ()
 
@@ -51,6 +55,8 @@
 @property(nonatomic, readonly) ARFeatureContainerView *featureContainerView;
 @property(nonatomic, readonly) AROverlayContainerView *overlayContainerView;
 @property(nonatomic, readonly) ARRadarView *radarView;
+
+@property(nonatomic, retain) CADisplayLink *displayLink;
 
 @property(nonatomic, retain) ARDimensionRequest *dimensionRequest;
 @property(nonatomic, readonly) ARAssetManager *assetManager;
@@ -64,6 +70,9 @@
 - (void)createOverlayViews;
 - (void)createFeatureViews;
 - (void)updateFeatureViews;
+
+- (void)setNeedsUpdate;
+- (void)updateIfNeeded;
 
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type source:(NSString *)source;
 - (void)startRefreshingOnTime;
@@ -83,6 +92,8 @@
 @synthesize featureContainerView;
 @synthesize overlayContainerView;
 @synthesize radarView;
+
+@synthesize displayLink;
 
 @synthesize dimensionRequest;
 @synthesize refreshTimer;
@@ -110,6 +121,9 @@
 	[pendingDimensionURL release];
 	[dimension release];
 	[cameraViewController release];
+	
+	[displayLink invalidate];
+	[displayLink release];
 	
 	[dimensionRequest release];
 	[assetManager release];
@@ -168,6 +182,15 @@
 	[[self cameraViewController] viewWillAppear:animated];
 	
 	[[self spatialStateManager] startUpdating];
+
+	// Use a display link to sync up with the screen, so that we don't update the screen more than necessary
+	CADisplayLink *link = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWithDisplayLink:)];
+	[link setFrameInterval:FRAME_INTERVAL];
+	[self setDisplayLink:link];
+	[link addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	
+	// Invalidate the screen by default
+	[self setNeedsUpdate];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -188,6 +211,16 @@
 	[super viewDidDisappear:animated];
 	
 	[[self cameraViewController] viewDidDisappear:animated];
+	
+	// This invalidates the display link
+	[self setDisplayLink:nil];
+}
+
+#pragma mark CADisplayLink
+
+- (void)updateWithDisplayLink:(CADisplayLink *)sender {
+	// If the screen has been invalidated, update it
+	[self updateIfNeeded];
 }
 
 #pragma mark ARDimensionRequestDelegate
@@ -257,7 +290,8 @@
 #pragma mark ARSpatialStateManagerDelegate
 
 - (void)spatialStateManagerDidUpdate:(ARSpatialStateManager *)manager {
-	[self updateFeatureViews];
+	// Invalidate the screen, the display link will take care of actually updating the screen when needed
+	[self setNeedsUpdate];
 }
 
 - (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager {
@@ -303,6 +337,16 @@
 #endif
 	}
 	return cameraViewController;
+}
+
+- (void)setDisplayLink:(CADisplayLink *)aLink {
+	if (displayLink != aLink) {
+		// Remove the existing link from the runloop
+		[displayLink invalidate];
+		
+		[displayLink release];
+		displayLink = [aLink retain];
+	}
 }
 
 - (ARAssetManager *)assetManager {
@@ -412,6 +456,18 @@
 - (void)updateFeatureViews {
 	[featureContainerView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
 	[radarView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
+}
+
+- (void)setNeedsUpdate {
+	needsUpdate = YES;
+}
+
+- (void)updateIfNeeded {
+	if (needsUpdate) {
+		needsUpdate = NO;
+		
+		[self updateFeatureViews];
+	}
 }
 
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type source:(NSString *)source {

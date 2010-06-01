@@ -38,6 +38,9 @@
 	AROverlayContainerView *overlayContainerView; // Non-retained instance variable
 	ARRadarView *radarView; // Non-retained instance variable
 	
+	CADisplayLink *displayLink;
+	BOOL needsUpdate;
+	
 	ARDimensionRequest *dimensionRequest;
 	ARAssetManager *assetManager;
 	ARSpatialStateManager *spatialStateManager;
