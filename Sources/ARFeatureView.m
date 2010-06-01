@@ -40,6 +40,7 @@
 - (id)init {
 	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of invalid initializer; use initWithOverlay: instead.");
 	
+	[self setHidden:true];
 	return [super init];
 }
 
@@ -92,10 +93,15 @@
 	ARPoint3D offset = ARTransform3DNonhomogeneousVectorMatrixMultiply(offsetInENUSpace, [spatialState ENUToEFSpaceTransform]);
 	featurePosition = ARPoint3DAdd(featurePosition, offset);
 	
-	const float scale = ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) * distanceFactor; // This is done so that feature coordinates are measured in pixels, not in meters (by undoing screen and perspective transform)
-
-	[[self layer] setPosition:CGPointZero];
-	[[self layer] setTransform:CATransform3DConcat(CATransform3DMakeScale(scale, -scale, scale), ARTransform3DLookAt(featurePosition, devicePosition, upDirection, ARPoint3DCreate(0., 0., 1.)))]; // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
+	if (ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) == 0.) {
+		[self setHidden:true];
+	} else {
+		const float scale = ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) * distanceFactor; // This is done so that feature coordinates are measured in pixels, not in meters (by undoing screen and perspective transform)
+		
+		[[self layer] setPosition:CGPointZero];
+		[[self layer] setTransform:CATransform3DConcat(CATransform3DMakeScale(scale, -scale, scale), ARTransform3DLookAt(featurePosition, devicePosition, upDirection, ARPoint3DCreate(0., 0., 1.)))]; // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
+		[self setHidden:false];
+	}
 }
 
 @end
