@@ -481,7 +481,7 @@ CGImageRef UIGetScreenImage(void);
     else
         r.size.height -= 54;
     CGImageRef preview = CGImageCreateWithImageInRect(screen, r);
-    CGImageRelease(screen);
+//    CGImageRelease(screen);
 
     UIImage *image = [UIImage imageWithCGImage: preview];
     CGImageRelease(preview);
