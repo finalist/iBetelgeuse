@@ -31,7 +31,8 @@
 	NSArray *features;
 	
 	float altitudeOffset;
-	CATransform3D ECEFToENUSpaceTransform;
+	ARPoint3D EFToECEFSpaceOffset;
+	CATransform3D EFToENUSpaceTransform;
 	CATransform3D DeviceToENUSpaceTransform;
 	ARPoint3D upDirectionInDeviceSpace;
 	BOOL isSpatialStateDefined;

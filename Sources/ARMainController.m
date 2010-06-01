@@ -261,21 +261,25 @@
 }
 
 - (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager {
-	// If we have a location fix, send a request for any pending URL
-	if ([self pendingDimensionURL] && [manager location]) {
-		[self startDimensionRequestWithURL:[self pendingDimensionURL] type:ARDimensionRequestTypeInit];
-		[self setPendingDimensionURL:nil];
-	}
-	
-	// Deal with the refresh location
-	if ([self isRefreshingOnDistance] && [manager location]) {
-		// If we don't have a refresh location yet, set it now
-		if (![self refreshLocation]) {
-			[self setRefreshLocation:[manager location]];
+	if ([manager location]) {
+		[manager setEFToECEFSpaceOffset:[manager locationInECEFSpace]];
+		
+		// If we have a location fix, send a request for any pending URL
+		if ([self pendingDimensionURL]) {
+			[self startDimensionRequestWithURL:[self pendingDimensionURL] type:ARDimensionRequestTypeInit];
+			[self setPendingDimensionURL:nil];
 		}
-		else if ([[manager location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
-			[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeDistanceRefresh];
-			[self stopRefreshingOnDistance];
+		
+		// Deal with the refresh location
+		if ([self isRefreshingOnDistance]) {
+			// If we don't have a refresh location yet, set it now
+			if (![self refreshLocation]) {
+				[self setRefreshLocation:[manager location]];
+			}
+			else if ([[manager location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
+				[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeDistanceRefresh];
+				[self stopRefreshingOnDistance];
+			}
 		}
 	}
 }
@@ -406,7 +410,7 @@
 
 - (void)updateFeatureViews {
 	CATransform3D featureContainerTransform = CATransform3DIdentity;
-	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [spatialStateManager ECEFToENUSpaceTransform]);
+	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [spatialStateManager EFToENUSpaceTransform]);
 	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [spatialStateManager ENUToDeviceSpaceTransform]);
 	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [self perspectiveTransform]);
 	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [self screenTransform]);

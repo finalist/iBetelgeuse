@@ -83,15 +83,15 @@
 }
 
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor {
-	// This function uses ECEF coordinates for all variables unless specified otherwise.
-	ARPoint3D featurePosition = [[[self feature] location] ECEFCoordinate];
-	ARPoint3D devicePosition = [spatialState locationAsECEFCoordinate];
-	ARPoint3D upDirection = ARPoint3DNormalize(devicePosition);
+	// This function uses EF coordinates for all variables unless specified otherwise.
+	ARPoint3D featurePosition = ARPoint3DSubtract([[[self feature] location] locationInECEFSpace], [spatialState EFToECEFSpaceOffset]);
+	ARPoint3D devicePosition = [spatialState locationInEFSpace];
+	ARPoint3D upDirection = [spatialState upDirectionInEFSpace];
 
-	ARPoint3D offsetInENUCoordinates = [[self feature] offset];
+	ARPoint3D offsetInENUSpace = [[self feature] offset];
 	if (useRelativeAltitude)
-		offsetInENUCoordinates.z += [spatialState altitude];
-	ARPoint3D offset = ARTransform3DNonhomogeneousVectorMatrixMultiply(offsetInENUCoordinates, [spatialState ENUToECEFSpaceTransform]);
+		offsetInENUSpace.z += [spatialState altitude];
+	ARPoint3D offset = ARTransform3DNonhomogeneousVectorMatrixMultiply(offsetInENUSpace, [spatialState ENUToEFSpaceTransform]);
 	featurePosition = ARPoint3DAdd(featurePosition, offset);
 	
 	const float scale = ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) * distanceFactor; // This is done so that feature coordinates are measured in pixels, not in meters (by undoing screen and perspective transform)

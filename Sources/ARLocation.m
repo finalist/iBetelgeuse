@@ -114,13 +114,13 @@
 	[delegate release];
 }
 
-- (ARPoint3D)ECEFCoordinate {
+- (ARPoint3D)locationInECEFSpace {
 	return ARWGS84GetECEF(latitude, longitude, altitude);
 }
 
 - (CLLocationDistance)straightLineDistanceToLocation:(ARLocation *)location {
-	ARPoint3D a = [self ECEFCoordinate];
-	ARPoint3D b = [location ECEFCoordinate];
+	ARPoint3D a = [self locationInECEFSpace];
+	ARPoint3D b = [location locationInECEFSpace];
 	return ARPoint3DLength(ARPoint3DSubtract(a, b));
 }
 

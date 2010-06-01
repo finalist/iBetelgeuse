@@ -46,7 +46,7 @@
 
 @implementation ARSpatialStateManager
 
-@synthesize delegate;
+@synthesize delegate, EFToECEFSpaceOffset;
 @synthesize updating, rawAcceleration, rawLocation, rawHeading;
 
 #pragma mark NSObject
@@ -92,10 +92,10 @@
 	
 	[self setRawLocation:newRawLocation];
 	
-	[delegate spatialStateManagerDidUpdate:self];
 	if (delegateRespondsToLocationDidUpdate) {
 		[delegate spatialStateManagerLocationDidUpdate:self];
 	}
+	[delegate spatialStateManagerDidUpdate:self];
 }
 
 #pragma mark ARSpatialStateManager
@@ -155,10 +155,10 @@
 #if TARGET_IPHONE_SIMULATOR
 
 - (void)updateTimerDidFire {
-	[delegate spatialStateManagerDidUpdate:self];
 	if (delegateRespondsToLocationDidUpdate) {
 		[delegate spatialStateManagerLocationDidUpdate:self];
 	}
+	[delegate spatialStateManagerDidUpdate:self];
 }
 
 #endif
@@ -203,7 +203,7 @@
 #endif
 }
 
-- (ARPoint3D)locationAsECEFCoordinate {
+- (ARPoint3D)locationInECEFSpace {
 	if (rawLocation) {
 		return ARWGS84GetECEF([rawLocation coordinate].latitude, [rawLocation coordinate].longitude, [rawLocation altitude]);
 	}
@@ -211,6 +211,10 @@
 		// Fallback to the intersection of the equator and the prime meridian (somewhere in the Atlantic below Ghana...)
 		return ARWGS84GetECEF(0, 0, 0);
 	}
+}
+
+- (ARPoint3D)locationInEFSpace {
+	return ARPoint3DSubtract([self locationInECEFSpace], [self EFToECEFSpaceOffset]);
 }
 
 - (CATransform3D)ENUToDeviceSpaceTransform {
@@ -221,16 +225,20 @@
 	return ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace], ARPoint3DZero);
 }
 
-- (CATransform3D)ENUToECEFSpaceTransform {
+- (CATransform3D)ENUToEFSpaceTransform {
 	// The ENU coordinate space is defined in ECEF coordinate space by looking:
 	// * from the device, which is given by the GPS after conversion to ECEF;
 	// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
 	// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
-	return ARTransform3DLookAtRelative([self locationAsECEFCoordinate], [self locationAsECEFCoordinate], [self northDirectionInECEFSpace], ARPoint3DZero);
+	return ARTransform3DLookAtRelative([self locationInEFSpace], [self upDirectionInEFSpace], [self northDirectionInECEFSpace], ARPoint3DZero);
 }
 
-- (CATransform3D)ECEFToENUSpaceTransform {
-	return CATransform3DInvert([self ENUToECEFSpaceTransform]);
+- (CATransform3D)EFToENUSpaceTransform {
+	return CATransform3DInvert([self ENUToEFSpaceTransform]);
+}
+
+- (ARPoint3D)upDirectionInEFSpace {
+	return [self locationInECEFSpace];
 }
 
 - (CLLocationDistance)altitude {

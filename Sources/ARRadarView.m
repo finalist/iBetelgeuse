@@ -38,7 +38,8 @@
 
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
 	altitudeOffset = useRelativeAltitude ? [spatialState altitude] : 0.;
-	ECEFToENUSpaceTransform = [spatialState ECEFToENUSpaceTransform];
+	EFToECEFSpaceOffset = [spatialState EFToECEFSpaceOffset];
+	EFToENUSpaceTransform = [spatialState EFToENUSpaceTransform];
 	DeviceToENUSpaceTransform = ARTransform3DTranspose([spatialState ENUToDeviceSpaceTransform]);
 	upDirectionInDeviceSpace = [spatialState upDirectionInDeviceSpace];
 	isSpatialStateDefined = true;
@@ -117,8 +118,8 @@
 				ARPoint3D offsetInENUSpace = [feature offset];
 				offsetInENUSpace.z += altitudeOffset;
 				
-				ARPoint3D featurePositionInECEFSpace = [[feature location] ECEFCoordinate];
-				ARPoint3D featurePositionInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInECEFSpace, ECEFToENUSpaceTransform);
+				ARPoint3D featurePositionInEFSpace = ARPoint3DSubtract([[feature location] locationInECEFSpace], EFToECEFSpaceOffset);
+				ARPoint3D featurePositionInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInEFSpace, EFToENUSpaceTransform);
 				featurePositionInENUSpace = ARPoint3DAdd(featurePositionInENUSpace, [feature offset]);
 				ARPoint3D featurePositionInRadarSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInENUSpace, ENUToRadarTransform);
 				

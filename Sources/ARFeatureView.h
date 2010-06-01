@@ -56,7 +56,7 @@
 @property(nonatomic, readonly) ARFeature *feature;
 
 /**
- * Updates the position and transform in the ECEF space using the given spatial state.
+ * Updates the position and transform in the EF space using the given spatial state.
  */
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor;
 
