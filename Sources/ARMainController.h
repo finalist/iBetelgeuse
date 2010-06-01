@@ -26,7 +26,7 @@
 #import "ARSpatialStateManager.h"
 
 
-@class ARLocation;
+@class ARFeatureContainerView, AROverlayContainerView, ARRadarView, ARLocation;
 
 
 @interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate> {
@@ -34,9 +34,9 @@
 	NSURL *pendingDimensionURL;
 	ARDimension *dimension;
 	UIImagePickerController *cameraViewController;
-	UIView *featureContainerView; // Non-retained instance variable
-	UIView *overlayContainerView; // Non-retained instance variable
-	//ARRadarView *radarView;
+	ARFeatureContainerView *featureContainerView; // Non-retained instance variable
+	AROverlayContainerView *overlayContainerView; // Non-retained instance variable
+	ARRadarView *radarView; // Non-retained instance variable
 	
 	ARDimensionRequest *dimensionRequest;
 	ARAssetManager *assetManager;

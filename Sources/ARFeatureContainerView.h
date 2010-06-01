@@ -1,5 +1,5 @@
 //
-//  AROverlayView.h
+//  ARFeatureContainerView.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -21,38 +21,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+#import "ARPoint3D.h"
 
 
-@class AROverlay;
+@class ARSpatialStateManager;
 
 
-/**
- * Abstract superclass for views that display some sort of AROverlay.
- */
-@interface AROverlayView : UIControl {
+@interface ARFeatureContainerView : UIView {
+@private
+	CATransform3D EFToDeviceSpaceTransform;
+	CATransform3D perspectiveTransform;
+	CATransform3D screenTransform;
+	CATransform3D invertedScreenTransform;
+	CGFloat distanceFactor;
 }
 
-/**
- * Creates and returns the right type of view for the given overlay.
- *
- * @param overlay The overlay. May not be nil.
- *
- * @return A view, or nil if no suitable view type was found.
- */
-+ (id)viewForOverlay:(AROverlay *)overlay;
-
-/**
- * Abstract method that initializes the receiver with the given overlay. This message may only be sent to subclasses.
- *
- * @param overlay The overlay. May not be nil.
- *
- * @return The receiver.
- */
-- (id)initWithOverlay:(AROverlay *)overlay;
-
-/**
- * The overlay that is displayed in this view.
- */
-@property(nonatomic, readonly) AROverlay *overlay;
+- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)relativeAltitude;
 
 @end

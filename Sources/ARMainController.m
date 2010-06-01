@@ -23,13 +23,16 @@
 #import "ARMainController.h"
 #import "ARDimension.h"
 #import "AROverlay.h"
+#import "AROverlayContainerView.h"
 #import "AROverlayView.h"
 #import "ARFeature.h"
+#import "ARFeatureContainerView.h"
 #import "ARFeatureView.h"
-#import "ARTransform3D.h"
+#import "ARAction.h"
 #import "ARSpatialStateManager.h"
 #import "ARWGS84.h"
 #import "ARLocation.h"
+#import "ARRadarView.h"
 #import "ARAssetDataUser.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -38,11 +41,6 @@
 #define SCREEN_SIZE_Y 480
 #define CAMERA_CONTROLS_HEIGHT (53.)
 #define CAMERA_VIEW_SCALE (SCREEN_SIZE_Y / (SCREEN_SIZE_Y - CAMERA_CONTROLS_HEIGHT))
-#define CAMERA_FOCAL_LENGTH (3.85e-3)
-#define CAMERA_SENSOR_SIZE_X (2.69e-3)
-#define CAMERA_SENSOR_SIZE_Y (3.58e-3)
-#define INVERTED_DISTANCE_TO_VIEW_PLANE (.5 * CAMERA_SENSOR_SIZE_Y / CAMERA_FOCAL_LENGTH)
-#define DISTANCE_FACTOR (INVERTED_DISTANCE_TO_VIEW_PLANE / (SCREEN_SIZE_Y / 2.)) // Factor that is used to undo the view and projection transformations
 
 
 @interface ARMainController ()
@@ -50,9 +48,9 @@
 @property(nonatomic, retain) NSURL *pendingDimensionURL;
 @property(nonatomic, retain) ARDimension *dimension;
 @property(nonatomic, readonly) UIImagePickerController *cameraViewController;
-@property(nonatomic, readonly) UIView *featureContainerView;
-@property(nonatomic, readonly) UIView *overlayContainerView;
-//@property(nonatomic, readonly) ARRadarView *radarView;
+@property(nonatomic, readonly) ARFeatureContainerView *featureContainerView;
+@property(nonatomic, readonly) AROverlayContainerView *overlayContainerView;
+@property(nonatomic, readonly) ARRadarView *radarView;
 
 @property(nonatomic, retain) ARDimensionRequest *dimensionRequest;
 @property(nonatomic, readonly) ARAssetManager *assetManager;
@@ -63,16 +61,17 @@
 @property(nonatomic, retain) ARLocation *refreshLocation;
 
 - (UIImagePickerController *)cameraViewController;
-- (CATransform3D)perspectiveTransform;
 - (void)createOverlayViews;
 - (void)createFeatureViews;
 - (void)updateFeatureViews;
 
-- (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type;
+- (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type source:(NSString *)source;
 - (void)startRefreshingOnTime;
 - (void)stopRefreshingOnTime;
 - (void)startRefreshingOnDistanceResetLocation:(BOOL)reset;
 - (void)stopRefreshingOnDistance;
+
+- (void)performAction:(ARAction *)action source:(NSString *)source;
 
 @end
 
@@ -83,7 +82,7 @@
 @synthesize dimension;
 @synthesize featureContainerView;
 @synthesize overlayContainerView;
-//@synthesize radarView;
+@synthesize radarView;
 
 @synthesize dimensionRequest;
 @synthesize refreshTimer;
@@ -128,20 +127,27 @@
 	[super loadView];
 	UIView *view = [self view];
 	
+	// We want our view to be fully opaque for hit testing to work as expected
+	[view setBackgroundColor:[UIColor blackColor]];
+	
 #if !TARGET_IPHONE_SIMULATOR
 	[view addSubview:[[self cameraViewController] view]];
 #endif
 
-	featureContainerView = [[UIView alloc] init];
-	[featureContainerView setFrame:[view bounds]];
-	[featureContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-	[[featureContainerView layer] setAnchorPoint:CGPointMake(0, 0)];
+	// We are setting the feature container's origin to the center of the screen
+	featureContainerView = [[ARFeatureContainerView alloc] init];
+	[featureContainerView setCenter:CGPointMake(SCREEN_SIZE_X / 2., SCREEN_SIZE_Y / 2.)];
+	[featureContainerView setBounds:CGRectMake(-SCREEN_SIZE_X / 2., -SCREEN_SIZE_Y / 2., SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 	[view addSubview:featureContainerView];
 	[featureContainerView release];
 	
-	overlayContainerView = [[UIView alloc] init];
-	[overlayContainerView setFrame:[view bounds]];
-	[overlayContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+	radarView = [[ARRadarView alloc] init];
+	[radarView setFrame:CGRectMake(10, SCREEN_SIZE_Y - 100 - 10, 100, 100)];
+	[view addSubview:radarView];
+	[radarView release];
+	
+	overlayContainerView = [[AROverlayContainerView alloc] init];
+	[overlayContainerView setFrame:CGRectMake(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 	[view addSubview:overlayContainerView];
 	[overlayContainerView release];
 }
@@ -152,6 +158,7 @@
 	[cameraViewController release];
 	cameraViewController = nil;
 	featureContainerView = nil;
+	radarView = nil;
 	overlayContainerView = nil;
 }
 
@@ -254,21 +261,25 @@
 }
 
 - (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager {
-	// If we have a location fix, send a request for any pending URL
-	if ([self pendingDimensionURL] && [manager location]) {
-		[self startDimensionRequestWithURL:[self pendingDimensionURL] type:ARDimensionRequestTypeInit];
-		[self setPendingDimensionURL:nil];
-	}
-	
-	// Deal with the refresh location
-	if ([self isRefreshingOnDistance] && [manager location]) {
-		// If we don't have a refresh location yet, set it now
-		if (![self refreshLocation]) {
-			[self setRefreshLocation:[manager location]];
+	if ([manager location]) {
+		[manager setEFToECEFSpaceOffset:[manager locationInECEFSpace]];
+		
+		// If we have a location fix, send a request for any pending URL
+		if ([self pendingDimensionURL]) {
+			[self startDimensionRequestWithURL:[self pendingDimensionURL] type:ARDimensionRequestTypeInit source:nil];
+			[self setPendingDimensionURL:nil];
 		}
-		else if ([[manager location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
-			[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeDistanceRefresh];
-			[self stopRefreshingOnDistance];
+		
+		// Deal with the refresh location
+		if ([self isRefreshingOnDistance]) {
+			// If we don't have a refresh location yet, set it now
+			if (![self refreshLocation]) {
+				[self setRefreshLocation:[manager location]];
+			}
+			else if ([[manager location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
+				[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeDistanceRefresh source:nil];
+				[self stopRefreshingOnDistance];
+			}
 		}
 	}
 }
@@ -276,7 +287,7 @@
 #pragma mark NSTimerInvocation
 
 - (void)refreshTimerDidFire:(NSTimer *)aTimer {
-	[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeTimeRefresh];
+	[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeTimeRefresh source:nil];
 }
 
 #pragma mark ARMainController
@@ -325,19 +336,6 @@
 	}
 }
 
-- (CATransform3D)screenTransform {
-	// Invert the y-axis because the view y-axis extends towards the bottom, not the top, of the device
-	return CATransform3DMakeScale(SCREEN_SIZE_Y / 2., -SCREEN_SIZE_Y / 2., 1.);
-}
-
-- (CATransform3D)perspectiveTransform {
-	CATransform3D perspectiveTransform = CATransform3DIdentity;
-	// Inverted because the depth increases as the z-axis decreases (going from 0 towards negative values)
-	perspectiveTransform.m34 = -INVERTED_DISTANCE_TO_VIEW_PLANE; 
-	perspectiveTransform.m44 = 0.;
-	return perspectiveTransform;
-}
-
 - (void)createOverlayViews {
 	// Remove all existing overlay views
 	UIView *view;
@@ -346,9 +344,14 @@
 	}
 	
 	for (AROverlay *overlay in [dimension overlays]) {
-		AROverlayView* view = [AROverlayView viewForOverlay:overlay];
+		AROverlayView *view = [AROverlayView viewForOverlay:overlay];
 		[[view layer] setPosition:[overlay origin]];
 		[overlayContainerView addSubview:view];
+		
+		// Register for events if necessary
+		if ([overlay action]) {
+			[view addTarget:self action:@selector(didTapOverlay:) forControlEvents:UIControlEventTouchUpInside];
+		}
 		
 		// Start loading any needed asset data
 		// TODO: Refactor this (see createFeatureViews)
@@ -378,6 +381,13 @@
 		ARFeatureView *view = [ARFeatureView viewForFeature:feature];
 		[featureContainerView addSubview:view];
 		
+		// Register for events if necessary
+		if ([feature action]) {
+			// Note: at this time, the controls are unable to determine correctly whether a touch was inside their bounds or not, so subscribe to either event
+			[view addTarget:self action:@selector(didTapFeature:) forControlEvents:UIControlEventTouchUpInside];
+			[view addTarget:self action:@selector(didTapFeature:) forControlEvents:UIControlEventTouchUpOutside];
+		}
+		
 		// Start loading any needed asset data
 		// TODO: Refactor this (see createOverlayViews)
 		if ([view conformsToProtocol:@protocol(ARAssetDataUser)]) {
@@ -394,31 +404,17 @@
 		}
 	}
 	
+	[radarView setFeatures:[dimension features]];
+	
 	[self updateFeatureViews];
 }
 
 - (void)updateFeatureViews {
-	CATransform3D featureContainerTransform = CATransform3DIdentity;
-	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [spatialStateManager ECEFToENUSpaceTransform]);
-	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [spatialStateManager ENUToDeviceSpaceTransform]);
-	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [self perspectiveTransform]);
-	featureContainerTransform = CATransform3DConcat(featureContainerTransform, [self screenTransform]);
-	
-	// Disable implicit animations
-	[CATransaction begin];
-	[CATransaction setDisableActions:YES];
-	
-	[[featureContainerView layer] setSublayerTransform:featureContainerTransform];
-
-	for (ARFeatureView *featureView in [featureContainerView subviews]) {
-		NSAssert([featureView isKindOfClass:[ARFeatureView class]], nil);
-		[featureView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude] withDistanceFactor:DISTANCE_FACTOR];
-	}
-
-	[CATransaction commit];
+	[featureContainerView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
+	[radarView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
 }
 
-- (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type {
+- (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type source:(NSString *)source {
 	NSAssert(aURL, @"Expected non-nil URL.");
 	
 	// Cancel loading any assets
@@ -429,6 +425,7 @@
 	[self stopRefreshingOnDistance];
 
 	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:aURL location:[[self spatialStateManager] location] type:type];
+	[request setSource:source];
 	[request setDelegate:self];
 	[self setDimensionRequest:request];
 	[request release];
@@ -469,6 +466,38 @@
 
 - (void)stopRefreshingOnDistance {
 	[self setRefreshingOnDistance:NO];
+}
+
+- (void)didTapOverlay:(AROverlayView *)view {
+	AROverlay *overlay = [view overlay];
+	[self performAction:[overlay action] source:[overlay identifier]];
+}
+
+- (void)didTapFeature:(ARFeatureView *)view {
+	ARFeature *feature = [view feature];
+	[self performAction:[feature action] source:[feature identifier]];
+}
+
+- (void)performAction:(ARAction *)action source:(NSString *)source {
+	switch ([action type]) {
+		case ARActionTypeRefresh:
+			[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeActionRefresh source:source];
+			break;
+			
+		case ARActionTypeDimension:
+			NSAssert([action URL] != nil, @"Expected non-nil URL.");
+			[self startDimensionRequestWithURL:[action URL] type:ARDimensionRequestTypeInit source:nil];
+			break;
+			
+		case ARActionTypeURL:
+			NSAssert([action URL] != nil, @"Expected non-nil URL.");
+			[[UIApplication sharedApplication] openURL:[action URL]];
+			break;
+			
+		default:
+			DebugLog(@"Unrecognized action type %d", [action type]);
+			break;
+	}
 }
 
 @end

@@ -72,14 +72,7 @@
 	NSURL *url;
 	if (url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]) {
 		// Check if it is a URL that we recognize
-		if ([[url scheme] isEqualToString:@"gamaray"] && [url host]) {
-			// Change the scheme of the URL to http
-			NSString *urlString = [url absoluteString];
-			NSRange urlSchemeRange = [urlString rangeOfString:[url scheme] options:NSAnchoredSearch];
-			NSString *httpURLString = [urlString stringByReplacingCharactersInRange:urlSchemeRange withString:@"http"];
-			[self setInitialURL:[NSURL URLWithString:httpURLString]];
-		}
-		else if ([url isFileURL]) {
+		if ([url isFileURL] || ([[url scheme] isEqualToString:@"gamaray"] && [url host])) {
 			[self setInitialURL:url];
 		}
 		else {

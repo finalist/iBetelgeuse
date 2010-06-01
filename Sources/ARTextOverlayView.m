@@ -27,6 +27,8 @@
 
 @implementation ARTextOverlayView
 
+@synthesize overlay;
+
 #pragma mark NSObject
 
 - (id)initWithOverlay:(AROverlay *)anOverlay {

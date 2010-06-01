@@ -195,7 +195,7 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 	[[self operationsIfAvailable] removeAllObjects];
 	[operationQueue cancelAllOperations];
 	
-	DebugLog(@"Starting loading all assets");
+	DebugLog(@"Cancelling loading all assets");
 	
 	[self hideNetworkActivityIndicatorIfNeeded];
 }

@@ -92,10 +92,11 @@ ARTransform3D ARTransform3DTranspose(ARTransform3D transform) {
 }
 
 ARPoint3D ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b) {
+	CGFloat inverseOfSuperfluousCoordinate = 1. / (b.m14 * a.x + b.m24 * a.y + b.m34 * a.z + b.m44);
 	ARPoint3D result = {
-		b.m11*a.x + b.m21*a.y + b.m31*a.z + b.m41,
-		b.m12*a.x + b.m22*a.y + b.m32*a.z + b.m42,
-		b.m13*a.x + b.m23*a.y + b.m33*a.z + b.m43,
+		(b.m11 * a.x + b.m21 * a.y + b.m31 * a.z + b.m41) * inverseOfSuperfluousCoordinate,
+		(b.m12 * a.x + b.m22 * a.y + b.m32 * a.z + b.m42) * inverseOfSuperfluousCoordinate,
+		(b.m13 * a.x + b.m23 * a.y + b.m33 * a.z + b.m43) * inverseOfSuperfluousCoordinate,
 	};
 	return result;
 }
@@ -108,3 +109,11 @@ ARPoint3D ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransfo
 	};
 	return result;
 }
+
+#ifdef DEBUG
+
+NSString *ARTransform3DGetMATLABString(CATransform3D t) {
+	return [NSString stringWithFormat:@"[ %14.7f %14.7f %14.7f %14.7f; %14.7f %14.7f %14.7f %14.7f; %14.7f %14.7f %14.7f %14.7f; %14.7f %14.7f %14.7f %14.7f ]", t.m11, t.m12, t.m13, t.m14, t.m21, t.m22, t.m23, t.m24, t.m31, t.m32, t.m33, t.m34, t.m41, t.m42, t.m43, t.m44];
+}
+
+#endif

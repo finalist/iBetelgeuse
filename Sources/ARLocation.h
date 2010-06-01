@@ -69,7 +69,7 @@
 @property(nonatomic, readonly) CLLocationDegrees longitude;
 @property(nonatomic, readonly) CLLocationDistance altitude;
 
-- (ARPoint3D)ECEFCoordinate;
+- (ARPoint3D)locationInECEFSpace;
 - (CLLocationDistance)straightLineDistanceToLocation:(ARLocation *)location;
 
 @end

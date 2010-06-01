@@ -56,6 +56,7 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 
 - (id)initWithURL:(NSURL *)aURL location:(ARLocation *)aLocation type:(ARDimensionRequestType)aType {
 	NSAssert(aURL != nil, @"Expected non-nil URL.");
+	NSAssert1(([[NSSet setWithObjects:@"http", @"gamaray", @"file", nil] containsObject:[aURL scheme]]), @"Unexpected URL scheme %@.", [aURL scheme]);
 	NSAssert(aLocation != nil, @"Expected non-nil location.");
 	
 	if (self = [super init]) {
@@ -102,7 +103,17 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 #endif
 
 - (NSURLRequest *)prepareRequest {
-	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+	NSURL *requestURL = url;
+	
+	// Strip out non-http schemes
+	if (![requestURL isFileURL] && ![[requestURL scheme] isEqualToString:@"http"]) {
+		NSString *urlString = [requestURL absoluteString];
+		NSRange urlSchemeRange = [urlString rangeOfString:[requestURL scheme] options:NSAnchoredSearch];
+		NSString *httpURLString = [urlString stringByReplacingCharactersInRange:urlSchemeRange withString:@"http"];
+		requestURL = [NSURL URLWithString:httpURLString];
+	}
+	
+	NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:requestURL];
 	[request setHTTPMethod:@"POST"];
 	
 	NSMutableDictionary *postData = [[NSMutableDictionary alloc] init];

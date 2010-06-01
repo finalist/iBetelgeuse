@@ -40,7 +40,6 @@
 	ARLocation *location;
 	BOOL latitudeSet;
 	BOOL longitudeSet;
-	BOOL altitudeSet;
 }
 
 @end
@@ -114,13 +113,13 @@
 	[delegate release];
 }
 
-- (ARPoint3D)ECEFCoordinate {
+- (ARPoint3D)locationInECEFSpace {
 	return ARWGS84GetECEF(latitude, longitude, altitude);
 }
 
 - (CLLocationDistance)straightLineDistanceToLocation:(ARLocation *)location {
-	ARPoint3D a = [self ECEFCoordinate];
-	ARPoint3D b = [location ECEFCoordinate];
+	ARPoint3D a = [self locationInECEFSpace];
+	ARPoint3D b = [location locationInECEFSpace];
 	return ARPoint3DLength(ARPoint3DSubtract(a, b));
 }
 
@@ -147,7 +146,6 @@
 	
 	latitudeSet = NO;
 	longitudeSet = NO;
-	altitudeSet = NO;
 }
 
 - (void)parsingDidFindSimpleElement:(NSString *)name attributes:(NSDictionary *)attributes content:(NSString *)content {
@@ -173,7 +171,6 @@
 			DebugLog(@"Invalid value for altitude element: %@.", content);
 		} else {
 			[location setAltitude:value];
-			altitudeSet = YES;
 		}
 	} else {
 		DebugLog(@"Unknown element: %@", name);
@@ -181,7 +178,7 @@
 }
 
 - (id)parsingDidEndWithElementContent:(NSString *)content {
-	if (!latitudeSet || !longitudeSet || !altitudeSet) {
+	if (!latitudeSet || !longitudeSet) {
 		return nil;
 	} else {
 		return location;

@@ -34,6 +34,7 @@
 @private
 	id <ARSpatialStateManagerDelegate> delegate;
 	BOOL delegateRespondsToLocationDidUpdate;
+	ARPoint3D EFToECEFSpaceOffset;
 
 #if TARGET_IPHONE_SIMULATOR
 	NSTimer *updateTimer;
@@ -48,6 +49,7 @@
 }
 
 @property(nonatomic, assign) id <ARSpatialStateManagerDelegate> delegate;
+@property(nonatomic) ARPoint3D EFToECEFSpaceOffset;
 
 @property(nonatomic, readonly, getter=isUpdating) BOOL updating;
 @property(nonatomic, readonly, retain) UIAcceleration *rawAcceleration;
@@ -58,11 +60,14 @@
 - (void)stopUpdating;
 
 - (ARLocation *)location;
-- (ARPoint3D)locationAsECEFCoordinate;
+- (ARPoint3D)locationInECEFSpace;
+- (ARPoint3D)locationInEFSpace;
 - (CATransform3D)ENUToDeviceSpaceTransform;
-- (CATransform3D)ECEFToENUSpaceTransform;
-- (CATransform3D)ENUToECEFSpaceTransform;
+- (CATransform3D)EFToENUSpaceTransform;
+- (CATransform3D)ENUToEFSpaceTransform;
 - (CLLocationDistance)altitude;
+- (ARPoint3D)upDirectionInDeviceSpace;
+- (ARPoint3D)upDirectionInEFSpace;
 
 @end
 
@@ -73,7 +78,7 @@
 @protocol ARSpatialStateManagerDelegate <NSObject>
 
 /**
- * Sent whenever the acceleration, location or heading has changed.
+ * Sent whenever the acceleration, location or heading has changed. This method will be called after spatialStateManagerLocationDidUpdate:.
  * 
  * @param manager The sender of the message.
  */
@@ -82,7 +87,7 @@
 @optional
 
 /**
- * Sent in addition to spatialStateManagerDidUpdate: when the location has changed. This method will be called less often and therefore allows 
+ * Sent when the location has changed. This method will be called less often and therefore allows for more elaborate processing.
  */
 - (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager;
 

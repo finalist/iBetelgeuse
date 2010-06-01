@@ -30,8 +30,6 @@
 #import "ARPoint3D.h"
 #import "ARTransform3D.h"
 
-@class ARTextFeature;
-
 
 @implementation ARFeatureView
 
@@ -43,6 +41,18 @@
 	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of invalid initializer; use initWithOverlay: instead.");
 	
 	return [super init];
+}
+
+- (id)initWithFeature:(ARFeature *)feature {
+	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of abstract method.");
+	NSAssert(feature != nil, @"Expected non-nil overlay.");
+	
+	if (self = [super initWithFrame:CGRectZero]) {
+		[[self layer] setAnchorPoint:[feature anchor]];
+		
+		[self setHidden:YES];
+	}
+	return self;
 }
 
 #pragma mark UIView
@@ -72,32 +82,27 @@
 	}
 }
 
-- (id)initWithFeature:(ARFeature *)feature {
-	NSAssert([self class] != [ARFeatureView class], @"Unexpected invocation of abstract method.");
-	NSAssert(feature != nil, @"Expected non-nil overlay.");
-	
-	if (self = [super initWithFrame:CGRectZero]) {
-		[[self layer] setAnchorPoint:[feature anchor]];
-	}
-	return self;
-}
-
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor {
-	// This function uses ECEF coordinates for all variables unless specified otherwise.
-	ARPoint3D featurePosition = [[[self feature] location] ECEFCoordinate];
-	ARPoint3D devicePosition = [spatialState locationAsECEFCoordinate];
-	ARPoint3D upDirection = ARPoint3DNormalize(devicePosition);
+	// This function uses EF coordinates for all variables unless specified otherwise.
+	ARPoint3D featurePosition = ARPoint3DSubtract([[[self feature] location] locationInECEFSpace], [spatialState EFToECEFSpaceOffset]);
+	ARPoint3D devicePosition = [spatialState locationInEFSpace];
+	ARPoint3D upDirection = [spatialState upDirectionInEFSpace];
 
-	ARPoint3D offsetInENUCoordinates = [[self feature] offset];
+	ARPoint3D offsetInENUSpace = [[self feature] offset];
 	if (useRelativeAltitude)
-		offsetInENUCoordinates.z += [spatialState altitude];
-	ARPoint3D offset = ARTransform3DNonhomogeneousVectorMatrixMultiply(offsetInENUCoordinates, [spatialState ENUToECEFSpaceTransform]);
+		offsetInENUSpace.z += [spatialState altitude];
+	ARPoint3D offset = ARTransform3DNonhomogeneousVectorMatrixMultiply(offsetInENUSpace, [spatialState ENUToEFSpaceTransform]);
 	featurePosition = ARPoint3DAdd(featurePosition, offset);
 	
-	const float scale = ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) * distanceFactor; // This is done so that feature coordinates are measured in pixels, not in meters (by undoing screen and perspective transform)
-	
-	[[self layer] setPosition:CGPointZero];
-	[[self layer] setTransform:CATransform3DConcat(CATransform3DMakeScale(scale, -scale, scale), ARTransform3DLookAt(featurePosition, devicePosition, upDirection, ARPoint3DCreate(0., 0., 1.)))]; // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
+	if (ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) == 0.) {
+		[self setHidden:YES];
+	} else {
+		const float scale = ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) * distanceFactor; // This is done so that feature coordinates are measured in pixels, not in meters (by undoing screen and perspective transform)
+		
+		[[self layer] setPosition:CGPointZero];
+		[[self layer] setTransform:CATransform3DConcat(CATransform3DMakeScale(scale, -scale, scale), ARTransform3DLookAt(featurePosition, devicePosition, upDirection, ARPoint3DCreate(0., 0., 1.)))]; // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
+		[self setHidden:false];
+	}
 }
 
 @end

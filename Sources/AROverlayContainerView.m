@@ -1,5 +1,5 @@
 //
-//  AROverlayView.h
+//  AROverlayContainerView.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,39 +20,31 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <UIKit/UIKit.h>
+#import "AROverlayContainerView.h"
 
 
-@class AROverlay;
+@implementation AROverlayContainerView
 
+#pragma mark NSObject
 
-/**
- * Abstract superclass for views that display some sort of AROverlay.
- */
-@interface AROverlayView : UIControl {
+- (id)initWithFrame:(CGRect)aFrame {
+	if (self = [super initWithFrame:aFrame]) {
+		[self setClearsContextBeforeDrawing:NO];
+		[self setOpaque:NO];
+	}
+	return self;
 }
 
-/**
- * Creates and returns the right type of view for the given overlay.
- *
- * @param overlay The overlay. May not be nil.
- *
- * @return A view, or nil if no suitable view type was found.
- */
-+ (id)viewForOverlay:(AROverlay *)overlay;
+#pragma mark UIView
 
-/**
- * Abstract method that initializes the receiver with the given overlay. This message may only be sent to subclasses.
- *
- * @param overlay The overlay. May not be nil.
- *
- * @return The receiver.
- */
-- (id)initWithOverlay:(AROverlay *)overlay;
-
-/**
- * The overlay that is displayed in this view.
- */
-@property(nonatomic, readonly) AROverlay *overlay;
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+	UIView *hitView = [super hitTest:point withEvent:event];
+	if (hitView == self) {
+		return nil;
+	}
+	else {
+		return hitView;
+	}
+}
 
 @end

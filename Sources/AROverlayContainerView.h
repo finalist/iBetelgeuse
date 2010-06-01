@@ -1,5 +1,5 @@
 //
-//  AROverlayView.h
+//  AROverlayContainerView.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -23,36 +23,7 @@
 #import <UIKit/UIKit.h>
 
 
-@class AROverlay;
-
-
-/**
- * Abstract superclass for views that display some sort of AROverlay.
- */
-@interface AROverlayView : UIControl {
+@interface AROverlayContainerView : UIView {
 }
-
-/**
- * Creates and returns the right type of view for the given overlay.
- *
- * @param overlay The overlay. May not be nil.
- *
- * @return A view, or nil if no suitable view type was found.
- */
-+ (id)viewForOverlay:(AROverlay *)overlay;
-
-/**
- * Abstract method that initializes the receiver with the given overlay. This message may only be sent to subclasses.
- *
- * @param overlay The overlay. May not be nil.
- *
- * @return The receiver.
- */
-- (id)initWithOverlay:(AROverlay *)overlay;
-
-/**
- * The overlay that is displayed in this view.
- */
-@property(nonatomic, readonly) AROverlay *overlay;
 
 @end
