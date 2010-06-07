@@ -33,6 +33,7 @@
 #import "ARWGS84.h"
 #import "ARLocation.h"
 #import "ARRadarView.h"
+#import "ARButton.h"
 #import "ARAssetDataUser.h"
 #import <QuartzCore/QuartzCore.h>
 #import <zbar/ZBarImageScanner.h>
@@ -202,19 +203,21 @@ CGImageRef UIGetScreenImage(void);
 	[overlayContainerView setHidden:YES];
 	[overlayContainerView release];
 	
-	menuButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[menuButton setFrame:CGRectMake(SCREEN_SIZE_X - 50 - 10, SCREEN_SIZE_Y - 50 - 10, 50, 50)];
-	[menuButton setTitle:NSLocalizedString(@"Menu", @"button") forState:UIControlStateNormal];
+	menuButton = [[ARButton alloc] init];
+	[menuButton setFrame:CGRectMake(SCREEN_SIZE_X - 54 - 10, SCREEN_SIZE_Y - 44 - 10, 54, 44)];
+	[menuButton setImage:[UIImage imageNamed:@"ARMenuButton.png"] forState:UIControlStateNormal];
 	[menuButton addTarget:self action:@selector(didTapMenuButton) forControlEvents:UIControlEventTouchUpInside];
 	[menuButton setHidden:YES];
 	[view addSubview:menuButton];
+	[menuButton release];
 	
-	cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[cancelButton setFrame:CGRectMake(SCREEN_SIZE_X - 50 - 10, SCREEN_SIZE_Y - 50 - 10, 50, 50)];
+	cancelButton = [[ARButton alloc] init];
+	[cancelButton setFrame:CGRectMake(SCREEN_SIZE_X - 74 - 10, SCREEN_SIZE_Y - 50 - 10, 74, 44)];
 	[cancelButton setTitle:NSLocalizedString(@"Cancel", @"button") forState:UIControlStateNormal];
 	[cancelButton addTarget:self action:@selector(didTapCancelButton) forControlEvents:UIControlEventTouchUpInside];
 	[cancelButton setHidden:YES];
 	[view addSubview:cancelButton];
+	[cancelButton release];
 }
 
 - (void)viewDidUnload {

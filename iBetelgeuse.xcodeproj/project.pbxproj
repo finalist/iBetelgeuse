@@ -68,6 +68,8 @@
 		95C7609511B6930000B71931 /* ARCompassFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C7609411B6930000B71931 /* ARCompassFilter.m */; };
 		95C760B211B6967B00B71931 /* ARStepFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C760B111B6967B00B71931 /* ARStepFilter.m */; };
 		95C7615311B7AEEE00B71931 /* ARModifiedExponentialFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C7615211B7AEEE00B71931 /* ARModifiedExponentialFilter.m */; };
+		95C765F711BD25EB00B71931 /* ARButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C765F611BD25EB00B71931 /* ARButton.m */; };
+		95C765F911BD26A900B71931 /* ARMenuButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 95C765F811BD26A900B71931 /* ARMenuButton.png */; };
 		95D3CFC411A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */; };
 		95D3CFC511A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */; };
 		95D3CFCB11A2BB46007B7148 /* ARFormURLEncodingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFCA11A2BB46007B7148 /* ARFormURLEncodingTest.m */; };
@@ -229,6 +231,9 @@
 		95C760B111B6967B00B71931 /* ARStepFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStepFilter.m; sourceTree = "<group>"; };
 		95C7615111B7AEEE00B71931 /* ARModifiedExponentialFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModifiedExponentialFilter.h; sourceTree = "<group>"; };
 		95C7615211B7AEEE00B71931 /* ARModifiedExponentialFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARModifiedExponentialFilter.m; sourceTree = "<group>"; };
+		95C765F511BD25EB00B71931 /* ARButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButton.h; sourceTree = "<group>"; };
+		95C765F611BD25EB00B71931 /* ARButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARButton.m; sourceTree = "<group>"; };
+		95C765F811BD26A900B71931 /* ARMenuButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARMenuButton.png; sourceTree = "<group>"; };
 		95D3CFC211A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+ARFormURLEncoding.h"; sourceTree = "<group>"; };
 		95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+ARFormURLEncoding.m"; sourceTree = "<group>"; };
 		95D3CFC911A2BB46007B7148 /* ARFormURLEncodingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFormURLEncodingTest.h; sourceTree = "<group>"; };
@@ -379,6 +384,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107310486CEB800E47090 /* Info.plist */,
+				95C765F811BD26A900B71931 /* ARMenuButton.png */,
 				95B9BEED11A1361400EDD870 /* Tests */,
 			);
 			path = Resources;
@@ -598,6 +604,8 @@
 				C3346D7D11A3C22C00228C9A /* ARTextFeatureView.m */,
 				C3C62E8511ABE7D500553407 /* ARRadarView.h */,
 				C3C62E8611ABE7D500553407 /* ARRadarView.m */,
+				95C765F511BD25EB00B71931 /* ARButton.h */,
+				95C765F611BD25EB00B71931 /* ARButton.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -755,6 +763,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95C765F911BD26A900B71931 /* ARMenuButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -824,6 +833,7 @@
 				95C7609511B6930000B71931 /* ARCompassFilter.m in Sources */,
 				95C760B211B6967B00B71931 /* ARStepFilter.m in Sources */,
 				95C7615311B7AEEE00B71931 /* ARModifiedExponentialFilter.m in Sources */,
+				95C765F711BD25EB00B71931 /* ARButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
