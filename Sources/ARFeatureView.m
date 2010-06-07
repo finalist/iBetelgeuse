@@ -82,7 +82,7 @@
 	}
 }
 
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor {
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor {
 	// This function uses EF coordinates for all variables unless specified otherwise.
 	ARPoint3D featurePosition = ARPoint3DSubtract([[[self feature] location] locationInECEFSpace], [spatialState EFToECEFSpaceOffset]);
 	ARPoint3D devicePosition = [spatialState locationInEFSpace];

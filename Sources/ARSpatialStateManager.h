@@ -26,48 +26,43 @@
 #import "ARPoint3D.h"
 
 
-@class ARLocation;
+@class ARSpatialState, ARLocation;
 @protocol ARSpatialStateManagerDelegate;
 
 
-@interface ARSpatialStateManager : NSObject <UIAccelerometerDelegate, CLLocationManagerDelegate> {
+@interface ARSpatialStateManager : NSObject {
 @private
 	id <ARSpatialStateManagerDelegate> delegate;
 	BOOL delegateRespondsToLocationDidUpdate;
 	ARPoint3D EFToECEFSpaceOffset;
 
+	BOOL updating;
 #if TARGET_IPHONE_SIMULATOR
 	NSTimer *updateTimer;
 #else
 	CLLocationManager *locationManager;
 #endif
+
+	BOOL locationAvailable;
+	BOOL upDirectionAvailable;
+	BOOL northDirectionAvailable;
+	CLLocationDegrees latitude;
+	CLLocationDegrees longitude;
+	CLLocationDistance altitude;
+	ARPoint3D upDirectionInDeviceSpace;
+	ARPoint3D northDirectionInDeviceSpace;
 	
-	BOOL updating;
-	UIAcceleration *rawAcceleration;
-	CLLocation *rawLocation;
-	CLHeading *rawHeading;
+	ARSpatialState *spatialState;
 }
 
 @property(nonatomic, assign) id <ARSpatialStateManagerDelegate> delegate;
 @property(nonatomic) ARPoint3D EFToECEFSpaceOffset;
 
 @property(nonatomic, readonly, getter=isUpdating) BOOL updating;
-@property(nonatomic, readonly, retain) UIAcceleration *rawAcceleration;
-@property(nonatomic, readonly, retain) CLLocation *rawLocation;
-@property(nonatomic, readonly, retain) CLHeading *rawHeading;
-
 - (void)startUpdating;
 - (void)stopUpdating;
 
-- (ARLocation *)location;
-- (ARPoint3D)locationInECEFSpace;
-- (ARPoint3D)locationInEFSpace;
-- (CATransform3D)ENUToDeviceSpaceTransform;
-- (CATransform3D)EFToENUSpaceTransform;
-- (CATransform3D)ENUToEFSpaceTransform;
-- (CLLocationDistance)altitude;
-- (ARPoint3D)upDirectionInDeviceSpace;
-- (ARPoint3D)upDirectionInEFSpace;
+@property(nonatomic, readonly, retain) ARSpatialState *spatialState;
 
 @end
 
@@ -90,5 +85,56 @@
  * Sent when the location has changed. This method will be called less often and therefore allows for more elaborate processing.
  */
 - (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager;
+
+@end
+
+
+@interface ARSpatialState : NSObject {
+@private
+	CLLocationDegrees latitude;
+	CLLocationDegrees longitude;
+	CLLocationDistance altitude;
+	ARPoint3D upDirectionInDeviceSpace;
+	ARPoint3D northDirectionInDeviceSpace;
+	ARPoint3D EFToECEFSpaceOffset;
+	NSDate *timestamp;
+	
+	ARLocation *location;
+	ARPoint3D locationInECEFSpace;
+	CATransform3D ENUToDeviceSpaceTransform;
+	CATransform3D ENUToEFSpaceTransform;
+	CATransform3D EFToENUSpaceTransform;
+	
+	struct {
+		BOOL locationAvailable:1;
+		BOOL orientationAvailable:1;
+		BOOL haveLocationInECEFSpace:1;
+		BOOL haveENUToDeviceSpaceTransform:1;
+		BOOL haveENUToEFSpaceTransform:1;
+		BOOL haveEFToENUSpaceTransform:1;
+	} flags;
+}
+
+@property(nonatomic, readonly, getter=isLocationAvailable) BOOL locationAvailable;
+@property(nonatomic, readonly, getter=isOrientationAvailable) BOOL orientationAvailable;
+@property(nonatomic, readonly, retain) NSDate *timestamp;
+
+@property(nonatomic, readonly, retain) ARLocation *location;
+@property(nonatomic, readonly) CLLocationDistance altitude;
+@property(nonatomic, readonly) ARPoint3D locationInECEFSpace;
+@property(nonatomic, readonly) ARPoint3D locationInEFSpace;
+
+@property(nonatomic, readonly) ARPoint3D upDirectionInDeviceSpace;
+@property(nonatomic, readonly) ARPoint3D upDirectionInECEFSpace;
+@property(nonatomic, readonly) ARPoint3D upDirectionInEFSpace;
+
+@property(nonatomic, readonly) ARPoint3D northDirectionInDeviceSpace;
+@property(nonatomic, readonly) ARPoint3D northDirectionInECEFSpace;
+@property(nonatomic, readonly) ARPoint3D northDirectionInEFSpace;
+
+@property(nonatomic, readonly) CATransform3D ENUToDeviceSpaceTransform;
+@property(nonatomic, readonly) CATransform3D ENUToEFSpaceTransform;
+@property(nonatomic, readonly) CATransform3D EFToENUSpaceTransform;
+@property(nonatomic, readonly) ARPoint3D EFToECEFSpaceOffset;
 
 @end

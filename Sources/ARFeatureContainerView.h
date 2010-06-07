@@ -25,7 +25,7 @@
 #import "ARPoint3D.h"
 
 
-@class ARSpatialStateManager;
+@class ARSpatialState;
 
 
 @interface ARFeatureContainerView : UIView {
@@ -37,6 +37,6 @@
 	CGFloat distanceFactor;
 }
 
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)relativeAltitude;
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)relativeAltitude;
 
 @end

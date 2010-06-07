@@ -23,7 +23,8 @@
 #import "ARPoint3D.h"
 #import <QuartzCore/QuartzCore.h>
 
-@class ARSpatialStateManager;
+
+@class ARSpatialState;
 
 
 @interface ARRadarView : UIView {
@@ -42,6 +43,6 @@
 
 @property(nonatomic, readwrite, copy) NSArray *features;
 
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude;
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude;
 
 @end

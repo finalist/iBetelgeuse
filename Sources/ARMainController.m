@@ -333,8 +333,9 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager {
-	if ([manager location]) {
-		[manager setEFToECEFSpaceOffset:[manager locationInECEFSpace]];
+	ARSpatialState *spatialState = [manager spatialState];
+	if ([spatialState isLocationAvailable]) {
+		[manager setEFToECEFSpaceOffset:[spatialState locationInECEFSpace]];
 		
 		// If we have a location fix, send a request for any pending URL
 		if ([self pendingDimensionURL]) {
@@ -346,9 +347,9 @@ CGImageRef UIGetScreenImage(void);
 		if ([self isRefreshingOnDistance]) {
 			// If we don't have a refresh location yet, set it now
 			if (![self refreshLocation]) {
-				[self setRefreshLocation:[manager location]];
+				[self setRefreshLocation:[spatialState location]];
 			}
-			else if ([[manager location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
+			else if ([[spatialState location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
 				[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeDistanceRefresh source:nil];
 				[self stopRefreshingOnDistance];
 			}
@@ -541,8 +542,8 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)updateFeatureViews {
-	[featureContainerView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
-	[radarView updateWithSpatialState:spatialStateManager usingRelativeAltitude:[dimension relativeAltitude]];
+	[featureContainerView updateWithSpatialState:[spatialStateManager spatialState] usingRelativeAltitude:[dimension relativeAltitude]];
+	[radarView updateWithSpatialState:[spatialStateManager spatialState] usingRelativeAltitude:[dimension relativeAltitude]];
 }
 
 - (void)setNeedsUpdate {
@@ -567,7 +568,7 @@ CGImageRef UIGetScreenImage(void);
 	[self stopRefreshingOnTime];
 	[self stopRefreshingOnDistance];
 
-	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:aURL location:[[self spatialStateManager] location] type:type];
+	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:aURL location:[[[self spatialStateManager] spatialState] location] type:type];
 	[request setSource:source];
 	[request setDelegate:self];
 	[self setDimensionRequest:request];
@@ -602,7 +603,7 @@ CGImageRef UIGetScreenImage(void);
 		[self setRefreshingOnDistance:YES];
 		
 		if (reset) {
-			[self setRefreshLocation:[[self spatialStateManager] location]];
+			[self setRefreshLocation:[[[self spatialStateManager] spatialState] location]];
 		}
 	}
 }

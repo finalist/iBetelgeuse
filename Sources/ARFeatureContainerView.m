@@ -115,8 +115,8 @@
 
 #pragma mark ARFeatureContainerView
 
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialStateManager usingRelativeAltitude:(BOOL)relativeAltitude {
-	EFToDeviceSpaceTransform = CATransform3DConcat([spatialStateManager EFToENUSpaceTransform], [spatialStateManager ENUToDeviceSpaceTransform]);
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)relativeAltitude {
+	EFToDeviceSpaceTransform = CATransform3DConcat([spatialState EFToENUSpaceTransform], [spatialState ENUToDeviceSpaceTransform]);
 	
 	CATransform3D sublayerTransform = EFToDeviceSpaceTransform;
 	sublayerTransform = CATransform3DConcat(sublayerTransform, perspectiveTransform);
@@ -130,7 +130,7 @@
 	
 	for (ARFeatureView *featureView in [self subviews]) {
 		NSAssert([featureView isKindOfClass:[ARFeatureView class]], nil);
-		[featureView updateWithSpatialState:spatialStateManager usingRelativeAltitude:relativeAltitude withDistanceFactor:distanceFactor];
+		[featureView updateWithSpatialState:spatialState usingRelativeAltitude:relativeAltitude withDistanceFactor:distanceFactor];
 	}
 	
 	[CATransaction commit];

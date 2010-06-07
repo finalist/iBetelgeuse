@@ -30,16 +30,22 @@
 #define LOCATION_EXPIRATION 60 // seconds
 
 
-@interface ARSpatialStateManager ()
+@interface ARSpatialStateManager () <UIAccelerometerDelegate, CLLocationManagerDelegate>
 
 @property(nonatomic, readwrite, getter=isUpdating) BOOL updating;
-@property(nonatomic, readwrite, retain) UIAcceleration *rawAcceleration;
-@property(nonatomic, readwrite, retain) CLLocation *rawLocation;
-@property(nonatomic, readwrite, retain) CLHeading *rawHeading;
 
-- (ARPoint3D)upDirectionInDeviceSpace;
-- (ARPoint3D)northDirectionInDeviceSpace;
-- (ARPoint3D)northDirectionInECEFSpace;
+- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude;
+- (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection;
+- (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination;
+
+- (void)invalidateSpatialState;
+
+@end
+
+
+@interface ARSpatialState ()
+
+- (id)initWithLocationAvailable:(BOOL)locationAvailable latitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude altitude:(CLLocationDistance)altitude orientationAvailable:(BOOL)orientationAvailable upDirection:(ARPoint3D)upDirection northDirection:(ARPoint3D)northDirection EFToECEFSpaceOffset:(ARPoint3D)EFToECEFSpaceOffset;
 
 @end
 
@@ -47,7 +53,8 @@
 @implementation ARSpatialStateManager
 
 @synthesize delegate, EFToECEFSpaceOffset;
-@synthesize updating, rawAcceleration, rawLocation, rawHeading;
+@synthesize updating;
+@synthesize spatialState;
 
 #pragma mark NSObject
 
@@ -59,27 +66,33 @@
 	[locationManager release];
 #endif
 	
-	[rawAcceleration release];
-	[rawLocation release];
-	[rawHeading release];
+	[spatialState release];
 	
 	[super dealloc];
 }
 
 #pragma mark UIAccelerometerDelegate
 
-- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)newRawAcceleration {
-	[self setRawAcceleration:newRawAcceleration];
-	
-	[delegate spatialStateManagerDidUpdate:self];
+- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)rawAcceleration {
+	ARPoint3D rawUpDirection;
+	rawUpDirection.x = -[rawAcceleration x];
+	rawUpDirection.y = -[rawAcceleration y];
+	rawUpDirection.z = -[rawAcceleration z];
+	[self updateWithRawUpDirection:rawUpDirection];
 }
 
 #pragma mark CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newRawHeading {
-	[self setRawHeading:newRawHeading];
+	ARPoint3D rawNorthDirection;
+	rawNorthDirection.x = [newRawHeading x];
+	rawNorthDirection.y = [newRawHeading y];
+	rawNorthDirection.z = [newRawHeading z];
+
+	// Determine compass declination in [-2pi, 2pi] at the current location as determined by the iPhone OS
+	CGFloat rawDeclination = ([newRawHeading trueHeading] - [newRawHeading magneticHeading]) / 180.f * M_PI;
 	
-	[delegate spatialStateManagerDidUpdate:self];
+	[self updateWithRawNorthDirection:rawNorthDirection declination:rawDeclination];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newRawLocation fromLocation:(CLLocation *)previousRawLocation {
@@ -90,18 +103,15 @@
 	
 	DebugLog(@"Got location location fix: %@", newRawLocation);
 	
-	[self setRawLocation:newRawLocation];
-	
-	if (delegateRespondsToLocationDidUpdate) {
-		[delegate spatialStateManagerLocationDidUpdate:self];
-	}
-	[delegate spatialStateManagerDidUpdate:self];
+	[self updateWithRawLatitude:[newRawLocation coordinate].latitude longitude:[newRawLocation coordinate].longitude altitude:[newRawLocation altitude]];
 }
 
 #pragma mark ARSpatialStateManager
 
 - (void)setDelegate:(id <ARSpatialStateManagerDelegate>)aDelegate {
 	delegate = aDelegate;
+	
+	// Determine whether the delegate implements this method, so that we don't have to check this a gazillion times a second
 	delegateRespondsToLocationDidUpdate = [delegate respondsToSelector:@selector(spatialStateManagerLocationDidUpdate:)];
 }
 
@@ -153,123 +163,205 @@
 }
 
 #if TARGET_IPHONE_SIMULATOR
-
 - (void)updateTimerDidFire {
+	static CGFloat simulatedLatitude = 0.0;
+	[self updateWithRawLatitude:simulatedLatitude longitude:0 altitude:0];
+//	simulatedLatitude += 0.00005;
+
+	// Assume the device is being held with the home button at the bottom
+	static CGFloat simulatedUpAngle = 0.0;
+	[self updateWithRawUpDirection:ARPoint3DCreate(0, cosf(simulatedUpAngle), -sinf(simulatedUpAngle))];
+//	simulatedUpAngle += 1.f / 180.f * M_PI;
+	
+	// Assume the back of the device is pointing towards the north with a declination of -10º
+	static CGFloat simulatedNorthAngle = 0.0;
+	CGFloat declination = -10.f / 180.f * M_PI;
+	[self updateWithRawNorthDirection:ARPoint3DCreate(sinf(declination - simulatedNorthAngle), 0, -cosf(declination - simulatedNorthAngle)) declination:declination];
+//	simulatedNorthAngle += 1.f / 180.f * M_PI;
+}
+#endif
+
+- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude {
+	locationAvailable = YES;
+	latitude = rawLatitude;
+	longitude = rawLongitude;
+	altitude = rawAltitude;
+	
+	[self invalidateSpatialState];
+	
 	if (delegateRespondsToLocationDidUpdate) {
 		[delegate spatialStateManagerLocationDidUpdate:self];
 	}
 	[delegate spatialStateManagerDidUpdate:self];
 }
 
-#endif
-
-/**
- * Compute compass declination at the current location.
- * @return an angle in range -2pi..2pi in radians.
- */
-- (CGFloat)declination {
-#if TARGET_IPHONE_SIMULATOR
-	return -10.f/180.f*M_PI;
-#else
-	if (rawHeading) {
-		CGFloat declination = ([rawHeading trueHeading] - [rawHeading magneticHeading]) / 180.f * M_PI;
-		return declination;
-	} else {
-		return 0.;
+- (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection {
+	upDirectionAvailable = YES;
+	
+	// TODO: Apply filter
+	upDirectionInDeviceSpace = rawUpDirection;
+	
+	[self invalidateSpatialState];
+	
+	if (delegateRespondsToLocationDidUpdate) {
+		[delegate spatialStateManagerLocationDidUpdate:self];
 	}
-
-#endif
+	[delegate spatialStateManagerDidUpdate:self];
 }
 
-- (ARPoint3D)upDirectionInDeviceSpace {
-	if (rawAcceleration) {
-		// The up vector is opposite to the gravity indicated by the accelerometer
-		return ARPoint3DCreate(-[rawAcceleration x], -[rawAcceleration y], -[rawAcceleration z]);
+- (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination {
+	northDirectionAvailable = YES;
+	
+	// If we have an up direction, correct for magnetic declination
+	if (upDirectionAvailable) {
+		ARTransform3D declinationCorrectionTransform = CATransform3DMakeRotation(declination, upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, upDirectionInDeviceSpace.z);
+		rawNorthDirection = ARTransform3DNonhomogeneousVectorMatrixMultiply(rawNorthDirection, declinationCorrectionTransform);
 	}
-	else {
-		// Assume the device is being held perpendicular to the floor with the home button to the bottom
-		return ARPoint3DCreate(0., 1., 0.);
+	
+	// TODO: Apply filter
+	northDirectionInDeviceSpace = rawNorthDirection;
+	
+	[self invalidateSpatialState];
+	
+	if (delegateRespondsToLocationDidUpdate) {
+		[delegate spatialStateManagerLocationDidUpdate:self];
 	}
+	[delegate spatialStateManagerDidUpdate:self];
 }
 
-- (ARPoint3D)magneticNorthDirectionInDeviceSpace {
-	if (rawHeading) {
-		// The north vector is approximated using the magnetic north indicated by the magnetometer
-		ARPoint3D magneticNorthDirectionInDeviceSpace = ARPoint3DCreate([rawHeading x], [rawHeading y], [rawHeading z]);
-		return magneticNorthDirectionInDeviceSpace;
+- (ARSpatialState *)spatialState {
+	if (spatialState == nil) {
+		spatialState = [[ARSpatialState alloc] initWithLocationAvailable:locationAvailable latitude:latitude longitude:longitude altitude:altitude orientationAvailable:(upDirectionAvailable && northDirectionAvailable) upDirection:upDirectionInDeviceSpace northDirection:northDirectionInDeviceSpace EFToECEFSpaceOffset:EFToECEFSpaceOffset];
 	}
-	else {
-		// Assume the back of the device is pointed towards north; add declination for testing.
-		return ARPoint3DCreate(sin([self declination]), 0., -cos([self declination]));
-	}
+	return spatialState;
 }
 
-- (ARPoint3D)northDirectionInDeviceSpace {
-	ARPoint3D upDirectionInDeviceSpace = [self upDirectionInDeviceSpace];
-	ARPoint3D magneticNorthDirectionInDeviceSpace = [self magneticNorthDirectionInDeviceSpace];
-	ARTransform3D declinationCorrectionTransform = CATransform3DMakeRotation([self declination], upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, upDirectionInDeviceSpace.z);
-	ARPoint3D northDirectionInDeviceSpace = ARTransform3DNonhomogeneousVectorMatrixMultiply(magneticNorthDirectionInDeviceSpace, declinationCorrectionTransform);
-	return northDirectionInDeviceSpace;
+- (void)invalidateSpatialState {
+	[spatialState release];
+	spatialState = nil;
 }
 
-- (ARPoint3D)northDirectionInECEFSpace {
-	// By definition of ECEF, the North pole is located along the z-axis
-	return ARPoint3DCreate(0., 0., 1.);
+@end
+
+
+@implementation ARSpatialState
+
+#pragma mark NSObject
+
+- (id)initWithLocationAvailable:(BOOL)isLocationAvailable latitude:(CLLocationDegrees)aLatitude longitude:(CLLocationDegrees)aLongitude altitude:(CLLocationDistance)anAltitude orientationAvailable:(BOOL)isOrientationAvailable upDirection:(ARPoint3D)anUpDirection northDirection:(ARPoint3D)aNorthDirection EFToECEFSpaceOffset:(ARPoint3D)anEFToECEFSpaceOffset {
+	if (self = [super init]) {
+		flags.locationAvailable = isLocationAvailable;
+		flags.orientationAvailable = isOrientationAvailable;
+		latitude = aLatitude;
+		longitude = aLongitude;
+		altitude = anAltitude;
+		upDirectionInDeviceSpace = anUpDirection;
+		northDirectionInDeviceSpace = aNorthDirection;
+		EFToECEFSpaceOffset = anEFToECEFSpaceOffset;
+		timestamp = [[NSDate date] retain];
+	}
+	return self;
 }
+
+- (void)dealloc {
+	[timestamp release];
+	[location release];
+	
+	[super dealloc];
+}
+
+#pragma mark ARSpatialState
+
+- (BOOL)isLocationAvailable {
+	return flags.locationAvailable;
+}
+
+- (BOOL)isOrientationAvailable {
+	return flags.orientationAvailable;
+}
+
+@synthesize timestamp;
 
 - (ARLocation *)location {
-#if TARGET_IPHONE_SIMULATOR
-	return [[[ARLocation alloc] initWithLatitude:0 longitude:0 altitude:0] autorelease];
-#else
-	if (rawLocation) {
-		return [[[ARLocation alloc] initWithCLLocation:rawLocation] autorelease];
+	if ([self isLocationAvailable]) {
+		if (location == nil) {
+			location = [[ARLocation alloc] initWithLatitude:latitude longitude:longitude altitude:altitude];
+		}
+		return location;
 	}
 	else {
 		return nil;
 	}
-#endif
 }
 
+@synthesize altitude;
+
 - (ARPoint3D)locationInECEFSpace {
-	if (rawLocation) {
-		return ARWGS84GetECEF([rawLocation coordinate].latitude, [rawLocation coordinate].longitude, [rawLocation altitude]);
+	if (!flags.haveLocationInECEFSpace) {
+		locationInECEFSpace = ARWGS84GetECEF(latitude, longitude, altitude);
+		flags.haveLocationInECEFSpace = YES;
 	}
-	else {
-		// Fallback to the intersection of the equator and the prime meridian (somewhere in the Atlantic below Ghana...)
-		return ARWGS84GetECEF(0, 0, 0);
-	}
+	return locationInECEFSpace;
 }
 
 - (ARPoint3D)locationInEFSpace {
 	return ARPoint3DSubtract([self locationInECEFSpace], [self EFToECEFSpaceOffset]);
 }
 
-- (CATransform3D)ENUToDeviceSpaceTransform {
-	// The ENU coordinate space is defined in device coordinate space by looking:
-	// * from the device, which is at [0 0 0] in device coordinates;
-	// * towards the sky, which is given by the up vector; and
-	// * oriented towards the North pole, which is given by the north vector.
-	return ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace], ARPoint3DZero);
-}
+@synthesize upDirectionInDeviceSpace;
 
-- (CATransform3D)ENUToEFSpaceTransform {
-	// The ENU coordinate space is defined in ECEF coordinate space by looking:
-	// * from the device, which is given by the GPS after conversion to ECEF;
-	// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
-	// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
-	return ARTransform3DLookAtRelative([self locationInEFSpace], [self upDirectionInEFSpace], [self northDirectionInECEFSpace], ARPoint3DZero);
-}
-
-- (CATransform3D)EFToENUSpaceTransform {
-	return CATransform3DInvert([self ENUToEFSpaceTransform]);
-}
-
-- (ARPoint3D)upDirectionInEFSpace {
+- (ARPoint3D)upDirectionInECEFSpace {
 	return [self locationInECEFSpace];
 }
 
-- (CLLocationDistance)altitude {
-	return [rawLocation altitude];
+- (ARPoint3D)upDirectionInEFSpace {
+	return [self upDirectionInECEFSpace];
 }
+
+@synthesize northDirectionInDeviceSpace;
+
+- (ARPoint3D)northDirectionInECEFSpace {
+	// By definition of ECEF, the North pole is located along the z-axis
+	return ARPoint3DCreate(0., 0., 1.);
+}
+
+- (ARPoint3D)northDirectionInEFSpace {
+	// By definition of ECEF, the North pole is located along the z-axis
+	return [self northDirectionInECEFSpace];
+}
+
+- (CATransform3D)ENUToDeviceSpaceTransform {
+	if (!flags.haveENUToDeviceSpaceTransform) {
+		// The ENU coordinate space is defined in device coordinate space by looking:
+		// * from the device, which is at [0 0 0] in device coordinates;
+		// * towards the sky, which is given by the up vector; and
+		// * oriented towards the North pole, which is given by the north vector.
+		ENUToDeviceSpaceTransform = ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace], ARPoint3DZero);
+		flags.haveENUToDeviceSpaceTransform = YES;
+	}
+	return ENUToDeviceSpaceTransform;
+}
+
+- (CATransform3D)ENUToEFSpaceTransform {
+	if (!flags.haveENUToEFSpaceTransform) {
+		// The ENU coordinate space is defined in ECEF coordinate space by looking:
+		// * from the device, which is given by the GPS after conversion to ECEF;
+		// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
+		// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
+		ENUToEFSpaceTransform = ARTransform3DLookAtRelative([self locationInEFSpace], [self upDirectionInEFSpace], [self northDirectionInECEFSpace], ARPoint3DZero);
+		flags.haveENUToEFSpaceTransform = YES;
+	}
+	return ENUToEFSpaceTransform;
+}
+
+- (CATransform3D)EFToENUSpaceTransform {
+	if (!flags.haveEFToENUSpaceTransform) {
+		EFToENUSpaceTransform = CATransform3DInvert([self ENUToEFSpaceTransform]);
+		flags.haveEFToENUSpaceTransform = YES;
+	}
+	return EFToENUSpaceTransform;
+}
+
+@synthesize EFToECEFSpaceOffset;
 
 @end

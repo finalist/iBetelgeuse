@@ -114,14 +114,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libzbar.a */;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = zbar;
 		};
 		C35C57F911B504A900C0FF1A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D /* zbar */;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = zbar;
 		};
 /* End PBXContainerItemProxy section */

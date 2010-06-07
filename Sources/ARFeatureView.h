@@ -23,7 +23,7 @@
 #import <Foundation/Foundation.h>
 
 @class ARFeature;
-@class ARSpatialStateManager;
+@class ARSpatialState;
 
 
 /**
@@ -58,6 +58,6 @@
 /**
  * Updates the position and transform in the EF space using the given spatial state.
  */
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor;
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor;
 
 @end

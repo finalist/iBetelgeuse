@@ -53,7 +53,7 @@
 	return point.x * point.x + point.y * point.y <= RADAR_SCREEN_RANGE * RADAR_SCREEN_RANGE;
 }
 
-- (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
 	ARPoint3D lookVectorInDeviceSpace = ARPoint3DCreate(0., 0., -1.);
 	
 	altitudeOffset = useRelativeAltitude ? [spatialState altitude] : 0.;
