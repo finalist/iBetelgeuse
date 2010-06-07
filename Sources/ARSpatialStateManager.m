@@ -332,11 +332,16 @@
 
 - (CATransform3D)ENUToDeviceSpaceTransform {
 	if (!flags.haveENUToDeviceSpaceTransform) {
-		// The ENU coordinate space is defined in device coordinate space by looking:
-		// * from the device, which is at [0 0 0] in device coordinates;
-		// * towards the sky, which is given by the up vector; and
-		// * oriented towards the North pole, which is given by the north vector.
-		ENUToDeviceSpaceTransform = ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace], ARPoint3DZero);
+		if ([self isOrientationAvailable]) {
+			// The ENU coordinate space is defined in device coordinate space by looking:
+			// * from the device, which is at [0 0 0] in device coordinates;
+			// * towards the sky, which is given by the up vector; and
+			// * oriented towards the North pole, which is given by the north vector.
+			ENUToDeviceSpaceTransform = ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace], ARPoint3DZero);
+		}
+		else {
+			ENUToDeviceSpaceTransform = CATransform3DIdentity;
+		}
 		flags.haveENUToDeviceSpaceTransform = YES;
 	}
 	return ENUToDeviceSpaceTransform;
@@ -344,11 +349,16 @@
 
 - (CATransform3D)ENUToEFSpaceTransform {
 	if (!flags.haveENUToEFSpaceTransform) {
-		// The ENU coordinate space is defined in ECEF coordinate space by looking:
-		// * from the device, which is given by the GPS after conversion to ECEF;
-		// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
-		// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
-		ENUToEFSpaceTransform = ARTransform3DLookAtRelative([self locationInEFSpace], [self upDirectionInEFSpace], [self northDirectionInECEFSpace], ARPoint3DZero);
+		if ([self isLocationAvailable] && [self isOrientationAvailable]) {
+			// The ENU coordinate space is defined in ECEF coordinate space by looking:
+			// * from the device, which is given by the GPS after conversion to ECEF;
+			// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
+			// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
+			ENUToEFSpaceTransform = ARTransform3DLookAtRelative([self locationInEFSpace], [self upDirectionInEFSpace], [self northDirectionInECEFSpace], ARPoint3DZero);
+		}
+		else {
+			ENUToEFSpaceTransform = CATransform3DIdentity;
+		}
 		flags.haveENUToEFSpaceTransform = YES;
 	}
 	return ENUToEFSpaceTransform;
