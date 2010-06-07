@@ -140,11 +140,16 @@ CGImageRef UIGetScreenImage(void);
 		}
 		
 		[self setWantsFullScreenLayout:YES];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[displayLink invalidate];
 	[refreshTimer invalidate];
 	[scanTimer invalidate];
@@ -263,6 +268,38 @@ CGImageRef UIGetScreenImage(void);
 	
 	// This invalidates the display link
 	[self setDisplayLink:nil];
+}
+
+#pragma mark UIApplicationNotifications
+
+- (void)applicationWillResignActive:(NSNotification *)notification {
+	switch (currentState) {
+		case STATE_DIMENSION:
+			[self stopRefreshingOnTime];
+			[self stopRefreshingOnDistance];
+			[spatialStateManager stopUpdating];
+			break;
+			
+		case STATE_QR:
+			[self stopScanning];
+			break;
+	}
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+	switch (currentState) {
+		case STATE_DIMENSION:
+			if (dimension) {
+				[self startRefreshingOnTime];
+				[self startRefreshingOnDistanceResetLocation:NO];
+			}
+			[[self spatialStateManager] startUpdating];
+			break;
+			
+		case STATE_QR:
+			[self startScanning];
+			break;
+	}
 }
 
 #pragma mark CADisplayLink
