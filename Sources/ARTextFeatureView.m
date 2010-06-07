@@ -25,6 +25,12 @@
 #import <QuartzCore/QuartzCore.h>
 
 
+#define HORIZONTAL_PADDING 5
+#define VERTICAL_PADDING 2
+#define CORNER_RADIUS 4
+#define FONT_SIZE 14
+
+
 @implementation ARTextFeatureView
 
 @synthesize feature;
@@ -39,13 +45,17 @@
 #pragma mark UIView
 
 - (CGSize)sizeThatFits:(CGSize)size {
-	return [label sizeThatFits:size];
+	size = [label sizeThatFits:size];
+	size.width += 2.0 * HORIZONTAL_PADDING;
+	size.height += 2.0 * VERTICAL_PADDING;
+	return size;
 }
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
+	CGRect bounds = [self bounds];
 	
-	[label setFrame:[self bounds]];
+	[label setFrame:CGRectInset(bounds, HORIZONTAL_PADDING, VERTICAL_PADDING)];
 }
 
 #pragma mark ARTextFeatureView
@@ -60,11 +70,16 @@
 		[[self layer] setAnchorPoint:[feature anchor]];
 		
 		label = [[UILabel alloc] init];
-		[label setFont:[UIFont systemFontOfSize:15]]; // TODO: Get rid of magic number
 		[label setText:[feature text]];
+		[label setFont:[UIFont boldSystemFontOfSize:FONT_SIZE]];
+		[label setTextColor:[UIColor blackColor]];
+		[label setBackgroundColor:[UIColor clearColor]];
 		[label setNumberOfLines:0];
 		[self addSubview:label]; 
 		[label release];
+		
+		[self setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
+		[[self layer] setCornerRadius:CORNER_RADIUS];
 		
 		[self sizeToFit];
 	}

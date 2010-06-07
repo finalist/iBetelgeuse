@@ -22,8 +22,11 @@
 
 #import "ARImageFeatureView.h"
 #import "ARImageFeature.h"
+#import <QuartzCore/QuartzCore.h>
 
 
+#define PADDING 4
+#define CORNER_RADIUS 4
 #define ACTIVITY_INDICATOR_SIZE 2.0
 
 
@@ -65,7 +68,10 @@
 		return CGSizeMake(ACTIVITY_INDICATOR_SIZE, ACTIVITY_INDICATOR_SIZE);
 	}
 	else if (imageView) {
-		return [[imageView image] size];
+		size = [[imageView image] size];
+		size.width += 2.0 * PADDING;
+		size.height += 2.0 * PADDING;
+		return size;
 	}
 	else {
 		return size;
@@ -74,9 +80,10 @@
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
-	
-	[activityIndicatorView setFrame:[self bounds]];
-	[imageView setFrame:[self bounds]];
+	CGRect bounds = [self bounds];
+
+	[activityIndicatorView setFrame:bounds];
+	[imageView setFrame:CGRectInset(bounds, PADDING, PADDING)];
 }
 
 #pragma mark ARAssetDataUser
@@ -117,6 +124,10 @@
 	}
 	
 	[activityIndicatorView startAnimating];
+	
+	[self setBackgroundColor:nil];
+	[[self layer] setCornerRadius:0.0];
+	
 	[self sizeToFit];
 }
 
@@ -133,6 +144,10 @@
 	}
 	
 	[imageView setImage:image];
+	
+	[self setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
+	[[self layer] setCornerRadius:CORNER_RADIUS];
+	
 	[self sizeToFit];
 }
 

@@ -81,7 +81,8 @@ CGImageRef UIGetScreenImage(void);
 @property(nonatomic, getter=isRefreshingOnDistance) BOOL refreshingOnDistance;
 @property(nonatomic, retain) ARLocation *refreshLocation;
 
-- (UIImagePickerController *)cameraViewController;
+- (void)ensureStatusBarVisible;
+
 - (void)createOverlayViews;
 - (void)createFeatureViews;
 - (void)updateFeatureViews;
@@ -132,6 +133,8 @@ CGImageRef UIGetScreenImage(void);
 		if (aURL) {
 			DebugLog(@"Got dimension URL, waiting for location fix");
 		}
+		
+		[self setWantsFullScreenLayout:YES];
 	}
 	return self;
 }
@@ -235,6 +238,8 @@ CGImageRef UIGetScreenImage(void);
 	[super viewDidAppear:animated];
 	
 	[[self cameraViewController] viewDidAppear:animated];
+	
+	[self ensureStatusBarVisible];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -466,6 +471,19 @@ CGImageRef UIGetScreenImage(void);
 		[scanTimer release];
 		scanTimer = [aTimer retain];
 	}
+}
+
+- (void)ensureStatusBarVisible {
+	// It only works if we do this in a next iteration of the run loop
+	[self performSelectorOnMainThread:@selector(makeStatusBarVisible) withObject:nil waitUntilDone:NO];
+}
+
+- (void)makeStatusBarVisible {
+	UIApplication *application = [UIApplication sharedApplication];
+	[application setStatusBarHidden:NO];
+	
+	// Apparently the following line is what forces the status bar to appear after the camera controller did its magic to it
+	[application setStatusBarStyle:[application statusBarStyle]];
 }
 
 - (void)createOverlayViews {

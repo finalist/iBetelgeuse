@@ -29,6 +29,7 @@
 #define RADAR_RANGE 550
 #define RADAR_SCREEN_RANGE 50
 #define RADAR_BLIB_SIZE 4
+#define RADAR_FIELD_OF_VIEW (40. / 180. * M_PI)
 
 // If the device is in horizontal position (the screen normal vector is pointed upwards or downwards within the threshold specified below), the heading is undefined or inaccurate. The view direction will therefore be hidden and the heading determination algorithm will be changed to perform better with almost-parallel up- and view vectors. The high and low threshold values are used to avoid jitter between the two behaviours due to noise if the angle is close to the threshold angle.
 #define RADAR_HORIZONAL_THRESHOLD_ANGLE_LOW (15. / 180. * M_PI)
@@ -117,7 +118,7 @@
 	
 	// Draw the outer radar circle
 	CGContextSetBlendMode(ctx, kCGBlendModeCopy);
-	CGContextSetGrayFillColor(ctx, 0.333, 0.667);
+	CGContextSetGrayFillColor(ctx, 0.0, 0.5);
 	CGContextFillEllipseInRect(ctx, [self bounds]);
 	
 	// Prepare the screen transformation for drawing radar blibs
@@ -136,9 +137,16 @@
 				if (lookDirectionInScreenSpaceLength > 1.f) {
 					lookDirectionInScreenSpace = ARPoint3DScale(lookDirectionInScreenSpace, 1.f / lookDirectionInScreenSpaceLength);
 				}
+
 				CGContextSetLineWidth(ctx, 1);
 				CGContextSetStrokeColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
-				CGContextStrokeLineSegments(ctx, (CGPoint[]){ CGPointMake(0, 0), CGPointMake(lookDirectionInScreenSpace.x * RADAR_SCREEN_RANGE, lookDirectionInScreenSpace.y * RADAR_SCREEN_RANGE) }, 2);
+				
+				CGPoint lookVectorInScreenSpace = CGPointMake(lookDirectionInScreenSpace.x * RADAR_SCREEN_RANGE, lookDirectionInScreenSpace.y * RADAR_SCREEN_RANGE);
+				CGContextStrokeLineSegments(ctx, (CGPoint[]){
+					CGPointApplyAffineTransform(lookVectorInScreenSpace, CGAffineTransformMakeRotation(RADAR_FIELD_OF_VIEW / 2.)),
+					CGPointMake(0, 0),
+					CGPointApplyAffineTransform(lookVectorInScreenSpace, CGAffineTransformMakeRotation(-RADAR_FIELD_OF_VIEW / 2.)),
+				}, 3);
 			}
 			
 			ARTransform3D ENUToRadarTransform = [self ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:upDirectionInRadarSpace];
