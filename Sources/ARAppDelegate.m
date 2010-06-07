@@ -54,7 +54,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #ifdef DEBUG
 	// If no URL was given, try to find the default dimension in the bundle
-	if (![launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]) {
+	if (![launchOptions objectForKey:UIApplicationLaunchOptionsURLKey] && ![[NSUserDefaults standardUserDefaults] objectForKey:@"dimensionURL"]) {
 		NSString *defaultDimension = [[NSBundle mainBundle] pathForResource:@"DefaultDimension" ofType:@"xml"];
 		if (defaultDimension && [[NSFileManager defaultManager] fileExistsAtPath:defaultDimension]) {
 			NSMutableDictionary *fakedLaunchOptions = launchOptions ? [launchOptions mutableCopy] : [[NSMutableDictionary alloc] init];

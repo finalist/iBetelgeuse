@@ -38,6 +38,8 @@
 #import <zbar/ZBarImageScanner.h>
 
 
+#define DIMENSION_URL_DEFAULTS_KEY @"dimensionURL"
+
 #define SCREEN_SIZE_X 320
 #define SCREEN_SIZE_Y 480
 #define CAMERA_CONTROLS_HEIGHT (53.)
@@ -128,10 +130,11 @@ CGImageRef UIGetScreenImage(void);
 
 - (id)initWithURL:(NSURL *)aURL {
 	if (self = [super init]) {
-		pendingDimensionURL = [aURL retain];
-		
-		if (aURL) {
+		if (pendingDimensionURL = [aURL retain]) {
 			DebugLog(@"Got dimension URL, waiting for location fix");
+		}
+		else if (pendingDimensionURL = [[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] objectForKey:DIMENSION_URL_DEFAULTS_KEY]] retain]) {
+			DebugLog(@"Using dimension URL from user defaults, waiting for location fix");
 		}
 		
 		[self setWantsFullScreenLayout:YES];
@@ -283,6 +286,12 @@ CGImageRef UIGetScreenImage(void);
 	
 	[self startRefreshingOnTime];
 	[self startRefreshingOnDistanceResetLocation:YES];
+	
+	// Remember this URL for when the app restarts
+	// Note: don't remember file URLs, those change when the application's unique identifier on the device changes
+	if (![[request url] isFileURL]) {
+		[[NSUserDefaults standardUserDefaults] setObject:[[request url] absoluteString] forKey:DIMENSION_URL_DEFAULTS_KEY];
+	}
 }
 
 - (void)dimensionRequest:(ARDimensionRequest *)request didFailWithError:(NSError *)error {
