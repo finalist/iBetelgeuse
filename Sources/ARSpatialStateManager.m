@@ -24,6 +24,8 @@
 #import "ARLocation.h"
 #import "ARTransform3D.h"
 #import "ARWGS84.h"
+#import "ARAccelerometerFilter.h"
+#import "ARCompassFilter.h"
 
 
 #define ACCELEROMETER_UPDATE_FREQUENCY 30 // Hz
@@ -58,6 +60,14 @@
 
 #pragma mark NSObject
 
+- (id)init {
+	if (self = [super init]) {
+		upDirectionFilter = [[ARAccelerometerFilter alloc] init];
+		northDirectionFilter = [[ARCompassFilter alloc] init];
+	}
+	return self;
+}
+
 - (void)dealloc {
 #if TARGET_IPHONE_SIMULATOR
 	[updateTimer invalidate];
@@ -67,6 +77,8 @@
 #endif
 	
 	[spatialState release];
+	[upDirectionFilter release];
+	[northDirectionFilter release];
 	
 	[super dealloc];
 }
@@ -197,9 +209,8 @@
 
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection {
 	upDirectionAvailable = YES;
-	
-	// TODO: Apply filter
-	upDirectionInDeviceSpace = rawUpDirection;
+
+	upDirectionInDeviceSpace = [upDirectionFilter filterWithInput:rawUpDirection];
 	
 	[self invalidateSpatialState];
 	
@@ -217,10 +228,9 @@
 		ARTransform3D declinationCorrectionTransform = CATransform3DMakeRotation(declination, upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, upDirectionInDeviceSpace.z);
 		rawNorthDirection = ARTransform3DNonhomogeneousVectorMatrixMultiply(rawNorthDirection, declinationCorrectionTransform);
 	}
-	
-	// TODO: Apply filter
-	northDirectionInDeviceSpace = rawNorthDirection;
-	
+
+	northDirectionInDeviceSpace = [northDirectionFilter filterWithInput:rawNorthDirection];
+
 	[self invalidateSpatialState];
 	
 	if (delegateRespondsToLocationDidUpdate) {

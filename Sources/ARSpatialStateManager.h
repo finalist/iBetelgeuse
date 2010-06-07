@@ -26,7 +26,7 @@
 #import "ARPoint3D.h"
 
 
-@class ARSpatialState, ARLocation;
+@class ARSpatialState, ARPoint3DFilter, ARLocation;
 @protocol ARSpatialStateManagerDelegate;
 
 
@@ -53,6 +53,8 @@
 	ARPoint3D northDirectionInDeviceSpace;
 	
 	ARSpatialState *spatialState;
+	ARPoint3DFilter *upDirectionFilter;
+	ARPoint3DFilter *northDirectionFilter;
 }
 
 @property(nonatomic, assign) id <ARSpatialStateManagerDelegate> delegate;

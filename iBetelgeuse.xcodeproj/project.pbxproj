@@ -58,6 +58,16 @@
 		95B9C58811A2977400EDD870 /* ARDimensionRequestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C58711A2977400EDD870 /* ARDimensionRequestTest.m */; };
 		95C7569411B3B2CF00B71931 /* ARFeatureContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C7569311B3B2CF00B71931 /* ARFeatureContainerView.m */; };
 		95C758E911B3D5F000B71931 /* AROverlayContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C758E811B3D5F000B71931 /* AROverlayContainerView.m */; };
+		95C75EAD11B66E0300B71931 /* ARFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EAC11B66E0300B71931 /* ARFilter.m */; };
+		95C75EB511B66E4700B71931 /* ARMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EB411B66E4700B71931 /* ARMovingAverageFilter.m */; };
+		95C75EB811B66E7100B71931 /* ARDoubleExponentialFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EB711B66E7100B71931 /* ARDoubleExponentialFilter.m */; };
+		95C75EBB11B66E8A00B71931 /* ARPoint3DFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EBA11B66E8A00B71931 /* ARPoint3DFilter.m */; };
+		95C75EBE11B66E9800B71931 /* ARMovingMedianFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EBD11B66E9800B71931 /* ARMovingMedianFilter.m */; };
+		95C75ECE11B6700B00B71931 /* ARMovingWindowFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75ECD11B6700B00B71931 /* ARMovingWindowFilter.m */; };
+		95C75F0811B678F400B71931 /* ARAccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75F0711B678F400B71931 /* ARAccelerometerFilter.m */; };
+		95C7609511B6930000B71931 /* ARCompassFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C7609411B6930000B71931 /* ARCompassFilter.m */; };
+		95C760B211B6967B00B71931 /* ARStepFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C760B111B6967B00B71931 /* ARStepFilter.m */; };
+		95C7615311B7AEEE00B71931 /* ARModifiedExponentialFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C7615211B7AEEE00B71931 /* ARModifiedExponentialFilter.m */; };
 		95D3CFC411A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */; };
 		95D3CFC511A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */; };
 		95D3CFCB11A2BB46007B7148 /* ARFormURLEncodingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D3CFCA11A2BB46007B7148 /* ARFormURLEncodingTest.m */; };
@@ -199,6 +209,26 @@
 		95C7569311B3B2CF00B71931 /* ARFeatureContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFeatureContainerView.m; sourceTree = "<group>"; };
 		95C758E711B3D5F000B71931 /* AROverlayContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROverlayContainerView.h; sourceTree = "<group>"; };
 		95C758E811B3D5F000B71931 /* AROverlayContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROverlayContainerView.m; sourceTree = "<group>"; };
+		95C75EAB11B66E0300B71931 /* ARFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilter.h; sourceTree = "<group>"; };
+		95C75EAC11B66E0300B71931 /* ARFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilter.m; sourceTree = "<group>"; };
+		95C75EB311B66E4700B71931 /* ARMovingAverageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMovingAverageFilter.h; sourceTree = "<group>"; };
+		95C75EB411B66E4700B71931 /* ARMovingAverageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMovingAverageFilter.m; sourceTree = "<group>"; };
+		95C75EB611B66E7100B71931 /* ARDoubleExponentialFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDoubleExponentialFilter.h; sourceTree = "<group>"; };
+		95C75EB711B66E7100B71931 /* ARDoubleExponentialFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDoubleExponentialFilter.m; sourceTree = "<group>"; };
+		95C75EB911B66E8A00B71931 /* ARPoint3DFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPoint3DFilter.h; sourceTree = "<group>"; };
+		95C75EBA11B66E8A00B71931 /* ARPoint3DFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPoint3DFilter.m; sourceTree = "<group>"; };
+		95C75EBC11B66E9800B71931 /* ARMovingMedianFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMovingMedianFilter.h; sourceTree = "<group>"; };
+		95C75EBD11B66E9800B71931 /* ARMovingMedianFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMovingMedianFilter.m; sourceTree = "<group>"; };
+		95C75ECC11B6700B00B71931 /* ARMovingWindowFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMovingWindowFilter.h; sourceTree = "<group>"; };
+		95C75ECD11B6700B00B71931 /* ARMovingWindowFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMovingWindowFilter.m; sourceTree = "<group>"; };
+		95C75F0611B678F400B71931 /* ARAccelerometerFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAccelerometerFilter.h; sourceTree = "<group>"; };
+		95C75F0711B678F400B71931 /* ARAccelerometerFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAccelerometerFilter.m; sourceTree = "<group>"; };
+		95C7609311B6930000B71931 /* ARCompassFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCompassFilter.h; sourceTree = "<group>"; };
+		95C7609411B6930000B71931 /* ARCompassFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCompassFilter.m; sourceTree = "<group>"; };
+		95C760B011B6967B00B71931 /* ARStepFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARStepFilter.h; sourceTree = "<group>"; };
+		95C760B111B6967B00B71931 /* ARStepFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARStepFilter.m; sourceTree = "<group>"; };
+		95C7615111B7AEEE00B71931 /* ARModifiedExponentialFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARModifiedExponentialFilter.h; sourceTree = "<group>"; };
+		95C7615211B7AEEE00B71931 /* ARModifiedExponentialFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARModifiedExponentialFilter.m; sourceTree = "<group>"; };
 		95D3CFC211A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+ARFormURLEncoding.h"; sourceTree = "<group>"; };
 		95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+ARFormURLEncoding.m"; sourceTree = "<group>"; };
 		95D3CFC911A2BB46007B7148 /* ARFormURLEncodingTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFormURLEncodingTest.h; sourceTree = "<group>"; };
@@ -445,6 +475,33 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
+		95C75EAE11B66E3100B71931 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				95C75EAB11B66E0300B71931 /* ARFilter.h */,
+				95C75EAC11B66E0300B71931 /* ARFilter.m */,
+				95C760B011B6967B00B71931 /* ARStepFilter.h */,
+				95C760B111B6967B00B71931 /* ARStepFilter.m */,
+				95C75ECC11B6700B00B71931 /* ARMovingWindowFilter.h */,
+				95C75ECD11B6700B00B71931 /* ARMovingWindowFilter.m */,
+				95C75EB311B66E4700B71931 /* ARMovingAverageFilter.h */,
+				95C75EB411B66E4700B71931 /* ARMovingAverageFilter.m */,
+				95C75EBC11B66E9800B71931 /* ARMovingMedianFilter.h */,
+				95C75EBD11B66E9800B71931 /* ARMovingMedianFilter.m */,
+				95C75EB611B66E7100B71931 /* ARDoubleExponentialFilter.h */,
+				95C75EB711B66E7100B71931 /* ARDoubleExponentialFilter.m */,
+				95C75EB911B66E8A00B71931 /* ARPoint3DFilter.h */,
+				95C75EBA11B66E8A00B71931 /* ARPoint3DFilter.m */,
+				95C75F0611B678F400B71931 /* ARAccelerometerFilter.h */,
+				95C75F0711B678F400B71931 /* ARAccelerometerFilter.m */,
+				95C7609311B6930000B71931 /* ARCompassFilter.h */,
+				95C7609411B6930000B71931 /* ARCompassFilter.m */,
+				95C7615111B7AEEE00B71931 /* ARModifiedExponentialFilter.h */,
+				95C7615211B7AEEE00B71931 /* ARModifiedExponentialFilter.m */,
+			);
+			name = Filter;
+			sourceTree = "<group>";
+		};
 		95D3D0CB11A2CA59007B7148 /* Dimension */ = {
 			isa = PBXGroup;
 			children = (
@@ -515,6 +572,7 @@
 				95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */,
 				95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */,
 				95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */,
+				95C75EAE11B66E3100B71931 /* Filter */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -756,6 +814,16 @@
 				C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */,
 				95C7569411B3B2CF00B71931 /* ARFeatureContainerView.m in Sources */,
 				95C758E911B3D5F000B71931 /* AROverlayContainerView.m in Sources */,
+				95C75EAD11B66E0300B71931 /* ARFilter.m in Sources */,
+				95C75EB511B66E4700B71931 /* ARMovingAverageFilter.m in Sources */,
+				95C75EB811B66E7100B71931 /* ARDoubleExponentialFilter.m in Sources */,
+				95C75EBB11B66E8A00B71931 /* ARPoint3DFilter.m in Sources */,
+				95C75EBE11B66E9800B71931 /* ARMovingMedianFilter.m in Sources */,
+				95C75ECE11B6700B00B71931 /* ARMovingWindowFilter.m in Sources */,
+				95C75F0811B678F400B71931 /* ARAccelerometerFilter.m in Sources */,
+				95C7609511B6930000B71931 /* ARCompassFilter.m in Sources */,
+				95C760B211B6967B00B71931 /* ARStepFilter.m in Sources */,
+				95C7615311B7AEEE00B71931 /* ARModifiedExponentialFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

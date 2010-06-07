@@ -30,6 +30,13 @@ typedef struct {
 } ARPoint3D;
 
 
+typedef enum {
+	ARPoint3DCoordinateX = 0,
+	ARPoint3DCoordinateY,
+	ARPoint3DCoordinateZ
+} ARPoint3DCoordinate;
+
+
 const ARPoint3D ARPoint3DZero;
 
 
@@ -52,6 +59,18 @@ static inline BOOL ARPoint3DEquals(ARPoint3D a, ARPoint3D b) {
 		a.x == b.x &&
 		a.y == b.y &&
 		a.z == b.z;
+}
+
+static inline double ARPoint3DGetCoordinate(ARPoint3D point, ARPoint3DCoordinate coordinate) {
+	NSCAssert(coordinate >= 0 && coordinate <= 2, @"Unexpected coordinate.");
+	
+	return ((double *)&point)[coordinate];
+}
+
+static inline void ARPoint3DSetCoordinate(ARPoint3D *point, ARPoint3DCoordinate coordinate, double value) {
+	NSCAssert(coordinate >= 0 && coordinate <= 2, @"Unexpected coordinate.");
+	
+	((double *)point)[coordinate] = value;
 }
 
 /**
