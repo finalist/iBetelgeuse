@@ -97,6 +97,8 @@ CGImageRef UIGetScreenImage(void);
 - (void)stopRefreshingOnTime;
 - (void)startRefreshingOnDistanceResetLocation:(BOOL)reset;
 - (void)stopRefreshingOnDistance;
+- (void)startScanning;
+- (void)stopScanning;
 
 - (void)performAction:(ARAction *)action source:(NSString *)source;
 
@@ -157,6 +159,7 @@ CGImageRef UIGetScreenImage(void);
 	[refreshTimer release];
 	[refreshLocation release];
 	[scanTimer release];
+	[scanner release];
 	
 	[super dealloc];
 }
@@ -380,7 +383,6 @@ CGImageRef UIGetScreenImage(void);
 - (void)scanTimerDidFire {
 	CGImageRef screenImage = UIGetScreenImage();
 	ZBarImage *barImage = [[ZBarImage alloc] initWithCGImage:screenImage];
-	ZBarImageScanner *scanner = [[ZBarImageScanner alloc] init];
 	[scanner scanImage:barImage];
 	
 	ZBarSymbol *sym = nil;
@@ -403,7 +405,6 @@ CGImageRef UIGetScreenImage(void);
 	}
 	
 	[barImage release];
-	[scanner release];
 }
 
 #pragma mark UIActionSheetDelegate
@@ -640,12 +641,22 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)startScanning {
+	[scanner release];
+	scanner = [[ZBarImageScanner alloc] init];
+	
+	// Only scan QR codes, makes the scanner do less work
+	[scanner setSymbology:0 config:ZBAR_CFG_ENABLE to:NO];
+	[scanner setSymbology:ZBAR_QRCODE config:ZBAR_CFG_ENABLE to:YES];
+
 	NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:SCAN_TIMER_INTERVAL target:self selector:@selector(scanTimerDidFire) userInfo:nil repeats:YES];
 	[self setScanTimer:timer];
 }
 
 - (void)stopScanning {
 	[self setScanTimer:nil];
+	
+	[scanner release];
+	scanner = nil;
 }
 
 - (void)didTapOverlay:(AROverlayView *)view {

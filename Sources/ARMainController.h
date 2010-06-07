@@ -45,6 +45,7 @@
 	ARAssetManager *assetManager;
 	ARSpatialStateManager *spatialStateManager;
 	NSTimer *refreshTimer;
+	ZBarImageScanner *scanner;
 	NSTimer *scanTimer;
 	BOOL refreshingOnDistance;
 	ARLocation *refreshLocation;
