@@ -20,16 +20,16 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <UIKit/UIKit.h>
 #import "ARDimensionRequest.h"
 #import "ARAssetManager.h"
 #import "ARSpatialStateManager.h"
+#import <zbar/ZBarReaderController.h>
 
 
 @class ARFeatureContainerView, AROverlayContainerView, ARRadarView, ARLocation;
 
 
-@interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate> {
+@interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate, UIActionSheetDelegate> {
 @private
 	NSURL *pendingDimensionURL;
 	ARDimension *dimension;
@@ -45,8 +45,12 @@
 	ARAssetManager *assetManager;
 	ARSpatialStateManager *spatialStateManager;
 	NSTimer *refreshTimer;
+	NSTimer *scanTimer;
 	BOOL refreshingOnDistance;
 	ARLocation *refreshLocation;
+	int currentState;
+	UIButton *menuButton;
+	UIButton *cancelButton;
 }
 
 /**

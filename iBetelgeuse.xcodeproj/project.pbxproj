@@ -97,6 +97,8 @@
 		C3346E6A11A3E63900228C9A /* ARTransform3DTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3346E6911A3E63900228C9A /* ARTransform3DTest.m */; };
 		C3346ECE11A3FFD600228C9A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3346ECD11A3FFD600228C9A /* QuartzCore.framework */; };
 		C33474BA11A54E2200228C9A /* ARSpatialStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C33474B911A54E2200228C9A /* ARSpatialStateManager.m */; };
+		C35C57FB11B504D300C0FF1A /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C35C57F211B5048200C0FF1A /* libzbar.a */; };
+		C35C581911B507B500C0FF1A /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C35C581811B507B500C0FF1A /* libiconv.dylib */; };
 		C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C62E8611ABE7D500553407 /* ARRadarView.m */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +109,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 95E77EE0119809D200A1F2B9;
 			remoteInfo = iBetelgeuseTests;
+		};
+		C35C57F111B5048200C0FF1A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D /* libzbar.a */;
+			remoteInfo = zbar;
+		};
+		C35C57F911B504A900C0FF1A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D /* zbar */;
+			remoteInfo = zbar;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -258,6 +274,8 @@
 		C3346ECD11A3FFD600228C9A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		C33474B811A54E2200228C9A /* ARSpatialStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpatialStateManager.h; sourceTree = "<group>"; };
 		C33474B911A54E2200228C9A /* ARSpatialStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpatialStateManager.m; sourceTree = "<group>"; };
+		C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zbar.xcodeproj; path = zbar/iphone/zbar.xcodeproj; sourceTree = "<group>"; };
+		C35C581811B507B500C0FF1A /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		C3C62E8511ABE7D500553407 /* ARRadarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRadarView.h; sourceTree = "<group>"; };
 		C3C62E8611ABE7D500553407 /* ARRadarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRadarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -267,11 +285,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C35C57FB11B504D300C0FF1A /* libzbar.a in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				95E77C461198041200A1F2B9 /* QuartzCore.framework in Frameworks */,
 				95E77C4A1198042000A1F2B9 /* CoreLocation.framework in Frameworks */,
+				C35C581911B507B500C0FF1A /* libiconv.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,6 +338,7 @@
 				080E96DDFE201D6D7F000001 /* Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				C35C563411B503FF00C0FF1A /* Libraries */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				C3346ECD11A3FFD600228C9A /* QuartzCore.framework */,
 			);
@@ -582,6 +603,23 @@
 			name = Tests;
 			sourceTree = "<group>";
 		};
+		C35C563411B503FF00C0FF1A /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				C35C581811B507B500C0FF1A /* libiconv.dylib */,
+				C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		C35C57EB11B5048200C0FF1A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C35C57F211B5048200C0FF1A /* libzbar.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -596,6 +634,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C35C57FA11B504A900C0FF1A /* PBXTargetDependency */,
 			);
 			name = iBetelgeuse;
 			productName = iBetelgeuse;
@@ -628,6 +667,12 @@
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C35C57EB11B5048200C0FF1A /* Products */;
+					ProjectRef = C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* iBetelgeuse */,
@@ -636,6 +681,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C35C57F211B5048200C0FF1A /* libzbar.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libzbar.a;
+			remoteRef = C35C57F111B5048200C0FF1A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -753,6 +808,11 @@
 			target = 95E77EE0119809D200A1F2B9 /* iBetelgeuseTests */;
 			targetProxy = 95E77FE3119812FA00A1F2B9 /* PBXContainerItemProxy */;
 		};
+		C35C57FA11B504A900C0FF1A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = zbar;
+			targetProxy = C35C57F911B504A900C0FF1A /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -765,8 +825,13 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
+				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
 				INFOPLIST_FILE = Resources/Info.plist;
 				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = iBetelgeuse;
 			};
 			name = Debug;
@@ -778,7 +843,12 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
+				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
 				INFOPLIST_FILE = Resources/Info.plist;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = iBetelgeuse;
 				VALIDATE_PRODUCT = YES;
 			};

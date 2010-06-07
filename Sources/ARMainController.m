@@ -35,6 +35,7 @@
 #import "ARRadarView.h"
 #import "ARAssetDataUser.h"
 #import <QuartzCore/QuartzCore.h>
+#import <zbar/ZBarImageScanner.h>
 
 
 #define SCREEN_SIZE_X 320
@@ -45,6 +46,20 @@
 // Fraction of the refresh rate of the screen at which to update
 // Note: a frame interval of 2 results in 30 FPS and seems smooth enough
 #define FRAME_INTERVAL 2
+
+// Time interval between two QR scans.
+#define SCAN_TIMER_INTERVAL 1
+
+#define MENU_BUTTON_QR 0
+#define MENU_BUTTON_CANCEL 1
+
+#define STATE_STARTING 0
+#define STATE_DIMENSION 1
+#define STATE_QR 2
+
+
+// expose undocumented API
+CGImageRef UIGetScreenImage(void);
 
 
 @interface ARMainController ()
@@ -82,6 +97,10 @@
 
 - (void)performAction:(ARAction *)action source:(NSString *)source;
 
+- (void)setState:(int)state;
+- (void)didEnterState:(int)state;
+- (void)didLeaveState:(int)state;
+
 @end
 
 
@@ -118,19 +137,20 @@
 }
 
 - (void)dealloc {
+	[displayLink invalidate];
+	[refreshTimer invalidate];
+	[scanTimer invalidate];
+	
 	[pendingDimensionURL release];
 	[dimension release];
 	[cameraViewController release];
-	
-	[displayLink invalidate];
 	[displayLink release];
-	
 	[dimensionRequest release];
 	[assetManager release];
 	[spatialStateManager release];
-	[refreshTimer invalidate];
 	[refreshTimer release];
 	[refreshLocation release];
+	[scanTimer release];
 	
 	[super dealloc];
 }
@@ -153,17 +173,34 @@
 	[featureContainerView setCenter:CGPointMake(SCREEN_SIZE_X / 2., SCREEN_SIZE_Y / 2.)];
 	[featureContainerView setBounds:CGRectMake(-SCREEN_SIZE_X / 2., -SCREEN_SIZE_Y / 2., SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 	[view addSubview:featureContainerView];
+	[featureContainerView setHidden:YES];
 	[featureContainerView release];
 	
 	radarView = [[ARRadarView alloc] init];
 	[radarView setFrame:CGRectMake(10, SCREEN_SIZE_Y - 100 - 10, 100, 100)];
 	[view addSubview:radarView];
+	[radarView setHidden:YES];
 	[radarView release];
 	
 	overlayContainerView = [[AROverlayContainerView alloc] init];
 	[overlayContainerView setFrame:CGRectMake(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
 	[view addSubview:overlayContainerView];
+	[overlayContainerView setHidden:YES];
 	[overlayContainerView release];
+	
+	menuButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[menuButton setFrame:CGRectMake(SCREEN_SIZE_X - 50 - 10, SCREEN_SIZE_Y - 50 - 10, 50, 50)];
+	[menuButton setTitle:NSLocalizedString(@"Menu", @"button") forState:UIControlStateNormal];
+	[menuButton addTarget:self action:@selector(didTapMenuButton) forControlEvents:UIControlEventTouchUpInside];
+	[menuButton setHidden:YES];
+	[view addSubview:menuButton];
+	
+	cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[cancelButton setFrame:CGRectMake(SCREEN_SIZE_X - 50 - 10, SCREEN_SIZE_Y - 50 - 10, 50, 50)];
+	[cancelButton setTitle:NSLocalizedString(@"Cancel", @"button") forState:UIControlStateNormal];
+	[cancelButton addTarget:self action:@selector(didTapCancelButton) forControlEvents:UIControlEventTouchUpInside];
+	[cancelButton setHidden:YES];
+	[view addSubview:cancelButton];
 }
 
 - (void)viewDidUnload {
@@ -174,14 +211,14 @@
 	featureContainerView = nil;
 	radarView = nil;
 	overlayContainerView = nil;
+	menuButton = nil;
+	cancelButton = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
 	[[self cameraViewController] viewWillAppear:animated];
-	
-	[[self spatialStateManager] startUpdating];
 
 	// Use a display link to sync up with the screen, so that we don't update the screen more than necessary
 	CADisplayLink *link = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWithDisplayLink:)];
@@ -190,6 +227,7 @@
 	[link addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 	
 	// Invalidate the screen by default
+	[self setState:STATE_DIMENSION];
 	[self setNeedsUpdate];
 }
 
@@ -324,6 +362,45 @@
 	[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeTimeRefresh source:nil];
 }
 
+- (void)scanTimerDidFire {
+	CGImageRef screenImage = UIGetScreenImage();
+	ZBarImage *barImage = [[ZBarImage alloc] initWithCGImage:screenImage];
+	ZBarImageScanner *scanner = [[ZBarImageScanner alloc] init];
+	[scanner scanImage:barImage];
+	
+	ZBarSymbol *sym = nil;
+	ZBarSymbolSet *results = scanner.results;
+	results.filterSymbols = NO;
+	for (ZBarSymbol *s in results)
+		if (!sym || sym.quality < s.quality)
+			sym = s;
+	
+	if (sym) {
+		NSURL *url = [NSURL URLWithString:[sym data]];
+		
+		if (!([[url scheme] isEqualToString:@"http"] || [[url scheme] isEqualToString:@"gamaray"])) {
+			DebugLog(@"Ignoring invalid QR code: %@", [sym data]);
+		} else {
+			DebugLog(@"Loading dimension by QR code: %@", [sym data]);
+			[self setState:STATE_DIMENSION];
+			[self startDimensionRequestWithURL:url type:ARDimensionRequestTypeTimeRefresh source:nil];
+		}
+	}
+	
+	[barImage release];
+	[scanner release];
+}
+
+#pragma mark UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	switch (buttonIndex) {
+		case MENU_BUTTON_QR:
+			[self setState:STATE_QR];
+			break;
+	}
+}
+
 #pragma mark ARMainController
 
 - (UIImagePickerController *)cameraViewController {
@@ -377,6 +454,16 @@
 		
 		[refreshTimer release];
 		refreshTimer = [aTimer retain];
+	}
+}
+
+- (void)setScanTimer:(NSTimer *)aTimer {
+	if (scanTimer != aTimer) {
+		// Unschedule the existing timer from the runloop
+		[scanTimer invalidate];
+		
+		[scanTimer release];
+		scanTimer = [aTimer retain];
 	}
 }
 
@@ -524,6 +611,15 @@
 	[self setRefreshingOnDistance:NO];
 }
 
+- (void)startScanning {
+	NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:SCAN_TIMER_INTERVAL target:self selector:@selector(scanTimerDidFire) userInfo:nil repeats:YES];
+	[self setScanTimer:timer];
+}
+
+- (void)stopScanning {
+	[self setScanTimer:nil];
+}
+
 - (void)didTapOverlay:(AROverlayView *)view {
 	AROverlay *overlay = [view overlay];
 	[self performAction:[overlay action] source:[overlay identifier]];
@@ -532,6 +628,21 @@
 - (void)didTapFeature:(ARFeatureView *)view {
 	ARFeature *feature = [view feature];
 	[self performAction:[feature action] source:[feature identifier]];
+}
+
+- (void)didTapMenuButton {
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
+	[actionSheet setDelegate:self];
+	[actionSheet addButtonWithTitle:NSLocalizedString(@"Scan QR code", @"actionsheet button")];
+	//[actionSheet addButtonWithTitle:@"Enter URL"]
+	[actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"actionsheet button")];
+	[actionSheet setCancelButtonIndex:MENU_BUTTON_CANCEL];
+	[actionSheet showInView:[self view]];
+	[actionSheet release];
+}
+
+- (void)didTapCancelButton {
+	[self setState:STATE_DIMENSION];
 }
 
 - (void)performAction:(ARAction *)action source:(NSString *)source {
@@ -552,6 +663,56 @@
 			
 		default:
 			DebugLog(@"Unrecognized action type %d", [action type]);
+			break;
+	}
+}
+
+- (void)setState:(int)state {
+	if (state != currentState) {
+		int oldState = currentState;
+		currentState = state;
+		[self didLeaveState:oldState];
+		[self didEnterState:currentState];
+	}
+}
+
+- (void)didEnterState:(int)state {
+	switch (state) {
+		case STATE_DIMENSION:
+			if (dimension) {
+				[self startRefreshingOnTime];
+				[self startRefreshingOnDistanceResetLocation:NO];
+			}
+			[[self spatialStateManager] startUpdating];
+			[featureContainerView setHidden:NO];
+			[overlayContainerView setHidden:NO];
+			[radarView setHidden:NO];
+			[menuButton setHidden:NO];
+			[displayLink setPaused:NO];
+			break;
+		case STATE_QR:
+			[cancelButton setHidden:NO];
+			[self startScanning];
+			break;
+	}
+}
+
+- (void)didLeaveState:(int)state {
+	switch (state) {
+		case STATE_DIMENSION:
+			[self stopRefreshingOnTime];
+			[self stopRefreshingOnDistance];
+			[spatialStateManager stopUpdating];
+			[dimensionRequest cancel];
+			[featureContainerView setHidden:YES];
+			[overlayContainerView setHidden:YES];
+			[radarView setHidden:YES];
+			[menuButton setHidden:YES];
+			[displayLink setPaused:YES];
+			break;
+		case STATE_QR:
+			[cancelButton setHidden:YES];
+			[self stopScanning];
 			break;
 	}
 }
