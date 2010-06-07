@@ -29,7 +29,10 @@
 #define RADAR_RANGE 550
 #define RADAR_SCREEN_RANGE 50
 #define RADAR_BLIB_SIZE 4
-#define RADAR_HORIZONAL_THRESHOLD_ANGLE (15. / 180. * M_PI) // If the angle between the device XY plane and the horizon plane, the device is considered to be flat and the heading inaccurate. The view direction will therefore be hidden and the heading determination algorithm will be changed to perform better with almost-parallel up- and view vectors.
+
+// If the device is in horizontal position (the screen normal vector is pointed upwards or downwards within the threshold specified below), the heading is undefined or inaccurate. The view direction will therefore be hidden and the heading determination algorithm will be changed to perform better with almost-parallel up- and view vectors. The high and low threshold values are used to avoid jitter between the two behaviours due to noise if the angle is close to the threshold angle.
+#define RADAR_HORIZONAL_THRESHOLD_ANGLE_LOW (15. / 180. * M_PI)
+#define RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH (20. / 180. * M_PI)
 
 
 @implementation ARRadarView
@@ -38,7 +41,7 @@
 
 - (id)initWithFrame:(CGRect)aFrame {
 	if (self = [super initWithFrame:aFrame]) {
-		[self setClearsContextBeforeDrawing:NO];
+		[self setClearsContextBeforeDrawing:YES];
 		[self setOpaque:NO];
 	}
 	return self;
@@ -51,24 +54,37 @@
 }
 
 - (void)updateWithSpatialState:(ARSpatialStateManager *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
+	ARPoint3D lookVectorInDeviceSpace = ARPoint3DCreate(0., 0., -1.);
+	
 	altitudeOffset = useRelativeAltitude ? [spatialState altitude] : 0.;
 	EFToECEFSpaceOffset = [spatialState EFToECEFSpaceOffset];
 	EFToENUSpaceTransform = [spatialState EFToENUSpaceTransform];
 	DeviceToENUSpaceTransform = ARTransform3DTranspose([spatialState ENUToDeviceSpaceTransform]);
+	lookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(lookVectorInDeviceSpace, DeviceToENUSpaceTransform);
 	upDirectionInDeviceSpace = [spatialState upDirectionInDeviceSpace];
 	isSpatialStateDefined = YES;
 
 	[self setNeedsDisplay];
 }
 
-- (CATransform3D)ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:(ARPoint3D)upDirectionInRadarSpace lookVectorInENUSpace:(ARPoint3D)lookVectorInENUSpace  {
+- (BOOL)isDeviceInHorizontalPosition {
+	float thresholdAngle = wasDeviceInHorizontalPositionBefore ? RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH : RADAR_HORIZONAL_THRESHOLD_ANGLE_LOW;
+	wasDeviceInHorizontalPositionBefore = fabs(lookVectorInENUSpace.z) > cos(thresholdAngle);
+	return wasDeviceInHorizontalPositionBefore;
+}
+
+- (BOOL)isReliable {
+	return lookVectorInENUSpace.z < 0. || ![self isDeviceInHorizontalPosition];
+}
+
+- (CATransform3D)ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:(ARPoint3D)upDirectionInRadarSpace  {
 	// Map space defines a top-down orthogonal projection oriented so that the y axis matches the looking direction
 	// Radar space defines the on-screen radar, so that the top of the displayed radar matches the y axis in map space.
 	
 	CATransform3D ENUToRadarTransform;
 	
 	// If the user looks straight down, the normal method becomes unusable due to the look vector being (almost) parallel to the up vector.
-	if (lookVectorInENUSpace.z < -cosf(RADAR_HORIZONAL_THRESHOLD_ANGLE))
+	if ([self isDeviceInHorizontalPosition])
 	{
 		// The normal method is unusable; compute the heading using the look vector instead.
 		ARPoint3D yLookVectorInDeviceSpace = ARPoint3DCreate(0, 1, 0);
@@ -110,22 +126,22 @@
 	
 	if (isSpatialStateDefined)
 	{
-		ARPoint3D upDirectionInRadarSpace = (ARPoint3DCreate(upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, 0));
+		ARPoint3D upDirectionInRadarSpace = ARPoint3DCreate(upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, 0);
 		
-		ARPoint3D lookVectorInDeviceSpace = ARPoint3DCreate(0, 0, -1);
-		ARPoint3D lookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(lookVectorInDeviceSpace, DeviceToENUSpaceTransform);
-		
-		// If not looking directly up or down, show the line of sight on the radar
-		if (fabs(lookVectorInENUSpace.z) < cosf(RADAR_HORIZONAL_THRESHOLD_ANGLE)) {
-			CGContextSetLineWidth(ctx, 1);
-			CGContextSetStrokeColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
-			CGContextStrokeLineSegments(ctx, (CGPoint[]){ CGPointMake(0, 0), CGPointMake(upDirectionInRadarSpace.x * RADAR_SCREEN_RANGE, upDirectionInRadarSpace.y * RADAR_SCREEN_RANGE) }, 2);
-		}
-		
-		// Looking straight up makes radar orientation meaningless and makes the 'compass needle' spin. Therefore avoid drawing the radar at all if the user looks up over 80 degrees.
-		if (lookVectorInENUSpace.z < cosf(RADAR_HORIZONAL_THRESHOLD_ANGLE)) {
-			ARTransform3D ENUToRadarTransform = [self ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:upDirectionInRadarSpace lookVectorInENUSpace:lookVectorInENUSpace];
+		if ([self isReliable]) {
+			// If not looking directly up or down, show the line of sight on the radar
+			if (![self isDeviceInHorizontalPosition]) {
+				ARPoint3D lookDirectionInScreenSpace = ARPoint3DCreate(upDirectionInRadarSpace.x, upDirectionInRadarSpace.y, 0.);
+				float lookDirectionInScreenSpaceLength = ARPoint3DLength(lookDirectionInScreenSpace);
+				if (lookDirectionInScreenSpaceLength > 1.f) {
+					lookDirectionInScreenSpace = ARPoint3DScale(lookDirectionInScreenSpace, 1.f / lookDirectionInScreenSpaceLength);
+				}
+				CGContextSetLineWidth(ctx, 1);
+				CGContextSetStrokeColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
+				CGContextStrokeLineSegments(ctx, (CGPoint[]){ CGPointMake(0, 0), CGPointMake(lookDirectionInScreenSpace.x * RADAR_SCREEN_RANGE, lookDirectionInScreenSpace.y * RADAR_SCREEN_RANGE) }, 2);
+			}
 			
+			ARTransform3D ENUToRadarTransform = [self ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:upDirectionInRadarSpace];
 			for (ARFeature *feature in features) {
 				// TODO: We are now applying the offset here as well as in ARFeatureView, refactor so that the offset only has to be applied once.
 				ARPoint3D offsetInENUSpace = [feature offset];

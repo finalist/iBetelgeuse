@@ -35,7 +35,9 @@
 	CATransform3D EFToENUSpaceTransform;
 	CATransform3D DeviceToENUSpaceTransform;
 	ARPoint3D upDirectionInDeviceSpace;
+	ARPoint3D lookVectorInENUSpace;
 	BOOL isSpatialStateDefined;
+	BOOL wasDeviceInHorizontalPositionBefore;
 }
 
 @property(nonatomic, readwrite, copy) NSArray *features;
