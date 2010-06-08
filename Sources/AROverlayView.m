@@ -25,6 +25,7 @@
 #import "ARImageOverlayView.h"
 #import "ARTextOverlay.h"
 #import "ARTextOverlayView.h"
+#import "ARViewUtil.h"
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -47,6 +48,16 @@
 	CGRect bounds = [self bounds];
 	bounds.size = [self sizeThatFits:bounds.size];
 	[self setBounds:bounds];
+}
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	if ([event type] == UIEventTypeTouches) {
+		// For touches, make our bounds bigger as necessary
+		return CGRectContainsPoint(ARRectGrowToTouchTarget([self bounds]), point);
+	}
+	else {
+		return [super pointInside:point withEvent:event];
+	}
 }
 
 #pragma mark AROverlayView

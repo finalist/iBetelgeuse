@@ -29,6 +29,7 @@
 #import "ARLocation.h"
 #import "ARPoint3D.h"
 #import "ARTransform3D.h"
+#import "ARViewUtil.h"
 
 
 @implementation ARFeatureView
@@ -62,6 +63,17 @@
 	CGRect bounds = [self bounds];
 	bounds.size = [self sizeThatFits:bounds.size];
 	[self setBounds:bounds];
+}
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	if ([event type] == UIEventTypeTouches) {
+		// For touches, make our bounds bigger as necessary
+		// TODO: we should probably incorporate our transformation to make ourselves a suitable touch target, however, at this time all features are scaled to about 1:1 size anyway
+		return CGRectContainsPoint(ARRectGrowToTouchTarget([self bounds]), point);
+	}
+	else {
+		return [super pointInside:point withEvent:event];
+	}
 }
 
 #pragma mark ARFeatureView
