@@ -246,6 +246,7 @@
 		95E28E7811BE420A00C716F0 /* ARViewUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewUtil.m; sourceTree = "<group>"; };
 		95E28EEC11BE447A00C716F0 /* ARViewUtilTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARViewUtilTest.h; sourceTree = "<group>"; };
 		95E28EED11BE447A00C716F0 /* ARViewUtilTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARViewUtilTest.m; sourceTree = "<group>"; };
+		95E28F2811BE49DB00C716F0 /* ARDimensionRequestForeignTest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionRequestForeignTest.xml; sourceTree = "<group>"; };
 		95E77C451198041200A1F2B9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		95E77C491198042000A1F2B9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		95E77DFF1198084800A1F2B9 /* GHUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GHUnit.framework; path = /Library/Frameworks/GHUnit.framework; sourceTree = "<absolute>"; };
@@ -482,6 +483,7 @@
 				95B9C1B811A17B0600EDD870 /* ARImageOverlayTestFailX.xml */,
 				95B9C1B911A17B0600EDD870 /* ARImageOverlayTestFailY.xml */,
 				95D3D05B11A2C51A007B7148 /* ARDimensionRequestTest.xml */,
+				95E28F2811BE49DB00C716F0 /* ARDimensionRequestForeignTest.xml */,
 				958DF36211ABC6FD00047790 /* ARDimensionRequestInvalidTest.xml */,
 			);
 			path = Tests;

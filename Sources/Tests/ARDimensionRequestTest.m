@@ -108,6 +108,10 @@
 	[self performBareRequestWithType:ARDimensionRequestTypeInit];
 }
 
+- (void)testDidFailForeign {
+	[self performBareRequestWithType:ARDimensionRequestTypeInit];
+}
+
 - (void)testDidFailInvalid {
 	[self performBareRequestWithType:ARDimensionRequestTypeInit];
 }
@@ -172,7 +176,7 @@
 		GHAssertNotNil(dimension, nil);
 		GHAssertEqualObjects([dimension refreshURL], [NSURL URLWithString:@"http://www.hoi.nl/"], nil);
 	}
-	else if ([self currentSelector] == @selector(testDidFailNotFound) || [self currentSelector] == @selector(testDidFailInvalid)) {
+	else if ([self currentSelector] == @selector(testDidFailNotFound) || [self currentSelector] == @selector(testDidFailForeign) || [self currentSelector] == @selector(testDidFailInvalid)) {
 		GHFail(@"This request should've failed.");
 	}
 	
@@ -188,6 +192,10 @@
 		GHAssertEqualObjects([error domain], ARDimensionRequestErrorDomain, nil);
 		GHAssertEquals([error code], ARDimensionRequestErrorHTTP, nil);
 		GHAssertEqualObjects([[error userInfo] objectForKey:ARDimensionRequestErrorHTTPStatusCodeKey], [NSNumber numberWithInteger:404], nil);
+	}
+	else if ([self currentSelector] == @selector(testDidFailForeign)) {
+		GHAssertEqualObjects([error domain], ARDimensionRequestErrorDomain, nil);
+		GHAssertEquals([error code], ARDimensionRequestErrorDocument, nil);
 	}
 	else if ([self currentSelector] == @selector(testDidFailInvalid)) {
 		GHAssertEqualObjects([error domain], NSXMLParserErrorDomain, nil);
@@ -225,6 +233,10 @@
 	}
 	else if ([self currentSelector] == @selector(testDidFailNotFound)) {
 		[connection receiveData:[NSData data] statusCode:404 MIMEType:@"text/html" afterDelay:0.1];
+	}
+	else if ([self currentSelector] == @selector(testDidFailForeign)) {
+		NSData *responseData = [NSData dataWithContentsOfFile:TEST_RESOURCES_PATH @"/ARDimensionRequestForeignTest.xml"];
+		[connection receiveData:responseData statusCode:200 MIMEType:@"application/xml" afterDelay:0.1];
 	}
 	else if ([self currentSelector] == @selector(testDidFailInvalid)) {
 		NSData *responseData = [NSData dataWithContentsOfFile:TEST_RESOURCES_PATH @"/ARDimensionRequestInvalidTest.xml"];

@@ -34,6 +34,7 @@
 NSString *const ARDimensionRequestErrorDomain = @"ARDimensionRequestErrorDomain";
 const NSInteger ARDimensionRequestErrorHTTP = 1;
 NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
+const NSInteger ARDimensionRequestErrorDocument = 2;
 
 
 @interface ARDimensionRequest ()
@@ -214,7 +215,7 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 		
 		DebugLog(@"Failed dimension request, received HTTP %d", statusCode);
 		
-		NSString *errorDescription = [NSString stringWithFormat:NSLocalizedString(@"Received HTTP %@.", @"dimension request error descriptoin"), [NSHTTPURLResponse localizedStringForStatusCode:statusCode]];
+		NSString *errorDescription = [NSString stringWithFormat:NSLocalizedString(@"Received HTTP %@.", @"dimension request error description"), [NSHTTPURLResponse localizedStringForStatusCode:statusCode]];
 		NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:errorDescription, NSLocalizedDescriptionKey, [NSNumber numberWithInteger:statusCode], ARDimensionRequestErrorHTTPStatusCodeKey, nil];
 		NSError *error = [NSError errorWithDomain:ARDimensionRequestErrorDomain code:ARDimensionRequestErrorHTTP userInfo:errorInfo];
 		[delegate dimensionRequest:self didFailWithError:error];
@@ -223,15 +224,25 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 		[parser release];
 		parser = [[NSXMLParser alloc] initWithData:responseData];
 		[parser setDelegate:self];
-		if ([parser parse]) {
+		
+		didAbortParsing = NO;
+		if ([parser parse] && dimension) {
 			DebugLog(@"Finished dimension request");
 			
 			[delegate dimensionRequest:self didFinishWithDimension:dimension];
 		}
-		else {
+		else if (!didAbortParsing && [parser parserError]) {
 			DebugLog(@"Failed to parse response to dimension request, received error %@", [parser parserError]);
 			
 			[delegate dimensionRequest:self didFailWithError:[parser parserError]];
+		}
+		else {
+			DebugLog(@"Failed to find a dimension in dimension request");
+			
+			NSString *errorDescription = NSLocalizedString(@"Dimension not found.", @"dimension request error description");
+			NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:errorDescription, NSLocalizedDescriptionKey, nil];
+			NSError *error = [NSError errorWithDomain:ARDimensionRequestErrorDomain code:ARDimensionRequestErrorDocument userInfo:errorInfo];
+			[delegate dimensionRequest:self didFailWithError:error];
 		}
 	}
 	
@@ -255,6 +266,11 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 - (void)parser:(NSXMLParser *)aParser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
 	if ([elementName isEqualToString:@"dimension"]) {
 		[ARDimension startParsingWithXMLParser:aParser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(didParseDimension:) userInfo:nil];
+	}
+	else {
+		// We want the root element to be 'dimension', so we don't want to look any further
+		[aParser abortParsing];
+		didAbortParsing = YES;
 	}
 }
 

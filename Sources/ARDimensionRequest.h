@@ -26,6 +26,7 @@
 extern NSString *const ARDimensionRequestErrorDomain;
 extern const NSInteger ARDimensionRequestErrorHTTP;
 extern NSString *const ARDimensionRequestErrorHTTPStatusCodeKey;
+extern const NSInteger ARDimensionRequestErrorDocument;
 
 
 @class ARDimension, ARLocation;
@@ -56,6 +57,7 @@ typedef enum {
 	NSURLResponse *response;
 	NSMutableData *responseData;
 	NSXMLParser *parser;
+	BOOL didAbortParsing;
 	ARDimension *dimension;
 }
 
