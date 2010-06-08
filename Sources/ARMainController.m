@@ -133,10 +133,14 @@ CGImageRef UIGetScreenImage(void);
 
 - (id)initWithURL:(NSURL *)aURL {
 	if (self = [super init]) {
-		if (pendingDimensionURL = [aURL retain]) {
+		if (aURL) {
+			pendingDimensionURL = [aURL retain];
+			
 			DebugLog(@"Got dimension URL, waiting for location fix");
 		}
-		else if (pendingDimensionURL = [[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] objectForKey:DIMENSION_URL_DEFAULTS_KEY]] retain]) {
+		else if ([[NSUserDefaults standardUserDefaults] objectForKey:DIMENSION_URL_DEFAULTS_KEY]) {
+			pendingDimensionURL = [[NSURL alloc] initWithString:[[NSUserDefaults standardUserDefaults] objectForKey:DIMENSION_URL_DEFAULTS_KEY]];
+			
 			DebugLog(@"Using dimension URL from user defaults, waiting for location fix");
 		}
 		
