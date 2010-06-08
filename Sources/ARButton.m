@@ -43,7 +43,7 @@
 - (id)initWithFrame:(CGRect)aFrame {
 	if (self = [super initWithFrame:aFrame]) {
 		[self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-		[self setFont:[UIFont boldSystemFontOfSize:FONT_SIZE]];
+		[[self titleLabel] setFont:[UIFont boldSystemFontOfSize:FONT_SIZE]];
 		[self setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
 		[self setShowsTouchWhenHighlighted:YES];
 		
