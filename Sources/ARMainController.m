@@ -425,8 +425,14 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)scanTimerDidFire {
+	ZBarImage *barImage;
+	
+	// Note: use of private API
 	CGImageRef screenImage = UIGetScreenImage();
-	ZBarImage *barImage = [[ZBarImage alloc] initWithCGImage:screenImage];
+	barImage = [[ZBarImage alloc] initWithCGImage:screenImage];
+	// Apparently we need to release the screen image, otherwise it leaks
+	CGImageRelease(screenImage);
+	
 	[scanner scanImage:barImage];
 	
 	ZBarSymbol *sym = nil;
