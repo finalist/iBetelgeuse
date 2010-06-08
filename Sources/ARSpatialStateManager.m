@@ -83,6 +83,8 @@
 	[super dealloc];
 }
 
+#if !TARGET_IPHONE_SIMULATOR
+
 #pragma mark UIAccelerometerDelegate
 
 - (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)rawAcceleration {
@@ -96,6 +98,11 @@
 #pragma mark CLLocationManagerDelegate
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newRawHeading {
+	// Ignore invalid headings
+	if (signbit([newRawHeading headingAccuracy])) {
+		return;
+	}
+	
 	ARPoint3D rawNorthDirection;
 	rawNorthDirection.x = [newRawHeading x];
 	rawNorthDirection.y = [newRawHeading y];
@@ -117,6 +124,21 @@
 	
 	[self updateWithRawLatitude:[newRawLocation coordinate].latitude longitude:[newRawLocation coordinate].longitude altitude:[newRawLocation altitude]];
 }
+
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+	if ([error code] == kCLErrorDenied) {
+		[locationManager stopUpdatingLocation];
+	}
+	else if ([error code] == kCLErrorHeadingFailure) {
+		DebugLog(@"Heading failure");
+	}
+}
+
+- (BOOL)locationManagerShouldDisplayHeadingCalibration:(CLLocationManager *)manager {
+	return YES;
+}
+
+#endif
 
 #pragma mark ARSpatialStateManager
 
