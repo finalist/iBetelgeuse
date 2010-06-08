@@ -449,8 +449,15 @@ CGImageRef UIGetScreenImage(void);
 			DebugLog(@"Ignoring invalid QR code: %@", [sym data]);
 		} else {
 			DebugLog(@"Loading dimension by QR code: %@", [sym data]);
+			
+			if ([[[self spatialStateManager] spatialState] isLocationAvailable]) {
+				[self startDimensionRequestWithURL:url type:ARDimensionRequestTypeInit source:nil];
+			}
+			else {
+				[self setPendingDimensionURL:url];
+			}
+			
 			[self setState:STATE_DIMENSION];
-			[self startDimensionRequestWithURL:url type:ARDimensionRequestTypeTimeRefresh source:nil];
 		}
 	}
 	
