@@ -280,7 +280,7 @@ CGImageRef UIGetScreenImage(void);
 		case STATE_DIMENSION:
 			[self stopRefreshingOnTime];
 			[self stopRefreshingOnDistance];
-			[spatialStateManager stopUpdating];
+			[[self displayLink] setPaused:YES];
 			break;
 			
 		case STATE_QR:
@@ -296,7 +296,7 @@ CGImageRef UIGetScreenImage(void);
 				[self startRefreshingOnTime];
 				[self startRefreshingOnDistanceResetLocation:NO];
 			}
-			[[self spatialStateManager] startUpdating];
+			[[self displayLink] setPaused:NO];
 			break;
 			
 		case STATE_QR:
