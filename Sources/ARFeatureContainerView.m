@@ -59,6 +59,20 @@
 
 #pragma mark UIView
 
+- (void)setFrame:(CGRect)frame {
+	// Force our bounds to the right origin and size (see setBounds:)
+	[self setBounds:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+	
+	[super setFrame:frame];
+}
+
+- (void)setBounds:(CGRect)bounds {
+	// Force the origin of our bounds to the middle
+	bounds.origin.x = -roundf(bounds.size.width / 2.f);
+	bounds.origin.y = -roundf(bounds.size.height / 2.f);
+	[super setBounds:bounds];
+}
+
 - (void)layoutSubviews {
 	[super layoutSubviews];
 	CGRect bounds = [self bounds];

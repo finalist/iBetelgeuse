@@ -41,10 +41,16 @@
 
 #define DIMENSION_URL_DEFAULTS_KEY @"dimensionURL"
 
-#define SCREEN_SIZE_X 320
-#define SCREEN_SIZE_Y 480
+#define MARGIN 10
+#define BUTTON_HEIGHT 44
+#define MENU_BUTTON_WIDTH 54
+#define CANCEL_BUTTON_WIDTH 74
+
+#define MENU_BUTTON_IMAGE @"ARMenuButton.png"
+
+#define SCREEN_HEIGHT 480
 #define CAMERA_CONTROLS_HEIGHT (53.)
-#define CAMERA_VIEW_SCALE (SCREEN_SIZE_Y / (SCREEN_SIZE_Y - CAMERA_CONTROLS_HEIGHT))
+#define CAMERA_VIEW_SCALE (SCREEN_HEIGHT / (SCREEN_HEIGHT - CAMERA_CONTROLS_HEIGHT))
 
 // Fraction of the refresh rate of the screen at which to update
 // Note: a frame interval of 2 results in 30 FPS and seems smooth enough
@@ -179,45 +185,53 @@ CGImageRef UIGetScreenImage(void);
 - (void)loadView {
 	[super loadView];
 	UIView *view = [self view];
+	CGRect bounds = [view bounds];
 	
 	// We want our view to be fully opaque for hit testing to work as expected
 	[view setBackgroundColor:[UIColor blackColor]];
 	
 #if !TARGET_IPHONE_SIMULATOR
-	[view addSubview:[[self cameraViewController] view]];
+	UIView *cameraViewControllerView = [[self cameraViewController] view];
+	[cameraViewControllerView setBounds:CGRectMake(0, 0, 320, 480)];
+	[cameraViewControllerView setAutoresizingMask:UIViewAutoresizingNone];
+	[view addSubview:cameraViewControllerView];
 #endif
 
-	// We are setting the feature container's origin to the center of the screen
 	featureContainerView = [[ARFeatureContainerView alloc] init];
-	[featureContainerView setCenter:CGPointMake(SCREEN_SIZE_X / 2., SCREEN_SIZE_Y / 2.)];
-	[featureContainerView setBounds:CGRectMake(-SCREEN_SIZE_X / 2., -SCREEN_SIZE_Y / 2., SCREEN_SIZE_X, SCREEN_SIZE_Y)];
-	[view addSubview:featureContainerView];
+	[featureContainerView setBounds:CGRectMake(0, 0, 320, 480)];
+	[featureContainerView setAutoresizingMask:UIViewAutoresizingNone];
 	[featureContainerView setHidden:YES];
+	[view addSubview:featureContainerView];
 	[featureContainerView release];
 	
 	radarView = [[ARRadarView alloc] init];
-	[radarView setFrame:CGRectMake(10, SCREEN_SIZE_Y - 100 - 10, 100, 100)];
-	[view addSubview:radarView];
+	CGSize radarSize = [radarView sizeThatFits:CGSizeZero];
+	[radarView setFrame:CGRectMake(CGRectGetMinX(bounds) + MARGIN, CGRectGetMaxY(bounds) - MARGIN - radarSize.width, radarSize.width, radarSize.height)];
+	[radarView setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin];
 	[radarView setHidden:YES];
+	[view addSubview:radarView];
 	[radarView release];
 	
 	overlayContainerView = [[AROverlayContainerView alloc] init];
-	[overlayContainerView setFrame:CGRectMake(0, 0, SCREEN_SIZE_X, SCREEN_SIZE_Y)];
-	[view addSubview:overlayContainerView];
+	[overlayContainerView setFrame:bounds];
+	[overlayContainerView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
 	[overlayContainerView setHidden:YES];
+	[view addSubview:overlayContainerView];
 	[overlayContainerView release];
 	
 	menuButton = [[ARButton alloc] init];
-	[menuButton setFrame:CGRectMake(SCREEN_SIZE_X - 54 - 10, SCREEN_SIZE_Y - 44 - 10, 54, 44)];
-	[menuButton setImage:[UIImage imageNamed:@"ARMenuButton.png"] forState:UIControlStateNormal];
+	[menuButton setFrame:CGRectMake(CGRectGetMaxX(bounds) - MARGIN - MENU_BUTTON_WIDTH, CGRectGetMaxY(bounds) - MARGIN - BUTTON_HEIGHT, MENU_BUTTON_WIDTH, BUTTON_HEIGHT)];
+	[menuButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin];
+	[menuButton setImage:[UIImage imageNamed:MENU_BUTTON_IMAGE] forState:UIControlStateNormal];
 	[menuButton addTarget:self action:@selector(didTapMenuButton) forControlEvents:UIControlEventTouchUpInside];
 	[menuButton setHidden:YES];
 	[view addSubview:menuButton];
 	[menuButton release];
 	
 	cancelButton = [[ARButton alloc] init];
-	[cancelButton setFrame:CGRectMake(SCREEN_SIZE_X - 74 - 10, SCREEN_SIZE_Y - 50 - 10, 74, 44)];
-	[cancelButton setTitle:NSLocalizedString(@"Cancel", @"button") forState:UIControlStateNormal];
+	[cancelButton setFrame:CGRectMake(CGRectGetMaxX(bounds) - MARGIN - CANCEL_BUTTON_WIDTH, CGRectGetMaxY(bounds) - MARGIN - BUTTON_HEIGHT, CANCEL_BUTTON_WIDTH, BUTTON_HEIGHT)];
+	[cancelButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin];
+	[cancelButton setTitle:NSLocalizedString(@"Cancel", @"main controller button") forState:UIControlStateNormal];
 	[cancelButton addTarget:self action:@selector(didTapCancelButton) forControlEvents:UIControlEventTouchUpInside];
 	[cancelButton setHidden:YES];
 	[view addSubview:cancelButton];
@@ -275,6 +289,41 @@ CGImageRef UIGetScreenImage(void);
 	
 	// This invalidates the display link
 	[self setDisplayLink:nil];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	return YES;// UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
+	CGFloat screenRotation = 0.f;
+	switch (interfaceOrientation) {
+		case UIInterfaceOrientationLandscapeRight:
+			screenRotation = .5f * M_PI;
+			break;
+			
+		case UIInterfaceOrientationPortraitUpsideDown:
+			screenRotation = M_PI;
+			break;
+			
+		case UIInterfaceOrientationLandscapeLeft:
+			screenRotation = -.5f * M_PI;
+			break;
+	}
+	
+	// Since the camera view, feature container and radar all assume the device axes are the same as the screen axes, we rotate them as the interface orientation changes
+	CGRect bounds = [[self view] bounds];
+	CGPoint center = CGPointMake(roundf(CGRectGetMidX(bounds)), roundf(CGRectGetMidY(bounds)));
+	CGAffineTransform transform = CGAffineTransformMakeRotation(-screenRotation);
+	
+	UIView *cameraView = [[self cameraViewController] view];
+	[cameraView setCenter:center];
+	[cameraView setTransform:transform];
+	
+	[featureContainerView setCenter:center];
+	[featureContainerView setTransform:transform];
+	
+	[radarView setTransform:transform];
 }
 
 #pragma mark UIApplicationNotifications
@@ -655,6 +704,7 @@ CGImageRef UIGetScreenImage(void);
 
 	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:aURL location:[[[self spatialStateManager] spatialState] location] type:type];
 	[request setSource:source];
+	[request setScreenSize:[[self view] bounds].size];
 	[request setDelegate:self];
 	[self setDimensionRequest:request];
 	[request release];

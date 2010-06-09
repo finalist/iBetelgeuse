@@ -36,6 +36,10 @@
 
 @property(nonatomic, readwrite, getter=isUpdating) BOOL updating;
 
+#if TARGET_IPHONE_SIMULATOR
+- (void)updateForSimulation;
+#endif
+
 - (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude;
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection;
 - (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination;
@@ -158,8 +162,10 @@
 	}
 
 #if TARGET_IPHONE_SIMULATOR
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarOrientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+	
 	[updateTimer invalidate];
-	updateTimer = [[NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(updateTimerDidFire) userInfo:nil repeats:YES] retain];
+	updateTimer = [[NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(updateTimerDidFire) userInfo:nil repeats:YES] retain];
 #else
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	[accelerometer setDelegate:self];
@@ -179,6 +185,8 @@
 
 - (void)stopUpdating {
 #if TARGET_IPHONE_SIMULATOR
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[updateTimer invalidate];
 	[updateTimer release];
 	updateTimer = nil;
@@ -197,21 +205,61 @@
 }
 
 #if TARGET_IPHONE_SIMULATOR
+- (void)statusBarOrientationDidChange:(UIDevice *)device {
+	[self updateForSimulation];
+}
+
 - (void)updateTimerDidFire {
+	[self updateForSimulation];
+}
+
+- (void)updateForSimulation {
 	static CGFloat simulatedLatitude = 0.0;
 	[self updateWithRawLatitude:simulatedLatitude longitude:0 altitude:0];
-//	simulatedLatitude += 0.00005;
-
+	//	simulatedLatitude += 0.00005;
+	
 	// Assume the device is being held with the home button at the bottom
 	static CGFloat simulatedUpAngle = 0.0;
-	[self updateWithRawUpDirection:ARPoint3DCreate(0, cosf(simulatedUpAngle), -sinf(simulatedUpAngle))];
-//	simulatedUpAngle += 1.f / 180.f * M_PI;
+	switch ([[UIApplication sharedApplication] statusBarOrientation]) {
+		case UIInterfaceOrientationPortrait:
+			[self updateWithRawUpDirection:ARPoint3DCreate(0, cosf(simulatedUpAngle), -sinf(simulatedUpAngle))];
+			break;
+			
+		case UIInterfaceOrientationLandscapeRight:
+			[self updateWithRawUpDirection:ARPoint3DCreate(cosf(simulatedUpAngle), 0, -sinf(simulatedUpAngle))];
+			break;
+			
+		case UIInterfaceOrientationPortraitUpsideDown:
+			[self updateWithRawUpDirection:ARPoint3DCreate(0, -cosf(simulatedUpAngle), -sinf(simulatedUpAngle))];
+			break;
+			
+		case UIInterfaceOrientationLandscapeLeft:
+			[self updateWithRawUpDirection:ARPoint3DCreate(-cosf(simulatedUpAngle), 0, -sinf(simulatedUpAngle))];
+			break;
+	}
+	// simulatedUpAngle += .5f / 180.f * M_PI;
 	
 	// Assume the back of the device is pointing towards the north with a declination of -10º
 	static CGFloat simulatedNorthAngle = 0.0;
 	CGFloat declination = -10.f / 180.f * M_PI;
-	[self updateWithRawNorthDirection:ARPoint3DCreate(sinf(declination - simulatedNorthAngle), 0, -cosf(declination - simulatedNorthAngle)) declination:declination];
-//	simulatedNorthAngle += 1.f / 180.f * M_PI;
+	switch ([[UIApplication sharedApplication] statusBarOrientation]) {
+		case UIInterfaceOrientationPortrait:
+			[self updateWithRawNorthDirection:ARPoint3DCreate(sinf(declination - simulatedNorthAngle), 0, -cosf(declination - simulatedNorthAngle)) declination:declination];
+			break;
+			
+		case UIInterfaceOrientationLandscapeRight:
+			[self updateWithRawNorthDirection:ARPoint3DCreate(0, -sinf(declination - simulatedNorthAngle), -cosf(declination - simulatedNorthAngle)) declination:declination];
+			break;
+			
+		case UIInterfaceOrientationPortraitUpsideDown:
+			[self updateWithRawNorthDirection:ARPoint3DCreate(-sinf(declination - simulatedNorthAngle), 0, -cosf(declination - simulatedNorthAngle)) declination:declination];
+			break;
+			
+		case UIInterfaceOrientationLandscapeLeft:
+			[self updateWithRawNorthDirection:ARPoint3DCreate(0, sinf(declination - simulatedNorthAngle), -cosf(declination - simulatedNorthAngle)) declination:declination];
+			break;
+	}
+	//	simulatedNorthAngle += 10.f / 180.f * M_PI;
 }
 #endif
 

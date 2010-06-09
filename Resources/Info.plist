@@ -24,6 +24,8 @@
 	<true/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackTranslucent</string>
+	<key>UIInterfaceOrientation</key>
+	<string>UIInterfaceOrientationPortrait</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

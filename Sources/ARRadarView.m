@@ -48,6 +48,12 @@
 	return self;
 }
 
+- (CGSize)sizeThatFits:(CGSize)size {
+	size.width = RADAR_SCREEN_RANGE * 2.f;
+	size.height = RADAR_SCREEN_RANGE * 2.f;
+	return size;
+}
+
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
 	point.x -= RADAR_SCREEN_RANGE;
 	point.y -= RADAR_SCREEN_RANGE;
@@ -122,7 +128,7 @@
 	CGContextFillEllipseInRect(ctx, [self bounds]);
 	
 	// Prepare the screen transformation for drawing radar blibs
-	CGContextConcatCTM(ctx, CGAffineTransformMakeTranslation(RADAR_SCREEN_RANGE, RADAR_SCREEN_RANGE));
+	CGContextTranslateCTM(ctx, RADAR_SCREEN_RANGE, RADAR_SCREEN_RANGE);
 	CGContextScaleCTM(ctx, 1, -1);
 	
 	if (isSpatialStateDefined)
