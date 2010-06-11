@@ -54,6 +54,7 @@
 	GHAssertEquals([feature anchor], ARAnchorMake(0.5, 0.5), nil);
 	GHAssertTrue([[feature action] isKindOfClass:[ARAction class]], nil);
 	GHAssertTrue(ARPoint3DEquals([feature offset], ARPoint3DCreate(12.34, 23.45, 34.56)), nil);
+	GHAssertFalse([feature showInRadar], nil);
 	GHAssertEqualObjects([feature assetIdentifier], @"Foo", nil);
 	
 	[parser release];
@@ -71,6 +72,7 @@
 	GHAssertEquals([feature anchor], ARAnchorMake(0.5, 1.0), nil);
 	GHAssertNil([feature action], nil);
 	GHAssertTrue(ARPoint3DEquals([feature offset], ARPoint3DCreate(0, 0, 0)), nil);
+	GHAssertTrue([feature showInRadar], nil);
 	GHAssertEqualObjects([feature assetIdentifier], @"Foo", nil);
 	
 	[parser release];
@@ -88,6 +90,7 @@
 	GHAssertEquals([feature anchor], ARAnchorMake(0.5, 1.0), nil);
 	GHAssertNil([feature action], nil);
 	GHAssertTrue(ARPoint3DEquals([feature offset], ARPoint3DCreate(0, 0, 0)), nil);
+	GHAssertTrue([feature showInRadar], nil);
 	GHAssertEqualObjects([feature assetIdentifier], @"Foo", nil);
 	
 	[parser release];

@@ -52,6 +52,9 @@
 		// Set default anchor to bottom center
 		anchor.x = 0.5;
 		anchor.y = 1.0;
+		
+		// Default to true
+		showInRadar = YES;
 	}
 	return self;
 }
