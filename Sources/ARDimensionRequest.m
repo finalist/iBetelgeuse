@@ -149,8 +149,8 @@ const NSInteger ARDimensionRequestErrorDocument = 2;
 	[postData setObject:[NSString stringWithFormat:@"%f", [location altitude]] forKey:@"alt"];
 	
 	if (!CGSizeEqualToSize(screenSize, CGSizeZero)) {
-		[postData setObject:[NSString stringWithFormat:@"%f", screenSize.width] forKey:@"width"];
-		[postData setObject:[NSString stringWithFormat:@"%f", screenSize.height] forKey:@"height"];
+		[postData setObject:[NSString stringWithFormat:@"%d", (int)roundf(screenSize.width)] forKey:@"width"];
+		[postData setObject:[NSString stringWithFormat:@"%d", (int)roundf(screenSize.height)] forKey:@"height"];
 	}
 	
 	[postData setObject:[self uniqueIdentifier] forKey:@"uid"];
