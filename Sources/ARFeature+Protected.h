@@ -25,7 +25,6 @@
 
 
 @interface ARFeatureXMLParserDelegate : TCXMLParserDelegate {
-@private
 }
 
 @property(nonatomic, readonly) ARFeature *feature;

@@ -30,8 +30,8 @@
 @interface ARImageFeatureView : ARFeatureView <ARAssetDataUser> {
 @private
 	ARImageFeature *feature;
-	UIActivityIndicatorView *activityIndicatorView;
-	UIImageView *imageView;
+	UIActivityIndicatorView *activityIndicatorView; // Non-retained instance variables
+	UIImageView *imageView; // Non-retained instance variables
 }
 
 @end

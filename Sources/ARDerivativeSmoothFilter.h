@@ -27,6 +27,7 @@
 
 
 @interface ARDerivativeSmoothFilter : ARFilter {
+@private
 	ARDerivativeFilter *derivativeFilter;
 	ARMovingAverageFilter *derivativeAverageFilter;
 	ARFilter *inputAverageFilter;

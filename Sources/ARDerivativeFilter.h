@@ -25,6 +25,7 @@
 
 
 @interface ARDerivativeFilter : ARFilter {
+@private
 	ARFilterValue lastInput;
 	NSTimeInterval lastTimestamp;
 	ARFilterValue lastOutput;

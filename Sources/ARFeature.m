@@ -61,6 +61,8 @@
 
 - (void)dealloc {
 	[identifier release];
+	[locationIdentifier release];
+	[location release];
 	[action release];
 	
 	[super dealloc];

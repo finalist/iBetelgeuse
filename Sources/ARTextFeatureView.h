@@ -29,7 +29,7 @@
 @interface ARTextFeatureView : ARFeatureView {
 @private
 	ARTextFeature *feature;
-	UILabel *label;
+	UILabel *label; // Non-retained instance variable
 }
 
 @end

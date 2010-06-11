@@ -29,7 +29,7 @@
 @interface ARTextOverlayView : AROverlayView {
 @private
 	ARTextOverlay *overlay;
-	UILabel *label;
+	UILabel *label; // Non-retained instance variable
 }
 
 @end

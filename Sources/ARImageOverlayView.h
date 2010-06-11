@@ -30,8 +30,8 @@
 @interface ARImageOverlayView : AROverlayView <ARAssetDataUser> {
 @private
 	ARImageOverlay *overlay;
-	UIActivityIndicatorView *activityIndicatorView;
-	UIImageView *imageView;
+	UIActivityIndicatorView *activityIndicatorView; // Non-retained instance variable
+	UIImageView *imageView; // Non-retained instance variable
 }
 
 @end

@@ -37,8 +37,8 @@ static NSString *modelIdentifier = nil;
 		
 		char *machine = malloc(length);
 		sysctlbyname("hw.machine", machine, &length, NULL, 0);
-		
 		modelIdentifier = [[NSString alloc] initWithCString:machine];
+		free(machine);
 	}
 	return modelIdentifier;
 }

@@ -50,8 +50,8 @@
 	BOOL refreshingOnDistance;
 	ARLocation *refreshLocation;
 	int currentState;
-	UIButton *menuButton;
-	UIButton *cancelButton;
+	UIButton *menuButton; // Non-retained instance variable
+	UIButton *cancelButton; // Non-retained instance variable
 	
 	struct {
 		signed char qr;
