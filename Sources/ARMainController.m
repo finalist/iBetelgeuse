@@ -835,7 +835,10 @@ CGImageRef UIGetScreenImage(void);
 			[radarView setHidden:NO];
 			[menuButton setHidden:NO];
 			[displayLink setPaused:NO];
+			
+			[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 			break;
+			
 		case STATE_QR:
 			[cancelButton setHidden:NO];
 			[self startScanning];
@@ -855,7 +858,10 @@ CGImageRef UIGetScreenImage(void);
 			[radarView setHidden:YES];
 			[menuButton setHidden:YES];
 			[displayLink setPaused:YES];
+			
+			[[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 			break;
+			
 		case STATE_QR:
 			[cancelButton setHidden:YES];
 			[self stopScanning];
