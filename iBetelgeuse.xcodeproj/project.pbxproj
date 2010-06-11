@@ -975,6 +975,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
 				INFOPLIST_FILE = Resources/Info.plist;
 				OTHER_CFLAGS = "-DDEBUG";
@@ -993,6 +994,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
 				INFOPLIST_FILE = Resources/Info.plist;
 				OTHER_LDFLAGS = (
