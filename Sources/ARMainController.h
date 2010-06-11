@@ -52,6 +52,11 @@
 	int currentState;
 	UIButton *menuButton;
 	UIButton *cancelButton;
+	
+	struct {
+		signed char qr;
+		signed char cancel;
+	} menuButtonIndices;
 }
 
 /**

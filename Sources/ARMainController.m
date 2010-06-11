@@ -59,9 +59,6 @@
 // Time interval between two QR scans.
 #define SCAN_TIMER_INTERVAL 1
 
-#define MENU_BUTTON_QR 0
-#define MENU_BUTTON_CANCEL 1
-
 #define STATE_STARTING 0
 #define STATE_DIMENSION 1
 #define STATE_QR 2
@@ -189,13 +186,13 @@ CGImageRef UIGetScreenImage(void);
 	
 	// We want our view to be fully opaque for hit testing to work as expected
 	[view setBackgroundColor:[UIColor blackColor]];
-	
-#if !TARGET_IPHONE_SIMULATOR
-	UIView *cameraViewControllerView = [[self cameraViewController] view];
-	[cameraViewControllerView setBounds:CGRectMake(0, 0, 320, 480)];
-	[cameraViewControllerView setAutoresizingMask:UIViewAutoresizingNone];
-	[view addSubview:cameraViewControllerView];
-#endif
+
+	if ([self cameraViewController]) {
+		UIView *cameraViewControllerView = [[self cameraViewController] view];
+		[cameraViewControllerView setBounds:CGRectMake(0, 0, 320, 480)];
+		[cameraViewControllerView setAutoresizingMask:UIViewAutoresizingNone];
+		[view addSubview:cameraViewControllerView];
+	}
 
 	featureContainerView = [[ARFeatureContainerView alloc] init];
 	[featureContainerView setBounds:CGRectMake(0, 0, 320, 480)];
@@ -516,10 +513,8 @@ CGImageRef UIGetScreenImage(void);
 #pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	switch (buttonIndex) {
-		case MENU_BUTTON_QR:
-			[self setState:STATE_QR];
-			break;
+	if (buttonIndex == menuButtonIndices.qr) {
+		[self setState:STATE_QR];
 	}
 }
 
@@ -528,12 +523,12 @@ CGImageRef UIGetScreenImage(void);
 - (UIImagePickerController *)cameraViewController {
 	// Lazily create camera view controller, if necessary
 	if (cameraViewController == nil) {
-#if !TARGET_IPHONE_SIMULATOR
-		cameraViewController = [[UIImagePickerController alloc] init];
-		[cameraViewController setSourceType:UIImagePickerControllerSourceTypeCamera];
-		[cameraViewController setShowsCameraControls:NO];
-		[cameraViewController setCameraViewTransform:CGAffineTransformTranslate(CGAffineTransformMakeScale(CAMERA_VIEW_SCALE, CAMERA_VIEW_SCALE), 0, CAMERA_CONTROLS_HEIGHT / 2)];
-#endif
+		if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+			cameraViewController = [[UIImagePickerController alloc] init];
+			[cameraViewController setSourceType:UIImagePickerControllerSourceTypeCamera];
+			[cameraViewController setShowsCameraControls:NO];
+			[cameraViewController setCameraViewTransform:CGAffineTransformTranslate(CGAffineTransformMakeScale(CAMERA_VIEW_SCALE, CAMERA_VIEW_SCALE), 0, CAMERA_CONTROLS_HEIGHT / 2)];
+		}
 	}
 	return cameraViewController;
 }
@@ -779,10 +774,24 @@ CGImageRef UIGetScreenImage(void);
 - (void)didTapMenuButton {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
 	[actionSheet setDelegate:self];
-	[actionSheet addButtonWithTitle:NSLocalizedString(@"Scan QR code", @"actionsheet button")];
-	//[actionSheet addButtonWithTitle:@"Enter URL"]
+	
+	// Keep track of the indices of the buttons we add
+	signed char index = 0;
+	
+	// Add QR code button, if appropriate
+	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+		[actionSheet addButtonWithTitle:NSLocalizedString(@"Scan QR code", @"actionsheet button")];
+		menuButtonIndices.qr = index++;
+	}
+	else {
+		menuButtonIndices.qr = -1;
+	}
+	
+	// Add cancel button
 	[actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"actionsheet button")];
-	[actionSheet setCancelButtonIndex:MENU_BUTTON_CANCEL];
+	menuButtonIndices.cancel = index++;
+	[actionSheet setCancelButtonIndex:menuButtonIndices.cancel];
+
 	[actionSheet showInView:[self view]];
 	[actionSheet release];
 }
@@ -833,7 +842,12 @@ CGImageRef UIGetScreenImage(void);
 			[featureContainerView setHidden:NO];
 			[overlayContainerView setHidden:NO];
 			[radarView setHidden:NO];
-			[menuButton setHidden:NO];
+			
+			// At this time, the only menu item is for scanning a QR code, which is only possible when we have a camera
+			if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+				[menuButton setHidden:NO];
+			}
+			
 			[displayLink setPaused:NO];
 			
 			[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
