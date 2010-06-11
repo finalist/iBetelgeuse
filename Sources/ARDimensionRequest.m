@@ -82,6 +82,7 @@ const NSInteger ARDimensionRequestErrorDocument = 2;
 	[response release];
 	[responseData release];
 	[parser release];
+	[dimension release];
 	
 	[super dealloc];
 }
