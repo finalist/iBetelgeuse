@@ -787,7 +787,7 @@ CGImageRef UIGetScreenImage(void);
 	
 	// Add QR code button, if appropriate
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-		[actionSheet addButtonWithTitle:NSLocalizedString(@"Scan QR code", @"actionsheet button")];
+		[actionSheet addButtonWithTitle:NSLocalizedString(@"Scan QR Code", @"actionsheet button")];
 		menuButtonIndices.qr = index++;
 	}
 	else {

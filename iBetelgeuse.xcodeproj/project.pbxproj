@@ -85,6 +85,7 @@
 		95EC614411C22B200027FF5D /* ARCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC614311C22B200027FF5D /* ARCamera.m */; };
 		95EC614B11C22CC70027FF5D /* UIDevice+ARDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC614A11C22CC70027FF5D /* UIDevice+ARDevice.m */; };
 		95EC615811C22EF20027FF5D /* Camera.plist in Resources */ = {isa = PBXBuildFile; fileRef = 95EC615711C22EF20027FF5D /* Camera.plist */; };
+		95EC630D11C267510027FF5D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 95EC630C11C267510027FF5D /* Localizable.strings */; };
 		C33462C1119D7B3B00228C9A /* ARMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = C33462C0119D7B3B00228C9A /* ARMainController.m */; };
 		C334645E11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
 		C334645F11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
@@ -265,6 +266,8 @@
 		95EC614911C22CC70027FF5D /* UIDevice+ARDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+ARDevice.h"; sourceTree = "<group>"; };
 		95EC614A11C22CC70027FF5D /* UIDevice+ARDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+ARDevice.m"; sourceTree = "<group>"; };
 		95EC615711C22EF20027FF5D /* Camera.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Camera.plist; sourceTree = "<group>"; };
+		95EC630911C2674B0027FF5D /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		95EC631011C268310027FF5D /* Dutch */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Dutch; path = Dutch.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C33462BF119D7B3B00228C9A /* ARMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMainController.h; sourceTree = "<group>"; };
 		C33462C0119D7B3B00228C9A /* ARMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMainController.m; sourceTree = "<group>"; };
 		C334645C11A1495D00228C9A /* ARLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocation.h; sourceTree = "<group>"; };
@@ -407,6 +410,7 @@
 			children = (
 				8D1107310486CEB800E47090 /* Info.plist */,
 				95EC615711C22EF20027FF5D /* Camera.plist */,
+				95EC630C11C267510027FF5D /* Localizable.strings */,
 				95C765F811BD26A900B71931 /* ARMenuButton.png */,
 				95B9BEED11A1361400EDD870 /* Tests */,
 			);
@@ -768,6 +772,13 @@
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iBetelgeuse" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+				Dutch,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectReferences = (
@@ -802,6 +813,7 @@
 			files = (
 				95C765F911BD26A900B71931 /* ARMenuButton.png in Resources */,
 				95EC615811C22EF20027FF5D /* Camera.plist in Resources */,
+				95EC630D11C267510027FF5D /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,6 +952,18 @@
 			targetProxy = C35C57F911B504A900C0FF1A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		95EC630C11C267510027FF5D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				95EC630911C2674B0027FF5D /* English */,
+				95EC631011C268310027FF5D /* Dutch */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
