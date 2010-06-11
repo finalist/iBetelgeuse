@@ -52,10 +52,10 @@
 	return nil;
 }
 
-- (ARPoint3D)filterWithInput:(ARPoint3D)input {
+- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)timestamp {
 	ARPoint3D output;
 	for (int i = 0; i < 3; i++) {
-		ARPoint3DSetCoordinate(&output, i, [filters[i] filterWithInput:ARPoint3DGetCoordinate(input, i)]);
+		ARPoint3DSetCoordinate(&output, i, [filters[i] filterWithInput:ARPoint3DGetCoordinate(input, i) timestamp:timestamp]);
 	}
 	return output;
 }

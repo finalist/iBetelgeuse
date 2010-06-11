@@ -29,7 +29,7 @@
 
 #pragma mark ARFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input {
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
 	if (fabs(input - referenceInput) > stepThreshold) {
 		referenceInput = input;
 	}

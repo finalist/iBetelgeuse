@@ -30,6 +30,10 @@ typedef double ARFilterValue;
 @interface ARFilter : NSObject {
 }
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input;
+/**
+ * @param input the current value of the signal
+ * @param timestamp a relative timestamp; this value is guaranteed to be greater than or equal to previously provided timestamps, but does not necessarily represent an accurate UNIX timestamp.
+ */
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp;
 
 @end

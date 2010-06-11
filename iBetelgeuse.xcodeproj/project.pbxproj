@@ -114,6 +114,9 @@
 		C33474BA11A54E2200228C9A /* ARSpatialStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C33474B911A54E2200228C9A /* ARSpatialStateManager.m */; };
 		C35C57FB11B504D300C0FF1A /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C35C57F211B5048200C0FF1A /* libzbar.a */; };
 		C35C581911B507B500C0FF1A /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C35C581811B507B500C0FF1A /* libiconv.dylib */; };
+		C35C5A0911BE1F4D00C0FF1A /* ARDerivativeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5A0811BE1F4D00C0FF1A /* ARDerivativeFilter.m */; };
+		C35C5A0E11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5A0D11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m */; };
+		C35C5A0F11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5A0D11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m */; };
 		C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C62E8611ABE7D500553407 /* ARRadarView.m */; };
 /* End PBXBuildFile section */
 
@@ -319,6 +322,10 @@
 		C33474B911A54E2200228C9A /* ARSpatialStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpatialStateManager.m; sourceTree = "<group>"; };
 		C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zbar.xcodeproj; path = zbar/iphone/zbar.xcodeproj; sourceTree = "<group>"; };
 		C35C581811B507B500C0FF1A /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		C35C5A0711BE1F4D00C0FF1A /* ARDerivativeFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDerivativeFilter.h; sourceTree = "<group>"; };
+		C35C5A0811BE1F4D00C0FF1A /* ARDerivativeFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDerivativeFilter.m; sourceTree = "<group>"; };
+		C35C5A0C11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDerivativeSmoothFilter.h; sourceTree = "<group>"; };
+		C35C5A0D11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDerivativeSmoothFilter.m; sourceTree = "<group>"; };
 		C3C62E8511ABE7D500553407 /* ARRadarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRadarView.h; sourceTree = "<group>"; };
 		C3C62E8611ABE7D500553407 /* ARRadarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRadarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -512,6 +519,10 @@
 				95C7609411B6930000B71931 /* ARCompassFilter.m */,
 				95C7615111B7AEEE00B71931 /* ARModifiedExponentialFilter.h */,
 				95C7615211B7AEEE00B71931 /* ARModifiedExponentialFilter.m */,
+				C35C5A0711BE1F4D00C0FF1A /* ARDerivativeFilter.h */,
+				C35C5A0811BE1F4D00C0FF1A /* ARDerivativeFilter.m */,
+				C35C5A0C11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.h */,
+				C35C5A0D11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m */,
 			);
 			name = Filter;
 			sourceTree = "<group>";
@@ -848,6 +859,8 @@
 				95C7615311B7AEEE00B71931 /* ARModifiedExponentialFilter.m in Sources */,
 				95C765F711BD25EB00B71931 /* ARButton.m in Sources */,
 				95E28E7911BE420A00C716F0 /* ARViewUtil.m in Sources */,
+				C35C5A0911BE1F4D00C0FF1A /* ARDerivativeFilter.m in Sources */,
+				C35C5A0E11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -891,6 +904,7 @@
 				C3346E6A11A3E63900228C9A /* ARTransform3DTest.m in Sources */,
 				95E28EA611BE440B00C716F0 /* ARViewUtil.m in Sources */,
 				95E28EEE11BE447A00C716F0 /* ARViewUtilTest.m in Sources */,
+				C35C5A0F11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

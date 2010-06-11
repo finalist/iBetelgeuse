@@ -42,27 +42,32 @@
 
 #pragma mark ARFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input {
-	// Update baseline
-	if (fabs(lastOutput - input) > delta || fabs(lastOutput - input) < fabs(lastOutput - baseline)) {
-		baseline = input;
-	}
-	
-	double deviation = baseline - lastOutput;
-	double target = baseline + copysign(delta, deviation);
-	
-	double difference = target - lastOutput;
-	double correction = copysign(alpha * fabs(difference), difference);
-	
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
 	ARFilterValue output;
-	if (fabs(correction) > fabs(deviation)) {
-		output = lastOutput; 
+	if (sampleCount == 0) {
+		baseline = input;
+		output = input;
+	} else {
+		// Update baseline
+		if (fabs(lastOutput - input) > delta || fabs(lastOutput - input) < fabs(lastOutput - baseline)) {
+			baseline = input;
+		}
+		
+		double deviation = baseline - lastOutput;
+		double target = baseline + copysign(delta, deviation);
+		
+		double difference = target - lastOutput;
+		double correction = copysign(alpha * fabs(difference), difference);
+		
+		if (fabs(correction) > fabs(deviation)) {
+			output = lastOutput;
+		}
+		else {
+			output = lastOutput + correction;
+		}
 	}
-	else {
-		output = lastOutput + correction;
-	}
-	
 	lastOutput = output;
+	++sampleCount;
 	return output;
 }
 

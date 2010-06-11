@@ -47,10 +47,17 @@
 
 #pragma mark ARFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input {
-	ARFilterValue output = alpha * input + (1. - alpha) * (lastOutput + trend);
-	trend = gamma * (output - lastOutput) + (1. - gamma) * trend;
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
+	ARFilterValue output;
+	if (sampleCount == 0) {
+		output = 0;
+		trend = 0;
+	} else {
+		output = alpha * input + (1. - alpha) * (lastOutput + trend);
+		trend = gamma * (output - lastOutput) + (1. - gamma) * trend;
+	}
 	lastOutput = output;
+	++sampleCount;
 	return output;
 }
 

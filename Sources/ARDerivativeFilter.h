@@ -1,5 +1,5 @@
 //
-//  ARDoubleExponentialFilter.h
+//  ARDerivativeFilter.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -24,20 +24,10 @@
 #import "ARFilter.h"
 
 
-@interface ARDoubleExponentialFilter : ARFilter {
-@private
-	double alpha;
-	double gamma;
-	
+@interface ARDerivativeFilter : ARFilter {
+	ARFilterValue lastInput;
+	NSTimeInterval lastTimestamp;
 	ARFilterValue lastOutput;
-	ARFilterValue trend;
 	int sampleCount;
 }
-
-- (id)initWithAlpha:(double)alpha;
-- (id)initWithAlpha:(double)alpha gamma:(double)gamma;
-
-@property(nonatomic, readwrite) double alpha;
-@property(nonatomic, readwrite) double gamma;
-
 @end

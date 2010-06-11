@@ -26,7 +26,7 @@
 
 @implementation ARFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input {
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
 	return input;
 }
 

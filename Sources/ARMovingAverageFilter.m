@@ -29,11 +29,12 @@
 #pragma mark ARMovingWindowFilter
 
 - (ARFilterValue)filterWithSamples:(ARFilterValue *)samples lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)aSampleCount {
-	ARFilterValue average = 0;
-	for (NSUInteger i = 0; i < MIN(aSampleCount, [self windowSize]); i++) {
-		average += samples[i];
+	int n = MIN(aSampleCount, [self windowSize]);
+	ARFilterValue sum = 0;
+	for (NSUInteger i = 0; i < n; i++) {
+		sum += samples[i];
 	}
-	return average / [self windowSize];
+	return sum / n;
 }
 
 @end

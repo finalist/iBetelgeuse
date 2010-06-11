@@ -30,6 +30,7 @@
 	
 	ARFilterValue baseline;
 	ARFilterValue lastOutput;
+	int sampleCount;
 }
 
 - (id)initWithAlpha:(double)alpha delta:(double)delta;

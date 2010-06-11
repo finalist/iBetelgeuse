@@ -33,7 +33,7 @@
 	ARFilter *filters[3];
 }
 
-- (ARPoint3D)filterWithInput:(ARPoint3D)input;
+- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)timestamp;
 
 - (ARFilter *)newCoordinateFilter;
 

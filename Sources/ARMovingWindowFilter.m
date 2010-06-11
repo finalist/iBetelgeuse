@@ -49,7 +49,7 @@
 
 #pragma mark ARFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input {
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
 	NSUInteger previousSampleIndex = sampleIndex;
 	
 	samples[sampleIndex++] = input;

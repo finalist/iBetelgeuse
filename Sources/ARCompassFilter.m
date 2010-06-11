@@ -22,12 +22,12 @@
 
 #import "ARCompassFilter.h"
 #import "ARFilter.h"
-#import "ARModifiedExponentialFilter.h"
+#import "ARDerivativeSmoothFilter.h"
 
 
 @interface ARCompassCoordinateFilter : ARFilter {
 @private
-	ARModifiedExponentialFilter *modifiedExponential;
+	ARDerivativeSmoothFilter *derivativeSmoothFilter;
 }
 
 @end
@@ -50,21 +50,21 @@
 
 - (id)init {
 	if (self = [super init]) {
-		modifiedExponential = [[ARModifiedExponentialFilter alloc] initWithAlpha:0.1 delta:2.0];
+		derivativeSmoothFilter = [[ARDerivativeSmoothFilter alloc] initWithBaseCorrectionFactor:0.01 correctionFactorDerivativeGain:0.02 derivativeAverageWindowSize:44];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[modifiedExponential release];
+	[derivativeSmoothFilter release];
 	
 	[super dealloc];
 }
 
 #pragma mark ARFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input {
-	return [modifiedExponential filterWithInput:input];
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
+	return [derivativeSmoothFilter filterWithInput:input timestamp:timestamp];
 }
 
 @end

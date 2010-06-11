@@ -232,7 +232,7 @@
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection {
 	upDirectionAvailable = YES;
 
-	upDirectionInDeviceSpace = [upDirectionFilter filterWithInput:rawUpDirection];
+	upDirectionInDeviceSpace = [upDirectionFilter filterWithInput:rawUpDirection timestamp:[[NSDate date] timeIntervalSince1970]];
 	
 	[self invalidateSpatialState];
 	
@@ -251,7 +251,7 @@
 		rawNorthDirection = ARTransform3DNonhomogeneousVectorMatrixMultiply(rawNorthDirection, declinationCorrectionTransform);
 	}
 
-	northDirectionInDeviceSpace = [northDirectionFilter filterWithInput:rawNorthDirection];
+	northDirectionInDeviceSpace = [northDirectionFilter filterWithInput:rawNorthDirection timestamp:[[NSDate date] timeIntervalSince1970]];
 
 	[self invalidateSpatialState];
 	

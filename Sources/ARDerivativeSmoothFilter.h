@@ -1,5 +1,5 @@
 //
-//  ARDoubleExponentialFilter.h
+//  ARDerivativeSmoothFilter.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -22,22 +22,21 @@
 
 
 #import "ARFilter.h"
+#import "ARDerivativeFilter.h"
+#import "ARMovingAverageFilter.h"
 
 
-@interface ARDoubleExponentialFilter : ARFilter {
-@private
-	double alpha;
-	double gamma;
-	
+@interface ARDerivativeSmoothFilter : ARFilter {
+	ARDerivativeFilter *derivativeFilter;
+	ARMovingAverageFilter *derivativeAverageFilter;
+	ARFilter *inputAverageFilter;
+	ARFilterValue baseCorrectionFactor;
+	ARFilterValue correctionFactorDerivativeGain;
 	ARFilterValue lastOutput;
-	ARFilterValue trend;
+	NSTimeInterval lastTimestamp;
 	int sampleCount;
 }
 
-- (id)initWithAlpha:(double)alpha;
-- (id)initWithAlpha:(double)alpha gamma:(double)gamma;
-
-@property(nonatomic, readwrite) double alpha;
-@property(nonatomic, readwrite) double gamma;
+- (id)initWithBaseCorrectionFactor:(ARFilterValue)aBaseCorrectionFactor correctionFactorDerivativeGain:(ARFilterValue)aCorrectionFactorDerivativeGain derivativeAverageWindowSize:(ARFilterValue)aDerivativeAverageWindowSize;
 
 @end

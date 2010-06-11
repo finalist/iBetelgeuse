@@ -22,14 +22,12 @@
 
 #import "ARAccelerometerFilter.h"
 #import "ARFilter.h"
-#import "ARMovingMedianFilter.h"
-#import "ARMovingAverageFilter.h"
+#import "ARDerivativeSmoothFilter.h"
 
 
 @interface ARAccelerometerCoordinateFilter : ARFilter {
 @private
-	ARMovingMedianFilter *movingMedian;
-	ARMovingAverageFilter *movingAverage;
+	ARDerivativeSmoothFilter *derivativeSmoothFilter;
 }
 
 @end
@@ -52,23 +50,21 @@
 
 - (id)init {
 	if (self = [super init]) {
-		movingMedian = [[ARMovingMedianFilter alloc] initWithWindowSize:11];
-		movingAverage = [[ARMovingAverageFilter alloc] initWithWindowSize:5];
+		derivativeSmoothFilter = [[ARDerivativeSmoothFilter alloc] initWithBaseCorrectionFactor:0.1 correctionFactorDerivativeGain:0.1 derivativeAverageWindowSize:22];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[movingMedian release];
-	[movingAverage release];
+	[derivativeSmoothFilter release];
 	
 	[super dealloc];
 }
 
 #pragma mark ARFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input {
-	return [movingAverage filterWithInput:[movingMedian filterWithInput:input]];
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
+	return [derivativeSmoothFilter filterWithInput:input timestamp:timestamp];
 }
 
 @end
