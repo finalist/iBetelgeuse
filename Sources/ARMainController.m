@@ -64,7 +64,10 @@
 #define STATE_QR 2
 
 
-// expose undocumented API
+// Expose undocumented API
+#if defined(__clang__)
+__attribute__((cf_returns_retained))
+#endif
 CGImageRef UIGetScreenImage(void);
 
 
@@ -801,6 +804,8 @@ CGImageRef UIGetScreenImage(void);
 
 	[actionSheet showInView:[self view]];
 	[actionSheet release];
+	
+	#pragma unused(index)
 }
 
 - (void)didTapCancelButton {
