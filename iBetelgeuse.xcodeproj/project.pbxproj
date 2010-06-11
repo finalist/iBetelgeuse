@@ -82,6 +82,9 @@
 		95E77EF6119809FE00A1F2B9 /* GHUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77DFF1198084800A1F2B9 /* GHUnit.framework */; };
 		95E77EF711980A0400A1F2B9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77E401198094800A1F2B9 /* Foundation.framework */; };
 		95E77EF811980A0400A1F2B9 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E77EC51198097400A1F2B9 /* Cocoa.framework */; };
+		95EC614411C22B200027FF5D /* ARCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC614311C22B200027FF5D /* ARCamera.m */; };
+		95EC614B11C22CC70027FF5D /* UIDevice+ARDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC614A11C22CC70027FF5D /* UIDevice+ARDevice.m */; };
+		95EC615811C22EF20027FF5D /* Camera.plist in Resources */ = {isa = PBXBuildFile; fileRef = 95EC615711C22EF20027FF5D /* Camera.plist */; };
 		C33462C1119D7B3B00228C9A /* ARMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = C33462C0119D7B3B00228C9A /* ARMainController.m */; };
 		C334645E11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
 		C334645F11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
@@ -257,6 +260,11 @@
 		95E77E401198094800A1F2B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		95E77EC51198097400A1F2B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		95EC614211C22B200027FF5D /* ARCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCamera.h; sourceTree = "<group>"; };
+		95EC614311C22B200027FF5D /* ARCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCamera.m; sourceTree = "<group>"; };
+		95EC614911C22CC70027FF5D /* UIDevice+ARDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+ARDevice.h"; sourceTree = "<group>"; };
+		95EC614A11C22CC70027FF5D /* UIDevice+ARDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+ARDevice.m"; sourceTree = "<group>"; };
+		95EC615711C22EF20027FF5D /* Camera.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Camera.plist; sourceTree = "<group>"; };
 		C33462BF119D7B3B00228C9A /* ARMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMainController.h; sourceTree = "<group>"; };
 		C33462C0119D7B3B00228C9A /* ARMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMainController.m; sourceTree = "<group>"; };
 		C334645C11A1495D00228C9A /* ARLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocation.h; sourceTree = "<group>"; };
@@ -398,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107310486CEB800E47090 /* Info.plist */,
+				95EC615711C22EF20027FF5D /* Camera.plist */,
 				95C765F811BD26A900B71931 /* ARMenuButton.png */,
 				95B9BEED11A1361400EDD870 /* Tests */,
 			);
@@ -448,6 +457,8 @@
 			children = (
 				95D3CFC211A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.h */,
 				95D3CFC311A2B7C1007B7148 /* NSURLRequest+ARFormURLEncoding.m */,
+				95EC614911C22CC70027FF5D /* UIDevice+ARDevice.h */,
+				95EC614A11C22CC70027FF5D /* UIDevice+ARDevice.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -598,6 +609,8 @@
 				95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */,
 				95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */,
 				95C75EAE11B66E3100B71931 /* Filter */,
+				95EC614211C22B200027FF5D /* ARCamera.h */,
+				95EC614311C22B200027FF5D /* ARCamera.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -788,6 +801,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				95C765F911BD26A900B71931 /* ARMenuButton.png in Resources */,
+				95EC615811C22EF20027FF5D /* Camera.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -861,6 +875,10 @@
 				95E28E7911BE420A00C716F0 /* ARViewUtil.m in Sources */,
 				C35C5A0911BE1F4D00C0FF1A /* ARDerivativeFilter.m in Sources */,
 				C35C5A0E11BE21DD00C0FF1A /* ARDerivativeSmoothFilter.m in Sources */,
+				C35C5E6C11BF914000C0FF1A /* ARDelayFilter.m in Sources */,
+				C35C5EDB11BFAC8000C0FF1A /* ARQuaternion.m in Sources */,
+				95EC614411C22B200027FF5D /* ARCamera.m in Sources */,
+				95EC614B11C22CC70027FF5D /* UIDevice+ARDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,15 +22,10 @@
 
 #import "ARFeatureContainerView.h"
 #import "ARFeatureView.h"
+#import "ARCamera.h"
 #import "ARSpatialStateManager.h"
 #import "ARPoint3D.h"
 #import "ARTransform3D.h"
-
-
-#define CAMERA_FOCAL_LENGTH (3.85e-3)
-#define CAMERA_SENSOR_SIZE_X (2.69e-3)
-#define CAMERA_SENSOR_SIZE_Y (3.58e-3)
-#define DISTANCE_TO_VIEW_PLANE (2. * CAMERA_FOCAL_LENGTH / CAMERA_SENSOR_SIZE_Y)
 
 
 @implementation ARFeatureContainerView
@@ -44,11 +39,8 @@
 		
 		EFToDeviceSpaceTransform = CATransform3DIdentity;
 		
-		perspectiveTransform = CATransform3DIdentity;
-		// Inverted because the depth increases as the z-axis decreases (going from 0 towards negative values)
-		perspectiveTransform.m34 = -1. / DISTANCE_TO_VIEW_PLANE; 
-		perspectiveTransform.m44 = 0.;
-		
+		perspectiveTransform = [[ARCamera sharedCamera] perspectiveTransform];
+
 		screenTransform = CATransform3DIdentity;
 		distanceFactor = 1.0;
 		
@@ -83,13 +75,13 @@
 	invertedScreenTransform = CATransform3DInvert(screenTransform);
 	
 	// Factor that is used to keep feature views the same apparent size by undoing the view and projection transformations 
-	distanceFactor = 2. / size / DISTANCE_TO_VIEW_PLANE;
+	distanceFactor = 2. / size / [[ARCamera sharedCamera] distanceToViewPlane];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 	// Convert the point to a point on the view plane
 	ARPoint3D pointOnViewPlaneInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DCreate(point.x, point.y, 0), invertedScreenTransform);
-	pointOnViewPlaneInDeviceSpace.z = -DISTANCE_TO_VIEW_PLANE;
+	pointOnViewPlaneInDeviceSpace.z = -[[ARCamera sharedCamera] distanceToViewPlane];
 
 	for (UIView *featureView in [self subviews]) {
 		CATransform3D DeviceToObjectSpaceTransform = CATransform3DInvert(CATransform3DConcat([[featureView layer] transform], EFToDeviceSpaceTransform));

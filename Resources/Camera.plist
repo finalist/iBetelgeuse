@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>iPhone2,1</key>
+	<dict>
+		<key>focalLength</key>
+		<real>0.00385</real>
+		<key>imagePlaneWidth</key>
+		<real>0.00269</real>
+		<key>imagePlaneHeight</key>
+		<real>0.00358</real>
+	</dict>
+</dict>
+</plist>
