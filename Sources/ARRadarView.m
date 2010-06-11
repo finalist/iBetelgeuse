@@ -165,6 +165,10 @@
 			
 			ARTransform3D ENUToRadarTransform = [self ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:upDirectionInRadarSpace];
 			for (ARFeature *feature in features) {
+				if (![feature showInRadar]) {
+					continue;
+				}
+				
 				// TODO: We are now applying the offset here as well as in ARFeatureView, refactor so that the offset only has to be applied once.
 				ARPoint3D offsetInENUSpace = [feature offset];
 				offsetInENUSpace.z += altitudeOffset;
