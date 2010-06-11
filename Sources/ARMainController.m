@@ -87,6 +87,7 @@ CGImageRef UIGetScreenImage(void);
 @property(nonatomic, getter=isRefreshingOnDistance) BOOL refreshingOnDistance;
 @property(nonatomic, retain) ARLocation *refreshLocation;
 
+- (void)updateWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 - (void)ensureStatusBarVisible;
 
 - (void)createOverlayViews;
@@ -233,6 +234,8 @@ CGImageRef UIGetScreenImage(void);
 	[cancelButton setHidden:YES];
 	[view addSubview:cancelButton];
 	[cancelButton release];
+	
+	[self updateWithInterfaceOrientation:[self interfaceOrientation]];
 }
 
 - (void)viewDidUnload {
@@ -293,34 +296,7 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
-	CGFloat screenRotation = 0.f;
-	switch (interfaceOrientation) {
-		case UIInterfaceOrientationLandscapeRight:
-			screenRotation = .5f * M_PI;
-			break;
-			
-		case UIInterfaceOrientationPortraitUpsideDown:
-			screenRotation = M_PI;
-			break;
-			
-		case UIInterfaceOrientationLandscapeLeft:
-			screenRotation = -.5f * M_PI;
-			break;
-	}
-	
-	// Since the camera view, feature container and radar all assume the device axes are the same as the screen axes, we rotate them as the interface orientation changes
-	CGRect bounds = [[self view] bounds];
-	CGPoint center = CGPointMake(roundf(CGRectGetMidX(bounds)), roundf(CGRectGetMidY(bounds)));
-	CGAffineTransform transform = CGAffineTransformMakeRotation(-screenRotation);
-	
-	UIView *cameraView = [[self cameraViewController] view];
-	[cameraView setCenter:center];
-	[cameraView setTransform:transform];
-	
-	[featureContainerView setCenter:center];
-	[featureContainerView setTransform:transform];
-	
-	[radarView setTransform:transform];
+	[self updateWithInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark UIApplicationNotifications
@@ -582,6 +558,37 @@ CGImageRef UIGetScreenImage(void);
 		[scanTimer release];
 		scanTimer = [aTimer retain];
 	}
+}
+
+- (void)updateWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	CGFloat screenRotation = 0.f;
+	switch (interfaceOrientation) {
+		case UIInterfaceOrientationLandscapeRight:
+			screenRotation = .5f * M_PI;
+			break;
+			
+		case UIInterfaceOrientationPortraitUpsideDown:
+			screenRotation = M_PI;
+			break;
+			
+		case UIInterfaceOrientationLandscapeLeft:
+			screenRotation = -.5f * M_PI;
+			break;
+	}
+	
+	// Since the camera view, feature container and radar all assume the device axes are the same as the screen axes, we rotate them as the interface orientation changes
+	CGRect bounds = [[self view] bounds];
+	CGPoint center = CGPointMake(roundf(CGRectGetMidX(bounds)), roundf(CGRectGetMidY(bounds)));
+	CGAffineTransform transform = CGAffineTransformMakeRotation(-screenRotation);
+	
+	UIView *cameraView = [[self cameraViewController] view];
+	[cameraView setCenter:center];
+	[cameraView setTransform:transform];
+	
+	[featureContainerView setCenter:center];
+	[featureContainerView setTransform:transform];
+	
+	[radarView setTransform:transform];
 }
 
 - (void)ensureStatusBarVisible {
