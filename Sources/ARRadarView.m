@@ -49,6 +49,13 @@
 	return self;
 }
 
+- (void)dealloc {
+	[features release];
+	[spatialState release];
+	
+	[super dealloc];
+}
+
 - (CGSize)sizeThatFits:(CGSize)size {
 	size.width = RADAR_SCREEN_RANGE * 2.f;
 	size.height = RADAR_SCREEN_RANGE * 2.f;
@@ -61,16 +68,14 @@
 	return point.x * point.x + point.y * point.y <= RADAR_SCREEN_RANGE * RADAR_SCREEN_RANGE;
 }
 
-- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
-	ARPoint3D lookVectorInDeviceSpace = ARPoint3DCreate(0., 0., -1.);
+- (void)updateWithSpatialState:(ARSpatialState *)aSpatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
+	[spatialState release];
+	spatialState = [aSpatialState retain];
 	
 	altitudeOffset = useRelativeAltitude ? [spatialState altitude] : 0.;
-	EFToECEFSpaceOffset = [spatialState EFToECEFSpaceOffset];
-	EFToENUSpaceTransform = [spatialState EFToENUSpaceTransform];
-	DeviceToENUSpaceTransform = ARTransform3DTranspose([spatialState ENUToDeviceSpaceTransform]);
-	lookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(lookVectorInDeviceSpace, DeviceToENUSpaceTransform);
-	upDirectionInDeviceSpace = [spatialState upDirectionInDeviceSpace];
-	isSpatialStateDefined = YES;
+		
+	ARPoint3D lookVectorInDeviceSpace = ARPoint3DCreate(0., 0., -1.);
+	lookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(lookVectorInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
 
 	[self setNeedsDisplay];
 }
@@ -96,7 +101,7 @@
 	{
 		// The normal method is unusable; compute the heading using the look vector instead.
 		ARPoint3D yLookVectorInDeviceSpace = ARPoint3DCreate(0, 1, 0);
-		ARPoint3D yLookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(yLookVectorInDeviceSpace, DeviceToENUSpaceTransform);
+		ARPoint3D yLookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(yLookVectorInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
 		ENUToRadarTransform = ARTransform3DTranspose(ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), yLookVectorInENUSpace, ARPoint3DZero));
 	}
 	else {
@@ -132,8 +137,9 @@
 	CGContextTranslateCTM(ctx, RADAR_SCREEN_RANGE, RADAR_SCREEN_RANGE);
 	CGContextScaleCTM(ctx, 1, -1);
 	
-	if (isSpatialStateDefined)
+	if (spatialState != nil)
 	{
+		ARPoint3D upDirectionInDeviceSpace = [spatialState upDirectionInDeviceSpace];
 		ARPoint3D upDirectionInRadarSpace = ARPoint3DCreate(upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, 0);
 		
 		if ([self isReliable]) {
@@ -163,8 +169,8 @@
 				ARPoint3D offsetInENUSpace = [feature offset];
 				offsetInENUSpace.z += altitudeOffset;
 				
-				ARPoint3D featurePositionInEFSpace = ARPoint3DSubtract([[feature location] locationInECEFSpace], EFToECEFSpaceOffset);
-				ARPoint3D featurePositionInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInEFSpace, EFToENUSpaceTransform);
+				ARPoint3D featurePositionInEFSpace = ARPoint3DSubtract([[feature location] locationInECEFSpace], [spatialState EFToECEFSpaceOffset]);
+				ARPoint3D featurePositionInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInEFSpace, [spatialState EFToENUSpaceTransform]);
 				featurePositionInENUSpace = ARPoint3DAdd(featurePositionInENUSpace, [feature offset]);
 				ARPoint3D featurePositionInRadarSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInENUSpace, ENUToRadarTransform);
 				

@@ -427,6 +427,15 @@
 	return ENUToDeviceSpaceTransform;
 }
 
+- (CATransform3D)DeviceToENUSpaceTransform {
+	if (!flags.haveDeviceToENUSpaceTransform) {
+		// Since we're dealing with orthogonal matrices, transposing is the same as inverting (but then easier)
+		DeviceToENUSpaceTransform = ARTransform3DTranspose([self ENUToDeviceSpaceTransform]);
+		flags.haveDeviceToENUSpaceTransform = YES;
+	}
+	return DeviceToENUSpaceTransform;
+}
+
 - (CATransform3D)ENUToEFSpaceTransform {
 	if (!flags.haveENUToEFSpaceTransform) {
 		if ([self isLocationAvailable] && [self isOrientationAvailable]) {
@@ -446,7 +455,8 @@
 
 - (CATransform3D)EFToENUSpaceTransform {
 	if (!flags.haveEFToENUSpaceTransform) {
-		EFToENUSpaceTransform = CATransform3DInvert([self ENUToEFSpaceTransform]);
+		// Since we're dealing with orthogonal matrices, transposing is the same as inverting (but then easier)
+		EFToENUSpaceTransform = ARTransform3DTranspose([self ENUToEFSpaceTransform]);
 		flags.haveEFToENUSpaceTransform = YES;
 	}
 	return EFToENUSpaceTransform;

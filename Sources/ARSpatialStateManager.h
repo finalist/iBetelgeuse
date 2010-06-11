@@ -104,6 +104,7 @@
 	ARLocation *location;
 	ARPoint3D locationInECEFSpace;
 	CATransform3D ENUToDeviceSpaceTransform;
+	CATransform3D DeviceToENUSpaceTransform;
 	CATransform3D ENUToEFSpaceTransform;
 	CATransform3D EFToENUSpaceTransform;
 	
@@ -112,6 +113,7 @@
 		BOOL orientationAvailable:1;
 		BOOL haveLocationInECEFSpace:1;
 		BOOL haveENUToDeviceSpaceTransform:1;
+		BOOL haveDeviceToENUSpaceTransform:1;
 		BOOL haveENUToEFSpaceTransform:1;
 		BOOL haveEFToENUSpaceTransform:1;
 	} flags;
@@ -135,6 +137,7 @@
 @property(nonatomic, readonly) ARPoint3D northDirectionInEFSpace;
 
 @property(nonatomic, readonly) CATransform3D ENUToDeviceSpaceTransform;
+@property(nonatomic, readonly) CATransform3D DeviceToENUSpaceTransform;
 @property(nonatomic, readonly) CATransform3D ENUToEFSpaceTransform;
 @property(nonatomic, readonly) CATransform3D EFToENUSpaceTransform;
 @property(nonatomic, readonly) ARPoint3D EFToECEFSpaceOffset;

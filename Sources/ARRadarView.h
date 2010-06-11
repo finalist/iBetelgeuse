@@ -31,13 +31,9 @@
 @private
 	NSArray *features;
 	
+	ARSpatialState *spatialState;
 	float altitudeOffset;
-	ARPoint3D EFToECEFSpaceOffset;
-	CATransform3D EFToENUSpaceTransform;
-	CATransform3D DeviceToENUSpaceTransform;
-	ARPoint3D upDirectionInDeviceSpace;
 	ARPoint3D lookVectorInENUSpace;
-	BOOL isSpatialStateDefined;
 	BOOL wasDeviceInHorizontalPositionBefore;
 }
 
