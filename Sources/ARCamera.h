@@ -34,7 +34,7 @@
 	CGSize imagePlaneSize;
 	
 	CGFloat distanceToViewPlane;
-	CGFloat fieldOfView;
+	CGFloat angleOfView;
 	CATransform3D perspectiveTransform;
 }
 
@@ -64,9 +64,9 @@
 @property(nonatomic, readonly) CGFloat distanceToViewPlane;
 
 /**
- * The largest field of view in radians given the receiver's focal length and image plane.
+ * The largest angle of view in radians given the receiver's focal length and image plane.
  */
-@property(nonatomic, readonly) CGFloat fieldOfView;
+@property(nonatomic, readonly) CGFloat angleOfView;
 
 /**
  * A perspective transform that corresponds to the receiver's focal length and image plane size. A view plane of [-1,1]x[-1,1] located in the -z direction is assumed. If the image plane is not square, the view plane is projected on the smallest square that encloses the image plane.

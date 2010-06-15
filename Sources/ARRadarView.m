@@ -36,6 +36,10 @@
 #define RADAR_HORIZONAL_THRESHOLD_ANGLE_LOW (15. / 180. * M_PI)
 #define RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH (20. / 180. * M_PI)
 
+// Used as an argument into CGContextAddArc
+#define ARC_COUNTERCLOCKWISE 0
+#define ARC_CLOCKWISE 1
+
 
 @implementation ARRadarView
 
@@ -45,12 +49,18 @@
 	if (self = [super initWithFrame:aFrame]) {
 		[self setClearsContextBeforeDrawing:YES];
 		[self setOpaque:NO];
+		
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+		extentOfViewGradient = CGGradientCreateWithColorComponents(colorSpace, (CGFloat[]){ 1.0, 1.0, 1.0, /*opacityFactor **/ 0.5, 1.0, 1.0, 1.0, 0.0 }, (CGFloat[]){ 0.0, 1.0 }, 2);
+		CGColorSpaceRelease(colorSpace);
 	}
 	return self;
 }
 
 - (void)dealloc {
 	[features release];
+	CGGradientRelease(extentOfViewGradient);
+
 	[spatialState release];
 	
 	[super dealloc];
@@ -127,11 +137,13 @@
 
 - (void)drawRect:(CGRect)rect {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-	
+
 	// Draw the outer radar circle
+	CGContextSaveGState(ctx);
 	CGContextSetBlendMode(ctx, kCGBlendModeCopy);
 	CGContextSetGrayFillColor(ctx, 0.0, 0.5);
 	CGContextFillEllipseInRect(ctx, [self bounds]);
+	CGContextRestoreGState(ctx);
 	
 	// Prepare the screen transformation for drawing radar blibs
 	CGContextTranslateCTM(ctx, RADAR_SCREEN_RANGE, RADAR_SCREEN_RANGE);
@@ -143,24 +155,40 @@
 		ARPoint3D upDirectionInRadarSpace = ARPoint3DCreate(upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, 0);
 		
 		if ([self isReliable]) {
-			// If not looking directly up or down, show the line of sight on the radar
+			// If not looking directly up or down, show the extent of view on the radar
 			if (![self isDeviceInHorizontalPosition]) {
-				ARPoint3D lookDirectionInScreenSpace = ARPoint3DCreate(upDirectionInRadarSpace.x, upDirectionInRadarSpace.y, 0.);
-				float lookDirectionInScreenSpaceLength = ARPoint3DLength(lookDirectionInScreenSpace);
-				if (lookDirectionInScreenSpaceLength > 1.f) {
-					lookDirectionInScreenSpace = ARPoint3DScale(lookDirectionInScreenSpace, 1.f / lookDirectionInScreenSpaceLength);
-				}
-
-				CGContextSetLineWidth(ctx, 1);
-				CGContextSetStrokeColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
+				// Determine the extent of view in radar space
+				ARPoint3D viewVectorInRadarSpace = upDirectionInRadarSpace;
+				double viewDistanceInRadarSpace = ARPoint3DLength(viewVectorInRadarSpace);
 				
-				CGPoint lookVectorInScreenSpace = CGPointMake(lookDirectionInScreenSpace.x * RADAR_SCREEN_RANGE, lookDirectionInScreenSpace.y * RADAR_SCREEN_RANGE);
-				CGFloat fieldOfView = [[ARCamera sharedCamera] fieldOfView];
-				CGContextStrokeLineSegments(ctx, (CGPoint[]){
-					CGPointApplyAffineTransform(lookVectorInScreenSpace, CGAffineTransformMakeRotation(fieldOfView / 2.)),
-					CGPointMake(0, 0),
-					CGPointApplyAffineTransform(lookVectorInScreenSpace, CGAffineTransformMakeRotation(-fieldOfView / 2.)),
-				}, 3);
+				// Correct for the cutoff that happens when the device is in the horizontal position (i.e. when isDeviceInHorizontalPosition is YES)
+				double horizontalCutoffViewDistanceInRadarSpace = sin(RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH);
+				double correctedViewDistanceInRadarSpace = MAX(0.0, MIN((viewDistanceInRadarSpace - horizontalCutoffViewDistanceInRadarSpace) / (1.0 - horizontalCutoffViewDistanceInRadarSpace), 1.0));
+				viewVectorInRadarSpace = ARPoint3DScale(viewVectorInRadarSpace, correctedViewDistanceInRadarSpace / viewDistanceInRadarSpace);
+				
+				// Determine the extent of view in screen space
+				CGPoint viewVectorInScreenSpace = CGPointMake(viewVectorInRadarSpace.x * RADAR_SCREEN_RANGE, viewVectorInRadarSpace.y * RADAR_SCREEN_RANGE);
+				CGFloat viewDistanceInScreenSpace = correctedViewDistanceInRadarSpace * RADAR_SCREEN_RANGE;
+				CGFloat viewHeading = atan2(viewVectorInRadarSpace.y, viewVectorInRadarSpace.x);
+				
+				// Determine the angle of view
+				CGFloat angleOfView = [[ARCamera sharedCamera] angleOfView];
+
+				// Determine the area indicating the extent of view
+				CGContextBeginPath(ctx);
+				CGContextMoveToPoint(ctx, 0, 0);
+				CGContextAddArc(ctx, 0, 0, viewDistanceInScreenSpace, viewHeading + angleOfView / 2., viewHeading - angleOfView / 2., ARC_CLOCKWISE);
+				CGContextClosePath(ctx);
+				
+//				CGContextSetRGBStrokeColor(ctx, 0, 1, 0, 1);
+//				CGContextSetLineWidth(ctx, 2);
+//				CGContextStrokePath(ctx);
+
+				// Clip to that area and fill it with a gradient
+				CGContextSaveGState(ctx);
+				CGContextClip(ctx);
+				CGContextDrawLinearGradient(ctx, extentOfViewGradient, CGPointMake(0, 0), viewVectorInScreenSpace, 0);
+				CGContextRestoreGState(ctx);
 			}
 			
 			ARTransform3D ENUToRadarTransform = [self ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:upDirectionInRadarSpace];

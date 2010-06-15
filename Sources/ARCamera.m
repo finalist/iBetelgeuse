@@ -47,7 +47,7 @@ static ARCamera *sharedInstance = nil;
 @implementation ARCamera
 
 @synthesize physical, focalLength, imagePlaneSize;
-@synthesize distanceToViewPlane, fieldOfView, perspectiveTransform;
+@synthesize distanceToViewPlane, angleOfView, perspectiveTransform;
 
 #pragma mark NSObject
 
@@ -80,7 +80,7 @@ static ARCamera *sharedInstance = nil;
 		
 		distanceToViewPlane = 2. * focalLength / MAX(imagePlaneSize.width, imagePlaneSize.height);
 		
-		fieldOfView = 2. * tanf(1. / distanceToViewPlane);
+		angleOfView = 2. * tanf(1. / distanceToViewPlane);
 		
 		perspectiveTransform = CATransform3DIdentity;
 		// Inverted because the depth increases as the z-axis decreases (going from 0 towards negative values)

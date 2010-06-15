@@ -30,6 +30,7 @@
 @interface ARRadarView : UIView {
 @private
 	NSArray *features;
+	CGGradientRef extentOfViewGradient;
 	
 	ARSpatialState *spatialState;
 	float altitudeOffset;
