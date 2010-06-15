@@ -32,6 +32,9 @@
 NSString* const ZBarReaderControllerResults = @"ZBarReaderControllerResults";
 
 // expose undocumented API
+#if defined(__clang__)
+__attribute__((cf_returns_retained))
+#endif
 CGImageRef UIGetScreenImage(void);
 
 @implementation ZBarReaderController
@@ -481,7 +484,7 @@ CGImageRef UIGetScreenImage(void);
     else
         r.size.height -= 54;
     CGImageRef preview = CGImageCreateWithImageInRect(screen, r);
-//    CGImageRelease(screen);
+    CGImageRelease(screen);
 
     UIImage *image = [UIImage imageWithCGImage: preview];
     CGImageRelease(preview);
