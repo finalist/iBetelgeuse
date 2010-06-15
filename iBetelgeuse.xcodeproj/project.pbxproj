@@ -95,6 +95,9 @@
 		95EC653111C769410027FF5D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC652A11C769410027FF5D /* Icon.png */; };
 		95EC653211C769410027FF5D /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC652B11C769410027FF5D /* Icon@2x.png */; };
 		95EC653311C769410027FF5D /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 95EC652C11C769410027FF5D /* iTunesArtwork */; };
+		95EC655811C76EEF0027FF5D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC655711C76EEF0027FF5D /* Default.png */; };
+		95EC658B11C7732A0027FF5D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC658911C7732A0027FF5D /* Default-Landscape.png */; };
+		95EC658C11C7732A0027FF5D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC658A11C7732A0027FF5D /* Default-Portrait.png */; };
 		C33462C1119D7B3B00228C9A /* ARMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = C33462C0119D7B3B00228C9A /* ARMainController.m */; };
 		C334645E11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
 		C334645F11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
@@ -288,6 +291,9 @@
 		95EC652A11C769410027FF5D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		95EC652B11C769410027FF5D /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		95EC652C11C769410027FF5D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		95EC655711C76EEF0027FF5D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		95EC658911C7732A0027FF5D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
+		95EC658A11C7732A0027FF5D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		C33462BF119D7B3B00228C9A /* ARMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMainController.h; sourceTree = "<group>"; };
 		C33462C0119D7B3B00228C9A /* ARMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMainController.m; sourceTree = "<group>"; };
 		C334645C11A1495D00228C9A /* ARLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocation.h; sourceTree = "<group>"; };
@@ -436,6 +442,9 @@
 				95EC652811C769410027FF5D /* Icon-Small.png */,
 				95EC652711C769410027FF5D /* Icon-Small-50.png */,
 				95EC652911C769410027FF5D /* Icon-Small@2x.png */,
+				95EC655711C76EEF0027FF5D /* Default.png */,
+				95EC658911C7732A0027FF5D /* Default-Landscape.png */,
+				95EC658A11C7732A0027FF5D /* Default-Portrait.png */,
 				95EC615711C22EF20027FF5D /* Camera.plist */,
 				95EC630C11C267510027FF5D /* Localizable.strings */,
 				95C765F811BD26A900B71931 /* ARMenuButton.png */,
@@ -852,6 +861,9 @@
 				95EC653111C769410027FF5D /* Icon.png in Resources */,
 				95EC653211C769410027FF5D /* Icon@2x.png in Resources */,
 				95EC653311C769410027FF5D /* iTunesArtwork in Resources */,
+				95EC655811C76EEF0027FF5D /* Default.png in Resources */,
+				95EC658B11C7732A0027FF5D /* Default-Landscape.png in Resources */,
+				95EC658C11C7732A0027FF5D /* Default-Portrait.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
