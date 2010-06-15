@@ -98,6 +98,10 @@
 		95EC655811C76EEF0027FF5D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC655711C76EEF0027FF5D /* Default.png */; };
 		95EC658B11C7732A0027FF5D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC658911C7732A0027FF5D /* Default-Landscape.png */; };
 		95EC658C11C7732A0027FF5D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC658A11C7732A0027FF5D /* Default-Portrait.png */; };
+		95EC65F111C77D350027FF5D /* ARScannerOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC65F011C77D350027FF5D /* ARScannerOverlayView.m */; };
+		95EC664811C7845F0027FF5D /* ARScannerFlash.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC664711C7845F0027FF5D /* ARScannerFlash.m */; };
+		95EC66CF11C79CF90027FF5D /* Scanner.wav in Resources */ = {isa = PBXBuildFile; fileRef = 95EC66CE11C79CF90027FF5D /* Scanner.wav */; };
+		95EC671611C7A02B0027FF5D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95EC671511C7A02B0027FF5D /* AudioToolbox.framework */; };
 		C33462C1119D7B3B00228C9A /* ARMainController.m in Sources */ = {isa = PBXBuildFile; fileRef = C33462C0119D7B3B00228C9A /* ARMainController.m */; };
 		C334645E11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
 		C334645F11A1495D00228C9A /* ARLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C334645D11A1495D00228C9A /* ARLocation.m */; };
@@ -294,6 +298,12 @@
 		95EC655711C76EEF0027FF5D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		95EC658911C7732A0027FF5D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		95EC658A11C7732A0027FF5D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
+		95EC65EF11C77D350027FF5D /* ARScannerOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScannerOverlayView.h; sourceTree = "<group>"; };
+		95EC65F011C77D350027FF5D /* ARScannerOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScannerOverlayView.m; sourceTree = "<group>"; };
+		95EC664611C7845F0027FF5D /* ARScannerFlash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScannerFlash.h; sourceTree = "<group>"; };
+		95EC664711C7845F0027FF5D /* ARScannerFlash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScannerFlash.m; sourceTree = "<group>"; };
+		95EC66CE11C79CF90027FF5D /* Scanner.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Scanner.wav; sourceTree = "<group>"; };
+		95EC671511C7A02B0027FF5D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		C33462BF119D7B3B00228C9A /* ARMainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMainController.h; sourceTree = "<group>"; };
 		C33462C0119D7B3B00228C9A /* ARMainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMainController.m; sourceTree = "<group>"; };
 		C334645C11A1495D00228C9A /* ARLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocation.h; sourceTree = "<group>"; };
@@ -379,6 +389,7 @@
 				95E77C461198041200A1F2B9 /* QuartzCore.framework in Frameworks */,
 				95E77C4A1198042000A1F2B9 /* CoreLocation.framework in Frameworks */,
 				C35C581911B507B500C0FF1A /* libiconv.dylib in Frameworks */,
+				95EC671611C7A02B0027FF5D /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +456,7 @@
 				95EC655711C76EEF0027FF5D /* Default.png */,
 				95EC658911C7732A0027FF5D /* Default-Landscape.png */,
 				95EC658A11C7732A0027FF5D /* Default-Portrait.png */,
+				95EC66CE11C79CF90027FF5D /* Scanner.wav */,
 				95EC615711C22EF20027FF5D /* Camera.plist */,
 				95EC630C11C267510027FF5D /* Localizable.strings */,
 				95C765F811BD26A900B71931 /* ARMenuButton.png */,
@@ -462,6 +474,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
+				95EC671511C7A02B0027FF5D /* AudioToolbox.framework */,
 				95E77ECB1198097C00A1F2B9 /* Tests */,
 			);
 			name = Frameworks;
@@ -683,6 +696,10 @@
 				C3C62E8611ABE7D500553407 /* ARRadarView.m */,
 				95C765F511BD25EB00B71931 /* ARButton.h */,
 				95C765F611BD25EB00B71931 /* ARButton.m */,
+				95EC65EF11C77D350027FF5D /* ARScannerOverlayView.h */,
+				95EC65F011C77D350027FF5D /* ARScannerOverlayView.m */,
+				95EC664611C7845F0027FF5D /* ARScannerFlash.h */,
+				95EC664711C7845F0027FF5D /* ARScannerFlash.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -864,6 +881,7 @@
 				95EC655811C76EEF0027FF5D /* Default.png in Resources */,
 				95EC658B11C7732A0027FF5D /* Default-Landscape.png in Resources */,
 				95EC658C11C7732A0027FF5D /* Default-Portrait.png in Resources */,
+				95EC66CF11C79CF90027FF5D /* Scanner.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,6 +960,8 @@
 				95EC614411C22B200027FF5D /* ARCamera.m in Sources */,
 				95EC614B11C22CC70027FF5D /* UIDevice+ARDevice.m in Sources */,
 				95EC642011C66E380027FF5D /* ARAboutController.m in Sources */,
+				95EC65F111C77D350027FF5D /* ARScannerOverlayView.m in Sources */,
+				95EC664811C7845F0027FF5D /* ARScannerFlash.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

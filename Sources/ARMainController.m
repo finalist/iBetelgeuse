@@ -33,6 +33,8 @@
 #import "ARWGS84.h"
 #import "ARLocation.h"
 #import "ARRadarView.h"
+#import "ARScannerOverlayView.h"
+#import "ARScannerFlash.h"
 #import "ARButton.h"
 #import "ARAssetDataUser.h"
 #import "ARAboutController.h"
@@ -72,7 +74,7 @@ __attribute__((cf_returns_retained))
 CGImageRef UIGetScreenImage(void);
 
 
-@interface ARMainController ()
+@interface ARMainController () <UIAlertViewDelegate>
 
 @property(nonatomic, retain) NSURL *pendingDimensionURL;
 @property(nonatomic, retain) ARDimension *dimension;
@@ -80,6 +82,7 @@ CGImageRef UIGetScreenImage(void);
 @property(nonatomic, readonly) ARFeatureContainerView *featureContainerView;
 @property(nonatomic, readonly) AROverlayContainerView *overlayContainerView;
 @property(nonatomic, readonly) ARRadarView *radarView;
+@property(nonatomic, readonly) ARScannerOverlayView *scannerOverlayView;
 
 @property(nonatomic, retain) CADisplayLink *displayLink;
 
@@ -258,6 +261,7 @@ CGImageRef UIGetScreenImage(void);
 	featureContainerView = nil;
 	radarView = nil;
 	overlayContainerView = nil;
+	scannerOverlayView = nil;
 	menuButton = nil;
 	cancelButton = nil;
 	
@@ -332,6 +336,24 @@ CGImageRef UIGetScreenImage(void);
 			[[self displayLink] setPaused:NO];
 			break;
 			
+		case STATE_QR:
+			[self startScanning];
+			break;
+	}
+}
+
+#pragma mark UIAlertViewDelegate
+
+- (void)willPresentAlertView:(UIAlertView *)alertView {
+	switch (currentState) {
+		case STATE_QR:
+			[self stopScanning];
+			break;
+	}
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	switch (currentState) {
 		case STATE_QR:
 			[self startScanning];
 			break;
@@ -474,9 +496,19 @@ CGImageRef UIGetScreenImage(void);
 	if (sym) {
 		NSURL *url = [NSURL URLWithString:[sym data]];
 		
+		// Flash the screen
+		[ARScannerFlash flashWithBeepTone:YES];
+		
 		if (!([[url scheme] isEqualToString:@"http"] || [[url scheme] isEqualToString:@"gamaray"])) {
-			DebugLog(@"Ignoring invalid QR code: %@", [sym data]);
-		} else {
+			UIAlertView *alert = [[UIAlertView alloc] init];
+			[alert setDelegate:self];
+			[alert setTitle:NSLocalizedString(@"Unrecognized QR code", @"main controller alert title")];
+			[alert setMessage:NSLocalizedString(@"The scanned QR code does not resolve to a dimension.", @"main controller alert message")];
+			[alert addButtonWithTitle:NSLocalizedString(@"Close", @"main controller alert button")];
+			[alert show];
+			[alert release];
+		}
+		else {
 			DebugLog(@"Loading dimension by QR code: %@", [sym data]);
 			
 			if ([[[self spatialStateManager] spatialState] isLocationAvailable]) {
@@ -527,6 +559,16 @@ CGImageRef UIGetScreenImage(void);
 		}
 	}
 	return cameraViewController;
+}
+
+- (ARScannerOverlayView *)scannerOverlayView {
+	if (scannerOverlayView == nil) {
+		scannerOverlayView = [[ARScannerOverlayView alloc] init];
+		[scannerOverlayView setFrame:[[self view] bounds]];
+		[scannerOverlayView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+		[[self view] addSubview:scannerOverlayView];
+	}
+	return scannerOverlayView;
 }
 
 - (void)setDisplayLink:(CADisplayLink *)aLink {
@@ -890,6 +932,7 @@ CGImageRef UIGetScreenImage(void);
 			break;
 			
 		case STATE_QR:
+			[[self scannerOverlayView] setHidden:NO];
 			[cancelButton setHidden:NO];
 			[self startScanning];
 			break;
@@ -913,6 +956,7 @@ CGImageRef UIGetScreenImage(void);
 			break;
 			
 		case STATE_QR:
+			[[self scannerOverlayView] setHidden:YES];
 			[cancelButton setHidden:YES];
 			[self stopScanning];
 			break;

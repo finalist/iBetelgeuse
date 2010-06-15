@@ -26,7 +26,7 @@
 #import <zbar/ZBarReaderController.h>
 
 
-@class ARFeatureContainerView, AROverlayContainerView, ARRadarView, ARLocation;
+@class ARFeatureContainerView, AROverlayContainerView, ARRadarView, ARScannerOverlayView, ARLocation;
 
 
 @interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate, UIActionSheetDelegate> {
@@ -37,6 +37,7 @@
 	ARFeatureContainerView *featureContainerView; // Non-retained instance variable
 	AROverlayContainerView *overlayContainerView; // Non-retained instance variable
 	ARRadarView *radarView; // Non-retained instance variable
+	ARScannerOverlayView *scannerOverlayView; // Non-retained instance variable
 	UIButton *menuButton; // Non-retained instance variable
 	UIButton *cancelButton; // Non-retained instance variable
 	
