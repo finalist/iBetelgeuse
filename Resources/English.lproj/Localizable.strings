@@ -27,7 +27,8 @@
 /* asset manager error description */
 "Caught exception %@." = "Caught exception %@.";
 
-/* main controller alert button */
+/* about controller button
+   main controller alert button */
 "Close" = "Close";
 
 /* main controller alert title */
@@ -35,6 +36,10 @@
 
 /* dimension request error description */
 "Dimension not found." = "Dimension not found.";
+
+/* about controller title
+   actionsheet button */
+"Info" = "Info";
 
 /* asset manager error descriptoin
    dimension request error description */

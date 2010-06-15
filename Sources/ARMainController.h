@@ -37,6 +37,8 @@
 	ARFeatureContainerView *featureContainerView; // Non-retained instance variable
 	AROverlayContainerView *overlayContainerView; // Non-retained instance variable
 	ARRadarView *radarView; // Non-retained instance variable
+	UIButton *menuButton; // Non-retained instance variable
+	UIButton *cancelButton; // Non-retained instance variable
 	
 	CADisplayLink *displayLink;
 	BOOL needsUpdate;
@@ -50,10 +52,9 @@
 	BOOL refreshingOnDistance;
 	ARLocation *refreshLocation;
 	int currentState;
-	UIButton *menuButton; // Non-retained instance variable
-	UIButton *cancelButton; // Non-retained instance variable
-	
+		
 	struct {
+		signed char about;
 		signed char qr;
 		signed char cancel;
 	} menuButtonIndices;

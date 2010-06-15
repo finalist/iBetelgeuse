@@ -35,6 +35,7 @@
 #import "ARRadarView.h"
 #import "ARButton.h"
 #import "ARAssetDataUser.h"
+#import "ARAboutController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <zbar/ZBarImageScanner.h>
 
@@ -59,7 +60,7 @@
 // Time interval between two QR scans.
 #define SCAN_TIMER_INTERVAL 1
 
-#define STATE_STARTING 0
+#define STATE_HIDDEN 0
 #define STATE_DIMENSION 1
 #define STATE_QR 2
 
@@ -238,7 +239,15 @@ CGImageRef UIGetScreenImage(void);
 	[view addSubview:cancelButton];
 	[cancelButton release];
 	
-	[self updateWithInterfaceOrientation:[self interfaceOrientation]];
+	[self createOverlayViews];
+	[self createFeatureViews];
+	
+	// Use a display link to sync up with the screen, so that we don't update the screen more than necessary
+	CADisplayLink *link = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWithDisplayLink:)];
+	[link setPaused:YES];
+	[link setFrameInterval:FRAME_INTERVAL];
+	[self setDisplayLink:link];
+	[link addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)viewDidUnload {
@@ -251,22 +260,20 @@ CGImageRef UIGetScreenImage(void);
 	overlayContainerView = nil;
 	menuButton = nil;
 	cancelButton = nil;
+	
+	[self setDisplayLink:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	
 	[[self cameraViewController] viewWillAppear:animated];
-
-	// Use a display link to sync up with the screen, so that we don't update the screen more than necessary
-	CADisplayLink *link = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWithDisplayLink:)];
-	[link setFrameInterval:FRAME_INTERVAL];
-	[self setDisplayLink:link];
-	[link addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 	
-	// Invalidate the screen by default
+	// We don't know our orientation in loadView, so update here
+	[self updateWithInterfaceOrientation:[self interfaceOrientation]];
+
+	// Transition to the dimension state
 	[self setState:STATE_DIMENSION];
-	[self setNeedsUpdate];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -281,17 +288,14 @@ CGImageRef UIGetScreenImage(void);
 	[super viewWillDisappear:animated];
 	
 	[[self cameraViewController] viewWillDisappear:animated];
-	
-	[[self spatialStateManager] stopUpdating];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 	
 	[[self cameraViewController] viewDidDisappear:animated];
-	
-	// This invalidates the display link
-	[self setDisplayLink:nil];
+
+	[self setState:STATE_HIDDEN];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -492,7 +496,20 @@ CGImageRef UIGetScreenImage(void);
 #pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-	if (buttonIndex == menuButtonIndices.qr) {
+	if (buttonIndex == menuButtonIndices.about) {
+		ARAboutController *controller = [[ARAboutController alloc] init];
+		[[controller navigationItem] setLeftBarButtonItem:[[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"about controller button") style:UIBarButtonItemStyleBordered target:self action:@selector(didTapAboutControllerCloseButton)] autorelease]];
+		
+		// Wrap in a navigation controller
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+		[self presentModalViewController:navigationController animated:YES];
+		[navigationController release];
+		
+		[controller release];
+		
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+	}
+	else if (buttonIndex == menuButtonIndices.qr) {
 		[self setState:STATE_QR];
 	}
 }
@@ -788,6 +805,10 @@ CGImageRef UIGetScreenImage(void);
 	// Keep track of the indices of the buttons we add
 	signed char index = 0;
 	
+	// Add about button
+	[actionSheet addButtonWithTitle:NSLocalizedString(@"Info", @"actionsheet button")];
+	menuButtonIndices.about = index++;
+	
 	// Add QR code button, if appropriate
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 		[actionSheet addButtonWithTitle:NSLocalizedString(@"Scan QR Code", @"actionsheet button")];
@@ -810,6 +831,11 @@ CGImageRef UIGetScreenImage(void);
 
 - (void)didTapCancelButton {
 	[self setState:STATE_DIMENSION];
+}
+
+- (void)didTapAboutControllerCloseButton {
+	[self dismissModalViewControllerAnimated:YES];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
 }
 
 - (void)performAction:(ARAction *)action source:(NSString *)source {
@@ -854,13 +880,11 @@ CGImageRef UIGetScreenImage(void);
 			[featureContainerView setHidden:NO];
 			[overlayContainerView setHidden:NO];
 			[radarView setHidden:NO];
-			
-			// At this time, the only menu item is for scanning a QR code, which is only possible when we have a camera
-			if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-				[menuButton setHidden:NO];
-			}
-			
+			[menuButton setHidden:NO];
 			[displayLink setPaused:NO];
+			
+			// Force an initial update
+			[self setNeedsUpdate];
 			
 			[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 			break;
