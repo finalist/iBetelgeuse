@@ -281,9 +281,8 @@
 	// * towards the sky, which is given by the up vector; and
 	// * oriented towards the North pole, which is given by the north vector.
 	if (upDirectionAvailable && northDirectionAvailable) {
-		NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
 		ARTransform3D ENUToDeviceSpaceTransform = ARTransform3DLookAtRelative(ARPoint3DZero, lastUpDirectionInDeviceSpace, lastNorthDirectionInDeviceSpace, ARPoint3DZero);
-		ENUToDeviceSpaceQuaternion = [orientationFilter filterWithInput:ARQuaternionMakeWithTransform(ENUToDeviceSpaceTransform) timestamp:timestamp];
+		ENUToDeviceSpaceQuaternion = [orientationFilter filterWithInput:ARQuaternionMakeWithTransform(ENUToDeviceSpaceTransform) timestamp:[NSDate timeIntervalSinceReferenceDate]];
 	}
 	
 	[self invalidateSpatialState];
