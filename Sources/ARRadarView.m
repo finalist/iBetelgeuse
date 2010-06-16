@@ -51,7 +51,7 @@
 		[self setOpaque:NO];
 		
 		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-		extentOfViewGradient = CGGradientCreateWithColorComponents(colorSpace, (CGFloat[]){ 1.0, 1.0, 1.0, /*opacityFactor **/ 0.5, 1.0, 1.0, 1.0, 0.0 }, (CGFloat[]){ 0.0, 1.0 }, 2);
+		extentOfViewGradient = CGGradientCreateWithColorComponents(colorSpace, (CGFloat[]){ 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.0 }, (CGFloat[]){ 0.0, 1.0 }, 2);
 		CGColorSpaceRelease(colorSpace);
 	}
 	return self;
@@ -190,8 +190,9 @@
 				CGContextDrawLinearGradient(ctx, extentOfViewGradient, CGPointMake(0, 0), viewVectorInScreenSpace, 0);
 				CGContextRestoreGState(ctx);
 			}
-			
+
 			ARTransform3D ENUToRadarTransform = [self ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:upDirectionInRadarSpace];
+			CGColorRef blibColor = [[UIColor colorWithRed:1.0 green:0.35 blue:0.76 alpha:1.0] CGColor];
 			for (ARFeature *feature in features) {
 				if (![feature showInRadar]) {
 					continue;
@@ -206,7 +207,7 @@
 				featurePositionInENUSpace = ARPoint3DAdd(featurePositionInENUSpace, [feature offset]);
 				ARPoint3D featurePositionInRadarSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInENUSpace, ENUToRadarTransform);
 				
-				[self drawBlibWithContext:ctx positionInRadarSpace:featurePositionInRadarSpace sizeInPixels:RADAR_BLIB_SIZE color:[[UIColor redColor] CGColor]];
+				[self drawBlibWithContext:ctx positionInRadarSpace:featurePositionInRadarSpace sizeInPixels:RADAR_BLIB_SIZE color:blibColor];
 			}
 		}
 	}
