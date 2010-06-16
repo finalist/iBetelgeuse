@@ -158,18 +158,18 @@
 			// If not looking directly up or down, show the extent of view on the radar
 			if (![self isDeviceInHorizontalPosition]) {
 				// Determine the extent of view in radar space
-				ARPoint3D viewVectorInRadarSpace = upDirectionInRadarSpace;
-				double viewDistanceInRadarSpace = ARPoint3DLength(viewVectorInRadarSpace);
+				ARPoint3D viewVectorInUnitSpace = upDirectionInRadarSpace;
+				double viewDistanceInUnitSpace = ARPoint3DLength(viewVectorInUnitSpace);
 				
 				// Correct for the cutoff that happens when the device is in the horizontal position (i.e. when isDeviceInHorizontalPosition is YES)
-				double horizontalCutoffViewDistanceInRadarSpace = sin(RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH);
-				double correctedViewDistanceInRadarSpace = MAX(0.0, MIN((viewDistanceInRadarSpace - horizontalCutoffViewDistanceInRadarSpace) / (1.0 - horizontalCutoffViewDistanceInRadarSpace), 1.0));
-				viewVectorInRadarSpace = ARPoint3DScale(viewVectorInRadarSpace, correctedViewDistanceInRadarSpace / viewDistanceInRadarSpace);
+				double horizontalCutoffViewDistanceInUnitSpace = sin(RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH);
+				double correctedViewDistanceInUnitSpace = MAX(0.0, MIN((viewDistanceInUnitSpace - horizontalCutoffViewDistanceInUnitSpace) / (1.0 - horizontalCutoffViewDistanceInUnitSpace), 1.0));
+				viewVectorInUnitSpace = ARPoint3DScale(viewVectorInUnitSpace, correctedViewDistanceInUnitSpace / viewDistanceInUnitSpace);
 				
 				// Determine the extent of view in screen space
-				CGPoint viewVectorInScreenSpace = CGPointMake(viewVectorInRadarSpace.x * RADAR_SCREEN_RANGE, viewVectorInRadarSpace.y * RADAR_SCREEN_RANGE);
-				CGFloat viewDistanceInScreenSpace = correctedViewDistanceInRadarSpace * RADAR_SCREEN_RANGE;
-				CGFloat viewHeading = atan2(viewVectorInRadarSpace.y, viewVectorInRadarSpace.x);
+				CGPoint viewVectorInScreenSpace = CGPointMake(viewVectorInUnitSpace.x * RADAR_SCREEN_RANGE, viewVectorInUnitSpace.y * RADAR_SCREEN_RANGE);
+				CGFloat viewDistanceInScreenSpace = correctedViewDistanceInUnitSpace * RADAR_SCREEN_RANGE;
+				CGFloat viewHeading = atan2(viewVectorInUnitSpace.y, viewVectorInUnitSpace.x);
 				
 				// Determine the angle of view
 				CGFloat angleOfView = [[ARCamera sharedCamera] angleOfView];
