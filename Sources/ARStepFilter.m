@@ -25,7 +25,15 @@
 
 @implementation ARStepFilter
 
-@synthesize stepThreshold;
+#pragma mark NSObject
+
+- (id)initWithStepThreshold:(ARFilterValue)aStepThreshold referenceInput:(ARFilterValue)aReferenceInput {
+	if (self = [super init]) {
+		stepThreshold = aStepThreshold;
+		referenceInput = aReferenceInput;
+	}
+	return self;
+}
 
 #pragma mark ARFilter
 
@@ -34,6 +42,27 @@
 		referenceInput = input;
 	}
 	return referenceInput;
+}
+
+@end
+
+
+@implementation ARStepFilterFactory
+
+#pragma mark NSObject
+
+- (id)initWithStepThreshold:(ARFilterValue)aStepThreshold referenceInput:(ARFilterValue)aReferenceInput {
+	if (self = [super init]) {
+		stepThreshold = aStepThreshold;
+		referenceInput = aReferenceInput;
+	}
+	return self;
+}
+
+#pragma mark ARFilterFactory
+
+- (ARFilter *)newFilter {
+	return [[ARStepFilter alloc] initWithStepThreshold:stepThreshold referenceInput:referenceInput];
 }
 
 @end

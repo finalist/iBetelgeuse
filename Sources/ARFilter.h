@@ -37,3 +37,11 @@ typedef double ARFilterValue;
 - (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp;
 
 @end
+
+
+@interface ARFilterFactory : NSObject {
+}
+
+- (ARFilter *)newFilter;
+
+@end

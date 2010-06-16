@@ -28,13 +28,40 @@
 
 #pragma mark ARMovingWindowFilter
 
-- (ARFilterValue)filterWithSamples:(ARFilterValue *)samples lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)aSampleCount {
-	int n = MIN(aSampleCount, [self windowSize]);
+- (ARFilterValue)filterWithSampleValues:(ARFilterValue *)sampleValues sampleTimestamps:(NSTimeInterval *)sampleTimestamps lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)sampleCount {
 	ARFilterValue sum = 0;
-	for (NSUInteger i = 0; i < n; i++) {
-		sum += samples[i];
+	double totalWeight = 0;
+	
+	// Compute average weighted by time step
+	for (NSUInteger i = 0; i < sampleCount; i++) {
+		double weight = sampleTimestamps[i] - sampleTimestamps[(i + sampleCount - 1) % sampleCount];
+		if (weight < 0) {
+			weight = 0;
+		}
+		totalWeight += weight;
+		sum += sampleValues[i] * weight;
 	}
-	return sum / n;
+	
+	// If all weights are zero, recompute average weighing every sample equally. (This happens at least when the first value is received, and in the unlikely case when all timestamps are equal)
+	if (totalWeight == 0) {
+		sum = 0;
+		for (NSUInteger i = 0; i < sampleCount; i++) {
+			sum += sampleValues[i];
+		}
+		totalWeight = sampleCount;
+	}
+	
+	ARFilterValue output = sum / totalWeight;
+	return output;
+}
+
+@end
+
+
+@implementation ARMovingAverageFilterFactory
+
+- (ARFilter *)newFilter {
+	return [[ARMovingAverageFilter alloc] initWithWindowSize:[self windowSize]];
 }
 
 @end

@@ -28,7 +28,8 @@
 @private
 	NSUInteger windowSize;
 	
-	ARFilterValue *samples;
+	ARFilterValue *sampleValues;
+	NSTimeInterval *sampleTimestamps;
 	NSUInteger sampleIndex;
 	NSUInteger sampleCount;
 }
@@ -37,6 +38,18 @@
 
 @property(nonatomic, readonly) NSUInteger windowSize;
 
-- (ARFilterValue)filterWithSamples:(ARFilterValue *)samples lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)sampleCount;
+- (ARFilterValue)filterWithSampleValues:(ARFilterValue *)someSampleValues sampleTimestamps:(NSTimeInterval *)someSampleTimestamps lastSampleIndex:(NSUInteger)aSampleIndex sampleCount:(NSUInteger)aSampleCount;
+
+@end
+
+
+@interface ARMovingWindowFilterFactory : ARFilterFactory {
+@private
+	NSUInteger windowSize;
+}
+
+@property(readonly, nonatomic) NSUInteger windowSize;
+
+- (id)initWithWindowSize:(NSUInteger)aWindowSize;
 
 @end

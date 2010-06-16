@@ -22,42 +22,14 @@
 
 
 #import "ARPoint3DFilter.h"
-#import "ARFilter.h"
 
 
 @implementation ARPoint3DFilter
 
-#pragma mark NSObject
-
-- (id)init {
-	if (self = [super init]) {
-		for (int i = 0; i < 3; i++) {
-			filters[i] = [self newCoordinateFilter];
-		}
-	}
-	return self;
-}
-
-- (void)dealloc {
-	for (int i = 0; i < 3; i++) {
-		[filters[i] release];
-	}
-	
-	[super dealloc];
-}
-
 #pragma mark ARPoint3DFilter
 
-- (ARFilter *)newCoordinateFilter {
-	return nil;
-}
-
-- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)timestamp {
-	ARPoint3D output;
-	for (int i = 0; i < 3; i++) {
-		ARPoint3DSetCoordinate(&output, i, [filters[i] filterWithInput:ARPoint3DGetCoordinate(input, i) timestamp:timestamp]);
-	}
-	return output;
+- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp {
+	return input;
 }
 
 @end

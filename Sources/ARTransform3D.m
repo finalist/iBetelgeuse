@@ -49,6 +49,27 @@ ARTransform3D ARTransform3DMakeFromAxes(ARPoint3D xAxis, ARPoint3D yAxis, ARPoin
 	return ARTransform3DMakeFromAxesAndTranslation(xAxis, yAxis, zAxis, ARPoint3DZero);
 }
 
+BOOL ARTransform3DEqualsWithAccuracy(ARTransform3D a, ARTransform3D b, double accuracy) {
+	BOOL result =
+		abs(a.m11 - b.m11) <= accuracy &&
+		abs(a.m12 - b.m12) <= accuracy &&
+		abs(a.m13 - b.m13) <= accuracy &&
+		abs(a.m14 - b.m14) <= accuracy &&
+		abs(a.m21 - b.m21) <= accuracy &&
+		abs(a.m22 - b.m22) <= accuracy &&
+		abs(a.m23 - b.m23) <= accuracy &&
+		abs(a.m24 - b.m24) <= accuracy &&
+		abs(a.m31 - b.m31) <= accuracy &&
+		abs(a.m32 - b.m32) <= accuracy &&
+		abs(a.m33 - b.m33) <= accuracy &&
+		abs(a.m34 - b.m34) <= accuracy &&
+		abs(a.m41 - b.m41) <= accuracy &&
+		abs(a.m42 - b.m42) <= accuracy &&
+		abs(a.m43 - b.m43) <= accuracy &&
+		abs(a.m44 - b.m44) <= accuracy;
+	return result;
+}
+
 ARTransform3D ARTransform3DLookAt(ARPoint3D origin, ARPoint3D target, ARPoint3D upDirection, ARPoint3D alternativeUpDirection) {
 	return ARTransform3DLookAtRelative(origin, ARPoint3DSubtract(target, origin), upDirection, alternativeUpDirection);
 }

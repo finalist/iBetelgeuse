@@ -26,10 +26,20 @@
 @interface ARStepFilter : ARFilter {
 @private
 	ARFilterValue stepThreshold;
-	
 	ARFilterValue referenceInput;
 }
 
-@property(nonatomic) ARFilterValue stepThreshold;
+- (id)initWithStepThreshold:(ARFilterValue)aStepThreshold referenceInput:(ARFilterValue)aReferenceInput;
+
+@end
+
+
+@interface ARStepFilterFactory : ARFilterFactory {
+@private
+	ARFilterValue stepThreshold;
+	ARFilterValue referenceInput;
+}
+
+- (id)initWithStepThreshold:(ARFilterValue)aStepThreshold referenceInput:(ARFilterValue)aReferenceInput;
 
 @end

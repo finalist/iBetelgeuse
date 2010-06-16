@@ -68,3 +68,31 @@
 }
 
 @end
+
+
+@implementation ARDoubleExponentialFilterFactory
+
+#pragma mark NSObject
+
+- (id)initWithAlpha:(double)anAlpha {
+	return [self initWithAlpha:anAlpha gamma:0.];
+}
+
+- (id)initWithAlpha:(double)anAlpha gamma:(double)aGamma {
+	NSAssert(anAlpha >= 0 && anAlpha <= 1, @"Expected alpha to be in [0, 1].");
+	NSAssert(aGamma >= 0 && aGamma <= 1, @"Expected gamma to be in [0, 1].");
+	
+	if (self = [super init]) {
+		alpha = anAlpha;
+		gamma = aGamma;
+	}
+	return self;
+}
+
+#pragma mark ARFilterFactory
+
+- (ARFilter *)newFilter {
+	return [[ARDoubleExponentialFilter alloc] initWithAlpha:alpha gamma:gamma];
+}
+
+@end

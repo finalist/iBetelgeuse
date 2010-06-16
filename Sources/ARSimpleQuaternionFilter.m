@@ -1,5 +1,5 @@
 //
-//  ARCompassFilter.m
+//  ARSimpleQuaternionFilter.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,51 +20,33 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARCompassFilter.h"
-#import "ARFilter.h"
-#import "ARDerivativeSmoothFilter.h"
+
+#import "ARSimpleQuaternionFilter.h"
+#import "ARArrayFilter.h"
 
 
-@interface ARCompassCoordinateFilter : ARFilter {
-@private
-	ARDerivativeSmoothFilter *derivativeSmoothFilter;
-}
-
-@end
-
-
-@implementation ARCompassFilter
-
-#pragma mark ARPoint3DFilter
-
-- (ARFilter *)newCoordinateFilter {
-	return [[ARCompassCoordinateFilter alloc] init];
-}
-
-@end
-
-
-@implementation ARCompassCoordinateFilter
+@implementation ARSimpleQuaternionFilter
 
 #pragma mark NSObject
 
-- (id)init {
+- (id)initWithFactory:(ARFilterFactory *)aFactory {
 	if (self = [super init]) {
-		derivativeSmoothFilter = [[ARDerivativeSmoothFilter alloc] initWithBaseCorrectionFactor:0.01 correctionFactorDerivativeGain:0.02 derivativeAverageWindowSize:44];
+		arrayFilter = [[ARArrayFilter alloc] initWithSize:4 factory:aFactory];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[derivativeSmoothFilter release];
-	
+	[arrayFilter release];
 	[super dealloc];
 }
 
-#pragma mark ARFilter
+#pragma mark ARQuaternionFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
-	return [derivativeSmoothFilter filterWithInput:input timestamp:timestamp];
+- (ARQuaternion)filterWithInput:(ARQuaternion)input timestamp:(NSTimeInterval)aTimestamp {
+	ARQuaternion output;
+	[arrayFilter filterWithInputArray:(ARFilterValue *)&input outputArray:(ARFilterValue *)&output timestamp:aTimestamp];
+	return output;
 }
 
 @end

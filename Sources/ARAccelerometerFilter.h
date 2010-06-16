@@ -25,6 +25,7 @@
 
 
 @interface ARAccelerometerFilter : ARPoint3DFilter {
+	ARPoint3DFilter *delayFilter;
 }
 
 @end

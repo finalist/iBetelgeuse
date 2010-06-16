@@ -1,5 +1,5 @@
 //
-//  ARAccelerometerFilter.m
+//  ARSimplePoint3DFilter.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,31 +20,33 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARAccelerometerFilter.h"
+
 #import "ARSimplePoint3DFilter.h"
-#import "ARDelayFilter.h"
+#import "ARArrayFilter.h"
 
 
-@implementation ARAccelerometerFilter
+@implementation ARSimplePoint3DFilter
 
-#pragma mark ARAccelerometerFilter
+#pragma mark NSObject
 
-- (id)init {
+- (id)initWithFactory:(ARFilterFactory *)aFactory {
 	if (self = [super init]) {
-		ARDelayFilterFactory *delayFilterFactory = [[ARDelayFilterFactory alloc] initWithWindowSize:2];
-		delayFilter = [[ARSimplePoint3DFilter alloc] initWithFactory:delayFilterFactory];
-		[delayFilterFactory release];
+		arrayFilter = [[ARArrayFilter alloc] initWithSize:3 factory:aFactory];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[delayFilter release];
+	[arrayFilter release];
 	[super dealloc];
 }
 
+#pragma mark ARPoint3DFilter
+
 - (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp {
-	return [delayFilter filterWithInput:input timestamp:aTimestamp];
+	ARPoint3D output;
+	[arrayFilter filterWithInputArray:(ARFilterValue *)&input outputArray:(ARFilterValue *)&output timestamp:aTimestamp];
+	return output;
 }
 
 @end

@@ -35,7 +35,15 @@
 
 - (id)initWithAlpha:(double)alpha delta:(double)delta;
 
-@property(nonatomic, readonly) double alpha;
-@property(nonatomic, readonly) double delta;
+@end
+
+
+@interface ARModifiedExponentialFilterFactory : ARFilterFactory {
+@private
+	double alpha;
+	double delta;
+}
+
+- (id)initWithAlpha:(double)alpha delta:(double)delta;
 
 @end

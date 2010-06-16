@@ -21,20 +21,12 @@
 //
 
 
-#import <Foundation/Foundation.h>
 #import "ARPoint3D.h"
 
 
-@class ARFilter;
-
-
 @interface ARPoint3DFilter : NSObject {
-@private
-	ARFilter *filters[3];
 }
 
-- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)timestamp;
-
-- (ARFilter *)newCoordinateFilter;
+- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp;
 
 @end

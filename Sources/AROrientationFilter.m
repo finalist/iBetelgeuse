@@ -1,5 +1,5 @@
 //
-//  ARAccelerometerFilter.m
+//  AROrientationFilter.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,31 +20,31 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARAccelerometerFilter.h"
-#import "ARSimplePoint3DFilter.h"
-#import "ARDelayFilter.h"
+
+#import "AROrientationFilter.h"
+#import "ARDerivativeSmoothQuaternionFilter.h"
 
 
-@implementation ARAccelerometerFilter
+@implementation AROrientationFilter
 
-#pragma mark ARAccelerometerFilter
+#pragma mark NSObject
 
 - (id)init {
 	if (self = [super init]) {
-		ARDelayFilterFactory *delayFilterFactory = [[ARDelayFilterFactory alloc] initWithWindowSize:2];
-		delayFilter = [[ARSimplePoint3DFilter alloc] initWithFactory:delayFilterFactory];
-		[delayFilterFactory release];
+		quaternionFilter = [[ARDerivativeSmoothQuaternionFilter alloc] initWithBaseCorrectionFactor:0.03 correctionFactorDerivativeGain:0.3 stabilizerAngularVelocity:(10. / 180. * M_PI) derivativeAverageWindowSize:33 correctingInputAverageWindowSize:7];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[delayFilter release];
+	[quaternionFilter release];
 	[super dealloc];
 }
 
-- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp {
-	return [delayFilter filterWithInput:input timestamp:aTimestamp];
+#pragma mark ARQuaternionFilter
+
+- (ARQuaternion)filterWithInput:(ARQuaternion)input timestamp:(NSTimeInterval)timestamp {
+	return [quaternionFilter filterWithInput:input timestamp:timestamp];
 }
 
 @end

@@ -20,8 +20,6 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <Foundation/Foundation.h>
-
 
 typedef struct {
 	double x;
@@ -46,7 +44,7 @@ static inline ARPoint3D ARPoint3DCreate(double x, double y, double z) {
 }
 
 /**
- * Determines whether two doubles represent the same real value.
+ * Determines whether two points represent the same real value.
  * No epsilon is used, so use caution when applying to values that may
  * be affected by floating point errors.
  *
@@ -59,6 +57,21 @@ static inline BOOL ARPoint3DEquals(ARPoint3D a, ARPoint3D b) {
 		a.x == b.x &&
 		a.y == b.y &&
 		a.z == b.z;
+}
+
+/**
+ * Determines whether two points represent the same real value, with a fixed maximum difference for each component.
+ *
+ * @param a first point to compare
+ * @param a second point to compare
+ * @param the maximal difference between each element. 
+ * @return YES if the points are equal, NO otherwise.
+ */
+static inline BOOL ARPoint3DEqualsWithAccuracy(ARPoint3D a, ARPoint3D b, double accuracy) {
+	return
+		abs(a.x == b.x) <= accuracy &&
+		abs(a.y == b.y) <= accuracy &&
+		abs(a.z == b.z) <= accuracy;
 }
 
 static inline double ARPoint3DGetCoordinate(ARPoint3D point, ARPoint3DCoordinate coordinate) {

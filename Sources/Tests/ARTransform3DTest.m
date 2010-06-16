@@ -53,6 +53,10 @@
 	GHAssertTrue(CATransform3DEqualToTransform(testTransform, correctTransform), nil);
 }
 
+- (void)testEqualsWithAccuracy {
+	GHFail(@"Test not yet implemented.");
+}
+
 - (void)testLookAt {
 	GHAssertTrue(CATransform3DEqualToTransform(ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0., 0., 1.), ARPoint3DCreate(0., 1., 0.), ARPoint3DZero), CATransform3DIdentity), nil);
 	GHAssertTrue(CATransform3DEqualToTransform(ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0., 0., 1.), ARPoint3DCreate(0., 0., 1.), ARPoint3DCreate(0., 1., 0.)), CATransform3DIdentity), nil);
@@ -64,22 +68,7 @@
 		-10.5,        20.5,         30.5,        1.,
 	};
 	ARTransform3D testTransform = ARTransform3DLookAt(ARPoint3DCreate(-10.5, 20.5, 30.5), ARPoint3DCreate(-0.5, 10.5, 40.5), ARPoint3DCreate(0., 0., 1.), ARPoint3DZero);
-	GHAssertEqualsWithAccuracy(testTransform.m11, correctTransform.m11, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m12, correctTransform.m12, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m13, correctTransform.m13, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m14, correctTransform.m14, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m21, correctTransform.m21, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m22, correctTransform.m22, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m23, correctTransform.m23, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m24, correctTransform.m24, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m31, correctTransform.m31, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m32, correctTransform.m32, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m33, correctTransform.m33, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m34, correctTransform.m34, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m41, correctTransform.m41, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m42, correctTransform.m42, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m43, correctTransform.m43, 0.000001, nil);
-	GHAssertEqualsWithAccuracy(testTransform.m44, correctTransform.m44, 0.000001, nil);
+	GHAssertTrue(ARTransform3DEqualsWithAccuracy(testTransform, correctTransform, 0.000001), nil);
 }
 
 - (void)testTranspose {

@@ -24,6 +24,7 @@
 #import "ARDerivativeFilter.h"
 
 
+// TODO: Refactor to get rid of this class; taking the derivative is not a filter.
 @implementation ARDerivativeFilter
 
 #pragma mark ARFilter

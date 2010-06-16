@@ -47,18 +47,25 @@ int ARMovingMedianFilterSampleCompare(const ARFilterValue *a, const ARFilterValu
 	return *b > *a ? 1 : -1;
 }
 
-- (ARFilterValue)filterWithSamples:(ARFilterValue *)samples lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)aSampleCount {
-	NSUInteger n = MIN(aSampleCount, [self windowSize]);
+- (ARFilterValue)filterWithSampleValues:(ARFilterValue *)sampleValues sampleTimestamps:(NSTimeInterval *)sampleTimestamps lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)sampleCount {
+	memcpy(sortedSamples, sampleValues, sampleCount * sizeof(sortedSamples[0]));
+	qsort(sortedSamples, sampleCount, sizeof(sortedSamples[0]), (int (*)(const void *, const void *))ARMovingMedianFilterSampleCompare);
 	
-	memcpy(sortedSamples, samples, n * sizeof(sortedSamples[0]));
-	qsort(sortedSamples, n, sizeof(sortedSamples[0]), (int (*)(const void *, const void *))ARMovingMedianFilterSampleCompare);
-	
-	if (n % 2 == 0) {
-		return (sortedSamples[n / 2 - 1] + sortedSamples[n / 2]) / 2.;
+	if (sampleCount % 2 == 0) {
+		return (sortedSamples[sampleCount / 2 - 1] + sortedSamples[sampleCount / 2]) / 2.;
 	}
 	else {
-		return sortedSamples[n / 2];
+		return sortedSamples[sampleCount / 2];
 	}
+}
+
+@end
+
+
+@implementation ARMovingMedianFilterFactory
+
+- (ARFilter *)newFilter {
+	return [[ARMovingMedianFilter alloc] initWithWindowSize:[self windowSize]];
 }
 
 @end

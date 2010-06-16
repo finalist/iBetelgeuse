@@ -1,5 +1,5 @@
 //
-//  ARMovingWindowFilter.m
+//  ARMovingWindowQuaternionFilter.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -21,10 +21,10 @@
 //
 
 
-#import "ARMovingWindowFilter.h"
+#import "ARMovingWindowQuaternionFilter.h"
 
 
-@implementation ARMovingWindowFilter
+@implementation ARMovingWindowQuaternionFilter
 
 @synthesize windowSize;
 
@@ -35,9 +35,14 @@
 	
 	if (self = [super init]) {
 		windowSize = aWindowSize;
+		sampleValues = malloc(windowSize * sizeof(sampleValues[0]));
+		sampleTimestamps = malloc(windowSize * sizeof(sampleTimestamps[0]));
 		
-		sampleValues = calloc(windowSize, sizeof(sampleValues[0]));
-		sampleTimestamps = calloc(windowSize, sizeof(sampleTimestamps[0]));
+		NSTimeInterval currentTime = [[NSDate date] timeIntervalSinceReferenceDate];
+		for (int i = 0; i < windowSize; ++i) {
+			sampleValues[i] = ARQuaternionIdentity;
+			sampleTimestamps[i] = currentTime;
+		}
 	}
 	return self;
 }
@@ -51,7 +56,7 @@
 
 #pragma mark ARFilter
 
-- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
+- (ARQuaternion)filterWithInput:(ARQuaternion)input timestamp:(NSTimeInterval)timestamp {
 	NSUInteger previousSampleIndex = sampleIndex;
 	
 	sampleValues[sampleIndex] = input;
@@ -62,32 +67,10 @@
 	return [self filterWithSampleValues:sampleValues sampleTimestamps:sampleTimestamps lastSampleIndex:previousSampleIndex sampleCount:sampleCount];
 }
 
-#pragma mark ARMovingWindowFilter
+#pragma mark ARMovingWindowQuaternionFilter
 
-- (ARFilterValue)filterWithSampleValues:(ARFilterValue *)someSampleValues sampleTimestamps:(NSTimeInterval *)someSampleTimestamps lastSampleIndex:(NSUInteger)aSampleIndex sampleCount:(NSUInteger)aSampleCount {
+- (ARQuaternion)filterWithSampleValues:(ARQuaternion *)someSampleValues sampleTimestamps:(NSTimeInterval *)someSampleTimestamps lastSampleIndex:(NSUInteger)aSampleIndex sampleCount:(NSUInteger)sampleCount {
 	return someSampleValues[aSampleIndex];
-}
-
-@end
-
-
-@implementation ARMovingWindowFilterFactory
-
-@synthesize windowSize;
-
-#pragma mark NSObject
-
-- (id)initWithWindowSize:(NSUInteger)aWindowSize {
-	if (self = [super init]) {
-		windowSize = aWindowSize;
-	}
-	return self;
-}
-
-#pragma mark ARFilter
-
-- (ARFilter *)newFilter {
-	return [[ARMovingWindowFilter alloc] initWithWindowSize:windowSize];
 }
 
 @end

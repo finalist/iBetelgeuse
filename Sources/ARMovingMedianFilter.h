@@ -30,3 +30,9 @@
 }
 
 @end
+
+
+@interface ARMovingMedianFilterFactory : ARMovingWindowFilterFactory {
+}
+
+@end

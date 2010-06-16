@@ -61,6 +61,16 @@ ARTransform3D ARTransform3DMakeFromAxesAndTranslation(ARPoint3D xAxis, ARPoint3D
 ARTransform3D ARTransform3DMakeFromAxes(ARPoint3D xAxis, ARPoint3D yAxis, ARPoint3D zAxis);
 
 /**
+ * Compares matrices a and b by element. Returns YES if every element of a and b differ at most the specified accuracy.
+ * 
+ * @param a first matrix to compare
+ * @param b second matrix to compare
+ * @param accuracy the maximal allowed difference between two element values to be considered equal.
+ * @return YES if all elements of the matrices are less than or equal to the specified accuracy.
+ */
+BOOL ARTransform3DEqualsWithAccuracy(ARTransform3D a, ARTransform3D b, double accuracy);
+
+/**
  * Construct an orthogonal transformation matrix A with a translation
  * given by origin and oriented so that it faces the target in the
  * direction of the z axis. The upDirection determines the roll (rotation

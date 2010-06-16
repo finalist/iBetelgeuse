@@ -24,9 +24,10 @@
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 #import "ARPoint3D.h"
+#import "ARQuaternion.h"
 
 
-@class ARSpatialState, ARPoint3DFilter, ARLocation;
+@class ARSpatialState, ARLocation, ARAccelerometerFilter, AROrientationFilter;
 @protocol ARSpatialStateManagerDelegate;
 
 
@@ -52,13 +53,15 @@
 	CLLocationDegrees latitude;
 	CLLocationDegrees longitude;
 	CLLocationDistance altitude;
-	ARPoint3D upDirectionInDeviceSpace;
-	ARPoint3D northDirectionInDeviceSpace;
+	ARPoint3D lastUpDirectionInDeviceSpace;
+	ARPoint3D lastNorthDirectionInDeviceSpace;
+	ARQuaternion ENUToDeviceSpaceQuaternion;
+	
+	ARAccelerometerFilter *upDirectionFilter;
+	AROrientationFilter *orientationFilter;
 	
 	NSDate *timestamp;
 	ARSpatialState *spatialState;
-	ARPoint3DFilter *upDirectionFilter;
-	ARPoint3DFilter *northDirectionFilter;
 }
 
 @property(nonatomic, assign) id <ARSpatialStateManagerDelegate> delegate;
@@ -100,13 +103,14 @@
 	CLLocationDegrees latitude;
 	CLLocationDegrees longitude;
 	CLLocationDistance altitude;
-	ARPoint3D upDirectionInDeviceSpace;
-	ARPoint3D northDirectionInDeviceSpace;
+	ARQuaternion ENUToDeviceSpaceQuaternion;
 	ARPoint3D EFToECEFSpaceOffset;
 	NSDate *timestamp;
 	
 	ARLocation *location;
 	ARPoint3D locationInECEFSpace;
+	ARPoint3D upDirectionInDeviceSpace;
+	ARPoint3D northDirectionInDeviceSpace;
 	CATransform3D ENUToDeviceSpaceTransform;
 	CATransform3D DeviceToENUSpaceTransform;
 	CATransform3D ENUToEFSpaceTransform;
@@ -117,6 +121,8 @@
 		BOOL locationRecent:1;
 		BOOL orientationAvailable:1;
 		BOOL orientationRecent:1;
+		BOOL haveUpDirectionInDeviceSpace:1;
+		BOOL haveNorthDirectionInDeviceSpace:1;
 		BOOL haveLocationInECEFSpace:1;
 		BOOL haveENUToDeviceSpaceTransform:1;
 		BOOL haveDeviceToENUSpaceTransform:1;

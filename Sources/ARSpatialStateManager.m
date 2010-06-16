@@ -24,8 +24,8 @@
 #import "ARLocation.h"
 #import "ARTransform3D.h"
 #import "ARWGS84.h"
+#import "AROrientationFilter.h"
 #import "ARAccelerometerFilter.h"
-#import "ARCompassFilter.h"
 
 
 #define ACCELEROMETER_UPDATE_FREQUENCY 30 // Hz
@@ -42,6 +42,7 @@
 - (void)updateForSimulation;
 #endif
 
+- (void)updateOrientation;
 - (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude;
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection;
 - (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination;
@@ -60,8 +61,7 @@
 					   altitude:(CLLocationDistance)altitude
 		   orientationAvailable:(BOOL)orientationAvailable
 						 recent:(BOOL)isOrientationRecent
-					upDirection:(ARPoint3D)upDirection
-				 northDirection:(ARPoint3D)northDirection
+	 ENUToDeviceSpaceQuaternion:(ARQuaternion)anENUToDeviceSpaceQuaternion
 			EFToECEFSpaceOffset:(ARPoint3D)EFToECEFSpaceOffset
 					  timestamp:(NSDate *)timestamp;
 
@@ -78,7 +78,7 @@
 - (id)init {
 	if (self = [super init]) {
 		upDirectionFilter = [[ARAccelerometerFilter alloc] init];
-		northDirectionFilter = [[ARCompassFilter alloc] init];
+		orientationFilter = [[AROrientationFilter alloc] init];
 	}
 	return self;
 }
@@ -90,11 +90,11 @@
 #else
 	[locationManager release];
 #endif
-	
+
+	[upDirectionFilter release];
+	[orientationFilter release];
 	[timestamp release];
 	[spatialState release];
-	[upDirectionFilter release];
-	[northDirectionFilter release];
 	
 	[super dealloc];
 }
@@ -275,6 +275,22 @@
 }
 #endif
 
+- (void)updateOrientation {
+	// The ENU coordinate space is defined in device coordinate space by looking:
+	// * from the device, which is at [0 0 0] in device coordinates;
+	// * towards the sky, which is given by the up vector; and
+	// * oriented towards the North pole, which is given by the north vector.
+	if (upDirectionAvailable && northDirectionAvailable) {
+		NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
+		ARTransform3D ENUToDeviceSpaceTransform = ARTransform3DLookAtRelative(ARPoint3DZero, lastUpDirectionInDeviceSpace, lastNorthDirectionInDeviceSpace, ARPoint3DZero);
+		ENUToDeviceSpaceQuaternion = [orientationFilter filterWithInput:ARQuaternionMakeWithTransform(ENUToDeviceSpaceTransform) timestamp:timestamp];
+	}
+	
+	[self invalidateSpatialState];
+	
+	[delegate spatialStateManagerDidUpdate:self];
+}
+
 - (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude {
 	locationAvailable = YES;
 	locationTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
@@ -294,35 +310,23 @@
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection {
 	upDirectionAvailable = YES;
 	upDirectionTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
+	lastUpDirectionInDeviceSpace = [upDirectionFilter filterWithInput:rawUpDirection timestamp:upDirectionTimeIntervalSinceReferenceDate];
 
-	upDirectionInDeviceSpace = [upDirectionFilter filterWithInput:rawUpDirection timestamp:[[NSDate date] timeIntervalSince1970]];
-	
-	[self invalidateSpatialState];
-	
-	if (delegateRespondsToLocationDidUpdate) {
-		[delegate spatialStateManagerLocationDidUpdate:self];
-	}
-	[delegate spatialStateManagerDidUpdate:self];
+	[self updateOrientation];
 }
 
 - (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination {
-	northDirectionAvailable = YES;
-	northDirectionTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
-	
 	// If we have an up direction, correct for magnetic declination
 	if (upDirectionAvailable) {
-		ARTransform3D declinationCorrectionTransform = CATransform3DMakeRotation(declination, upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, upDirectionInDeviceSpace.z);
+		ARTransform3D declinationCorrectionTransform = CATransform3DMakeRotation(declination, lastUpDirectionInDeviceSpace.x, lastUpDirectionInDeviceSpace.y, lastUpDirectionInDeviceSpace.z);
 		rawNorthDirection = ARTransform3DNonhomogeneousVectorMatrixMultiply(rawNorthDirection, declinationCorrectionTransform);
 	}
-
-	northDirectionInDeviceSpace = [northDirectionFilter filterWithInput:rawNorthDirection timestamp:[[NSDate date] timeIntervalSince1970]];
-
-	[self invalidateSpatialState];
 	
-	if (delegateRespondsToLocationDidUpdate) {
-		[delegate spatialStateManagerLocationDidUpdate:self];
-	}
-	[delegate spatialStateManagerDidUpdate:self];
+	northDirectionAvailable = YES;
+	northDirectionTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
+	lastNorthDirectionInDeviceSpace = rawNorthDirection;
+
+	[self updateOrientation];
 }
 
 - (ARSpatialState *)spatialState {
@@ -339,8 +343,7 @@
 																altitude:altitude 
 													orientationAvailable:(upDirectionAvailable && northDirectionAvailable) 
 																  recent:(upDirectionRecent && northDirectionRecent) 
-															 upDirection:upDirectionInDeviceSpace 
-														  northDirection:northDirectionInDeviceSpace 
+											  ENUToDeviceSpaceQuaternion:ENUToDeviceSpaceQuaternion
 													 EFToECEFSpaceOffset:EFToECEFSpaceOffset 
 															   timestamp:timestamp];
 	}
@@ -369,8 +372,7 @@
 					   altitude:(CLLocationDistance)anAltitude 
 		   orientationAvailable:(BOOL)isOrientationAvailable 
 						 recent:(BOOL)isOrientationRecent 
-					upDirection:(ARPoint3D)anUpDirection 
-				 northDirection:(ARPoint3D)aNorthDirection 
+	 ENUToDeviceSpaceQuaternion:(ARQuaternion)anENUToDeviceSpaceQuaternion
 			EFToECEFSpaceOffset:(ARPoint3D)anEFToECEFSpaceOffset 
 					  timestamp:(NSDate *)aTimestamp {
 	if (self = [super init]) {
@@ -381,8 +383,7 @@
 		latitude = aLatitude;
 		longitude = aLongitude;
 		altitude = anAltitude;
-		upDirectionInDeviceSpace = anUpDirection;
-		northDirectionInDeviceSpace = aNorthDirection;
+		ENUToDeviceSpaceQuaternion = anENUToDeviceSpaceQuaternion;
 		EFToECEFSpaceOffset = anEFToECEFSpaceOffset;
 		timestamp = [aTimestamp retain];
 	}
@@ -442,7 +443,21 @@
 	return ARPoint3DSubtract([self locationInECEFSpace], [self EFToECEFSpaceOffset]);
 }
 
-@synthesize upDirectionInDeviceSpace;
+- (ARPoint3D)upDirectionInENUSpace {
+	return ARPoint3DCreate(0., 0., 1.); // By definition
+}
+
+- (ARPoint3D)upDirectionInDeviceSpace {
+	if (!flags.haveUpDirectionInDeviceSpace) {
+		if ([self isOrientationAvailable]) {
+			upDirectionInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply([self upDirectionInENUSpace], [self ENUToDeviceSpaceTransform]);
+		} else {
+			upDirectionInDeviceSpace = [self upDirectionInENUSpace];
+		}
+		flags.haveUpDirectionInDeviceSpace = true;
+	}
+	return upDirectionInDeviceSpace;
+}
 
 - (ARPoint3D)upDirectionInECEFSpace {
 	return [self locationInECEFSpace];
@@ -452,7 +467,21 @@
 	return [self upDirectionInECEFSpace];
 }
 
-@synthesize northDirectionInDeviceSpace;
+- (ARPoint3D)northDirectionInENUSpace {
+	return ARPoint3DCreate(0., 1., 0.); // By definition; alongst the horizontal plane. TODO: Document that the northDirectionIn...Space methods do -not- return the same vector if transformed back to the same space.
+}
+
+- (ARPoint3D)northDirectionInDeviceSpace {
+	if (!flags.haveNorthDirectionInDeviceSpace) {
+		if ([self isOrientationAvailable]) {
+			northDirectionInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply([self northDirectionInENUSpace], [self ENUToDeviceSpaceTransform]);
+		} else {
+			northDirectionInDeviceSpace = [self northDirectionInENUSpace];
+		}
+		flags.haveNorthDirectionInDeviceSpace = true;
+	}
+	return northDirectionInDeviceSpace;
+}
 
 - (ARPoint3D)northDirectionInECEFSpace {
 	// By definition of ECEF, the North pole is located along the z-axis
@@ -467,11 +496,7 @@
 - (CATransform3D)ENUToDeviceSpaceTransform {
 	if (!flags.haveENUToDeviceSpaceTransform) {
 		if ([self isOrientationAvailable]) {
-			// The ENU coordinate space is defined in device coordinate space by looking:
-			// * from the device, which is at [0 0 0] in device coordinates;
-			// * towards the sky, which is given by the up vector; and
-			// * oriented towards the North pole, which is given by the north vector.
-			ENUToDeviceSpaceTransform = ARTransform3DLookAtRelative(ARPoint3DZero, [self upDirectionInDeviceSpace], [self northDirectionInDeviceSpace], ARPoint3DZero);
+			ENUToDeviceSpaceTransform = ARQuaternionConvertToMatrix(ENUToDeviceSpaceQuaternion);
 		}
 		else {
 			ENUToDeviceSpaceTransform = CATransform3DIdentity;
@@ -497,7 +522,7 @@
 			// * from the device, which is given by the GPS after conversion to ECEF;
 			// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
 			// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
-			ENUToEFSpaceTransform = ARTransform3DLookAtRelative([self locationInEFSpace], [self upDirectionInEFSpace], [self northDirectionInECEFSpace], ARPoint3DZero);
+			ENUToEFSpaceTransform = ARTransform3DLookAtRelative([self locationInEFSpace], [self upDirectionInEFSpace], [self northDirectionInEFSpace], ARPoint3DZero);
 		}
 		else {
 			ENUToEFSpaceTransform = CATransform3DIdentity;

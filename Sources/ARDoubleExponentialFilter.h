@@ -41,3 +41,15 @@
 @property(nonatomic, readwrite) double gamma;
 
 @end
+
+
+@interface ARDoubleExponentialFilterFactory : ARFilterFactory {
+@private
+	double alpha;
+	double gamma;
+}
+
+- (id)initWithAlpha:(double)alpha;
+- (id)initWithAlpha:(double)alpha gamma:(double)gamma;
+
+@end

@@ -41,3 +41,15 @@
 - (id)initWithBaseCorrectionFactor:(ARFilterValue)aBaseCorrectionFactor correctionFactorDerivativeGain:(ARFilterValue)aCorrectionFactorDerivativeGain derivativeAverageWindowSize:(ARFilterValue)aDerivativeAverageWindowSize;
 
 @end
+
+
+@interface ARDerivativeSmoothFilterFactory : ARFilterFactory {
+@private
+	ARFilterValue baseCorrectionFactor;
+	ARFilterValue correctionFactorDerivativeGain;
+	int derivativeAverageWindowSize;
+}
+
+- (id)initWithBaseCorrectionFactor:(ARFilterValue)aBaseCorrectionFactor correctionFactorDerivativeGain:(ARFilterValue)aCorrectionFactorDerivativeGain derivativeAverageWindowSize:(ARFilterValue)aDerivativeAverageWindowSize;
+
+@end

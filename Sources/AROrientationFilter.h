@@ -1,5 +1,5 @@
 //
-//  ARCompassFilter.h
+//  AROrientationFilter.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -21,10 +21,15 @@
 //
 
 
-#import "ARPoint3DFilter.h"
+#import "ARQuaternion.h"
+
+@class ARExponentialQuaternionFilter;
 
 
-@interface ARCompassFilter : ARPoint3DFilter {
+@interface AROrientationFilter : NSObject {
+	ARExponentialQuaternionFilter *quaternionFilter;
 }
+
+- (ARQuaternion)filterWithInput:(ARQuaternion)input timestamp:(NSTimeInterval)timestamp;
 
 @end

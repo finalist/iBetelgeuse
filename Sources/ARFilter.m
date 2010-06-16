@@ -26,8 +26,21 @@
 
 @implementation ARFilter
 
+#pragma mark ARFilter
+
 - (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
 	return input;
+}
+
+@end
+
+
+@implementation ARFilterFactory
+
+#pragma mark ARFilterFactory
+
+- (ARFilter *)newFilter {
+	return [[ARFilter alloc] init];
 }
 
 @end

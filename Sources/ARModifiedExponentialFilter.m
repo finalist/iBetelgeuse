@@ -25,8 +25,6 @@
 
 @implementation ARModifiedExponentialFilter
 
-@synthesize alpha, delta;
-
 #pragma mark NSObject
 
 - (id)initWithAlpha:(double)anAlpha delta:(double)aDelta {
@@ -35,7 +33,7 @@
 	
 	if (self = [super init]) {
 		alpha = anAlpha;
-		delta = 0;
+		delta = aDelta;
 	}
 	return self;
 }
@@ -69,6 +67,30 @@
 	lastOutput = output;
 	++sampleCount;
 	return output;
+}
+
+@end
+
+
+@implementation ARModifiedExponentialFilterFactory
+
+#pragma mark NSObject
+
+- (id)initWithAlpha:(double)anAlpha delta:(double)aDelta {
+	NSAssert(anAlpha >= 0 && anAlpha <= 1, @"Expected alpha in range [0, 1].");
+	NSAssert(aDelta >= 0, @"Expected delta in range [0, Inf).");
+	
+	if (self = [super init]) {
+		alpha = anAlpha;
+		delta = aDelta;
+	}
+	return self;
+}
+
+#pragma mark ARFilterFactory
+
+- (ARFilter *)newFilter {
+	return [[ARModifiedExponentialFilter alloc] initWithAlpha:alpha delta:delta];
 }
 
 @end

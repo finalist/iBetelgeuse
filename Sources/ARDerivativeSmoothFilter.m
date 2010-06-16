@@ -55,7 +55,7 @@
 	} else {
 		ARFilterValue timeStep = timestamp - lastTimestamp;
 		ARFilterValue derivative = [derivativeAverageFilter filterWithInput:[derivativeFilter filterWithInput:input timestamp:timestamp] timestamp:timestamp];
-		ARFilterValue correctionFactor = fmin(1., baseCorrectionFactor + correctionFactorDerivativeGain * abs(derivative));
+		ARFilterValue correctionFactor = fmin(1., baseCorrectionFactor + correctionFactorDerivativeGain * fabs(derivative));
 		ARFilterValue estimate = lastOutput + derivative * timeStep;
 		ARFilterValue inputAverage = [inputAverageFilter filterWithInput:input timestamp:timestamp];
 		output = (1 - correctionFactor) * estimate + correctionFactor * inputAverage;
@@ -64,6 +64,28 @@
 	lastTimestamp = timestamp;
 	++sampleCount;
 	return output;
+}
+
+@end
+
+
+@implementation ARDerivativeSmoothFilterFactory
+
+#pragma mark NSObject
+
+- (id)initWithBaseCorrectionFactor:(ARFilterValue)aBaseCorrectionFactor correctionFactorDerivativeGain:(ARFilterValue)aCorrectionFactorDerivativeGain derivativeAverageWindowSize:(ARFilterValue)aDerivativeAverageWindowSize {
+	if (self = [super init]) {
+		baseCorrectionFactor = aBaseCorrectionFactor;
+		correctionFactorDerivativeGain = aCorrectionFactorDerivativeGain;
+		derivativeAverageWindowSize = aDerivativeAverageWindowSize;
+	}
+	return self;
+}
+
+#pragma mark ARFilterFactory
+
+- (ARFilter *)newFilter {
+	return [[ARDerivativeSmoothFilter alloc] initWithBaseCorrectionFactor:baseCorrectionFactor correctionFactorDerivativeGain:correctionFactorDerivativeGain derivativeAverageWindowSize:derivativeAverageWindowSize];
 }
 
 @end

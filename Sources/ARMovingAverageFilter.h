@@ -28,3 +28,9 @@
 }
 
 @end
+
+
+@interface ARMovingAverageFilterFactory : ARMovingWindowFilterFactory {
+}
+
+@end
