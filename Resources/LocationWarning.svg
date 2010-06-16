@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="32"
+   height="32"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   inkscape:export-filename="/Users/dennis/Desktop/LocationWarning.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
+   sodipodi:docname="New document 1">
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <inkscape:perspective
+       id="perspective3662"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3733"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3762"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3776"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective
+       id="perspective3803"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="21.78125"
+     inkscape:cx="16"
+     inkscape:cy="16"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1680"
+     inkscape:window-height="945"
+     inkscape:window-x="1680"
+     inkscape:window-y="695"
+     inkscape:window-maximized="0">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2816"
+       empspacing="10"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       dotted="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1020.3622)">
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:0.50207472;fill-rule:evenodd;stroke:none"
+       id="path2818"
+       sodipodi:cx="10"
+       sodipodi:cy="10"
+       sodipodi:rx="10"
+       sodipodi:ry="10"
+       d="M 20,10 A 10,10 0 1 1 0,10 10,10 0 1 1 20,10 z"
+       transform="matrix(1.6,0,0,1.6,0,1020.3622)" />
+    <image
+       y="1033.8622"
+       x="1.5"
+       id="image3735"
+       height="17"
+       width="17"
+       xlink:href="file:///Users/dennis/Desktop/UIKit%20Artwork%20Extractor-3.1.3/UIButtonBarLocateSmall.png"
+       style="display:none" />
+    <g
+       id="g3809"
+       transform="matrix(1.2499792,0,0,1.2500112,3.5002077,-266.60211)">
+      <path
+         transform="matrix(0.90625,0,0,0.90625,0.93749997,1033.2997)"
+         d="m 18,10 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z"
+         sodipodi:ry="8"
+         sodipodi:rx="8"
+         sodipodi:cy="10"
+         sodipodi:cx="10"
+         id="path3592"
+         style="fill:none;stroke:#ff0000;stroke-width:1.65517235;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+      <rect
+         y="1035.8622"
+         x="9.5"
+         height="3"
+         width="1"
+         id="rect3739"
+         style="fill:#ff0000;fill-opacity:1;stroke:none" />
+      <image
+         sodipodi:absref="/Applications/Inkscape.app/inkscape_pasted_image_20100616_143759.png"
+         xlink:href="/Applications/Inkscape.app/inkscape_pasted_image_20100616_143759.png"
+         y="1045.8622"
+         x="9.5"
+         id="image3764"
+         height="3"
+         width="1" />
+      <image
+         sodipodi:absref="/Applications/Inkscape.app/inkscape_pasted_image_20100616_143819.png"
+         xlink:href="/Applications/Inkscape.app/inkscape_pasted_image_20100616_143819.png"
+         y="3.5"
+         x="-1042.8622"
+         id="image3778"
+         height="3"
+         width="1"
+         transform="matrix(0,-1,1,0,0,0)" />
+      <image
+         sodipodi:absref="/Applications/Inkscape.app/inkscape_pasted_image_20100616_143904.png"
+         xlink:href="/Applications/Inkscape.app/inkscape_pasted_image_20100616_143904.png"
+         y="1041.8622"
+         x="13.5"
+         id="image3805"
+         height="1"
+         width="3" />
+    </g>
+  </g>
+</svg>

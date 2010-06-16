@@ -191,6 +191,7 @@ CGImageRef UIGetScreenImage(void);
 	[super loadView];
 	UIView *view = [self view];
 	CGRect bounds = [view bounds];
+	CGFloat statusBarHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
 	
 	// We want our view to be fully opaque for hit testing to work as expected
 	[view setBackgroundColor:[UIColor blackColor]];
@@ -223,6 +224,24 @@ CGImageRef UIGetScreenImage(void);
 	[overlayContainerView setHidden:YES];
 	[view addSubview:overlayContainerView];
 	[overlayContainerView release];
+	
+	UIImage *locationWarningImage = [UIImage imageNamed:@"LocationWarning.png"];
+	CGRect locationWarningFrame = CGRectMake(CGRectGetMinX(bounds) + MARGIN, CGRectGetMinY(bounds) + statusBarHeight + MARGIN, locationWarningImage.size.width, locationWarningImage.size.height);
+	locationWarningView = [[UIImageView alloc] initWithImage:locationWarningImage];
+	[locationWarningView setFrame:locationWarningFrame];
+	[locationWarningView setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
+	[locationWarningView setHidden:YES];
+	[view addSubview:locationWarningView];
+	[locationWarningView release];
+	
+	UIImage *orientationWarningImage = [UIImage imageNamed:@"OrientationWarning.png"];
+	CGRect orientationWarningFrame = CGRectMake(CGRectGetMaxX(locationWarningFrame) + MARGIN, CGRectGetMinY(bounds) + statusBarHeight + MARGIN, orientationWarningImage.size.width, orientationWarningImage.size.height);
+	orientationWarningView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"OrientationWarning.png"]];
+	[orientationWarningView setFrame:orientationWarningFrame];
+	[orientationWarningView setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
+	[orientationWarningView setHidden:YES];
+	[view addSubview:orientationWarningView];
+	[orientationWarningView release];
 	
 	menuButton = [[ARButton alloc] init];
 	[menuButton setFrame:CGRectMake(CGRectGetMaxX(bounds) - MARGIN - MENU_BUTTON_WIDTH, CGRectGetMaxY(bounds) - MARGIN - BUTTON_HEIGHT, MENU_BUTTON_WIDTH, BUTTON_HEIGHT)];
@@ -262,6 +281,8 @@ CGImageRef UIGetScreenImage(void);
 	radarView = nil;
 	overlayContainerView = nil;
 	scannerOverlayView = nil;
+	locationWarningView = nil;
+	orientationWarningView = nil;
 	menuButton = nil;
 	cancelButton = nil;
 	
@@ -743,8 +764,9 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)updateFeatureViews {
-	[featureContainerView updateWithSpatialState:[spatialStateManager spatialState] usingRelativeAltitude:[dimension relativeAltitude]];
-	[radarView updateWithSpatialState:[spatialStateManager spatialState] usingRelativeAltitude:[dimension relativeAltitude]];
+	ARSpatialState *spatialState = [spatialStateManager spatialState];
+	[featureContainerView updateWithSpatialState:spatialState usingRelativeAltitude:[dimension relativeAltitude]];
+	[radarView updateWithSpatialState:spatialState usingRelativeAltitude:[dimension relativeAltitude]];
 }
 
 - (void)setNeedsUpdate {
@@ -752,6 +774,10 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)updateIfNeeded {
+	ARSpatialState *spatialState = [spatialStateManager spatialState];
+	[locationWarningView setHidden:[spatialState isLocationAvailable] && [spatialState isLocationRecent]];
+	[orientationWarningView setHidden:[spatialState isOrientationAvailable] && [spatialState isOrientationRecent]];
+	
 	if (needsUpdate) {
 		needsUpdate = NO;
 		
@@ -961,6 +987,8 @@ CGImageRef UIGetScreenImage(void);
 			[featureContainerView setHidden:YES];
 			[overlayContainerView setHidden:YES];
 			[radarView setHidden:YES];
+			[locationWarningView setHidden:YES];
+			[orientationWarningView setHidden:YES];
 			[menuButton setHidden:YES];
 			[displayLink setPaused:YES];
 			

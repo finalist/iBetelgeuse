@@ -27,6 +27,10 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		9504CC7D11C9017700128562 /* LocationWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = 9504CC7911C9017700128562 /* LocationWarning.png */; };
+		9504CC7E11C9017700128562 /* LocationWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9504CC7A11C9017700128562 /* LocationWarning@2x.png */; };
+		9504CC7F11C9017700128562 /* OrientationWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = 9504CC7B11C9017700128562 /* OrientationWarning.png */; };
+		9504CC8011C9017700128562 /* OrientationWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9504CC7C11C9017700128562 /* OrientationWarning@2x.png */; };
 		950ECB3411C8C22D009E1314 /* ARMenuButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 950ECB3311C8C22D009E1314 /* ARMenuButton@2x.png */; };
 		950ECB5211C8C325009E1314 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 950ECB5111C8C325009E1314 /* Default@2x.png */; };
 		958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958DF27A11ABB40000047790 /* ARImageFeatureView.m */; };
@@ -176,6 +180,10 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		9504CC7911C9017700128562 /* LocationWarning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LocationWarning.png; sourceTree = "<group>"; };
+		9504CC7A11C9017700128562 /* LocationWarning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LocationWarning@2x.png"; sourceTree = "<group>"; };
+		9504CC7B11C9017700128562 /* OrientationWarning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrientationWarning.png; sourceTree = "<group>"; };
+		9504CC7C11C9017700128562 /* OrientationWarning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "OrientationWarning@2x.png"; sourceTree = "<group>"; };
 		950ECB3311C8C22D009E1314 /* ARMenuButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARMenuButton@2x.png"; sourceTree = "<group>"; };
 		950ECB5111C8C325009E1314 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		958DF27911ABB40000047790 /* ARImageFeatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageFeatureView.h; sourceTree = "<group>"; };
@@ -466,6 +474,10 @@
 				95EC630C11C267510027FF5D /* Localizable.strings */,
 				95C765F811BD26A900B71931 /* ARMenuButton.png */,
 				950ECB3311C8C22D009E1314 /* ARMenuButton@2x.png */,
+				9504CC7911C9017700128562 /* LocationWarning.png */,
+				9504CC7A11C9017700128562 /* LocationWarning@2x.png */,
+				9504CC7B11C9017700128562 /* OrientationWarning.png */,
+				9504CC7C11C9017700128562 /* OrientationWarning@2x.png */,
 				95EC642311C670160027FF5D /* About.html */,
 				95B9BEED11A1361400EDD870 /* Tests */,
 			);
@@ -890,6 +902,10 @@
 				95EC66CF11C79CF90027FF5D /* Scanner.wav in Resources */,
 				950ECB3411C8C22D009E1314 /* ARMenuButton@2x.png in Resources */,
 				950ECB5211C8C325009E1314 /* Default@2x.png in Resources */,
+				9504CC7D11C9017700128562 /* LocationWarning.png in Resources */,
+				9504CC7E11C9017700128562 /* LocationWarning@2x.png in Resources */,
+				9504CC7F11C9017700128562 /* OrientationWarning.png in Resources */,
+				9504CC8011C9017700128562 /* OrientationWarning@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

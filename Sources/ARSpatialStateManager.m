@@ -30,6 +30,8 @@
 
 #define ACCELEROMETER_UPDATE_FREQUENCY 30 // Hz
 #define LOCATION_EXPIRATION 60 // seconds
+#define UP_DIRECTION_EXPIRATION 1 // seconds
+#define NORTH_DIRECTION_EXPIRATION 1 // seconds
 
 
 @interface ARSpatialStateManager () <UIAccelerometerDelegate, CLLocationManagerDelegate>
@@ -51,7 +53,17 @@
 
 @interface ARSpatialState ()
 
-- (id)initWithLocationAvailable:(BOOL)locationAvailable latitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude altitude:(CLLocationDistance)altitude orientationAvailable:(BOOL)orientationAvailable upDirection:(ARPoint3D)upDirection northDirection:(ARPoint3D)northDirection EFToECEFSpaceOffset:(ARPoint3D)EFToECEFSpaceOffset;
+- (id)initWithLocationAvailable:(BOOL)locationAvailable
+						 recent:(BOOL)locationRecent
+					   latitude:(CLLocationDegrees)latitude
+					  longitude:(CLLocationDegrees)longitude
+					   altitude:(CLLocationDistance)altitude
+		   orientationAvailable:(BOOL)orientationAvailable
+						 recent:(BOOL)isOrientationRecent
+					upDirection:(ARPoint3D)upDirection
+				 northDirection:(ARPoint3D)northDirection
+			EFToECEFSpaceOffset:(ARPoint3D)EFToECEFSpaceOffset
+					  timestamp:(NSDate *)timestamp;
 
 @end
 
@@ -60,7 +72,6 @@
 
 @synthesize delegate, EFToECEFSpaceOffset;
 @synthesize updating;
-@synthesize spatialState;
 
 #pragma mark NSObject
 
@@ -80,6 +91,7 @@
 	[locationManager release];
 #endif
 	
+	[timestamp release];
 	[spatialState release];
 	[upDirectionFilter release];
 	[northDirectionFilter release];
@@ -265,6 +277,8 @@
 
 - (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude {
 	locationAvailable = YES;
+	locationTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
+	
 	latitude = rawLatitude;
 	longitude = rawLongitude;
 	altitude = rawAltitude;
@@ -279,6 +293,7 @@
 
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection {
 	upDirectionAvailable = YES;
+	upDirectionTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
 
 	upDirectionInDeviceSpace = [upDirectionFilter filterWithInput:rawUpDirection timestamp:[[NSDate date] timeIntervalSince1970]];
 	
@@ -292,6 +307,7 @@
 
 - (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination {
 	northDirectionAvailable = YES;
+	northDirectionTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
 	
 	// If we have an up direction, correct for magnetic declination
 	if (upDirectionAvailable) {
@@ -311,12 +327,30 @@
 
 - (ARSpatialState *)spatialState {
 	if (spatialState == nil) {
-		spatialState = [[ARSpatialState alloc] initWithLocationAvailable:locationAvailable latitude:latitude longitude:longitude altitude:altitude orientationAvailable:(upDirectionAvailable && northDirectionAvailable) upDirection:upDirectionInDeviceSpace northDirection:northDirectionInDeviceSpace EFToECEFSpaceOffset:EFToECEFSpaceOffset];
+		NSTimeInterval timeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
+		BOOL locationRecent = (timeIntervalSinceReferenceDate - locationTimeIntervalSinceReferenceDate) <= LOCATION_EXPIRATION;
+		BOOL upDirectionRecent = (timeIntervalSinceReferenceDate - upDirectionTimeIntervalSinceReferenceDate) <= UP_DIRECTION_EXPIRATION;
+		BOOL northDirectionRecent = (timeIntervalSinceReferenceDate - northDirectionTimeIntervalSinceReferenceDate) <= NORTH_DIRECTION_EXPIRATION;
+		
+		spatialState = [[ARSpatialState alloc] initWithLocationAvailable:locationAvailable 
+																  recent:locationRecent 
+																latitude:latitude 
+															   longitude:longitude 
+																altitude:altitude 
+													orientationAvailable:(upDirectionAvailable && northDirectionAvailable) 
+																  recent:(upDirectionRecent && northDirectionRecent) 
+															 upDirection:upDirectionInDeviceSpace 
+														  northDirection:northDirectionInDeviceSpace 
+													 EFToECEFSpaceOffset:EFToECEFSpaceOffset 
+															   timestamp:timestamp];
 	}
 	return spatialState;
 }
 
 - (void)invalidateSpatialState {
+	[timestamp release];
+	timestamp = [[NSDate alloc] init];
+	
 	[spatialState release];
 	spatialState = nil;
 }
@@ -328,17 +362,29 @@
 
 #pragma mark NSObject
 
-- (id)initWithLocationAvailable:(BOOL)isLocationAvailable latitude:(CLLocationDegrees)aLatitude longitude:(CLLocationDegrees)aLongitude altitude:(CLLocationDistance)anAltitude orientationAvailable:(BOOL)isOrientationAvailable upDirection:(ARPoint3D)anUpDirection northDirection:(ARPoint3D)aNorthDirection EFToECEFSpaceOffset:(ARPoint3D)anEFToECEFSpaceOffset {
+- (id)initWithLocationAvailable:(BOOL)isLocationAvailable 
+						 recent:(BOOL)isLocationRecent 
+					   latitude:(CLLocationDegrees)aLatitude 
+					  longitude:(CLLocationDegrees)aLongitude
+					   altitude:(CLLocationDistance)anAltitude 
+		   orientationAvailable:(BOOL)isOrientationAvailable 
+						 recent:(BOOL)isOrientationRecent 
+					upDirection:(ARPoint3D)anUpDirection 
+				 northDirection:(ARPoint3D)aNorthDirection 
+			EFToECEFSpaceOffset:(ARPoint3D)anEFToECEFSpaceOffset 
+					  timestamp:(NSDate *)aTimestamp {
 	if (self = [super init]) {
 		flags.locationAvailable = isLocationAvailable;
+		flags.locationRecent = isLocationRecent;
 		flags.orientationAvailable = isOrientationAvailable;
+		flags.orientationRecent = isOrientationRecent;
 		latitude = aLatitude;
 		longitude = aLongitude;
 		altitude = anAltitude;
 		upDirectionInDeviceSpace = anUpDirection;
 		northDirectionInDeviceSpace = aNorthDirection;
 		EFToECEFSpaceOffset = anEFToECEFSpaceOffset;
-		timestamp = [[NSDate date] retain];
+		timestamp = [aTimestamp retain];
 	}
 	return self;
 }
@@ -356,8 +402,16 @@
 	return flags.locationAvailable;
 }
 
+- (BOOL)isLocationRecent {
+	return flags.locationRecent;
+}
+
 - (BOOL)isOrientationAvailable {
 	return flags.orientationAvailable;
+}
+
+- (BOOL)isOrientationRecent {
+	return flags.orientationRecent;
 }
 
 @synthesize timestamp;

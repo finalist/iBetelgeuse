@@ -44,14 +44,18 @@
 #endif
 
 	BOOL locationAvailable;
+	NSTimeInterval locationTimeIntervalSinceReferenceDate;
 	BOOL upDirectionAvailable;
+	NSTimeInterval upDirectionTimeIntervalSinceReferenceDate;
 	BOOL northDirectionAvailable;
+	NSTimeInterval northDirectionTimeIntervalSinceReferenceDate;
 	CLLocationDegrees latitude;
 	CLLocationDegrees longitude;
 	CLLocationDistance altitude;
 	ARPoint3D upDirectionInDeviceSpace;
 	ARPoint3D northDirectionInDeviceSpace;
 	
+	NSDate *timestamp;
 	ARSpatialState *spatialState;
 	ARPoint3DFilter *upDirectionFilter;
 	ARPoint3DFilter *northDirectionFilter;
@@ -110,7 +114,9 @@
 	
 	struct {
 		BOOL locationAvailable:1;
+		BOOL locationRecent:1;
 		BOOL orientationAvailable:1;
+		BOOL orientationRecent:1;
 		BOOL haveLocationInECEFSpace:1;
 		BOOL haveENUToDeviceSpaceTransform:1;
 		BOOL haveDeviceToENUSpaceTransform:1;
@@ -120,7 +126,9 @@
 }
 
 @property(nonatomic, readonly, getter=isLocationAvailable) BOOL locationAvailable;
+@property(nonatomic, readonly, getter=isLocationRecent) BOOL locationRecent;
 @property(nonatomic, readonly, getter=isOrientationAvailable) BOOL orientationAvailable;
+@property(nonatomic, readonly, getter=isOrientationRecent) BOOL orientationRecent;
 @property(nonatomic, readonly, retain) NSDate *timestamp;
 
 @property(nonatomic, readonly, retain) ARLocation *location;
