@@ -541,6 +541,9 @@ CGImageRef UIGetScreenImage(void);
 		
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 	}
+	else if (buttonIndex == menuButtonIndices.refresh) {
+		[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeActionRefresh source:nil];
+	}
 	else if (buttonIndex == menuButtonIndices.qr) {
 		[self setState:STATE_QR];
 	}
@@ -851,6 +854,15 @@ CGImageRef UIGetScreenImage(void);
 	[actionSheet addButtonWithTitle:NSLocalizedString(@"Info", @"actionsheet button")];
 	menuButtonIndices.about = index++;
 	
+	// Add refresh button
+	if (![[self dimension] refreshURL]) {
+		menuButtonIndices.refresh = -1;
+	}
+	else {
+		[actionSheet addButtonWithTitle:NSLocalizedString(@"Refresh", @"actionsheet button")];
+		menuButtonIndices.refresh = index++;
+	}
+
 	// Add QR code button, if appropriate
 	if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
 		[actionSheet addButtonWithTitle:NSLocalizedString(@"Scan QR Code", @"actionsheet button")];

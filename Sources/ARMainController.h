@@ -56,6 +56,7 @@
 		
 	struct {
 		signed char about;
+		signed char refresh;
 		signed char qr;
 		signed char cancel;
 	} menuButtonIndices;
