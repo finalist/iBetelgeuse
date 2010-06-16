@@ -46,4 +46,13 @@
 "Received HTTP %@." = "HTTP %@ ontvangen.";
 
 /* actionsheet button */
+"Refresh" = "Vernieuw";
+
+/* actionsheet button */
 "Scan QR Code" = "Scan QR Code";
+
+/* main controller alert message */
+"The scanned QR code does not resolve to a dimension." = "De gescande QR code verwijst niet naar een dimensie.";
+
+/* main controller alert title */
+"Unrecognized QR code" = "Onbekende QR code";
