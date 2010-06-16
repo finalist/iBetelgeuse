@@ -1,0 +1,32 @@
+body {
+	background-color: #000;
+	background-image: url('AboutBackground.jpg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	color: #fff;
+	font-family: sans-serif;
+	font-size: .9em;
+	line-height: 1.5;
+}
+
+h1, dt {
+	color: #da92df;
+}
+
+a {
+	color: #888ee3;
+}
+
+h1 {
+	font-size: 1.5em;
+}
+
+dt {
+	font-weight: bold;
+}
+
+dd ul {
+	list-style-type: none;
+	margin-top: 0;
+	padding-left: 0;
+}

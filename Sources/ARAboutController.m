@@ -23,6 +23,11 @@
 #import "ARAboutController.h"
 
 
+@interface ARAboutController () <UIWebViewDelegate>
+
+@end
+
+
 @implementation ARAboutController
 
 #pragma mark NSObject
@@ -38,6 +43,7 @@
 
 - (void)loadView {
 	UIWebView *webView = [[UIWebView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	[webView setDelegate:self];
 	
 	NSURL *aboutURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"About" ofType:@"html"]];
 	NSURLRequest *aboutRequest = [[NSURLRequest alloc] initWithURL:aboutURL];
@@ -50,6 +56,19 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	return YES;
+}
+
+#pragma mark UIWebViewDelegate
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+	if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+		[[UIApplication sharedApplication] openURL:[request URL]];
+	}
+	else if (navigationType == UIWebViewNavigationTypeOther) {
+		// This is our own request in loadView
+		return YES;
+	}
+	return NO;
 }
 
 @end
