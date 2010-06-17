@@ -759,6 +759,7 @@ CGImageRef UIGetScreenImage(void);
 	}
 	
 	[radarView setFeatures:[dimension features]];
+	[radarView setRadius:[dimension radarRadius]];
 	
 	[self updateFeatureViews];
 }

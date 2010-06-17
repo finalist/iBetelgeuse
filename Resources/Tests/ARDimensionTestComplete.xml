@@ -4,6 +4,7 @@
 	<refreshUrl>http://www.example.org/</refreshUrl>
 	<refreshTime><validFor>1000</validFor><waitForAssets>false</waitForAssets></refreshTime>
 	<refreshDistance><validWithinRange>1000</validWithinRange></refreshDistance>
+	<radarRange>500</radarRange>
 	<locations>
 		<location id="location1">
 			<lat>0</lat>

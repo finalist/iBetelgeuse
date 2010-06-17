@@ -30,6 +30,10 @@
 @interface ARRadarView : UIView {
 @private
 	NSArray *features;
+	CGFloat radarRadius;
+	CGFloat screenRadius;
+	CGFloat viewRadius;
+	CGFloat radarToScreenScale;
 	CGGradientRef extentOfViewGradient;
 	
 	ARSpatialState *spatialState;
@@ -39,6 +43,7 @@
 }
 
 @property(nonatomic, readwrite, copy) NSArray *features;
+@property(nonatomic, readwrite) CGFloat radius;
 
 - (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude;
 

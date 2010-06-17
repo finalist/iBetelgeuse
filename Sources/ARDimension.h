@@ -48,6 +48,7 @@ extern const CLLocationDistance ARDimensionRefreshDistanceInfinite;
 	NSURL *refreshURL;
 	NSTimeInterval refreshTime;
 	CLLocationDistance refreshDistance;
+	CLLocationDistance radarRadius;
 }
 
 /**
@@ -101,5 +102,10 @@ extern const CLLocationDistance ARDimensionRefreshDistanceInfinite;
  * Distance the device moved after which this dimension becomes invalid and should be refreshed.
  */
 @property(nonatomic, readonly) CLLocationDistance refreshDistance;
+
+/**
+ * The radius in which objects should be displayed on the radar.
+ */
+@property(nonatomic, readonly) CLLocationDistance radarRadius;
 
 @end

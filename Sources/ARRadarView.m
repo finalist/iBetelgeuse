@@ -28,9 +28,14 @@
 #import "ARTransform3D.h"
 
 
-#define RADAR_RANGE 550
-#define RADAR_SCREEN_RANGE 50
-#define RADAR_BLIB_SIZE 4
+// Default radar view width and height
+#define DEFAULT_SIZE 100 // px
+
+// Default radius of displayed features
+#define DEFAULT_RADAR_RADIUS 1000 // meters
+
+// Blib width and height
+#define BLIB_SIZE 4 // px
 
 // If the device is in horizontal position (the screen normal vector is pointed upwards or downwards within the threshold specified below), the heading is undefined or inaccurate. The view direction will therefore be hidden and the heading determination algorithm will be changed to perform better with almost-parallel up- and view vectors. The high and low threshold values are used to avoid jitter between the two behaviours due to noise if the angle is close to the threshold angle.
 #define RADAR_HORIZONAL_THRESHOLD_ANGLE_LOW (15. / 180. * M_PI)
@@ -43,12 +48,15 @@
 
 @implementation ARRadarView
 
-@synthesize features;
+@synthesize features, radius = radarRadius;
 
 - (id)initWithFrame:(CGRect)aFrame {
 	if (self = [super initWithFrame:aFrame]) {
 		[self setClearsContextBeforeDrawing:YES];
 		[self setOpaque:NO];
+		
+		radarRadius = DEFAULT_RADAR_RADIUS;
+		[self setNeedsLayout];
 		
 		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 		extentOfViewGradient = CGGradientCreateWithColorComponents(colorSpace, (CGFloat[]){ 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.0 }, (CGFloat[]){ 0.0, 1.0 }, 2);
@@ -67,15 +75,33 @@
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
-	size.width = RADAR_SCREEN_RANGE * 2.f;
-	size.height = RADAR_SCREEN_RANGE * 2.f;
+	size.width = DEFAULT_SIZE;
+	size.height = DEFAULT_SIZE;
 	return size;
 }
 
+- (void)layoutSubviews {
+	[super layoutSubviews];
+	CGRect bounds = [self bounds];
+	
+	// Determine the radius of the radar view, i.e. the circle
+	viewRadius = MIN(bounds.size.width, bounds.size.height) / 2.;
+	
+	// Determine the radius of the area where blibs are displayed
+	screenRadius = viewRadius - BLIB_SIZE / 2.;
+	
+	radarToScreenScale = screenRadius / radarRadius;
+	
+	[self setNeedsDisplay];
+}
+
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-	point.x -= RADAR_SCREEN_RANGE;
-	point.y -= RADAR_SCREEN_RANGE;
-	return point.x * point.x + point.y * point.y <= RADAR_SCREEN_RANGE * RADAR_SCREEN_RANGE;
+	// Translate so the origin is in the center
+	point.x -= viewRadius;
+	point.y -= viewRadius;
+	
+	// Check whether the point is within the view radius
+	return point.x * point.x + point.y * point.y <= viewRadius * viewRadius;
 }
 
 - (void)updateWithSpatialState:(ARSpatialState *)aSpatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
@@ -103,12 +129,10 @@
 - (CATransform3D)ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:(ARPoint3D)upDirectionInRadarSpace  {
 	// Map space defines a top-down orthogonal projection oriented so that the y axis matches the looking direction
 	// Radar space defines the on-screen radar, so that the top of the displayed radar matches the y axis in map space.
-	
 	CATransform3D ENUToRadarTransform;
 	
 	// If the user looks straight down, the normal method becomes unusable due to the look vector being (almost) parallel to the up vector.
-	if ([self isDeviceInHorizontalPosition])
-	{
+	if ([self isDeviceInHorizontalPosition]) {
 		// The normal method is unusable; compute the heading using the look vector instead.
 		ARPoint3D yLookVectorInDeviceSpace = ARPoint3DCreate(0, 1, 0);
 		ARPoint3D yLookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(yLookVectorInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
@@ -127,26 +151,18 @@
 	return ENUToRadarTransform;
 }
 
-- (void)drawBlibWithContext:(CGContextRef)ctx positionInRadarSpace:(ARPoint3D)positionInRadarSpace sizeInPixels:(float)sizeInPixels color:(CGColorRef)color {
-	CGPoint projectedPosition = CGPointMake(positionInRadarSpace.x * RADAR_SCREEN_RANGE / RADAR_RANGE, positionInRadarSpace.y * RADAR_SCREEN_RANGE / RADAR_RANGE);
-	if (projectedPosition.x*projectedPosition.x + projectedPosition.y*projectedPosition.y <= RADAR_SCREEN_RANGE*RADAR_SCREEN_RANGE) {
-		CGContextSetFillColorWithColor(ctx, color);
-		CGContextFillEllipseInRect(ctx, CGRectMake(projectedPosition.x-sizeInPixels/2, projectedPosition.y-sizeInPixels/2, sizeInPixels, sizeInPixels));
-	}
-}
-
 - (void)drawRect:(CGRect)rect {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 
 	// Draw the outer radar circle
 	CGContextSaveGState(ctx);
 	CGContextSetBlendMode(ctx, kCGBlendModeCopy);
-	CGContextSetGrayFillColor(ctx, 0.0, 0.5);
+	CGContextSetGrayFillColor(ctx, 0.1, 0.5);
 	CGContextFillEllipseInRect(ctx, [self bounds]);
 	CGContextRestoreGState(ctx);
 	
 	// Prepare the screen transformation for drawing radar blibs
-	CGContextTranslateCTM(ctx, RADAR_SCREEN_RANGE, RADAR_SCREEN_RANGE);
+	CGContextTranslateCTM(ctx, viewRadius, viewRadius);
 	CGContextScaleCTM(ctx, 1, -1);
 	
 	if (spatialState != nil)
@@ -167,8 +183,8 @@
 				viewVectorInUnitSpace = ARPoint3DScale(viewVectorInUnitSpace, correctedViewDistanceInUnitSpace / viewDistanceInUnitSpace);
 				
 				// Determine the extent of view in screen space
-				CGPoint viewVectorInScreenSpace = CGPointMake(viewVectorInUnitSpace.x * RADAR_SCREEN_RANGE, viewVectorInUnitSpace.y * RADAR_SCREEN_RANGE);
-				CGFloat viewDistanceInScreenSpace = correctedViewDistanceInUnitSpace * RADAR_SCREEN_RANGE;
+				CGPoint viewVectorInScreenSpace = CGPointMake(viewVectorInUnitSpace.x * screenRadius, viewVectorInUnitSpace.y * screenRadius);
+				CGFloat viewDistanceInScreenSpace = correctedViewDistanceInUnitSpace * screenRadius;
 				CGFloat viewHeading = atan2(viewVectorInUnitSpace.y, viewVectorInUnitSpace.x);
 				
 				// Determine the angle of view
@@ -192,25 +208,48 @@
 			}
 
 			ARTransform3D ENUToRadarTransform = [self ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:upDirectionInRadarSpace];
-			CGColorRef blibColor = [[UIColor colorWithRed:1.0 green:0.35 blue:0.76 alpha:1.0] CGColor];
+			CGContextSetRGBFillColor(ctx, 1.0, 0.35, 0.76, 1.0);
 			for (ARFeature *feature in features) {
+				// Immediately skip features that should not be displayed on the radar
 				if (![feature showInRadar]) {
 					continue;
 				}
+
+				ARPoint3D featureLocationInECEFSpace = [[feature location] locationInECEFSpace];
+
+				// Also skip features that are on the other side of the plane
+				if (ARPoint3DDotProduct(featureLocationInECEFSpace, [spatialState locationInECEFSpace]) < 0) {
+					continue;
+				}
 				
-				// TODO: We are now applying the offset here as well as in ARFeatureView, refactor so that the offset only has to be applied once.
+				ARPoint3D featureLocationInEFSpace = ARPoint3DSubtract(featureLocationInECEFSpace, [spatialState EFToECEFSpaceOffset]);
+				ARPoint3D featureLocationInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featureLocationInEFSpace, [spatialState EFToENUSpaceTransform]);
+
+				// TODO: We are applying the offset here as well as in ARFeatureView; refactor so that the offset only has to be applied once.
 				ARPoint3D offsetInENUSpace = [feature offset];
 				offsetInENUSpace.z += altitudeOffset;
+				featureLocationInENUSpace = ARPoint3DAdd(featureLocationInENUSpace, [feature offset]);
 				
-				ARPoint3D featurePositionInEFSpace = ARPoint3DSubtract([[feature location] locationInECEFSpace], [spatialState EFToECEFSpaceOffset]);
-				ARPoint3D featurePositionInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInEFSpace, [spatialState EFToENUSpaceTransform]);
-				featurePositionInENUSpace = ARPoint3DAdd(featurePositionInENUSpace, [feature offset]);
-				ARPoint3D featurePositionInRadarSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featurePositionInENUSpace, ENUToRadarTransform);
-				
-				[self drawBlibWithContext:ctx positionInRadarSpace:featurePositionInRadarSpace sizeInPixels:RADAR_BLIB_SIZE color:blibColor];
+				// Now check whether the feature is still in range
+				if (featureLocationInENUSpace.x * featureLocationInENUSpace.x + featureLocationInENUSpace.y * featureLocationInENUSpace.y <= radarRadius * radarRadius) {
+					ARPoint3D featureLocationInRadarSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featureLocationInENUSpace, ENUToRadarTransform);
+					CGPoint featureLocationInScreenSpace = CGPointMake(featureLocationInRadarSpace.x * radarToScreenScale, featureLocationInRadarSpace.y * radarToScreenScale);
+					CGContextFillEllipseInRect(ctx, CGRectMake(featureLocationInScreenSpace.x - BLIB_SIZE / 2., featureLocationInScreenSpace.y - BLIB_SIZE / 2., BLIB_SIZE, BLIB_SIZE));
+				}
 			}
 		}
 	}
+}
+
+- (void)setRadius:(CGFloat)aRadius {
+	if (aRadius <= 0) {
+		radarRadius = DEFAULT_RADAR_RADIUS;
+	}
+	else {
+		radarRadius = aRadius;
+	}
+	
+	[self setNeedsLayout];
 }
 
 @end

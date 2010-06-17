@@ -60,6 +60,7 @@
 	GHAssertEqualObjects([dimension refreshURL], [NSURL URLWithString:@"http://www.example.org/"], nil);
 	GHAssertEquals([dimension refreshTime], (NSTimeInterval)1.0, nil);
 	GHAssertEquals([dimension refreshDistance], (CLLocationDistance)1000.0, nil);
+	GHAssertEquals([dimension radarRadius], (CLLocationDistance)500.0, nil);
 	
 	[parser release];
 }
@@ -78,6 +79,7 @@
 	GHAssertNil([dimension refreshURL], nil);
 	GHAssertEquals([dimension refreshTime], (NSTimeInterval)0, nil);
 	GHAssertEquals([dimension refreshDistance], (CLLocationDistance)0, nil);
+	GHAssertEquals([dimension radarRadius], (CLLocationDistance)1000.0, nil);
 	
 	[parser release];
 }

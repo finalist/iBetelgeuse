@@ -30,6 +30,9 @@
 #import "TCXMLParserDelegate+Protected.h"
 
 
+#define DEFAULT_RADAR_RADIUS 1000
+
+
 const NSTimeInterval ARDimensionRefreshTimeInfinite = 0.0;
 const CLLocationDistance ARDimensionRefreshDistanceInfinite = 0.0;
 
@@ -44,6 +47,7 @@ const CLLocationDistance ARDimensionRefreshDistanceInfinite = 0.0;
 @property(nonatomic, readwrite, retain) NSURL *refreshURL;
 @property(nonatomic, readwrite) NSTimeInterval refreshTime;
 @property(nonatomic, readwrite) CLLocationDistance refreshDistance;
+@property(nonatomic, readwrite) CLLocationDistance radarRadius;
 
 @end
 
@@ -75,9 +79,16 @@ typedef enum {
 
 @implementation ARDimension
 
-@synthesize features, overlays, locations, assets, relativeAltitude, refreshURL, refreshTime, refreshDistance;
+@synthesize features, overlays, locations, assets, relativeAltitude, refreshURL, refreshTime, refreshDistance, radarRadius;
 
 #pragma mark NSObject
+
+- (id)init {
+	if (self = [super init]) {
+		radarRadius = DEFAULT_RADAR_RADIUS;
+	}
+	return self;
+}
 
 - (void)dealloc {
 	[features release];
@@ -230,6 +241,15 @@ typedef enum {
 				}
 				else {
 					[dimension setRefreshURL:url];
+				}
+			}
+			else if ([name isEqualToString:@"radarRange"]) {
+				double value = [content doubleValue];
+				if (value == 0.0 || value == HUGE_VAL || value == -HUGE_VAL) {
+					DebugLog(@"Invalid value for radarRange element: %@", content);
+				}
+				else {
+					[dimension setRadarRadius:value];
 				}
 			}
 			break;
