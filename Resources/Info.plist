@@ -26,6 +26,8 @@
 	<string>UIStatusBarStyleBlackTranslucent</string>
 	<key>UIInterfaceOrientation</key>
 	<string>UIInterfaceOrientationPortrait</string>
+	<key>UIViewEdgeAntialiasing</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
