@@ -41,6 +41,7 @@
 }
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo;
+- (void)setIdentifiedLocation:(ARLocation *)aLocation;
 
 @property(nonatomic, readonly, copy) NSString *identifier;
 @property(nonatomic, readonly, copy) NSString *locationIdentifier;

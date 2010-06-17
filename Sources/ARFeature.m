@@ -74,6 +74,13 @@
 	NSAssert(NO, @"Expected implementation in subclass of this abstract class.");
 }
 
+- (void)setIdentifiedLocation:(ARLocation *)aLocation {
+	if (aLocation != location) {
+		[location release];
+		location = [aLocation retain];
+	}
+}
+
 @end
 
 

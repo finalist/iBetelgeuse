@@ -91,6 +91,14 @@ typedef enum {
 
 #pragma mark ARDimension
 
+- (void)resolveIdentifiers {
+	for (ARFeature *feature in features) {
+		if (![feature location] && [feature locationIdentifier]) {
+			[feature setIdentifiedLocation:[locations objectForKey:[feature locationIdentifier]]];
+		}
+	}
+}
+
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
 	ARDimensionXMLParserDelegate *delegate = [[ARDimensionXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
@@ -344,6 +352,8 @@ typedef enum {
 	[dimension setAssets:assets];
 	[dimension setFeatures:features];
 	[dimension setOverlays:overlays];
+	[dimension resolveIdentifiers];
+	
 	return dimension;
 }
 
