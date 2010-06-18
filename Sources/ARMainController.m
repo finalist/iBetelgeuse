@@ -66,6 +66,8 @@
 #define STATE_DIMENSION 1
 #define STATE_QR 2
 
+#define MINIMUM_REFRESH_TIME_AFTER_ERROR 10. // seconds
+
 
 // Expose undocumented API
 #if defined(__clang__)
@@ -91,6 +93,7 @@ CGImageRef UIGetScreenImage(void);
 @property(nonatomic, readonly) ARAssetManager *assetManagerIfAvailable;
 @property(nonatomic, readonly) ARSpatialStateManager *spatialStateManager;
 @property(nonatomic, retain) NSTimer *refreshTimer;
+@property(nonatomic, retain) NSDate *refreshTime;
 @property(nonatomic, getter=isRefreshingOnDistance) BOOL refreshingOnDistance;
 @property(nonatomic, retain) ARLocation *refreshLocation;
 
@@ -134,6 +137,7 @@ CGImageRef UIGetScreenImage(void);
 
 @synthesize dimensionRequest;
 @synthesize refreshTimer;
+@synthesize refreshTime;
 @synthesize refreshingOnDistance;
 @synthesize refreshLocation;
 
@@ -182,6 +186,7 @@ CGImageRef UIGetScreenImage(void);
 	[refreshLocation release];
 	[scanTimer release];
 	[scanner release];
+	[refreshTime release];
 	
 	[super dealloc];
 }
@@ -368,6 +373,11 @@ CGImageRef UIGetScreenImage(void);
 
 - (void)willPresentAlertView:(UIAlertView *)alertView {
 	switch (currentState) {
+		case STATE_DIMENSION:
+			[self stopRefreshingOnTime];
+			[self stopRefreshingOnDistance];
+			break;
+			
 		case STATE_QR:
 			[self stopScanning];
 			break;
@@ -376,6 +386,11 @@ CGImageRef UIGetScreenImage(void);
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 	switch (currentState) {
+		case STATE_DIMENSION:
+			[self startRefreshingOnTime];
+			[self startRefreshingOnDistance];
+			break;
+			
 		case STATE_QR:
 			[self startScanning];
 			break;
@@ -404,6 +419,9 @@ CGImageRef UIGetScreenImage(void);
 	[self createOverlayViews];
 	[self createFeatureViews];
 	
+	// Set the refresh time
+	[self setRefreshTime:[NSDate dateWithTimeIntervalSinceNow:[[self dimension] refreshTime]]];
+	
 	[self startRefreshingOnTime];
 	[self startRefreshingOnDistance];
 	
@@ -417,11 +435,15 @@ CGImageRef UIGetScreenImage(void);
 - (void)dimensionRequest:(ARDimensionRequest *)request didFailWithError:(NSError *)error {
 	// Forget the dimension request
 	[self setDimensionRequest:nil];
+	
+	// Set the refresh time, making sure it isn't too soon after this error
+	[self setRefreshTime:[NSDate dateWithTimeIntervalSinceNow:MAX(MINIMUM_REFRESH_TIME_AFTER_ERROR, [[self dimension] refreshTime])]];
 
 	[self startRefreshingOnTime];
 	[self startRefreshingOnDistance];
 	
 	UIAlertView *alert = [[UIAlertView alloc] init];
+	[alert setDelegate:self];
 	[alert setTitle:NSLocalizedString(@"Could not update dimension", @"main controller alert title")];
 	[alert setMessage:[error localizedDescription]];
 	[alert addButtonWithTitle:NSLocalizedString(@"Close", @"main controller alert button")];
@@ -807,10 +829,10 @@ CGImageRef UIGetScreenImage(void);
 		DebugLog(@"Dimension refresh timer not scheduled");
 	}
 	else {
-		NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:[[self dimension] refreshTime] target:self selector:@selector(refreshTimerDidFire:) userInfo:nil repeats:NO];
+		NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:MAX(0., [[self refreshTime] timeIntervalSinceNow]) target:self selector:@selector(refreshTimerDidFire:) userInfo:nil repeats:NO];
 		[self setRefreshTimer:timer];
 		
-		DebugLog(@"Scheduling dimension refresh timer with timeout %fs", [[self dimension] refreshTime]);
+		DebugLog(@"Scheduling dimension refresh timer with timeout %fs", MAX(0., [[self refreshTime] timeIntervalSinceNow]));
 	}
 }
 
