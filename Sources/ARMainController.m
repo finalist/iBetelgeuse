@@ -231,8 +231,17 @@ CGImageRef UIGetScreenImage(void);
 	[view addSubview:overlayContainerView];
 	[overlayContainerView release];
 	
+	UIImage *dimensionWarningImage = [UIImage imageNamed:@"DimensionWarning.png"];
+	CGRect dimensionWarningFrame = CGRectMake(CGRectGetMinX(bounds) + MARGIN, CGRectGetMinY(bounds) + statusBarHeight + MARGIN, dimensionWarningImage.size.width, dimensionWarningImage.size.height);
+	dimensionWarningView = [[UIImageView alloc] initWithImage:dimensionWarningImage];
+	[dimensionWarningView setFrame:dimensionWarningFrame];
+	[dimensionWarningView setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
+	[dimensionWarningView setHidden:YES];
+	[view addSubview:dimensionWarningView];
+	[dimensionWarningView release];
+	
 	UIImage *locationWarningImage = [UIImage imageNamed:@"LocationWarning.png"];
-	CGRect locationWarningFrame = CGRectMake(CGRectGetMinX(bounds) + MARGIN, CGRectGetMinY(bounds) + statusBarHeight + MARGIN, locationWarningImage.size.width, locationWarningImage.size.height);
+	CGRect locationWarningFrame = CGRectMake(CGRectGetMaxX(dimensionWarningFrame) + MARGIN, CGRectGetMinY(bounds) + statusBarHeight + MARGIN, locationWarningImage.size.width, locationWarningImage.size.height);
 	locationWarningView = [[UIImageView alloc] initWithImage:locationWarningImage];
 	[locationWarningView setFrame:locationWarningFrame];
 	[locationWarningView setAutoresizingMask:UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
@@ -287,6 +296,7 @@ CGImageRef UIGetScreenImage(void);
 	radarView = nil;
 	overlayContainerView = nil;
 	scannerOverlayView = nil;
+	dimensionWarningView = nil;
 	locationWarningView = nil;
 	orientationWarningView = nil;
 	menuButton = nil;
@@ -791,6 +801,7 @@ CGImageRef UIGetScreenImage(void);
 
 - (void)updateIfNeeded {
 	ARSpatialState *spatialState = [spatialStateManager spatialState];
+	[dimensionWarningView setHidden:[self dimension] != nil];
 	[locationWarningView setHidden:[spatialState isLocationAvailable]]; // Note: a location not being recent is not necessarily bad when the user is not moving
 	[orientationWarningView setHidden:[spatialState isOrientationAvailable] && [spatialState isOrientationRecent]];
 	
@@ -1025,6 +1036,7 @@ CGImageRef UIGetScreenImage(void);
 			[featureContainerView setHidden:YES];
 			[overlayContainerView setHidden:YES];
 			[radarView setHidden:YES];
+			[dimensionWarningView setHidden:YES];
 			[locationWarningView setHidden:YES];
 			[orientationWarningView setHidden:YES];
 			[menuButton setHidden:YES];

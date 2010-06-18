@@ -38,6 +38,7 @@
 	AROverlayContainerView *overlayContainerView; // Non-retained instance variable
 	ARRadarView *radarView; // Non-retained instance variable
 	ARScannerOverlayView *scannerOverlayView; // Non-retained instance variable
+	UIImageView *dimensionWarningView; // Non-retained instance variable
 	UIImageView *locationWarningView; // Non-retained instance variable
 	UIImageView *orientationWarningView; // Non-retained instance variable
 	UIButton *menuButton; // Non-retained instance variable

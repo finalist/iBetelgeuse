@@ -49,6 +49,8 @@
 		95A26CB911A52489000C0876 /* ARAssetManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB811A52489000C0876 /* ARAssetManagerTest.m */; };
 		95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */; };
 		95A2747D11A6E546000C0876 /* ARImageOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A2747C11A6E546000C0876 /* ARImageOverlayView.m */; };
+		95A8608211CB9491005DE882 /* DimensionWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A8608011CB9491005DE882 /* DimensionWarning.png */; };
+		95A8608311CB9491005DE882 /* DimensionWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A8608111CB9491005DE882 /* DimensionWarning@2x.png */; };
 		95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
 		95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
 		95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */; };
@@ -221,6 +223,8 @@
 		95A2747B11A6E546000C0876 /* ARImageOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageOverlayView.h; sourceTree = "<group>"; };
 		95A2747C11A6E546000C0876 /* ARImageOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageOverlayView.m; sourceTree = "<group>"; };
 		95A2747F11A6E55E000C0876 /* ARAssetDataUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAssetDataUser.h; sourceTree = "<group>"; };
+		95A8608011CB9491005DE882 /* DimensionWarning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DimensionWarning.png; sourceTree = "<group>"; };
+		95A8608111CB9491005DE882 /* DimensionWarning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DimensionWarning@2x.png"; sourceTree = "<group>"; };
 		95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCXMLParserDelegate.h; sourceTree = "<group>"; };
 		95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCXMLParserDelegate.m; sourceTree = "<group>"; };
 		95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
@@ -515,6 +519,8 @@
 				95EC630C11C267510027FF5D /* Localizable.strings */,
 				95C765F811BD26A900B71931 /* ARMenuButton.png */,
 				950ECB3311C8C22D009E1314 /* ARMenuButton@2x.png */,
+				95A8608011CB9491005DE882 /* DimensionWarning.png */,
+				95A8608111CB9491005DE882 /* DimensionWarning@2x.png */,
 				9504CC7911C9017700128562 /* LocationWarning.png */,
 				9504CC7A11C9017700128562 /* LocationWarning@2x.png */,
 				9504CC7B11C9017700128562 /* OrientationWarning.png */,
@@ -975,6 +981,8 @@
 				9504CC8011C9017700128562 /* OrientationWarning@2x.png in Resources */,
 				9504CCE011C912D500128562 /* About.css in Resources */,
 				9504CCE111C912D500128562 /* AboutBackground.jpg in Resources */,
+				95A8608211CB9491005DE882 /* DimensionWarning.png in Resources */,
+				95A8608311CB9491005DE882 /* DimensionWarning@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
