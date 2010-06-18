@@ -32,47 +32,103 @@
 #define DEFAULT_SIZE 100 // px
 
 // Default radius of displayed features
-#define DEFAULT_RADAR_RADIUS 1000 // meters
+#define DEFAULT_RADIUS 1000 // meters
 
 // Blib width and height
 #define BLIB_SIZE 4 // px
 
 // If the device is in horizontal position (the screen normal vector is pointed upwards or downwards within the threshold specified below), the heading is undefined or inaccurate. The view direction will therefore be hidden and the heading determination algorithm will be changed to perform better with almost-parallel up- and view vectors. The high and low threshold values are used to avoid jitter between the two behaviours due to noise if the angle is close to the threshold angle.
-#define RADAR_HORIZONAL_THRESHOLD_ANGLE_LOW (15. / 180. * M_PI)
-#define RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH (20. / 180. * M_PI)
+#define HORIZONAL_THRESHOLD_ANGLE_LOW (15. / 180. * M_PI)
+#define HORIZONAL_THRESHOLD_ANGLE_HIGH (20. / 180. * M_PI)
 
 // Used as an argument into CGContextAddArc
 #define ARC_COUNTERCLOCKWISE 0
 #define ARC_CLOCKWISE 1
 
 
+@interface ARRadarView ()
+
+@property(nonatomic, readwrite) CGRect laidOutBounds;
+@property(nonatomic, readwrite, getter=isDeviceHorizontal) BOOL deviceHorizontal;
+
+@property(nonatomic, readonly) ARRadarBackgroundLayer *backgroundLayer;
+@property(nonatomic, readonly) ARRadarExtentOfViewLayer *extentOfViewLayer;
+@property(nonatomic, readonly) ARRadarBlipsLayer *blipsLayer;
+
+@end
+
+
+@interface ARRadarBackgroundLayer : CALayer {
+}
+
+@end
+
+
+@interface ARRadarExtentOfViewLayer : CALayer {
+@private
+	CGPoint viewVector;
+	
+	CGGradientRef gradient;
+}
+
+/**
+ * A vector in unit coordinate space, where a vector of [0, 1] will result in an upward pointing indicator.
+ */
+@property(nonatomic, readwrite) CGPoint viewVector;
+
+@property(nonatomic, readonly) CGGradientRef gradient;
+
+@end
+
+
+@interface ARRadarBlipsLayer : CALayer {
+@private
+	NSArray *features;
+	CGFloat radius;
+	ARSpatialState *spatialState;
+}
+
+@property(nonatomic, readwrite, copy) NSArray *features;
+@property(nonatomic, readwrite) CGFloat radius;
+@property(nonatomic, readwrite, retain) ARSpatialState *spatialState;
+
+@end
+
+
 @implementation ARRadarView
 
-@synthesize features, radius = radarRadius;
+@synthesize laidOutBounds, deviceHorizontal;
+@synthesize backgroundLayer, extentOfViewLayer, blipsLayer;
+
+#pragma mark NSObject
 
 - (id)initWithFrame:(CGRect)aFrame {
 	if (self = [super initWithFrame:aFrame]) {
-		[self setClearsContextBeforeDrawing:YES];
-		[self setOpaque:NO];
+		CALayer *layer = [self layer];
 		
-		radarRadius = DEFAULT_RADAR_RADIUS;
-		[self setNeedsLayout];
+		backgroundLayer = [[ARRadarBackgroundLayer alloc] init];
+		[layer addSublayer:backgroundLayer];
 		
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-		extentOfViewGradient = CGGradientCreateWithColorComponents(colorSpace, (CGFloat[]){ 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.0 }, (CGFloat[]){ 0.0, 1.0 }, 2);
-		CGColorSpaceRelease(colorSpace);
+		extentOfViewLayer = [[ARRadarExtentOfViewLayer alloc] init];
+		[layer addSublayer:extentOfViewLayer];
+		
+		// We don't want the transform of the blips layer to be animated implicitly
+		blipsLayer = [[ARRadarBlipsLayer alloc] init];
+		[blipsLayer setActions:[NSDictionary dictionaryWithObject:[NSNull null] forKey:@"transform"]];
+		[layer addSublayer:blipsLayer];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[features release];
-	CGGradientRelease(extentOfViewGradient);
-
-	[spatialState release];
+	[backgroundLayer release];
+	[extentOfViewLayer release];
+	[blipsLayer release];
 	
 	[super dealloc];
 }
+
+#pragma mark UIView
 
 - (CGSize)sizeThatFits:(CGSize)size {
 	size.width = DEFAULT_SIZE;
@@ -82,174 +138,297 @@
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
+	
 	CGRect bounds = [self bounds];
-	
-	// Determine the radius of the radar view, i.e. the circle
-	viewRadius = MIN(bounds.size.width, bounds.size.height) / 2.;
-	
-	// Determine the radius of the area where blibs are displayed
-	screenRadius = viewRadius - BLIB_SIZE / 2.;
-	
-	radarToScreenScale = screenRadius / radarRadius;
-	
-	[self setNeedsDisplay];
+	if (!CGRectEqualToRect(bounds, laidOutBounds)) {
+		[backgroundLayer setFrame:bounds];
+		[extentOfViewLayer setFrame:bounds];
+		[blipsLayer setFrame:bounds];
+		
+		laidOutBounds = bounds;
+	}
 }
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+	CGRect bounds = [self bounds];
+	
 	// Translate so the origin is in the center
-	point.x -= viewRadius;
-	point.y -= viewRadius;
+	point.x -= bounds.size.width / 2.0;
+	point.y -= bounds.size.height / 2.0;
 	
 	// Check whether the point is within the view radius
-	return point.x * point.x + point.y * point.y <= viewRadius * viewRadius;
+	return point.x * point.x + point.y * point.y <= bounds.size.width / 2.0 * bounds.size.width / 2.0;
 }
 
-- (void)updateWithSpatialState:(ARSpatialState *)aSpatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
-	[spatialState release];
-	spatialState = [aSpatialState retain];
-	
-	altitudeOffset = useRelativeAltitude ? [spatialState altitude] : 0.;
-		
-	ARPoint3D lookVectorInDeviceSpace = ARPoint3DCreate(0., 0., -1.);
-	lookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(lookVectorInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
+#pragma mark ARRadarView
 
+- (NSArray *)features {
+	return [blipsLayer features];
+}
+
+- (void)setFeatures:(NSArray *)someFeatures {
+	[blipsLayer setFeatures:someFeatures];
+}
+
+- (CGFloat)radius {
+	return [blipsLayer radius];
+}
+
+- (void)setRadius:(CGFloat)aRadius {
+	[blipsLayer setRadius:aRadius];
+}
+
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
+	// Determine the direction in which the user is facing
+	ARPoint3D viewUnitVectorInDeviceSpace = ARPoint3DCreate(0., 0., -1.);
+	ARPoint3D viewUnitVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(viewUnitVectorInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
+	
+	// Determine whether the device is horizontal
+	// Note: we use a high and low threshold, so that we don't jump between horizontal/non-horizontal right at the threshold
+	CGFloat horizontalThresholdAngle = deviceHorizontal ? HORIZONAL_THRESHOLD_ANGLE_HIGH : HORIZONAL_THRESHOLD_ANGLE_LOW;
+	deviceHorizontal = fabs(viewUnitVectorInENUSpace.z) > cos(horizontalThresholdAngle);
+	
+	// Determine the direction that is up on the radar
+	ARPoint3D upDirectionInDeviceSpace = [spatialState upDirectionInDeviceSpace];
+	ARPoint3D upUnitVectorInRadarSpace = ARPoint3DNormalize(upDirectionInDeviceSpace);
+
+	// Update the extent of view layer
+	if (deviceHorizontal) {
+		[extentOfViewLayer setHidden:YES];
+	}
+	else {
+		[extentOfViewLayer setViewVector:CGPointMake(upUnitVectorInRadarSpace.x, upUnitVectorInRadarSpace.y)];
+		[extentOfViewLayer setHidden:NO];
+	}
+	
+	// Update the blips layer
+	if (deviceHorizontal && viewUnitVectorInENUSpace.z > 0.) {
+		[blipsLayer setHidden:YES];
+	}
+	else {
+		ARTransform3D ENUToRadarTransform;
+		if (deviceHorizontal) {
+			// The normal method (making the transforms) is unusable when the view vector is (almost) parallel to the up vector
+			ARPoint3D bearingInDeviceSpace = ARPoint3DCreate(0, 1, 0);
+			ARPoint3D bearingInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(bearingInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
+			
+			ENUToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), bearingInENUSpace, ARPoint3DZero);
+		}
+		else {
+			// ENU coordinates can be interpreted as having been projected onto the xy plane by ignoring the z-axis
+			ARTransform3D MapToENUTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), viewUnitVectorInENUSpace, ARPoint3DZero);
+
+			ARTransform3D MapToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), [spatialState upDirectionInDeviceSpace], ARPoint3DZero);
+			ARTransform3D RadarToMapTransform = ARTransform3DTranspose(MapToRadarTransform);
+			
+			ENUToRadarTransform = CATransform3DConcat(RadarToMapTransform, MapToENUTransform);
+		}
+		[blipsLayer setTransform:ENUToRadarTransform];
+		[blipsLayer setSpatialState:spatialState];
+		[blipsLayer setHidden:NO];
+	}
+}
+
+@end
+
+
+@implementation ARRadarBackgroundLayer
+
+#pragma mark NSObject
+
+- (id)init {
+	if (self = [super init]) {
+		[self setNeedsDisplay];
+		[self setNeedsDisplayOnBoundsChange:YES];
+	}
+	return self;
+}
+
+#pragma mark CALayer
+
+- (void)drawInContext:(CGContextRef)ctx {
+	CGRect bounds = [self bounds];
+	
+	// Draw the radar circle
+	CGContextSetGrayFillColor(ctx, 0.1, 0.5);
+	CGContextFillEllipseInRect(ctx, bounds);
+	
+	// Draw the little dot at the center of the circle
+	CGContextSetGrayFillColor(ctx, 1.0, 0.5);
+	CGContextFillEllipseInRect(ctx, CGRectMake(CGRectGetMidX(bounds) - 1.0, CGRectGetMidY(bounds) - 1.0, 2.0, 2.0));
+}
+
+@end
+
+
+@implementation ARRadarExtentOfViewLayer
+
+@synthesize viewVector, gradient;
+
+#pragma mark NSObject
+
+- (id)init {
+	if (self = [super init]) {
+		[self setNeedsDisplay];
+		[self setNeedsDisplayOnBoundsChange:YES];
+		
+		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+		gradient = CGGradientCreateWithColorComponents(colorSpace, (CGFloat[]){ 1.0, 1.0, 1.0, 0.5, 1.0, 1.0, 1.0, 0.0 }, (CGFloat[]){ 0.0, 1.0 }, 2);
+		CGColorSpaceRelease(colorSpace);
+	}
+	return self;
+}
+
+- (void)dealloc {
+	CGGradientRelease(gradient);
+	
+	[super dealloc];
+}
+
+#pragma mark CALayer
+
+- (void)drawInContext:(CGContextRef)ctx {
+	CGFloat viewDistance = sqrtf(viewVector.x * viewVector.x + viewVector.y * viewVector.y);
+	
+	// Correct for the cutoff that happens when the device is in the horizontal position (i.e. when isDeviceInHorizontalPosition is YES)
+	double horizontalCutoffViewDistance = sin(HORIZONAL_THRESHOLD_ANGLE_HIGH);
+	double correctedViewDistance = MAX(0.0, MIN((viewDistance - horizontalCutoffViewDistance) / (1.0 - horizontalCutoffViewDistance), 1.0));
+	CGPoint correctedViewVector;
+	correctedViewVector.x = viewVector.x * correctedViewDistance / viewDistance;
+	correctedViewVector.y = viewVector.y * correctedViewDistance / viewDistance;
+
+	// Don't need to draw anything if the corrected view distance is zero
+	if (correctedViewDistance < 10e-6) {
+		return;
+	}
+
+	CGRect bounds = [self bounds];
+	
+	// Transform to a flipped unit coordinate system
+	CGContextScaleCTM(ctx, bounds.size.width / 2.0, bounds.size.height / 2.0);
+	CGContextTranslateCTM(ctx, 1.0, 1.0);
+	CGContextScaleCTM(ctx, 1.0, -1.0);
+
+	CGFloat viewHeading = atan2f(viewVector.y, viewVector.x);
+	CGFloat angleOfView = [[ARCamera sharedCamera] angleOfView];
+	
+	// Determine the area indicating the extent of view
+	CGContextBeginPath(ctx);
+	CGContextMoveToPoint(ctx, 0, 0);
+	CGContextAddArc(ctx, 0, 0, correctedViewDistance, viewHeading + angleOfView / 2., viewHeading - angleOfView / 2., ARC_CLOCKWISE);
+	CGContextClosePath(ctx);
+	
+	// Clip to that area and fill it with a gradient
+	CGContextSaveGState(ctx);
+	CGContextClip(ctx);
+	CGContextDrawLinearGradient(ctx, gradient, CGPointMake(0, 0), correctedViewVector, 0);
+	CGContextRestoreGState(ctx);
+}
+
+#pragma mark ARRadarExtentOfViewLayer
+
+- (void)setViewVector:(CGPoint)aViewVector {
+	viewVector = aViewVector;
+	
 	[self setNeedsDisplay];
 }
 
-- (BOOL)isDeviceInHorizontalPosition {
-	float thresholdAngle = wasDeviceInHorizontalPositionBefore ? RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH : RADAR_HORIZONAL_THRESHOLD_ANGLE_LOW;
-	wasDeviceInHorizontalPositionBefore = fabs(lookVectorInENUSpace.z) > cos(thresholdAngle);
-	return wasDeviceInHorizontalPositionBefore;
-}
+@end
 
-- (BOOL)isReliable {
-	return lookVectorInENUSpace.z < 0. || ![self isDeviceInHorizontalPosition];
-}
 
-- (CATransform3D)ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:(ARPoint3D)upDirectionInRadarSpace  {
-	// Map space defines a top-down orthogonal projection oriented so that the y axis matches the looking direction
-	// Radar space defines the on-screen radar, so that the top of the displayed radar matches the y axis in map space.
-	CATransform3D ENUToRadarTransform;
-	
-	// If the user looks straight down, the normal method becomes unusable due to the look vector being (almost) parallel to the up vector.
-	if ([self isDeviceInHorizontalPosition]) {
-		// The normal method is unusable; compute the heading using the look vector instead.
-		ARPoint3D yLookVectorInDeviceSpace = ARPoint3DCreate(0, 1, 0);
-		ARPoint3D yLookVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(yLookVectorInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
-		ENUToRadarTransform = ARTransform3DTranspose(ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), yLookVectorInENUSpace, ARPoint3DZero));
+@implementation ARRadarBlipsLayer
+
+@synthesize features, radius, spatialState;
+
+#pragma mark NSObject
+
+- (id)init {
+	if (self = [super init]) {
+		[self setNeedsDisplay];
+		[self setNeedsDisplayOnBoundsChange:YES];
+		
+		radius = DEFAULT_RADIUS;
 	}
-	else {
-		// Note that the ENU coordinates can be interpreted as having been projected on the XY plane; the Z-axis is ignored.
-		ARTransform3D MapToENUTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), lookVectorInENUSpace, ARPoint3DZero);
-		ARTransform3D ENUToMapTransform = ARTransform3DTranspose(MapToENUTransform);
-		
-		ARTransform3D MapToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), upDirectionInRadarSpace, ARPoint3DZero);
-		
-		ENUToRadarTransform = CATransform3DConcat(ENUToMapTransform, MapToRadarTransform);
-	}
-	
-	return ENUToRadarTransform;
+	return self;
 }
 
-- (void)drawRect:(CGRect)rect {
-	CGContextRef ctx = UIGraphicsGetCurrentContext();
+- (void)dealloc {
+	[features release];
+	[spatialState release];
+	
+	[super dealloc];
+}
 
-	// Draw the outer radar circle
-	CGContextSaveGState(ctx);
-	CGContextSetBlendMode(ctx, kCGBlendModeCopy);
-	CGContextSetGrayFillColor(ctx, 0.1, 0.5);
-	CGContextFillEllipseInRect(ctx, [self bounds]);
-	CGContextRestoreGState(ctx);
+#pragma mark CALayer
+
+- (void)drawInContext:(CGContextRef)ctx {
+	CGRect bounds = [self bounds];
 	
-	// Prepare the screen transformation for drawing radar blibs
-	CGContextTranslateCTM(ctx, viewRadius, viewRadius);
-	CGContextScaleCTM(ctx, 1, -1);
+	// Transform origin to the center
+	CGContextTranslateCTM(ctx, bounds.size.width / 2.0, bounds.size.height / 2.0);
+	CGContextScaleCTM(ctx, 1.0, -1.0);
 	
-	if (spatialState != nil)
-	{
-		ARPoint3D upDirectionInDeviceSpace = [spatialState upDirectionInDeviceSpace];
-		ARPoint3D upDirectionInRadarSpace = ARPoint3DCreate(upDirectionInDeviceSpace.x, upDirectionInDeviceSpace.y, 0);
+	// Determine the horizontal and vertical scale
+	CGFloat horizontalENUToScreenScale = (bounds.size.width / 2. - BLIB_SIZE / 2.) / radius;
+	CGFloat verticalENUToScreenScale = (bounds.size.height / 2. - BLIB_SIZE / 2.) / radius;
+
+	CGContextSetRGBFillColor(ctx, 1.0, 0.35, 0.76, 1.0);
+	for (ARFeature *feature in features) {
+		// Immediately skip features that should not be displayed on the radar
+		if (![feature showInRadar]) {
+		//	continue;
+		}
+
+		ARPoint3D featureLocationInECEFSpace = [[feature location] locationInECEFSpace];
+
+		// Also skip features that are on the other side of the planet
+		if (ARPoint3DDotProduct(featureLocationInECEFSpace, [spatialState locationInECEFSpace]) < 0) {
+			continue;
+		}
 		
-		if ([self isReliable]) {
-			// If not looking directly up or down, show the extent of view on the radar
-			if (![self isDeviceInHorizontalPosition]) {
-				// Determine the extent of view in radar space
-				ARPoint3D viewVectorInUnitSpace = upDirectionInRadarSpace;
-				double viewDistanceInUnitSpace = ARPoint3DLength(viewVectorInUnitSpace);
-				
-				// Correct for the cutoff that happens when the device is in the horizontal position (i.e. when isDeviceInHorizontalPosition is YES)
-				double horizontalCutoffViewDistanceInUnitSpace = sin(RADAR_HORIZONAL_THRESHOLD_ANGLE_HIGH);
-				double correctedViewDistanceInUnitSpace = MAX(0.0, MIN((viewDistanceInUnitSpace - horizontalCutoffViewDistanceInUnitSpace) / (1.0 - horizontalCutoffViewDistanceInUnitSpace), 1.0));
-				viewVectorInUnitSpace = ARPoint3DScale(viewVectorInUnitSpace, correctedViewDistanceInUnitSpace / viewDistanceInUnitSpace);
-				
-				// Determine the extent of view in screen space
-				CGPoint viewVectorInScreenSpace = CGPointMake(viewVectorInUnitSpace.x * screenRadius, viewVectorInUnitSpace.y * screenRadius);
-				CGFloat viewDistanceInScreenSpace = correctedViewDistanceInUnitSpace * screenRadius;
-				CGFloat viewHeading = atan2(viewVectorInUnitSpace.y, viewVectorInUnitSpace.x);
-				
-				// Determine the angle of view
-				CGFloat angleOfView = [[ARCamera sharedCamera] angleOfView];
+		ARPoint3D featureLocationInEFSpace = ARPoint3DSubtract(featureLocationInECEFSpace, [spatialState EFToECEFSpaceOffset]);
+		ARPoint3D featureLocationInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featureLocationInEFSpace, [spatialState EFToENUSpaceTransform]);
 
-				// Determine the area indicating the extent of view
-				CGContextBeginPath(ctx);
-				CGContextMoveToPoint(ctx, 0, 0);
-				CGContextAddArc(ctx, 0, 0, viewDistanceInScreenSpace, viewHeading + angleOfView / 2., viewHeading - angleOfView / 2., ARC_CLOCKWISE);
-				CGContextClosePath(ctx);
-				
-//				CGContextSetRGBStrokeColor(ctx, 0, 1, 0, 1);
-//				CGContextSetLineWidth(ctx, 2);
-//				CGContextStrokePath(ctx);
-
-				// Clip to that area and fill it with a gradient
-				CGContextSaveGState(ctx);
-				CGContextClip(ctx);
-				CGContextDrawLinearGradient(ctx, extentOfViewGradient, CGPointMake(0, 0), viewVectorInScreenSpace, 0);
-				CGContextRestoreGState(ctx);
-			}
-
-			ARTransform3D ENUToRadarTransform = [self ENUToRadarSpaceTransformWithUpDirectionInRadarSpace:upDirectionInRadarSpace];
-			CGContextSetRGBFillColor(ctx, 1.0, 0.35, 0.76, 1.0);
-			for (ARFeature *feature in features) {
-				// Immediately skip features that should not be displayed on the radar
-				if (![feature showInRadar]) {
-					continue;
-				}
-
-				ARPoint3D featureLocationInECEFSpace = [[feature location] locationInECEFSpace];
-
-				// Also skip features that are on the other side of the plane
-				if (ARPoint3DDotProduct(featureLocationInECEFSpace, [spatialState locationInECEFSpace]) < 0) {
-					continue;
-				}
-				
-				ARPoint3D featureLocationInEFSpace = ARPoint3DSubtract(featureLocationInECEFSpace, [spatialState EFToECEFSpaceOffset]);
-				ARPoint3D featureLocationInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featureLocationInEFSpace, [spatialState EFToENUSpaceTransform]);
-
-				// TODO: We are applying the offset here as well as in ARFeatureView; refactor so that the offset only has to be applied once.
-				ARPoint3D offsetInENUSpace = [feature offset];
-				offsetInENUSpace.z += altitudeOffset;
-				featureLocationInENUSpace = ARPoint3DAdd(featureLocationInENUSpace, [feature offset]);
-				
-				// Now check whether the feature is still in range
-				if (featureLocationInENUSpace.x * featureLocationInENUSpace.x + featureLocationInENUSpace.y * featureLocationInENUSpace.y <= radarRadius * radarRadius) {
-					ARPoint3D featureLocationInRadarSpace = ARTransform3DHomogeneousVectorMatrixMultiply(featureLocationInENUSpace, ENUToRadarTransform);
-					CGPoint featureLocationInScreenSpace = CGPointMake(featureLocationInRadarSpace.x * radarToScreenScale, featureLocationInRadarSpace.y * radarToScreenScale);
-					CGContextFillEllipseInRect(ctx, CGRectMake(featureLocationInScreenSpace.x - BLIB_SIZE / 2., featureLocationInScreenSpace.y - BLIB_SIZE / 2., BLIB_SIZE, BLIB_SIZE));
-				}
-			}
+		// TODO: We are applying the offset here as well as in ARFeatureView; refactor so that the offset only has to be applied once.
+		featureLocationInENUSpace = ARPoint3DAdd(featureLocationInENUSpace, [feature offset]);
+		
+		// Now check whether the feature is still in range
+		if (featureLocationInENUSpace.x * featureLocationInENUSpace.x + featureLocationInENUSpace.y * featureLocationInENUSpace.y <= radius * radius) {
+			CGPoint featurePoint = CGPointMake(featureLocationInENUSpace.x * horizontalENUToScreenScale, featureLocationInENUSpace.y * verticalENUToScreenScale);
+			CGContextFillEllipseInRect(ctx, CGRectMake(featurePoint.x - BLIB_SIZE / 2., featurePoint.y - BLIB_SIZE / 2., BLIB_SIZE, BLIB_SIZE));
 		}
 	}
 }
 
+#pragma mark ARRadarBlipsLayer
+
+- (void)setFeatures:(NSArray *)someFeatures {
+	[features release];
+	features = [someFeatures copy];
+	
+	[self setNeedsDisplay];
+}
+
 - (void)setRadius:(CGFloat)aRadius {
 	if (aRadius <= 0) {
-		radarRadius = DEFAULT_RADAR_RADIUS;
+		radius = DEFAULT_RADIUS;
 	}
 	else {
-		radarRadius = aRadius;
+		radius = aRadius;
 	}
 	
-	[self setNeedsLayout];
+	[self setNeedsDisplay];
+}
+
+- (void)setSpatialState:(ARSpatialState *)aSpatialState {
+	// Only redraw when the location has changed
+	if (!ARPoint3DEquals([spatialState locationInECEFSpace], [aSpatialState locationInECEFSpace])) {
+		[self setNeedsDisplay];
+	}
+	
+	[aSpatialState retain];
+	[spatialState release];
+	spatialState = aSpatialState;
 }
 
 @end

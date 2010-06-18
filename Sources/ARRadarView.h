@@ -20,26 +20,20 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARPoint3D.h"
-#import <QuartzCore/QuartzCore.h>
+#import <UIKit/UIKit.h>
 
 
-@class ARSpatialState;
+@class ARSpatialState, ARRadarBackgroundLayer, ARRadarExtentOfViewLayer, ARRadarBlipsLayer;
 
 
 @interface ARRadarView : UIView {
 @private
-	NSArray *features;
-	CGFloat radarRadius;
-	CGFloat screenRadius;
-	CGFloat viewRadius;
-	CGFloat radarToScreenScale;
-	CGGradientRef extentOfViewGradient;
-	
-	ARSpatialState *spatialState;
-	float altitudeOffset;
-	ARPoint3D lookVectorInENUSpace;
-	BOOL wasDeviceInHorizontalPositionBefore;
+	CGRect laidOutBounds;
+	BOOL deviceHorizontal;
+
+	ARRadarBackgroundLayer *backgroundLayer;
+	ARRadarExtentOfViewLayer *extentOfViewLayer;
+	ARRadarBlipsLayer *blipsLayer;
 }
 
 @property(nonatomic, readwrite, copy) NSArray *features;
