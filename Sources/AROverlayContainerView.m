@@ -25,16 +25,6 @@
 
 @implementation AROverlayContainerView
 
-#pragma mark NSObject
-
-- (id)initWithFrame:(CGRect)aFrame {
-	if (self = [super initWithFrame:aFrame]) {
-		[self setClearsContextBeforeDrawing:NO];
-		[self setOpaque:NO];
-	}
-	return self;
-}
-
 #pragma mark UIView
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {

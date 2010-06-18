@@ -41,6 +41,16 @@
 	return [super init];
 }
 
+- (id)initWithOverlay:(AROverlay *)overlay {
+	NSAssert([self class] != [AROverlayView class], @"Unexpected invocation of abstract method.");
+	NSAssert(overlay != nil, @"Expected non-nil overlay.");
+	
+	if (self = [super initWithFrame:CGRectZero]) {
+		[[self layer] setAnchorPoint:[overlay anchor]];
+	}
+	return self;
+}
+
 #pragma mark UIView
 
 - (void)sizeToFit {
@@ -76,16 +86,6 @@
 		DebugLog(@"Unknown overlay type: %@", [overlay class]);
 		return nil;
 	}
-}
-
-- (id)initWithOverlay:(AROverlay *)overlay {
-	NSAssert([self class] != [AROverlayView class], @"Unexpected invocation of abstract method.");
-	NSAssert(overlay != nil, @"Expected non-nil overlay.");
-	
-	if (self = [super initWithFrame:CGRectZero]) {
-		[[self layer] setAnchorPoint:[overlay anchor]];
-	}
-	return self;
 }
 
 @end

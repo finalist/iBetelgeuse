@@ -37,6 +37,29 @@
 
 #pragma mark NSObject
 
+- (id)initWithFeature:(ARFeature *)aFeature {
+	NSAssert([aFeature isKindOfClass:[ARTextFeature class]], @"Expected text feature.");
+	
+	if (self = [super initWithFeature:aFeature]) {
+		feature = (ARTextFeature *)[aFeature retain];
+		
+		label = [[UILabel alloc] init];
+		[label setText:[feature text]];
+		[label setFont:[UIFont boldSystemFontOfSize:FONT_SIZE]];
+		[label setTextColor:[UIColor blackColor]];
+		[label setBackgroundColor:[UIColor clearColor]];
+		[label setNumberOfLines:0];
+		[self addSubview:label]; 
+		[label release];
+		
+		[self setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
+		[[self layer] setCornerRadius:CORNER_RADIUS];
+		
+		[self sizeToFit];
+	}
+	return self;
+}
+
 - (void)dealloc {
 	[feature release];
 	[super dealloc];
@@ -56,34 +79,6 @@
 	CGRect bounds = [self bounds];
 	
 	[label setFrame:CGRectInset(bounds, HORIZONTAL_PADDING, VERTICAL_PADDING)];
-}
-
-#pragma mark ARTextFeatureView
-
-- (id)initWithFeature:(ARFeature *)aFeature {
-	NSAssert([aFeature isKindOfClass:[ARTextFeature class]], @"Expected text feature.");
-	
-	if (self = [super init])
-	{
-		feature = (ARTextFeature *)[aFeature retain];
-		
-		[[self layer] setAnchorPoint:[feature anchor]];
-		
-		label = [[UILabel alloc] init];
-		[label setText:[feature text]];
-		[label setFont:[UIFont boldSystemFontOfSize:FONT_SIZE]];
-		[label setTextColor:[UIColor blackColor]];
-		[label setBackgroundColor:[UIColor clearColor]];
-		[label setNumberOfLines:0];
-		[self addSubview:label]; 
-		[label release];
-		
-		[self setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
-		[[self layer] setCornerRadius:CORNER_RADIUS];
-		
-		[self sizeToFit];
-	}
-	return self;
 }
 
 @end

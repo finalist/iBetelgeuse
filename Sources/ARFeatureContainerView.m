@@ -33,18 +33,13 @@
 #pragma mark NSObject
 
 - (id)initWithFrame:(CGRect)aFrame {
-	if (self = [super initWithFrame:aFrame]) {
-		[self setClearsContextBeforeDrawing:NO];
-		[self setOpaque:NO];
-		
+	if (self = [super initWithFrame:aFrame]) {		
 		EFToDeviceSpaceTransform = CATransform3DIdentity;
 		
 		perspectiveTransform = [[ARCamera sharedCamera] perspectiveTransform];
 
 		screenTransform = CATransform3DIdentity;
 		distanceFactor = 1.0;
-		
-		[self setNeedsLayout];
 	}
 	return self;
 }
