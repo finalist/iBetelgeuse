@@ -44,6 +44,7 @@ extern const CLLocationDistance ARDimensionRefreshDistanceInfinite;
 	NSArray *overlays;
 	NSDictionary *locations;
 	NSDictionary *assets;
+	NSString *name;
 	BOOL relativeAltitude;
 	NSURL *refreshURL;
 	NSTimeInterval refreshTime;
@@ -82,6 +83,11 @@ extern const CLLocationDistance ARDimensionRefreshDistanceInfinite;
  * Assets that are used in the dimension, keyed by identifier.
  */
 @property(nonatomic, readonly, copy) NSDictionary *assets;
+
+/**
+ * The name of this dimension, which can be an arbitrary string or nil.
+ */
+@property(nonatomic, readonly, copy) NSString *name;
 
 /**
  * Indicates whether altitudes in this dimension are relative to the device's altitude.

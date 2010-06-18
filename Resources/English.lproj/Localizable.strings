@@ -34,12 +34,18 @@
 /* main controller alert title */
 "Could not update dimension" = "Could not update dimension";
 
+/* action sheet title */
+"Current Dimension: %@" = "Current Dimension: %@";
+
 /* dimension request error description */
 "Dimension not found." = "Dimension not found.";
 
 /* about controller title
    actionsheet button */
 "Info" = "Info";
+
+/* action sheet title */
+"No Dimension Loaded" = "No Dimension Loaded";
 
 /* asset manager error descriptoin
    dimension request error description */
@@ -56,3 +62,6 @@
 
 /* main controller alert title */
 "Unrecognized QR code" = "Unrecognized QR code";
+
+/* unknown dimension name */
+"Untitled" = "Untitled";

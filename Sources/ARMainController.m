@@ -918,6 +918,15 @@ CGImageRef UIGetScreenImage(void);
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
 	[actionSheet setDelegate:self];
 	
+	// For informational purposes, show the name of the dimension as the menu title
+	if ([self dimension]) {
+		NSString *name = [[self dimension] name] ? [[self dimension] name] : NSLocalizedString(@"Untitled", @"unknown dimension name");
+		[actionSheet setTitle:[NSString stringWithFormat:NSLocalizedString(@"Current Dimension: %@",  @"action sheet title"), name]];
+	}
+	else {
+		[actionSheet setTitle:NSLocalizedString(@"No Dimension Loaded", @"action sheet title")];
+	}
+	
 	// Keep track of the indices of the buttons we add
 	signed char index = 0;
 	

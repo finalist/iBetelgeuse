@@ -56,6 +56,7 @@
 	GHAssertTrue([[[[dimension locations] objectEnumerator] nextObject] isKindOfClass:[ARLocation class]], nil);
 	GHAssertEquals([[dimension assets] count], (NSUInteger)2, nil);
 	GHAssertTrue([[[[dimension assets] objectEnumerator] nextObject] isKindOfClass:[ARAsset class]], nil);
+	GHAssertEqualObjects([dimension name], @"Fail", nil);
 	GHAssertTrue([dimension relativeAltitude], nil);
 	GHAssertEqualObjects([dimension refreshURL], [NSURL URLWithString:@"http://www.example.org/"], nil);
 	GHAssertEquals([dimension refreshTime], (NSTimeInterval)1.0, nil);
@@ -75,6 +76,7 @@
 	GHAssertEquals([[dimension overlays] count], (NSUInteger)0, nil);
 	GHAssertEquals([[dimension locations] count], (NSUInteger)0, nil);
 	GHAssertEquals([[dimension assets] count], (NSUInteger)0, nil);
+	GHAssertNil([dimension name], nil);
 	GHAssertFalse([dimension relativeAltitude], nil);
 	GHAssertNil([dimension refreshURL], nil);
 	GHAssertEquals([dimension refreshTime], (NSTimeInterval)0, nil);

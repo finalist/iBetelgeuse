@@ -43,6 +43,7 @@ const CLLocationDistance ARDimensionRefreshDistanceInfinite = 0.0;
 @property(nonatomic, readwrite, copy) NSArray *overlays;
 @property(nonatomic, readwrite, copy) NSDictionary *locations;
 @property(nonatomic, readwrite, copy) NSDictionary *assets;
+@property(nonatomic, readwrite, copy) NSString *name;
 @property(nonatomic, readwrite) BOOL relativeAltitude;
 @property(nonatomic, readwrite, retain) NSURL *refreshURL;
 @property(nonatomic, readwrite) NSTimeInterval refreshTime;
@@ -79,7 +80,7 @@ typedef enum {
 
 @implementation ARDimension
 
-@synthesize features, overlays, locations, assets, relativeAltitude, refreshURL, refreshTime, refreshDistance, radarRadius;
+@synthesize features, overlays, locations, assets, name, relativeAltitude, refreshURL, refreshTime, refreshDistance, radarRadius;
 
 #pragma mark NSObject
 
@@ -223,7 +224,10 @@ typedef enum {
 - (void)parsingDidFindSimpleElement:(NSString *)name attributes:(NSDictionary *)attributes content:(NSString *)content {
 	switch (state) {
 		case ARDimensionXMLParserDelegateStateRoot:
-			if ([name isEqualToString:@"relativeAltitude"]) {
+			if ([name isEqualToString:@"name"]) {
+				[dimension setName:content];
+			}
+			else if ([name isEqualToString:@"relativeAltitude"]) {
 				if ([content compare:@"true" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
 					[dimension setRelativeAltitude:YES];
 				}

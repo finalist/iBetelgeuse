@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dimension version="1.0">
+	<name>Fail</name>
 	<relativeAltitude>true</relativeAltitude>
 	<refreshUrl>http://www.example.org/</refreshUrl>
 	<refreshTime><validFor>1000</validFor><waitForAssets>false</waitForAssets></refreshTime>
