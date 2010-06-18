@@ -46,10 +46,14 @@
 		[label setText:[overlay text]];
 		[label setFont:[UIFont boldSystemFontOfSize:FONT_SIZE]];
 		[label setTextColor:[UIColor whiteColor]];
-		[label setBackgroundColor:[UIColor clearColor]];
 		[label setNumberOfLines:0];
+		[label setBackgroundColor:nil];
+		[label setOpaque:NO];
 		[self addSubview:label];
 		[label release];
+		
+		// Note: this is YES by default on UILabels, but that causes off-screen rendering making everything very slow. Since we are sizing the label to fit, we can safely set it to NO to considerably improve rendering speed.
+		[label setClipsToBounds:NO];
 		
 		[self setBackgroundColor:[UIColor colorWithWhite:0.0 alpha:0.5]];
 		
