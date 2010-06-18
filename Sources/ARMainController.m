@@ -107,8 +107,9 @@ CGImageRef UIGetScreenImage(void);
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type source:(NSString *)source;
 - (void)startRefreshingOnTime;
 - (void)stopRefreshingOnTime;
-- (void)startRefreshingOnDistanceResetLocation:(BOOL)reset;
+- (void)startRefreshingOnDistance;
 - (void)stopRefreshingOnDistance;
+- (void)refreshOnDistanceIfNecessary;
 - (void)startScanning;
 - (void)stopScanning;
 
@@ -352,7 +353,7 @@ CGImageRef UIGetScreenImage(void);
 		case STATE_DIMENSION:
 			if (dimension) {
 				[self startRefreshingOnTime];
-				[self startRefreshingOnDistanceResetLocation:NO];
+				[self startRefreshingOnDistance];
 			}
 			[[self displayLink] setPaused:NO];
 			break;
@@ -404,7 +405,7 @@ CGImageRef UIGetScreenImage(void);
 	[self createFeatureViews];
 	
 	[self startRefreshingOnTime];
-	[self startRefreshingOnDistanceResetLocation:YES];
+	[self startRefreshingOnDistance];
 	
 	// Remember this URL for when the app restarts
 	// Note: don't remember file URLs, those change when the application's unique identifier on the device changes
@@ -418,7 +419,7 @@ CGImageRef UIGetScreenImage(void);
 	[self setDimensionRequest:nil];
 
 	[self startRefreshingOnTime];
-	[self startRefreshingOnDistanceResetLocation:NO];
+	[self startRefreshingOnDistance];
 	
 	UIAlertView *alert = [[UIAlertView alloc] init];
 	[alert setTitle:NSLocalizedString(@"Could not update dimension", @"main controller alert title")];
@@ -476,17 +477,7 @@ CGImageRef UIGetScreenImage(void);
 			[self setPendingDimensionURL:nil];
 		}
 		
-		// Deal with the refresh location
-		if ([self isRefreshingOnDistance]) {
-			// If we don't have a refresh location yet, set it now
-			if (![self refreshLocation]) {
-				[self setRefreshLocation:[spatialState location]];
-			}
-			else if ([[spatialState location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
-				[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeDistanceRefresh source:nil];
-				[self stopRefreshingOnDistance];
-			}
-		}
+		[self refreshOnDistanceIfNecessary];
 	}
 }
 
@@ -804,6 +795,9 @@ CGImageRef UIGetScreenImage(void);
 	[request release];
 
 	[request start];
+	
+	// Register the location we sent to the server
+	[self setRefreshLocation:[request location]];
 }
 
 - (void)startRefreshingOnTime {
@@ -824,21 +818,34 @@ CGImageRef UIGetScreenImage(void);
 	[self setRefreshTimer:nil];
 }
 
-- (void)startRefreshingOnDistanceResetLocation:(BOOL)reset {
+- (void)startRefreshingOnDistance {
 	if (![[self dimension] refreshURL] || [[self dimension] refreshDistance] == ARDimensionRefreshDistanceInfinite) {
 		[self setRefreshingOnDistance:NO];
 	}
 	else {
 		[self setRefreshingOnDistance:YES];
-		
-		if (reset) {
-			[self setRefreshLocation:[[[self spatialStateManager] spatialState] location]];
-		}
+		[self refreshOnDistanceIfNecessary];
 	}
 }
 
 - (void)stopRefreshingOnDistance {
 	[self setRefreshingOnDistance:NO];
+}
+
+- (void)refreshOnDistanceIfNecessary {
+	ARSpatialState *spatialState = [[self spatialStateManager] spatialState];
+	
+	// Deal with the refresh location
+	if ([self isRefreshingOnDistance]) {
+		// If we don't have a refresh location yet, set it now
+		if (![self refreshLocation]) {
+			[self setRefreshLocation:[spatialState location]];
+		}
+		else if ([[spatialState location] straightLineDistanceToLocation:[self refreshLocation]] >= [dimension refreshDistance]) {
+			[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeDistanceRefresh source:nil];
+			[self stopRefreshingOnDistance];
+		}
+	}
 }
 
 - (void)startScanning {
@@ -951,11 +958,13 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)didEnterState:(int)state {
+	DebugLog(@"Entering state %d", state);
+	
 	switch (state) {
 		case STATE_DIMENSION:
 			if (dimension) {
 				[self startRefreshingOnTime];
-				[self startRefreshingOnDistanceResetLocation:NO];
+				[self startRefreshingOnDistance];
 			}
 			[[self spatialStateManager] startUpdating];
 			[featureContainerView setHidden:NO];
@@ -979,6 +988,8 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)didLeaveState:(int)state {
+	DebugLog(@"Leaving state %d", state);
+	
 	switch (state) {
 		case STATE_DIMENSION:
 			[self stopRefreshingOnTime];
