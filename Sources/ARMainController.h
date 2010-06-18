@@ -29,7 +29,7 @@
 @class ARFeatureContainerView, AROverlayContainerView, ARRadarView, ARScannerOverlayView, ARLocation;
 
 
-@interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate, UIActionSheetDelegate> {
+@interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate> {
 @private
 	NSURL *pendingDimensionURL;
 	ARDimension *dimension;

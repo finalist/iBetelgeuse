@@ -76,7 +76,7 @@ __attribute__((cf_returns_retained))
 CGImageRef UIGetScreenImage(void);
 
 
-@interface ARMainController () <UIAlertViewDelegate>
+@interface ARMainController () <UIAlertViewDelegate, UIActionSheetDelegate>
 
 @property(nonatomic, retain) NSURL *pendingDimensionURL;
 @property(nonatomic, retain) ARDimension *dimension;
@@ -573,6 +573,15 @@ CGImageRef UIGetScreenImage(void);
 
 #pragma mark UIActionSheetDelegate
 
+- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
+	switch (currentState) {
+		case STATE_DIMENSION:
+			[self stopRefreshingOnTime];
+			[self stopRefreshingOnDistance];
+			break;
+	}
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == menuButtonIndices.about) {
 		ARAboutController *controller = [[ARAboutController alloc] init];
@@ -592,6 +601,13 @@ CGImageRef UIGetScreenImage(void);
 	}
 	else if (buttonIndex == menuButtonIndices.qr) {
 		[self setState:STATE_QR];
+	}
+	
+	switch (currentState) {
+		case STATE_DIMENSION:
+			[self startRefreshingOnTime];
+			[self startRefreshingOnDistance];
+			break;
 	}
 }
 
