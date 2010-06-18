@@ -112,6 +112,8 @@
 		C3217A8611C8ADB9000BE2E1 /* ARQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8311C8ADB9000BE2E1 /* ARQuaternionFilter.m */; };
 		C3217A8711C8ADB9000BE2E1 /* ARSimpleQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8511C8ADB9000BE2E1 /* ARSimpleQuaternionFilter.m */; };
 		C3217B1611C8B727000BE2E1 /* ARDerivativeSmoothQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217B1511C8B727000BE2E1 /* ARDerivativeSmoothQuaternionFilter.m */; };
+		C32180E611CB5059000BE2E1 /* ARSpatialState.m in Sources */ = {isa = PBXBuildFile; fileRef = C32180E511CB5059000BE2E1 /* ARSpatialState.m */; };
+		C32180E711CB5059000BE2E1 /* ARSpatialState.m in Sources */ = {isa = PBXBuildFile; fileRef = C32180E511CB5059000BE2E1 /* ARSpatialState.m */; };
 		C329607511C0E136006859E7 /* AROrientationFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C329607411C0E136006859E7 /* AROrientationFilter.m */; };
 		C329636711C25347006859E7 /* ARExponentialQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C329636611C25347006859E7 /* ARExponentialQuaternionFilter.m */; };
 		C32964B811C27EC9006859E7 /* ARSimplePoint3DFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C32964B711C27EC9006859E7 /* ARSimplePoint3DFilter.m */; };
@@ -337,6 +339,8 @@
 		C3217A8511C8ADB9000BE2E1 /* ARSimpleQuaternionFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSimpleQuaternionFilter.m; sourceTree = "<group>"; };
 		C3217B1411C8B727000BE2E1 /* ARDerivativeSmoothQuaternionFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDerivativeSmoothQuaternionFilter.h; sourceTree = "<group>"; };
 		C3217B1511C8B727000BE2E1 /* ARDerivativeSmoothQuaternionFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDerivativeSmoothQuaternionFilter.m; sourceTree = "<group>"; };
+		C32180E411CB5059000BE2E1 /* ARSpatialState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpatialState.h; sourceTree = "<group>"; };
+		C32180E511CB5059000BE2E1 /* ARSpatialState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpatialState.m; sourceTree = "<group>"; };
 		C329607311C0E136006859E7 /* AROrientationFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROrientationFilter.h; sourceTree = "<group>"; };
 		C329607411C0E136006859E7 /* AROrientationFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROrientationFilter.m; sourceTree = "<group>"; };
 		C329636511C25347006859E7 /* ARExponentialQuaternionFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARExponentialQuaternionFilter.h; sourceTree = "<group>"; };
@@ -744,6 +748,8 @@
 				95C75EAE11B66E3100B71931 /* Filter */,
 				95EC614211C22B200027FF5D /* ARCamera.h */,
 				95EC614311C22B200027FF5D /* ARCamera.m */,
+				C32180E411CB5059000BE2E1 /* ARSpatialState.h */,
+				C32180E511CB5059000BE2E1 /* ARSpatialState.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1057,6 +1063,7 @@
 				9504CD3411C9237F00128562 /* ARAboutController.m in Sources */,
 				9504CD3711C9238300128562 /* ARScannerOverlayView.m in Sources */,
 				9504CD3911C9238500128562 /* ARScannerFlash.m in Sources */,
+				C32180E611CB5059000BE2E1 /* ARSpatialState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1102,6 +1109,7 @@
 				95E28EEE11BE447A00C716F0 /* ARViewUtilTest.m in Sources */,
 				C35C5EDC11BFAC8000C0FF1A /* ARQuaternion.m in Sources */,
 				C35C5F1411BFB70400C0FF1A /* ARQuaternionTest.m in Sources */,
+				C32180E711CB5059000BE2E1 /* ARSpatialState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

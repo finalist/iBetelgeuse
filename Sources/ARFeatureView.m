@@ -25,7 +25,7 @@
 #import "ARImageFeature.h"
 #import "ARTextFeatureView.h"
 #import "ARTextFeature.h"
-#import "ARSpatialStateManager.h"
+#import "ARSpatialState.h"
 #import "ARLocation.h"
 #import "ARPoint3D.h"
 #import "ARTransform3D.h"

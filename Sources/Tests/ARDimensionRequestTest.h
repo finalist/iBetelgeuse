@@ -23,12 +23,12 @@
 #import <GHUnit/GHUnit.h>
 
 
-@class ARLocation;
+@class ARLocation, ARSpatialState;
 
 
 @interface ARDimensionRequestTest : GHAsyncTestCase {
 @private
-	ARLocation *currentLocation;
+	ARSpatialState *spatialState;
 	NSString *event;
 }
 

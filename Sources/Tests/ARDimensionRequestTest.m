@@ -23,9 +23,8 @@
 #import "ARDimensionRequestTest.h"
 #import "ARDimensionRequest.h"
 #import "ARDimension.h"
-#import "ARLocation.h"
+#import "ARSpatialState.h"
 #import "NSURLRequest+ARFormURLEncoding.h"
-#import <CoreLocation/CoreLocation.h>
 #import <GHUnit/GHMockNSURLConnection.h>
 
 
@@ -33,6 +32,9 @@
 #define DIMENSION_LAT 10.0
 #define DIMENSION_LON 20.0
 #define DIMENSION_ALT 30.0
+#define DIMENSION_BEARING (-60./180.*M_PI)
+#define DIMENSION_PITCH (50./180.*M_PI)
+#define DIMENSION_ROLL (-30./180.*M_PI)
 #define DIMENSION_SOURCE @"aSource"
 #define DIMENSION_SCREEN_WIDTH 40.0
 #define DIMENSION_SCREEN_HEIGHT 50.0
@@ -52,17 +54,17 @@
 - (void)setUpClass {
 	[super setUpClass];
 	
-	CLLocationCoordinate2D coordinate;
-	coordinate.latitude = DIMENSION_LAT;
-	coordinate.longitude = DIMENSION_LON;
+	ARQuaternion ENUToDeviceSpaceQuaternion = ARQuaternionIdentity;
+	ENUToDeviceSpaceQuaternion = ARQuaternionMultiply(ARQuaternionMakeWithCoordinates(sqrt(.5), sqrt(.5), 0., 0.), ENUToDeviceSpaceQuaternion);
+	ENUToDeviceSpaceQuaternion = ARQuaternionMultiply(ARQuaternionMakeWithCoordinates(cos(DIMENSION_ROLL/2), 0., -sin(DIMENSION_ROLL/2.), 0.), ENUToDeviceSpaceQuaternion);
+	ENUToDeviceSpaceQuaternion = ARQuaternionMultiply(ARQuaternionMakeWithCoordinates(cos(DIMENSION_PITCH/2.), sin(DIMENSION_PITCH/2.), 0., 0.), ENUToDeviceSpaceQuaternion);
+	ENUToDeviceSpaceQuaternion = ARQuaternionMultiply(ARQuaternionMakeWithCoordinates(cos(-DIMENSION_BEARING/2.), 0., 0., sin(-DIMENSION_BEARING/2.)), ENUToDeviceSpaceQuaternion);
 	
-	CLLocation *coreLocation = [[CLLocation alloc] initWithCoordinate:coordinate altitude:DIMENSION_ALT horizontalAccuracy:0.0 verticalAccuracy:0.0 timestamp:nil];
-	currentLocation = [[ARLocation alloc] initWithCLLocation:coreLocation];
-	[coreLocation release];
+	spatialState = [[ARSpatialState alloc] initWithLocationAvailable:YES recent:YES latitude:DIMENSION_LAT longitude:DIMENSION_LON altitude:DIMENSION_ALT orientationAvailable:YES recent:YES ENUToDeviceSpaceQuaternion:ENUToDeviceSpaceQuaternion EFToECEFSpaceOffset:ARPoint3DZero timestamp:nil];
 }
 
 - (void)tearDownClass {
-	[currentLocation release];
+	[spatialState release];
 	
 	[super tearDownClass];
 }
@@ -70,18 +72,18 @@
 - (void)testInitializer {
 	NSURL *url = [NSURL URLWithString:DIMENSION_URL];
 
-	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:nil location:currentLocation type:ARDimensionRequestTypeDistanceRefresh] autorelease], @"Successful initialization despite nil URL.");
-	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:url location:nil type:ARDimensionRequestTypeDistanceRefresh] autorelease], @"Successful initialization despite nil locatio.");
+	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:nil spatialState:spatialState type:ARDimensionRequestTypeDistanceRefresh] autorelease], @"Successful initialization despite nil URL.");
+	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:url spatialState:nil type:ARDimensionRequestTypeDistanceRefresh] autorelease], @"Successful initialization despite nil location.");
 	
 	// Test different URL schemes
-	GHAssertNoThrow([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"http://hoi"] location:currentLocation type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
-	GHAssertNoThrow([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"gamaray://hoi"] location:currentLocation type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
-	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"blaat://hoi"] location:currentLocation type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
+	GHAssertNoThrow([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"http://hoi"] spatialState:spatialState type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
+	GHAssertNoThrow([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"gamaray://hoi"] spatialState:spatialState type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
+	GHAssertThrows([[[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"blaat://hoi"] spatialState:spatialState type:ARDimensionRequestTypeDistanceRefresh] autorelease], nil);
 
 	// Test accessors after initializing with satisfiable arguments
-	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:url location:currentLocation type:ARDimensionRequestTypeDistanceRefresh];
+	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:url spatialState:spatialState type:ARDimensionRequestTypeDistanceRefresh];
 	GHAssertEqualObjects([request url], url, nil);
-	GHAssertEqualObjects([request location], currentLocation, nil);
+	GHAssertEqualObjects([request spatialState], spatialState, nil);
 	GHAssertEquals([request type], ARDimensionRequestTypeDistanceRefresh, nil);
 	[request release];
 }
@@ -91,7 +93,7 @@
 	[self prepare];
 	
 	// Build a complete dimension request
-	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"gamaray://www.foobar.com/?baz=1"] location:currentLocation type:ARDimensionRequestTypeTimeRefresh];
+	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:@"gamaray://www.foobar.com/?baz=1"] spatialState:spatialState type:ARDimensionRequestTypeTimeRefresh];
 	[request setDelegate:self];
 	[request setSource:DIMENSION_SOURCE];
 	[request setScreenSize:CGSizeMake(DIMENSION_SCREEN_WIDTH, DIMENSION_SCREEN_HEIGHT)];
@@ -158,7 +160,7 @@
 	[self prepare];
 	
 	// Build a dimension request
-	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:DIMENSION_URL] location:currentLocation type:type];
+	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:[NSURL URLWithString:DIMENSION_URL] spatialState:spatialState type:type];
 	[request setDelegate:self];
 	
 	// Start the request and wait for it to finish
@@ -221,6 +223,9 @@
 		GHAssertEquals([[postData objectForKey:@"lat"] doubleValue], (double)DIMENSION_LAT, nil);
 		GHAssertEquals([[postData objectForKey:@"lon"] doubleValue], (double)DIMENSION_LON, nil);
 		GHAssertEquals([[postData objectForKey:@"alt"] doubleValue], (double)DIMENSION_ALT, nil);
+		GHAssertEqualsWithAccuracy([[postData objectForKey:@"bearing"] doubleValue], (double)(DIMENSION_BEARING / M_PI * 180.), 1e-4, nil);
+		GHAssertEqualsWithAccuracy([[postData objectForKey:@"pitch"] doubleValue], (double)(DIMENSION_PITCH / M_PI * 180.), 1e-4, nil);
+		GHAssertEqualsWithAccuracy([[postData objectForKey:@"roll"] doubleValue], (double)(DIMENSION_ROLL / M_PI * 180.), 1e-4, nil);
 		GHAssertEquals([[postData objectForKey:@"width"] doubleValue], (double)DIMENSION_SCREEN_WIDTH, nil);
 		GHAssertEquals([[postData objectForKey:@"height"] doubleValue], (double)DIMENSION_SCREEN_HEIGHT, nil);
 		GHAssertNotNil([postData objectForKey:@"uid"], nil);

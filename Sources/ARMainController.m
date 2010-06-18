@@ -29,7 +29,7 @@
 #import "ARFeatureContainerView.h"
 #import "ARFeatureView.h"
 #import "ARAction.h"
-#import "ARSpatialStateManager.h"
+#import "ARSpatialState.h"
 #import "ARWGS84.h"
 #import "ARLocation.h"
 #import "ARRadarView.h"
@@ -486,18 +486,20 @@ CGImageRef UIGetScreenImage(void);
 - (void)spatialStateManagerDidUpdate:(ARSpatialStateManager *)manager {
 	// Invalidate the screen, the display link will take care of actually updating the screen when needed
 	[self setNeedsUpdate];
+	
+	// If we have a location and orientation fix, send a request for any pending URL
+	if ([[manager spatialState] isLocationAvailable] && [[manager spatialState] isOrientationAvailable]) {
+		if ([self pendingDimensionURL]) {
+			[self startDimensionRequestWithURL:[self pendingDimensionURL] type:ARDimensionRequestTypeInit source:nil];
+			[self setPendingDimensionURL:nil];
+		}
+	}
 }
 
 - (void)spatialStateManagerLocationDidUpdate:(ARSpatialStateManager *)manager {
 	ARSpatialState *spatialState = [manager spatialState];
 	if ([spatialState isLocationAvailable]) {
 		[manager setEFToECEFSpaceOffset:[spatialState locationInECEFSpace]];
-		
-		// If we have a location fix, send a request for any pending URL
-		if ([self pendingDimensionURL]) {
-			[self startDimensionRequestWithURL:[self pendingDimensionURL] type:ARDimensionRequestTypeInit source:nil];
-			[self setPendingDimensionURL:nil];
-		}
 		
 		[self refreshOnDistanceIfNecessary];
 	}
@@ -545,7 +547,7 @@ CGImageRef UIGetScreenImage(void);
 		else {
 			DebugLog(@"Loading dimension by QR code: %@", [sym data]);
 			
-			if ([[[self spatialStateManager] spatialState] isLocationAvailable]) {
+			if ([[[self spatialStateManager] spatialState] isLocationAvailable] && [[[self spatialStateManager] spatialState] isOrientationAvailable]) {
 				[self startDimensionRequestWithURL:url type:ARDimensionRequestTypeInit source:nil];
 			}
 			else {
@@ -801,6 +803,8 @@ CGImageRef UIGetScreenImage(void);
 
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type source:(NSString *)source {
 	NSAssert(aURL, @"Expected non-nil URL.");
+	NSAssert([[spatialStateManager spatialState] isLocationAvailable], @"Expected location to be available");
+	NSAssert([[spatialStateManager spatialState] isOrientationAvailable], @"Expected orientation to be available");
 	
 	// Cancel loading any assets
 	[[self assetManagerIfAvailable] cancelLoadingAllAssets];
@@ -809,7 +813,7 @@ CGImageRef UIGetScreenImage(void);
 	[self stopRefreshingOnTime];
 	[self stopRefreshingOnDistance];
 
-	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:aURL location:[[[self spatialStateManager] spatialState] location] type:type];
+	ARDimensionRequest *request = [[ARDimensionRequest alloc] initWithURL:aURL spatialState:[[self spatialStateManager] spatialState] type:type];
 	[request setSource:source];
 	[request setScreenSize:[[self view] bounds].size];
 	[request setDelegate:self];
@@ -819,7 +823,7 @@ CGImageRef UIGetScreenImage(void);
 	[request start];
 	
 	// Register the location we sent to the server
-	[self setRefreshLocation:[request location]];
+	[self setRefreshLocation:[[request spatialState] location]];
 }
 
 - (void)startRefreshingOnTime {

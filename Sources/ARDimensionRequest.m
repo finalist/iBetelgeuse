@@ -22,6 +22,7 @@
 
 #import "ARDimensionRequest.h"
 #import "ARDimension.h"
+#import "ARSpatialState.h"
 #import "ARLocation.h"
 #import "NSURLRequest+ARFormURLEncoding.h"
 
@@ -51,18 +52,18 @@ const NSInteger ARDimensionRequestErrorDocument = 2;
 
 @implementation ARDimensionRequest
 
-@synthesize delegate, url, location, type, source, screenSize;
+@synthesize delegate, url, spatialState, type, source, screenSize;
 
 #pragma mark NSObject
 
-- (id)initWithURL:(NSURL *)aURL location:(ARLocation *)aLocation type:(ARDimensionRequestType)aType {
+- (id)initWithURL:(NSURL *)aURL spatialState:(ARSpatialState *)aSpatialState type:(ARDimensionRequestType)aType {
 	NSAssert(aURL != nil, @"Expected non-nil URL.");
 	NSAssert1(([[NSSet setWithObjects:@"http", @"gamaray", @"file", nil] containsObject:[aURL scheme]]), @"Unexpected URL scheme %@.", [aURL scheme]);
-	NSAssert(aLocation != nil, @"Expected non-nil location.");
+	NSAssert(aSpatialState != nil, @"Expected non-nil spatial state.");
 	
 	if (self = [super init]) {
 		url = [aURL retain];
-		location = [aLocation retain];
+		spatialState = [aSpatialState retain];
 		type = aType;
 	}
 	return self;
@@ -75,7 +76,7 @@ const NSInteger ARDimensionRequestErrorDocument = 2;
 #endif
 	
 	[url release];
-	[location release];
+	[spatialState release];
 	[source release];
 	
 	[connection release];
@@ -145,9 +146,13 @@ const NSInteger ARDimensionRequestErrorDocument = 2;
 		[postData setObject:@"NULL" forKey:@"eventSrc"];
 	}
 	
-	[postData setObject:[NSString stringWithFormat:@"%f", [location latitude]] forKey:@"lat"];
-	[postData setObject:[NSString stringWithFormat:@"%f", [location longitude]] forKey:@"lon"];
-	[postData setObject:[NSString stringWithFormat:@"%f", [location altitude]] forKey:@"alt"];
+	[postData setObject:[NSString stringWithFormat:@"%f", [[spatialState location] latitude]] forKey:@"lat"];
+	[postData setObject:[NSString stringWithFormat:@"%f", [[spatialState location] longitude]] forKey:@"lon"];
+	[postData setObject:[NSString stringWithFormat:@"%f", [[spatialState location] altitude]] forKey:@"alt"];
+	
+	[postData setObject:[NSString stringWithFormat:@"%f", [spatialState bearing] / M_PI * 180.] forKey:@"bearing"];
+	[postData setObject:[NSString stringWithFormat:@"%f", [spatialState pitch] / M_PI * 180.] forKey:@"pitch"];
+	[postData setObject:[NSString stringWithFormat:@"%f", [spatialState roll] / M_PI * 180.] forKey:@"roll"];
 	
 	if (!CGSizeEqualToSize(screenSize, CGSizeZero)) {
 		[postData setObject:[NSString stringWithFormat:@"%d", (int)roundf(screenSize.width)] forKey:@"width"];

@@ -23,7 +23,7 @@
 #import "ARFeatureContainerView.h"
 #import "ARFeatureView.h"
 #import "ARCamera.h"
-#import "ARSpatialStateManager.h"
+#import "ARSpatialState.h"
 #import "ARPoint3D.h"
 #import "ARTransform3D.h"
 

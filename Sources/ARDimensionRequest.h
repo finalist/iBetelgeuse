@@ -20,8 +20,6 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <Foundation/Foundation.h>
-
 
 extern NSString *const ARDimensionRequestErrorDomain;
 extern const NSInteger ARDimensionRequestErrorHTTP;
@@ -29,7 +27,7 @@ extern NSString *const ARDimensionRequestErrorHTTPStatusCodeKey;
 extern const NSInteger ARDimensionRequestErrorDocument;
 
 
-@class ARDimension, ARLocation;
+@class ARDimension, ARSpatialState;
 @protocol ARDimensionRequestDelegate;
 
 
@@ -48,7 +46,7 @@ typedef enum {
 @private
 	id <ARDimensionRequestDelegate> delegate;
 	NSURL *url;
-	ARLocation *location;
+	ARSpatialState *spatialState;
 	ARDimensionRequestType type;
 	NSString *source;
 	CGSize screenSize;
@@ -70,7 +68,7 @@ typedef enum {
  *
  * @return The receiver.
  */
-- (id)initWithURL:(NSURL *)url location:(ARLocation *)location type:(ARDimensionRequestType)type;
+- (id)initWithURL:(NSURL *)url spatialState:(ARSpatialState *)spatialState type:(ARDimensionRequestType)type;
 
 @property(nonatomic, assign) id <ARDimensionRequestDelegate> delegate;
 
@@ -80,9 +78,9 @@ typedef enum {
 @property(nonatomic, readonly, retain) NSURL *url;
 
 /**
- * The current location of the device, as provided to the initializer of this class.
+ * The current spatial state of the device, as provided to the initializer of this class.
  */
-@property(nonatomic, readonly, retain) ARLocation *location;
+@property(nonatomic, readonly, retain) ARSpatialState *spatialState;
 
 /**
  * The type of refresh request, as provided to the initializer of this class.

@@ -21,6 +21,7 @@
 //
 
 #import "ARSpatialStateManager.h"
+#import "ARSpatialState.h"
 #import "ARLocation.h"
 #import "ARTransform3D.h"
 #import "ARWGS84.h"
@@ -48,22 +49,6 @@
 - (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination;
 
 - (void)invalidateSpatialState;
-
-@end
-
-
-@interface ARSpatialState ()
-
-- (id)initWithLocationAvailable:(BOOL)locationAvailable
-						 recent:(BOOL)locationRecent
-					   latitude:(CLLocationDegrees)latitude
-					  longitude:(CLLocationDegrees)longitude
-					   altitude:(CLLocationDistance)altitude
-		   orientationAvailable:(BOOL)orientationAvailable
-						 recent:(BOOL)isOrientationRecent
-	 ENUToDeviceSpaceQuaternion:(ARQuaternion)anENUToDeviceSpaceQuaternion
-			EFToECEFSpaceOffset:(ARPoint3D)EFToECEFSpaceOffset
-					  timestamp:(NSDate *)timestamp;
 
 @end
 
@@ -335,15 +320,15 @@
 		BOOL upDirectionRecent = (timeIntervalSinceReferenceDate - upDirectionTimeIntervalSinceReferenceDate) <= UP_DIRECTION_EXPIRATION;
 		BOOL northDirectionRecent = (timeIntervalSinceReferenceDate - northDirectionTimeIntervalSinceReferenceDate) <= NORTH_DIRECTION_EXPIRATION;
 		
-		spatialState = [[ARSpatialState alloc] initWithLocationAvailable:locationAvailable 
-																  recent:locationRecent 
-																latitude:latitude 
-															   longitude:longitude 
-																altitude:altitude 
-													orientationAvailable:(upDirectionAvailable && northDirectionAvailable) 
-																  recent:(upDirectionRecent && northDirectionRecent) 
+		spatialState = [[ARSpatialState alloc] initWithLocationAvailable:locationAvailable
+																  recent:locationRecent
+																latitude:latitude
+															   longitude:longitude
+																altitude:altitude
+													orientationAvailable:(upDirectionAvailable && northDirectionAvailable)
+																  recent:(upDirectionRecent && northDirectionRecent)
 											  ENUToDeviceSpaceQuaternion:ENUToDeviceSpaceQuaternion
-													 EFToECEFSpaceOffset:EFToECEFSpaceOffset 
+													 EFToECEFSpaceOffset:EFToECEFSpaceOffset
 															   timestamp:timestamp];
 	}
 	return spatialState;
@@ -356,190 +341,5 @@
 	[spatialState release];
 	spatialState = nil;
 }
-
-@end
-
-
-@implementation ARSpatialState
-
-#pragma mark NSObject
-
-- (id)initWithLocationAvailable:(BOOL)isLocationAvailable 
-						 recent:(BOOL)isLocationRecent 
-					   latitude:(CLLocationDegrees)aLatitude 
-					  longitude:(CLLocationDegrees)aLongitude
-					   altitude:(CLLocationDistance)anAltitude 
-		   orientationAvailable:(BOOL)isOrientationAvailable 
-						 recent:(BOOL)isOrientationRecent 
-	 ENUToDeviceSpaceQuaternion:(ARQuaternion)anENUToDeviceSpaceQuaternion
-			EFToECEFSpaceOffset:(ARPoint3D)anEFToECEFSpaceOffset 
-					  timestamp:(NSDate *)aTimestamp {
-	if (self = [super init]) {
-		flags.locationAvailable = isLocationAvailable;
-		flags.locationRecent = isLocationRecent;
-		flags.orientationAvailable = isOrientationAvailable;
-		flags.orientationRecent = isOrientationRecent;
-		latitude = aLatitude;
-		longitude = aLongitude;
-		altitude = anAltitude;
-		ENUToDeviceSpaceQuaternion = anENUToDeviceSpaceQuaternion;
-		EFToECEFSpaceOffset = anEFToECEFSpaceOffset;
-		timestamp = [aTimestamp retain];
-	}
-	return self;
-}
-
-- (void)dealloc {
-	[timestamp release];
-	[location release];
-	
-	[super dealloc];
-}
-
-#pragma mark ARSpatialState
-
-- (BOOL)isLocationAvailable {
-	return flags.locationAvailable;
-}
-
-- (BOOL)isLocationRecent {
-	return flags.locationRecent;
-}
-
-- (BOOL)isOrientationAvailable {
-	return flags.orientationAvailable;
-}
-
-- (BOOL)isOrientationRecent {
-	return flags.orientationRecent;
-}
-
-@synthesize timestamp;
-
-- (ARLocation *)location {
-	if ([self isLocationAvailable]) {
-		if (location == nil) {
-			location = [[ARLocation alloc] initWithLatitude:latitude longitude:longitude altitude:altitude];
-		}
-		return location;
-	}
-	else {
-		return nil;
-	}
-}
-
-@synthesize altitude;
-
-- (ARPoint3D)locationInECEFSpace {
-	if (!flags.haveLocationInECEFSpace) {
-		locationInECEFSpace = ARWGS84GetECEF(latitude, longitude, altitude);
-		flags.haveLocationInECEFSpace = YES;
-	}
-	return locationInECEFSpace;
-}
-
-- (ARPoint3D)locationInEFSpace {
-	return ARPoint3DSubtract([self locationInECEFSpace], [self EFToECEFSpaceOffset]);
-}
-
-- (ARPoint3D)upDirectionInENUSpace {
-	return ARPoint3DCreate(0., 0., 1.); // By definition
-}
-
-- (ARPoint3D)upDirectionInDeviceSpace {
-	if (!flags.haveUpDirectionInDeviceSpace) {
-		if ([self isOrientationAvailable]) {
-			upDirectionInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply([self upDirectionInENUSpace], [self ENUToDeviceSpaceTransform]);
-		} else {
-			upDirectionInDeviceSpace = [self upDirectionInENUSpace];
-		}
-		flags.haveUpDirectionInDeviceSpace = true;
-	}
-	return upDirectionInDeviceSpace;
-}
-
-- (ARPoint3D)upDirectionInECEFSpace {
-	return [self locationInECEFSpace];
-}
-
-- (ARPoint3D)upDirectionInEFSpace {
-	return [self upDirectionInECEFSpace];
-}
-
-- (ARPoint3D)northDirectionInENUSpace {
-	return ARPoint3DCreate(0., 1., 0.); // By definition; alongst the horizontal plane. TODO: Document that the northDirectionIn...Space methods do -not- return the same vector if transformed back to the same space.
-}
-
-- (ARPoint3D)northDirectionInDeviceSpace {
-	if (!flags.haveNorthDirectionInDeviceSpace) {
-		if ([self isOrientationAvailable]) {
-			northDirectionInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply([self northDirectionInENUSpace], [self ENUToDeviceSpaceTransform]);
-		} else {
-			northDirectionInDeviceSpace = [self northDirectionInENUSpace];
-		}
-		flags.haveNorthDirectionInDeviceSpace = true;
-	}
-	return northDirectionInDeviceSpace;
-}
-
-- (ARPoint3D)northDirectionInECEFSpace {
-	// By definition of ECEF, the North pole is located along the z-axis
-	return ARPoint3DCreate(0., 0., 1.);
-}
-
-- (ARPoint3D)northDirectionInEFSpace {
-	// By definition of ECEF, the North pole is located along the z-axis
-	return [self northDirectionInECEFSpace];
-}
-
-- (CATransform3D)ENUToDeviceSpaceTransform {
-	if (!flags.haveENUToDeviceSpaceTransform) {
-		if ([self isOrientationAvailable]) {
-			ENUToDeviceSpaceTransform = ARQuaternionConvertToMatrix(ENUToDeviceSpaceQuaternion);
-		}
-		else {
-			ENUToDeviceSpaceTransform = CATransform3DIdentity;
-		}
-		flags.haveENUToDeviceSpaceTransform = YES;
-	}
-	return ENUToDeviceSpaceTransform;
-}
-
-- (CATransform3D)DeviceToENUSpaceTransform {
-	if (!flags.haveDeviceToENUSpaceTransform) {
-		// Since we're dealing with orthogonal matrices, transposing is the same as inverting (but then easier)
-		DeviceToENUSpaceTransform = ARTransform3DTranspose([self ENUToDeviceSpaceTransform]);
-		flags.haveDeviceToENUSpaceTransform = YES;
-	}
-	return DeviceToENUSpaceTransform;
-}
-
-- (CATransform3D)ENUToEFSpaceTransform {
-	if (!flags.haveENUToEFSpaceTransform) {
-		if ([self isLocationAvailable] && [self isOrientationAvailable]) {
-			// The ENU coordinate space is defined in ECEF coordinate space by looking:
-			// * from the device, which is given by the GPS after conversion to ECEF;
-			// * towards the sky, which is the same vector as the ECEF position since the ECEF origin is defined to be at the Earth's center; and
-			// * oriented towards the North pole, which is defined to be the z-axis of the ECEF coordinate system.
-			ENUToEFSpaceTransform = ARTransform3DLookAtRelative([self locationInEFSpace], [self upDirectionInEFSpace], [self northDirectionInEFSpace], ARPoint3DZero);
-		}
-		else {
-			ENUToEFSpaceTransform = CATransform3DIdentity;
-		}
-		flags.haveENUToEFSpaceTransform = YES;
-	}
-	return ENUToEFSpaceTransform;
-}
-
-- (CATransform3D)EFToENUSpaceTransform {
-	if (!flags.haveEFToENUSpaceTransform) {
-		// Since we're dealing with orthogonal matrices, transposing is the same as inverting (but then easier)
-		EFToENUSpaceTransform = ARTransform3DTranspose([self ENUToEFSpaceTransform]);
-		flags.haveEFToENUSpaceTransform = YES;
-	}
-	return EFToENUSpaceTransform;
-}
-
-@synthesize EFToECEFSpaceOffset;
 
 @end

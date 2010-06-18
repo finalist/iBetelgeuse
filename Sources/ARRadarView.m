@@ -21,7 +21,7 @@
 //
 
 #import "ARRadarView.h"
-#import "ARSpatialStateManager.h"
+#import "ARSpatialState.h"
 #import "ARFeature.h"
 #import "ARLocation.h"
 #import "ARCamera.h"
