@@ -12,9 +12,7 @@
 			<h2>Table of Contents</h2>
 			<ul>
 				<li><a href="#about">About</a></li>
-				<li><a href="#features">Features</a></li>
-				<li><a href="#screen-coordinates">Screen Coordinates</a></li>
-				<li><a href="#actions">Actions</a></li>
+				<li><a href="#definitions">Definitions</a></li>
 				<li><a href="#ddf">Dimension Description Files</a></li>
 				<li><a href="#dynamic-dimensions">Dynamic Dimensions</a></li>
 				<li><a href="#arena">ARena</a></li>
@@ -31,14 +29,54 @@
 			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files below, or using a web based designer, called <a href="#arena"><em>ARena</em></a>.
 		</p>
 		
-		<h2 id="features">Features</h2>
-		
-		<h2 id="screen-coordinates">Screen Coordinates</h2>
-		<p>
-			Since the device can be rotated in portrait or landscape orientation, the screen's width and height can change. The screen width and height that are sent to the HTTP server are considered to be the width and height of the screen in its current orientation. Note that no event is sent to the server when the when the screen's width and height change, so the values must be carefully selected so that overlays remain visibile on the screen after rotating.
-		</p>
-		
-		<h2 id="actions">Actions</h2>
+		<h2 id="Definitions">Definitions</h2>
+		<dl>
+			<dt>dimension</dt>
+			<dd>Defines the virtual world and its contents, often constrained to a certain radius surrounding a particular location. The most important elements of a dimension are features and overlays.</dd>
+			
+			<dt>static dimension</dt>
+			<dd>Dimension that always has the same content regardless of the user's current location.</dd>
+			
+			<dt>dynamic dimension</dt>
+			<dd>Dimension that is served dynamically and whose contents may be dependent on the user's current location, device's screen size, etc.</dd>
+			
+			<dt>feature</dt>
+			<dd>An object in the virtual world with a three-dimensional location (in practice, a WGS84 location). Examples include: labels that mark points of interest in a city, and photos taken at a certain location.</dd>
+			
+			<dt>overlay</dt>
+			<dd>An object displayed on screen with a two-dimensional location (a <a href="#screen-coordinates">screen coordinate</a>). Examples include: the logo of the creator of the dimension, and a label indicating the score of a game.</dd>
+			
+			<dt id="screen-coordinates">screen coordinate</dt>
+			<dd>Since some devices can be rotated in portrait or landscape orientation, the screen's width and height can change. The screen width and height are considered to be the width and height of the screen in its current orientation. Currently, no event is sent to the server when the screen's width and height change, so it is safest to place overlays within the smallest rectangle that fits the screen so that they remain visible after rotating.</dd>
+			
+			<dt>actions</dt>
+			<dd>A particular task to perform, most often triggered by the user selecting something or tapping on the screen. Possible actions are:
+				<dl>
+					<dt>refresh</dt>
+					<dd>The dimension needs to be reloaded.</dd>
+
+					<dt>webpage</dt>
+					<dd>A specific URL needs to be loaded, possibly using an external application depending on the URL scheme.</dd>
+
+					<dt>dimension</dt>
+					<dd>The dimension referenced by a specific URL needs to be loaded.</dd>
+				</dl>
+			</dd>
+			
+			<dt>events</dt>
+			<dd>A particular trigger for a dimension to be refreshed. An event may have a source from which it originated. Possible events are:
+				<dl>
+					<dt>initialize</dt>
+					<dd>The first load of the dimension.</dd>
+					
+					<dt>time</dt>
+					<dd>A certain amount of time has elapsed since the last refresh of the dimension.</dd>
+					
+					<dt>distance</dt>
+					<dd>A certain amount of distance has been travelled by the device since the last refresh of the dimension.</dd>
+				</dl>
+			</dd>
+		</dl>
 		
 		<h2 id="ddf">Dimension Description Files</h2>
 		<p>

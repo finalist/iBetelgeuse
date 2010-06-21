@@ -11,7 +11,7 @@ body {
 	padding: 1em 10%;
 }
 
-h1, h2, h3 {
+h1, h2, h3, dt {
 	color: #da92df;
 }
 
@@ -28,8 +28,12 @@ h1, h2 {
 	border-bottom: 1px solid #3f1f48;
 }
 
-h3 {
+h2, h3 {
 	margin-top: 2em;
+}
+
+dt {
+	font-weight: bold;
 }
 
 table {
