@@ -86,10 +86,9 @@
 		<p>
 			This is the top level tag in the DDF file. It contains all other elements.
 		</p>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;name&gt;</td>
 				<td>string</td>
@@ -115,9 +114,10 @@
 				<td>This is the URL that should be used to refresh this dimension. See <a href="#dynamic-dimensions">the section about dynamic dimensions</a>.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#refreshTime">&lt;refreshTime&gt;</a></td>
 				<td>zero or one</td>
@@ -151,10 +151,9 @@
 		</table>
 		
 		<h3 id="refreshTime">refreshTime</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;validFor&gt;</td>
 				<td>float, &gt;= 0</td>
@@ -164,10 +163,10 @@
 		</table>
 		
 		<h3 id="refreshDistance">refreshDistance</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+		
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;validWithinRange&gt;</td>
 				<td>float, &gt;= 0</td>
@@ -177,10 +176,9 @@
 		</table>
 		
 		<h3 id="locations">locations</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#location">&lt;location&gt;</a></td>
 				<td>any</td>
@@ -189,10 +187,9 @@
 		</table>
 		
 		<h3 id="location">location</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</th>
-			</tr>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -200,9 +197,10 @@
 				<td>A unique location identifier that can be used by features to reference this location.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;lat&gt;</td>
 				<td>float</td>
@@ -224,10 +222,9 @@
 		</table>
 		
 		<h3 id="assets">assets</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#asset">&lt;asset&gt;</a></td>
 				<td>any</td>
@@ -236,10 +233,9 @@
 		</table>
 		
 		<h3 id="asset">asset</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</th>
-			</tr>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -247,9 +243,10 @@
 				<td>A unique asset identifier that can be used by features to reference this asset.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;url&gt;</td>
 				<td>url</td>
@@ -259,10 +256,10 @@
 		</table>
 		
 		<h3 id="features-tag">features</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#featureTxt">&lt;featureTxt&gt;</a></td>
 				<td>any</td>
@@ -276,10 +273,9 @@
 		</table>
 		
 		<h3 id="featureTxt">featureTxt</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</th>
-			</tr>
+		
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -287,9 +283,10 @@
 				<td>A unique feature identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;locationId&gt;</td>
 				<td>string</td>
@@ -343,9 +340,10 @@
 				<td>The text that should be displayed for this feature.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#featureImg">&lt;featureImg&gt;</a></td>
 				<td>zero or one</td>
@@ -354,10 +352,9 @@
 		</table>
 		
 		<h3 id="featureImg">featureImg</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</th>
-			</tr>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -365,9 +362,10 @@
 				<td>A unique feature identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;locationId&gt;</td>
 				<td>string</td>
@@ -421,9 +419,10 @@
 				<td>The asset identifier for the image to display. This identifier must match the identifier of an <a href="#asset">&lt;asset&gt;</a> defined in <a href="#assets">&lt;assets&gt;</a>.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#featureImg">&lt;featureImg&gt;</a></td>
 				<td>zero or one</td>
@@ -432,10 +431,9 @@
 		</table>
 		
 		<h3 id="overlays">overlays</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#overlayTxt">&lt;overlayTxt&gt;</a></td>
 				<td>any</td>
@@ -449,10 +447,9 @@
 		</table>
 		
 		<h3 id="overlayTxt">overlayTxt</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</th>
-			</tr>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -460,9 +457,10 @@
 				<td>A unique overlay identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;x&gt;</td>
 				<td>float</td>
@@ -504,9 +502,10 @@
 				<td>The width of this overlay.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#overlayImg">&lt;overlayImg&gt;</a></td>
 				<td>zero or one</td>
@@ -515,10 +514,9 @@
 		</table>
 		
 		<h3 id="overlayImg">overlayImg</h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</th>
-			</tr>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -526,9 +524,10 @@
 				<td>A unique overlay identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</th>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;x&gt;</td>
 				<td>float</td>
@@ -564,9 +563,10 @@
 				<td>The asset identifier for the image to display. This identifier must match the identifier of an <a href="#asset">&lt;asset&gt;</a> defined in <a href="#assets">&lt;assets&gt;</a>.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</th>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#overlayImg">&lt;overlayImg&gt;</a></td>
 				<td>zero or one</td>

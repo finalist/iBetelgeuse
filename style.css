@@ -27,6 +27,34 @@ h1, h2 {
 	border-bottom: 1px solid #3f1f48;
 }
 
+h3 {
+	margin-top: 2em;
+}
+
+table {
+	margin: 2em 0;
+}
+
+table tr, table caption {
+	border-bottom: 1px solid #3f1f48;
+}
+
+table tr:nth-child(odd) {
+	background-color: rgba(50, 50, 50, 0.5);
+}
+
+table tr:nth-child(even) {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+table th, table td, table caption {
+	padding: .4em 1.2em;
+}
+
+table caption {
+	font-weight: bold;
+}
+
 #toc {
 	float: right;
 	border: 1px solid #3f1f48;
@@ -45,15 +73,12 @@ h1, h2 {
 	margin: 0;
 }
 
-.tag {
+table.attributes, table.simple-child-tags, table.advanced-child-tags {
 	width: 90%;
-	margin: 0 auto;
+	margin: 2em auto;
 	border-collapse: collapse;
 }
-.tag td {
-	border: 1px black solid;
-	padding: 2px 10px;
-}
-.tag th {
-	padding-top: 20px;
+
+table.attributes td:nth-child(1), table.attributes td:nth-child(2), table.attributes td:nth-child(3), table.simple-child-tags td:nth-child(1), table.simple-child-tags td:nth-child(2), table.simple-child-tags td:nth-child(3), table.advanced-child-tags td:nth-child(1) {
+	width: 15%;
 }
