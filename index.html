@@ -1,24 +1,29 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
-		<title>iBetelgeuse - Augmented Reality Browser
-		<style>
-			.tag {
-				width: 90%;
-				margin: 0 auto;
-				border-collapse: collapse;
-			}
-			.tag td {
-				border: 1px black solid;
-				padding: 2px 10px;
-			}
-			.tag th {
-				padding-top: 20px;
-			}
-		</style>
+		<title>iBetelgeuse - Augmented Reality Browser</title>
+		<link rel="stylesheet" href="style.css" type="text/css" />
 	</head>
 	<body>
-		<h1>About iBetelgeuse</h1>
+		<h1>iBetelgeuse</h1>
+		
+		<div id="toc">
+			<h2>Table of Contents</h2>
+			<ul>
+				<li><a href="#about">About</a></li>
+				<li><a href="#features">Features</a></li>
+				<li><a href="#screen-coordinates">Screen Coordinates</a></li>
+				<li><a href="#actions">Actions</a></li>
+				<li><a href="#ddf">Dimension Description Files</a></li>
+				<li><a href="#dynamic-dimensions">Dynamic Dimensions</a></li>
+				<li><a href="#arena">ARena</a></li>
+				<li><a href="#gamaray">Differences with Gamaray</a></li>
+				<li><a href="#contact">Feedback and Support</a></li>
+			</ul>
+		</div>
+		
+		<h2><a name="about"></a>About</h2>
 		<p>
 			iBetelgeuse is an open source Augmented Reality (AR) browser for iPhone, designed to be compatible with <a href="http://github.com/finalist/betelgeuse">Betelgeuse</a>, a fork of the Gamaray AR browser available for Android. The browser loads a virtual world&ndash;called <em>dimension</em>&ndash;from the web, which contains text boxes and images that are positioned in this virtual world. This virtual world is then projected on the camera image to create an augmented reality. The user can look &quot;through&quot; the screen of their iPhone to see this augmented world, and move and rotate the device to look around.
 		</p>
@@ -26,13 +31,13 @@
 			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files below, or using a web based designer, called <a href="#ARena"><em>ARena</em></a>.
 		</p>
 		
-		<h1>Features</h1>
+		<h2><a name="features"></a>Features</h2>
 		
-		<h1><a name="screen-coordinates">Screen Coordinates</a></h1>
+		<h2><a name="screen-coordinates"></a>Screen Coordinates</h2>
 		
-		<h1><a name="actions">Actions</a></h1>
+		<h2><a name="actions"></a>Actions</h2>
 		
-		<h1>Dimension Description Files</h1>
+		<h2><a name="ddf"></a>Dimension Description Files</h2>
 		<p>
 			To create a virtual world, one must create a Dimension Description File (DDF). This section describes the format of such files, and is a more detailed version of <a href="http://www.gamaray.com/developers.html">the original DDF format by Gamaray</a>.
 		</p>
@@ -40,7 +45,7 @@
 			All DDF files must use the &quot;.gddf&quot; file extension and application/gamaray-gddf MIME type, which is an abbreviation of &quot;Gamaray Dimension Description File&quot;. DDFs contain all information that the client requires to render a dimension, with the only exception of image data; image data is loaded from an URL.
 		</p>
 		
-		<h2>Schema</h2>
+		<h3>Schema</h3>
 		<ul>
 		<li><a href="#dimension">&lt;dimension&gt;</a></li>
 		<ul>
@@ -561,18 +566,18 @@
 			</tr>
 		</table>
 		
-		<h1><a name="dynamic-dimensions">Dynamic Dimensions</a></h1>
+		<h2><a name="dynamic-dimensions"></a>Dynamic Dimensions</h2>
 		
-		<h1>ARena</h1>
+		<h2><a name="arena"></a>ARena</h2>
 		
 		
-		<h1>Differences between Gamaray and iBetelgeuse</h1>
+		<h2><a name="gamaray"></a>Differences between Gamaray and iBetelgeuse</h2>
 		no support for 3d models
 		no support for "waitForAssets"
 		asset "format" ignored, image assumed.
 		default for showOnRadar differs for text features: false in Gamaray, true in iBetelgeuse
 		
-		<h1>Contact and Support</h1>
+		<h2><a name="contact"></a>Feedback and Support</h2>
 		
 	</body>
 </html>
