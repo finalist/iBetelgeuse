@@ -17,6 +17,7 @@ h1, h2, h3 {
 
 a {
 	color: #888ee3;
+	text-decoration: none;
 }
 
 a:hover {
