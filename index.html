@@ -127,7 +127,7 @@
 		</ul>
 
 		
-		<h3 id="dimension">dimension</h3>
+		<h3 id="dimension">&lt;dimension&gt;</h3>
 		<p>
 			This is the top level tag in the DDF file. It contains all other elements.
 		</p>
@@ -195,7 +195,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="refreshTime">refreshTime</h3>
+		<h3 id="refreshTime">&lt;refreshTime&gt;</h3>
 
 		<table class="simple-child-tags">
 			<caption>Simple child tags</caption>
@@ -207,7 +207,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="refreshDistance">refreshDistance</h3>
+		<h3 id="refreshDistance">&lt;refreshDistance&gt;</h3>
 		
 
 		<table class="simple-child-tags">
@@ -220,7 +220,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="locations">locations</h3>
+		<h3 id="locations">&lt;locations&gt;</h3>
 
 		<table class="advanced-child-tags">
 			<caption>Advanced child tags</caption>
@@ -231,7 +231,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="location">location</h3>
+		<h3 id="location">&lt;location&gt;</h3>
 
 		<table class="attributes">
 			<caption>Attributes</caption>
@@ -266,7 +266,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="assets">assets</h3>
+		<h3 id="assets">&lt;assets&gt;</h3>
 
 		<table class="advanced-child-tags">
 			<caption>Advanced child tags</caption>
@@ -277,7 +277,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="asset">asset</h3>
+		<h3 id="asset">&lt;asset&gt;</h3>
 
 		<table class="attributes">
 			<caption>Attributes</caption>
@@ -300,7 +300,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="features-tag">features</h3>
+		<h3 id="features-tag">&lt;features&gt;</h3>
 
 
 		<table class="advanced-child-tags">
@@ -317,7 +317,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="featureTxt">featureTxt</h3>
+		<h3 id="featureTxt">&lt;featureTxt&gt;</h3>
 		
 		<table class="attributes">
 			<caption>Attributes</caption>
@@ -396,7 +396,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="featureImg">featureImg</h3>
+		<h3 id="featureImg">&lt;featureImg&gt;</h3>
 
 		<table class="attributes">
 			<caption>Attributes</caption>
@@ -475,7 +475,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="overlays">overlays</h3>
+		<h3 id="overlays">&lt;overlays&gt;</h3>
 
 		<table class="advanced-child-tags">
 			<caption>Advanced child tags</caption>
@@ -491,7 +491,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="overlayTxt">overlayTxt</h3>
+		<h3 id="overlayTxt">&lt;overlayTxt&gt;</h3>
 
 		<table class="attributes">
 			<caption>Attributes</caption>
@@ -558,7 +558,7 @@
 			</tr>
 		</table>
 		
-		<h3 id="overlayImg">overlayImg</h3>
+		<h3 id="overlayImg">&lt;overlayImg&gt;</h3>
 
 		<table class="attributes">
 			<caption>Attributes</caption>
@@ -616,6 +616,31 @@
 				<td><a href="#overlayImg">&lt;overlayImg&gt;</a></td>
 				<td>zero or one</td>
 				<td colspan="2">The location of this overlay. Either a &lt;locationId&gt; or a &lt;location&gt; must be specified.</td>
+			</tr>
+		</table>
+		
+		<h3 id="actions">action</h3>
+		
+		<table class="actions">
+			<tr>
+				<th>Action</th>
+				<th>Format</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>refresh</td>
+				<td>"refresh"</td>
+				<td>Refreshes the current dimension using its refreshURL.</td>
+			</tr>
+			<tr>
+				<td>webpage</td>
+				<td>"webpage: " + URL</td>
+				<td>Loads the specific URL.</td>
+			</tr>
+			<tr>
+				<td>dimension</td>
+				<td>"dimension: " + URL</td>
+				<td>Loads a dimension from a specific URL.</td>
 			</tr>
 		</table>
 		
