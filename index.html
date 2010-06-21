@@ -2,26 +2,575 @@
 <html>
 	<head>
 		<title>iBetelgeuse - Augmented Reality Browser
+		<style>
+			.tag {
+				width: 90%;
+				margin: 0 auto;
+				border-collapse: collapse;
+			}
+			.tag td {
+				border: 1px black solid;
+				padding: 2px 10px;
+			}
+			.tag th {
+				padding-top: 20px;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>About iBetelgeuse</h1>
 		<p>
-			iBetelgeuse is an open source Augmented Reality (AR) browser for iPhone, designed to be compatible with Betelgeuse, a fork of the Gamaray AR browser available for Android. The browser loads a virtual world&ndash;called <em>dimension</em>&ndash;from the web, which contains text boxes and images that are positioned in this virtual world. This virtual world is then projected on the camera image to create an augmented reality. The user can look &quot;through&quot; the screen of their iPhone to see this augmented world, and move and rotate the device to look around.
+			iBetelgeuse is an open source Augmented Reality (AR) browser for iPhone, designed to be compatible with <a href="http://github.com/finalist/betelgeuse">Betelgeuse</a>, a fork of the Gamaray AR browser available for Android. The browser loads a virtual world&ndash;called <em>dimension</em>&ndash;from the web, which contains text boxes and images that are positioned in this virtual world. This virtual world is then projected on the camera image to create an augmented reality. The user can look &quot;through&quot; the screen of their iPhone to see this augmented world, and move and rotate the device to look around.
 		</p>
 		<p>
-			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files below, or using a web based designer, called <em>ARena</em>.
+			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files below, or using a web based designer, called <a href="#ARena"><em>ARena</em></a>.
 		</p>
 		
 		<h1>Features</h1>
 		
+		<h1><a name="screen-coordinates">Screen Coordinates</a></h1>
+		
+		<h1><a name="actions">Actions</a></h1>
+		
 		<h1>Dimension Description Files</h1>
+		<p>
+			To create a virtual world, one must create a Dimension Description File (DDF). This section describes the format of such files, and is a more detailed version of <a href="http://www.gamaray.com/developers.html">the original DDF format by Gamaray</a>.
+		</p>
+		<p>
+			All DDF files must use the &quot;.gddf&quot; file extension and application/gamaray-gddf MIME type, which is an abbreviation of &quot;Gamaray Dimension Description File&quot;. DDFs contain all information that the client requires to render a dimension, with the only exception of image data; image data is loaded from an URL.
+		</p>
 		
+		<h2>Schema</h2>
+		<ul>
+		<li><a href="#dimension">&lt;dimension&gt;</a></li>
+		<ul>
+			<li><a href="#refreshTime">&lt;refreshTime&gt;</a></li>
+			<li><a href="#refreshDistance">&lt;refreshDistance&gt;</a></li>
+			
+			<li><a href="#locations">&lt;locations&gt;</a></li>
+			<ul>
+				<li><a href="#location">&lt;location&gt;</a></li>
+			</ul>
+			
+			<li><a href="#assets">&lt;assets&gt;</a></li>
+			<ul>
+				<li><a href="#asset">&lt;asset&gt;</a></li>
+			</ul>
+			
+			<li><a href="#features">&lt;features&gt;</a></li>
+			<ul>
+				<li><a href="#featureTxt">&lt;featureTxt&gt;</a></li>
+				<li><a href="#featureImg">&lt;featureImg&gt;</a></li>
+			</ul>
+			
+			<li><a href="#overlays">&lt;overlays&gt;</a></li>
+			<ul>
+				<li><a href="#overlayTxt">&lt;overlayTxt&gt;</a></li>
+				<li><a href="#overlayImg">&lt;overlayImg&gt;</a></li>
+			</ul>
+		</ul>
+
 		
-		<h1>Dynamic Dimensions</h1>
+		<h3><a name="dimension">dimension</a></h3>
+		This is the top level tag in the DDF file. It contains all other elements.
+		<table class="tag">
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;name&gt;</td>
+				<td>string</td>
+				<td>&quot;&quot;</td>
+				<td>The name of this dimension. This is only used to display to the user.</td>
+			</tr>
+			<tr>
+				<td>&lt;radarRange&gt;</td>
+				<td>float, &gt; 0</td>
+				<td>1000</td>
+				<td>The radar range in meters. Items within this range will be displayed on the radar, scaled so that items that are this far from the current position are displayed on the edge of the radar view.</td>
+			</tr>
+			<tr>
+				<td>&lt;relativeAltitude&gt;</td>
+				<td>boolean</td>
+				<td>false</td>
+				<td>Specifies whether the altitude that is specified in a location is interpreted as an absolute or relative value. If &quot;true&quot;, an altitude of 0 means that the location is at the same height as the device. If &quot;false&quot;, a location of 0 means that it has a WGS84 altitude of 0, which may be above or below the user. This tag can be used to more easily display objects at eye-level, or more accurately display the height of objects in the augmented world.</td>
+			</tr>
+			<tr>
+				<td>&lt;refreshUrl&gt;</td>
+				<td>url, gamaray://...</td>
+				<td>&quot;&quot;</td>
+				<td>This is the URL that should be used to refresh this dimension. See <a href="#dynamic-dimensions">the section about dynamic dimensions</a>.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#refreshTime">&lt;refreshTime&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">This tag contains conditions for refreshing based on time.</td>
+			</tr>
+			<tr>
+				<td><a href="#refreshDistance">&lt;refreshDistance&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">This tag contains conditions for refreshing based on distance.</td>
+			</tr>
+			<tr>
+				<td><a href="#locations">&lt;locations&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">This tag contains the predefined locations in this dimension, which can be referenced by features.</td>
+			</tr>
+			<tr>
+				<td><a href="#assets">&lt;assets&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">This tag contains information about the assets in this dimension, which can be referenced by image features or image overlays.</td>
+			</tr>
+			<tr>
+				<td><a href="#features">&lt;features&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">This tag contains information about the features in this dimension.</td>
+			</tr>
+			<tr>
+				<td><a href="#overlays">&lt;overlays&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">This tag contains information about the overlays in this dimension.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="refreshTime">refreshTime</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;validFor&gt;</td>
+				<td>float, &gt;= 0</td>
+				<td>0</td>
+				<td>The time interval&ndash;from the time at which the dimension was requested to the current time&ndash;after which the dimension will be reloaded. A value of 0 means that the dimension is never reloaded based on time.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="refreshDistance">refreshDistance</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;validWithinRange&gt;</td>
+				<td>float, &gt;= 0</td>
+				<td>0</td>
+				<td>The distance&ndash;from the location where the dimension was requested to the current location of the device&ndash;after which the dimension will be reloaded. A value of 0 means that the dimension is never reloaded based on distance.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="locations">locations</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#location">&lt;location&gt;</a></td>
+				<td>any</td>
+				<td colspan="2">A locations that can be referenced by features.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="location">location</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Attributes</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>string</td>
+				<td>&quot;&quot;</td>
+				<td>A unique location identifier that can be used by features to reference this location.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;lat&gt;</td>
+				<td>float</td>
+				<td>required</td>
+				<td>The WGS84 latitude of this location.</td>
+			</tr>
+			<tr>
+				<td>&lt;lon&gt;</td>
+				<td>float</td>
+				<td>required</td>
+				<td>The WGS84 longitude of this location.</td>
+			</tr>
+			<tr>
+				<td>&lt;alt&gt;</td>
+				<td>float</td>
+				<td>0</td>
+				<td>The WGS84 altitude of this location.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="assets">assets</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#asset">&lt;asset&gt;</a></td>
+				<td>any</td>
+				<td colspan="2">An asset that can be referenced by image features and/or overlays.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="asset">asset</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Attributes</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>string</td>
+				<td>required</td>
+				<td>A unique asset identifier that can be used by features to reference this asset.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;url&gt;</td>
+				<td>url</td>
+				<td>required</td>
+				<td>An URL to an image. Supported formats are tif/tiff, jpg/jpeg, gif, png, and bmp.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="features">features</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#featureTxt">&lt;featureTxt&gt;</a></td>
+				<td>any</td>
+				<td colspan="2">A text feature.</td>
+			</tr>
+			<tr>
+				<td><a href="#featureImg">&lt;featureImg&gt;</a></td>
+				<td>any</td>
+				<td colspan="2">An image feature.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="featureTxt">featureTxt</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Attributes</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>string</td>
+				<td>&quot;&quot;</td>
+				<td>A unique feature identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;locationId&gt;</td>
+				<td>string</td>
+				<td>&quot;&quot;</td>
+				<td>The location of this feature. This identifier must match the identifier of an <a href="#location">&lt;location&gt;</a> defined in <a href="#locations">&lt;locations&gt;</a>. Either a &lt;locationId&gt; or a &lt;location&gt; must be specified.</td>
+			</tr>
+			<tr>
+				<td>&lt;xLoc&gt;</td>
+				<td>float</td>
+				<td>0</td>
+				<td>An x offset in ENU coordinate space: offset in meters to the East.</td>
+			</tr>
+			<tr>
+				<td>&lt;yLoc&gt;</td>
+				<td>float</td>
+				<td>0</td>
+				<td>An y offset in ENU coordinate space: offset in meters to the North.</td>
+			</tr>
+			<tr>
+				<td>&lt;zLoc&gt;</td>
+				<td>float</td>
+				<td>0</td>
+				<td>An z offset in ENU coordinate space: offset in meters up.</td>
+			</tr>
+			<tr>
+				<td>&lt;anchor&gt;</td>
+				<td>
+					&quot;TL&quot;, &quot;TC&quot;, &quot;TR&quot;,
+					&quot;CL&quot;, &quot;CC&quot;, &quot;CR&quot;,
+					&quot;BL&quot;, &quot;BC&quot;, or &quot;BR&quot;
+				</td>
+				<td>&quot;BC&quot;</td>
+				<td>The anchor point of the feature. ie. &quot;BL&quot; means that the bottom left corner of this feature is located at the specified location. One of &lt;locationId&gt; and &lt;location&gt; is required.</td>
+			</tr>
+			<tr>
+				<td>&lt;onPress&gt;</td>
+				<td><a href="#actions">action</a></td>
+				<td>&quot;&quot;</td>
+				<td>Specifies the action to be performed when the user taps this feature.</td>
+			</tr>
+			<tr>
+				<td>&lt;showInRadar&gt;</td>
+				<td>boolean</td>
+				<td>true</td>
+				<td>Specifies whether a radar blip is shown for this feature. If false, this feature is invisible on the radar.</td>
+			</tr>
+			<tr>
+				<td>&lt;text&gt;</td>
+				<td>string</td>
+				<td>required</td>
+				<td>The text that should be displayed for this feature.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#featureImg">&lt;featureImg&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">The location of this feature. Either a &lt;locationId&gt; or a &lt;location&gt; must be specified.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="featureImg">featureImg</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Attributes</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>string</td>
+				<td>&quot;&quot;</td>
+				<td>A unique feature identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;locationId&gt;</td>
+				<td>string</td>
+				<td>&quot;&quot;</td>
+				<td>The location of this feature. This identifier must match the identifier of an <a href="#location">&lt;location&gt;</a> defined in <a href="#locations">&lt;locations&gt;</a>. Either a &lt;locationId&gt; or a &lt;location&gt; must be specified.</td>
+			</tr>
+			<tr>
+				<td>&lt;xLoc&gt;</td>
+				<td>float</td>
+				<td>0</td>
+				<td>An x offset in ENU coordinate space: offset in meters to the East.</td>
+			</tr>
+			<tr>
+				<td>&lt;yLoc&gt;</td>
+				<td>float</td>
+				<td>0</td>
+				<td>An y offset in ENU coordinate space: offset in meters to the North.</td>
+			</tr>
+			<tr>
+				<td>&lt;zLoc&gt;</td>
+				<td>float</td>
+				<td>0</td>
+				<td>An z offset in ENU coordinate space: offset in meters up.</td>
+			</tr>
+			<tr>
+				<td>&lt;anchor&gt;</td>
+				<td>
+					&quot;TL&quot;, &quot;TC&quot;, &quot;TR&quot;,
+					&quot;CL&quot;, &quot;CC&quot;, &quot;CR&quot;,
+					&quot;BL&quot;, &quot;BC&quot;, or &quot;BR&quot;
+				</td>
+				<td>&quot;BC&quot;</td>
+				<td>The anchor point of the feature. ie. &quot;BL&quot; means that the bottom left corner of this feature is located at the specified location. One of &lt;locationId&gt; and &lt;location&gt; is required.</td>
+			</tr>
+			<tr>
+				<td>&lt;onPress&gt;</td>
+				<td><a href="#actions">action</a></td>
+				<td>&quot;&quot;</td>
+				<td>Specifies the action to be performed when the user taps this feature.</td>
+			</tr>
+			<tr>
+				<td>&lt;showInRadar&gt;</td>
+				<td>boolean</td>
+				<td>true</td>
+				<td>Specifies whether a radar blip is shown for this feature. If false, this feature is invisible on the radar.</td>
+			</tr>
+			<tr>
+				<td>&lt;assetId&gt;</td>
+				<td>string</td>
+				<td>required</td>
+				<td>The asset identifier for the image to display. This identifier must match the identifier of an <a href="#asset">&lt;asset&gt;</a> defined in <a href="#assets">&lt;assets&gt;</a>.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#featureImg">&lt;featureImg&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">The location of this feature. Either a &lt;locationId&gt; or a &lt;location&gt; must be specified.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="overlays">overlays</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#overlayTxt">&lt;overlayTxt&gt;</a></td>
+				<td>any</td>
+				<td colspan="2">A text overlay.</td>
+			</tr>
+			<tr>
+				<td><a href="#overlayImg">&lt;overlayImg&gt;</a></td>
+				<td>any</td>
+				<td colspan="2">An image overlay.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="overlayTxt">overlayTxt</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Attributes</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>string</td>
+				<td>&quot;&quot;</td>
+				<td>A unique overlay identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;x&gt;</td>
+				<td>float</td>
+				<td>required</td>
+				<td>The <a href="#screen-coordinates">screen</a> x coordinate where the overlay should be positioned.</td>
+			</tr>
+			<tr>
+				<td>&lt;y&gt;</td>
+				<td>float</td>
+				<td>required</td>
+				<td>The <a href="#screen-coordinates">screen</a> y coordinate where the overlay should be positioned.</td>
+			</tr>
+			<tr>
+				<td>&lt;anchor&gt;</td>
+				<td>
+					&quot;TL&quot;, &quot;TC&quot;, &quot;TR&quot;,
+					&quot;CL&quot;, &quot;CC&quot;, &quot;CR&quot;,
+					&quot;BL&quot;, &quot;BC&quot;, or &quot;BR&quot;
+				</td>
+				<td>&quot;BC&quot;</td>
+				<td>The anchor point of the overlay. ie. &quot;BL&quot; means that the bottom left corner of this overlay is located at the specified location. One of &lt;locationId&gt; and &lt;location&gt; is required.</td>
+			</tr>
+			<tr>
+				<td>&lt;onPress&gt;</td>
+				<td><a href="#actions">action</a></td>
+				<td>&quot;&quot;</td>
+				<td>Specifies the action to be performed when the user taps this overlay.</td>
+			</tr>
+			<tr>
+				<td>&lt;text&gt;</td>
+				<td>string</td>
+				<td>required</td>
+				<td>The text that should be displayed for this overlay.</td>
+			</tr>
+			<tr>
+				<td>&lt;width&gt;</td>
+				<td>float, &gt;= 0</td>
+				<td>required</td>
+				<td>The width of this overlay.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#overlayImg">&lt;overlayImg&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">The location of this overlay. Either a &lt;locationId&gt; or a &lt;location&gt; must be specified.</td>
+			</tr>
+		</table>
+		
+		<h3><a name="overlayImg">overlayImg</a></h3>
+		<table class="tag">
+			<tr>
+				<th colspan="4">Attributes</td>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>string</td>
+				<td>&quot;&quot;</td>
+				<td>A unique overlay identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Simple child tags</td>
+			</tr>
+			<tr>
+				<td>&lt;x&gt;</td>
+				<td>float</td>
+				<td>required</td>
+				<td>The <a href="#screen-coordinates">screen</a> x coordinate where the overlay should be positioned.</td>
+			</tr>
+			<tr>
+				<td>&lt;y&gt;</td>
+				<td>float</td>
+				<td>required</td>
+				<td>The <a href="#screen-coordinates">screen</a> y coordinate where the overlay should be positioned.</td>
+			</tr>
+			<tr>
+				<td>&lt;anchor&gt;</td>
+				<td>
+					&quot;TL&quot;, &quot;TC&quot;, &quot;TR&quot;,
+					&quot;CL&quot;, &quot;CC&quot;, &quot;CR&quot;,
+					&quot;BL&quot;, &quot;BC&quot;, or &quot;BR&quot;
+				</td>
+				<td>&quot;BC&quot;</td>
+				<td>The anchor point of the overlay. ie. &quot;BL&quot; means that the bottom left corner of this overlay is located at the specified location. One of &lt;locationId&gt; and &lt;location&gt; is required.</td>
+			</tr>
+			<tr>
+				<td>&lt;onPress&gt;</td>
+				<td><a href="#actions">action</a></td>
+				<td>&quot;&quot;</td>
+				<td>Specifies the action to be performed when the user taps this overlay.</td>
+			</tr>
+			<tr>
+				<td>&lt;assetId&gt;</td>
+				<td>string</td>
+				<td>required</td>
+				<td>The asset identifier for the image to display. This identifier must match the identifier of an <a href="#asset">&lt;asset&gt;</a> defined in <a href="#assets">&lt;assets&gt;</a>.</td>
+			</tr>
+			
+			<tr>
+				<th colspan="4">Advanced child tags</td>
+			</tr>
+			<tr>
+				<td><a href="#overlayImg">&lt;overlayImg&gt;</a></td>
+				<td>zero or one</td>
+				<td colspan="2">The location of this overlay. Either a &lt;locationId&gt; or a &lt;location&gt; must be specified.</td>
+			</tr>
+		</table>
+		
+		<h1><a name="dynamic-dimensions">Dynamic Dimensions</a></h1>
+		
+		<h1>ARena</h1>
 		
 		
 		<h1>Differences between Gamaray and iBetelgeuse</h1>
-		
+		no support for 3d models
+		no support for "waitForAssets"
+		asset "format" ignored, image assumed.
+		default for showOnRadar differs for text features: false in Gamaray, true in iBetelgeuse
 		
 		<h1>Contact and Support</h1>
 		
