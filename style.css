@@ -33,7 +33,9 @@ h3 {
 }
 
 table {
-	margin: 2em 0;
+	width: 90%;
+	margin: 2em auto;
+	border-collapse: collapse;
 }
 
 table tr, table caption {
@@ -74,12 +76,14 @@ table caption {
 	margin: 0;
 }
 
-table.attributes, table.simple-child-tags, table.advanced-child-tags {
-	width: 90%;
-	margin: 2em auto;
-	border-collapse: collapse;
+table.attributes td, table.simple-child-tags td, table.advanced-child-tags td, table.post-data td {
+	width: 15%;
 }
 
-table.attributes td:nth-child(1), table.attributes td:nth-child(2), table.attributes td:nth-child(3), table.simple-child-tags td:nth-child(1), table.simple-child-tags td:nth-child(2), table.simple-child-tags td:nth-child(3), table.advanced-child-tags td:nth-child(1) {
-	width: 15%;
+table.advanced-child-tags td:nth-child(1) {
+	width: 30%;
+}
+
+table.attributes td:last-child, table.simple-child-tags td:last-child, table.advanced-child-tags td:last-child, table.post-data td:last-child {
+	width: auto;
 }
