@@ -20,10 +20,10 @@
 	<body>
 		<h1>About iBetelgeuse</h1>
 		<p>
-			iBetelgeuse is an open source Augmented Reality (AR) browser for iPhone, designed to be compatible with <a href="http://github.com/finalist/betelgeuse">Betelgeuse</a>, a fork of the Gamaray AR browser available for Android. The browser loads a virtual world&ndash;called <em>dimension</em>&ndash;from the web, which contains text boxes and images that are positioned in this virtual world. This virtual world is then projected on the camera image to create an augmented reality. The user can look &quot;through&quot; the screen of their iPhone to see this augmented world, and move and rotate the device to look around.
+			iBetelgeuse is an open source Augmented Reality (AR) browser for iPhone, designed to be compatible with <a href="http://github.com/finalist/betelgeuse"><em>Betelgeuse</em></a>, a fork of the <a href="http://opengamaray.sourceforge.net/"><em>Open Gamaray AR browser</em></a> available for Android. The browser loads a virtual world&ndash;called <em>dimension</em>&ndash;from the web, which contains text boxes and images that are positioned in this virtual world. This virtual world is then projected on the camera image to create an augmented reality. The user can look &quot;through&quot; the screen of their iPhone to see this augmented world, and move and rotate the device to look around.
 		</p>
 		<p>
-			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files below, or using a web based designer, called <a href="#ARena"><em>ARena</em></a>.
+			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files below, or using a web based designer, called <a href="#arena"><em>ARena</em></a>.
 		</p>
 		
 		<h1>Features</h1>
@@ -562,15 +562,83 @@
 		</table>
 		
 		<h1><a name="dynamic-dimensions">Dynamic Dimensions</a></h1>
+		<p>
+			To make an interactive world, a server can be used to generate a DDF dynamically. Whenever iBetelgeuse loads a dimension from a HTTP URL, it sends HTTP POST data to the server, indicating its current location, orientation, and other relevant information, as shown in the table below. This information can then be used by the server to generate a custom dimension, by for example filtering out distant objects or modifying features and overlays based on user events.
+		</p>
+		<table class="post-data">
+			<tr>
+				<td>event</td>
+				<td>&quot;init&quot;, &quot;refreshOnTime&quot;, &quot;refreshOnDistance&quot;, or &quot;refreshOnPress&quot;</td>
+				<td>The event that triggered this request.</td>
+			</tr>
+			<tr>
+				<td>eventSrc</td>
+				<td>string</td>
+				<td>The identifier of the feature or overlay that was tapped, set if the event is &quot;refreshOnPress&quot;. &quot;NULL&quot; otherwise</td>
+			</tr>
+			<tr>
+				<td>lat</td>
+				<td>float, [-90..90]</td>
+				<td>The current WGS84 latitude of the device.</td>
+			</tr>
+			<tr>
+				<td>lon</td>
+				<td>float, [-180..180]</td>
+				<td>The current WGS84 longitude of the device.</td>
+			</tr>
+			<tr>
+				<td>alt</td>
+				<td>float</td>
+				<td>The current WGS84 altitude of the device.</td>
+			</tr>
+			<tr>
+				<td>bearing</td>
+				<td>float, [-180..180]</td>
+				<td>The current bearing of the device. The angle between the look direction and North direction if the device is not flat; the angle between the the line from the center of the device to the top of the screen and the North direction otherwise. Positive angles indicate a clockwise angle, ie. a bearing of 90 degrees represents that the device is directed towards the East.</td>
+			</tr>
+			<tr>
+				<td>pitch</td>
+				<td>float, [-90..90]</td>
+				<td>The current pitch of the device. Positive values indicate an upwards angle, ie. a pitch of 90 degrees means that the user is looking at the sky.</td>
+			</tr>
+			<tr>
+				<td>roll</td>
+				<td>float, [-180..180]</td>
+				<td>The current roll of the device. The angle between the direction straight up and the line from the center of the device to its top if the device is not flat; zero otherwise. Positive angles indicate a counter-clockwise angle, ie. a roll of 90 degrees represents that the device's top is directed towards the left, seen from the front of the screen.</td>
+			</tr>
+			<tr>
+				<td>width</td>
+				<td>float, &gt; 0</td>
+				<td>The width of the device's screen. This value may change when the device is rotated, and switches between portrait and landscape mode. See the section about <a href="#screen-coordinates">screen coordinates</a>.</td>
+			</tr>
+			<tr>
+				<td>height</td>
+				<td>float, &gt; 0</td>
+				<td>The height of the device's screen. This value may change when the device is rotated, and switches between portrait and landscape mode. See the section about <a href="#screen-coordinates">screen coordinates</a>.</td>
+			</tr>
+			<tr>
+				<td>uid</td>
+				<td>string</td>
+				<td>A unique identifier for the user, this must be invariant during one session. On iPhone, this is the iPhone device id.</td>
+			</tr>
+			<tr>
+				<td>time</td>
+				<td>int</td>
+				<td>The time in milliseconds since January 1, 1970 UTC.</td>
+			</tr>
+		</table>
 		
-		<h1>ARena</h1>
+		<h1><a name="examples">Examples</a></h1>
 		
+		<h1><a name="arena">ARena</a></h1>
 		
 		<h1>Differences between Gamaray and iBetelgeuse</h1>
 		no support for 3d models
 		no support for "waitForAssets"
+		added "roll"
 		asset "format" ignored, image assumed.
 		default for showOnRadar differs for text features: false in Gamaray, true in iBetelgeuse
+		iBetelgeuse returns a user-unique identifier, Betelgeuse returns a installation-unique identifier
 		
 		<h1>Contact and Support</h1>
 		
