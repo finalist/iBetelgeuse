@@ -1,0 +1,85 @@
+body {
+	background-color: #000;
+	background-image: url('background.jpg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	color: #fff;
+	font-family: sans-serif;
+	font-size: .8em;
+	line-height: 1.5;
+	padding: 1em 10%;
+}
+
+h1, h2, h3 {
+	color: #da92df;
+}
+
+a {
+	color: #888ee3;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #b5b6df;
+}
+
+h1, h2 {
+	border-bottom: 1px solid #3f1f48;
+}
+
+h3 {
+	margin-top: 2em;
+}
+
+table {
+	margin: 2em 0;
+}
+
+table tr, table caption {
+	border-bottom: 1px solid #3f1f48;
+}
+
+table tr:nth-child(odd) {
+	background-color: rgba(50, 50, 50, 0.5);
+}
+
+table tr:nth-child(even) {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+table th, table td, table caption {
+	padding: .4em 1.2em;
+}
+
+table caption {
+	font-weight: bold;
+}
+
+#toc {
+	float: right;
+	border: 1px solid #3f1f48;
+	background-color: #000;
+	padding: 1em;
+	margin: 0 0 1em 2em;
+}
+
+#toc h2 {
+	display: none;
+}
+
+#toc ul {
+	color: #484888;
+	padding-left: 1.5em;
+	margin: 0;
+}
+
+table.attributes, table.simple-child-tags, table.advanced-child-tags {
+	width: 90%;
+	margin: 2em auto;
+	border-collapse: collapse;
+}
+
+table.attributes td:nth-child(1), table.attributes td:nth-child(2), table.attributes td:nth-child(3), table.simple-child-tags td:nth-child(1), table.simple-child-tags td:nth-child(2), table.simple-child-tags td:nth-child(3), table.advanced-child-tags td:nth-child(1) {
+	width: 15%;
+}

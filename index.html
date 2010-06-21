@@ -1,24 +1,29 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 	<head>
-		<title>iBetelgeuse - Augmented Reality Browser
-		<style>
-			.tag {
-				width: 90%;
-				margin: 0 auto;
-				border-collapse: collapse;
-			}
-			.tag td {
-				border: 1px black solid;
-				padding: 2px 10px;
-			}
-			.tag th {
-				padding-top: 20px;
-			}
-		</style>
+		<title>iBetelgeuse - Augmented Reality Browser</title>
+		<link rel="stylesheet" href="style.css" type="text/css" />
 	</head>
 	<body>
-		<h1>About iBetelgeuse</h1>
+		<h1>iBetelgeuse</h1>
+		
+		<div id="toc">
+			<h2>Table of Contents</h2>
+			<ul>
+				<li><a href="#about">About</a></li>
+				<li><a href="#features">Features</a></li>
+				<li><a href="#screen-coordinates">Screen Coordinates</a></li>
+				<li><a href="#actions">Actions</a></li>
+				<li><a href="#ddf">Dimension Description Files</a></li>
+				<li><a href="#dynamic-dimensions">Dynamic Dimensions</a></li>
+				<li><a href="#arena">ARena</a></li>
+				<li><a href="#gamaray">Differences with Gamaray</a></li>
+				<li><a href="#contact">Feedback and Support</a></li>
+			</ul>
+		</div>
+		
+		<h2 id="about">About</h2>
 		<p>
 			iBetelgeuse is an open source Augmented Reality (AR) browser for iPhone, designed to be compatible with <a href="http://github.com/finalist/betelgeuse"><em>Betelgeuse</em></a>, a fork of the <a href="http://opengamaray.sourceforge.net/"><em>Open Gamaray AR browser</em></a> available for Android. The browser loads a virtual world&ndash;called <em>dimension</em>&ndash;from the web, which contains text boxes and images that are positioned in this virtual world. This virtual world is then projected on the camera image to create an augmented reality. The user can look &quot;through&quot; the screen of their iPhone to see this augmented world, and move and rotate the device to look around.
 		</p>
@@ -26,13 +31,13 @@
 			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files below, or using a web based designer, called <a href="#arena"><em>ARena</em></a>.
 		</p>
 		
-		<h1>Features</h1>
+		<h2 id="features">Features</h2>
 		
-		<h1><a name="screen-coordinates">Screen Coordinates</a></h1>
+		<h2 id="screen-coordinates">Screen Coordinates</h2>
 		
-		<h1><a name="actions">Actions</a></h1>
+		<h2 id="actions">Actions</h2>
 		
-		<h1>Dimension Description Files</h1>
+		<h2 id="ddf">Dimension Description Files</h2>
 		<p>
 			To create a virtual world, one must create a Dimension Description File (DDF). This section describes the format of such files, and is a more detailed version of <a href="http://www.gamaray.com/developers.html">the original DDF format by Gamaray</a>.
 		</p>
@@ -40,43 +45,50 @@
 			All DDF files must use the &quot;.gddf&quot; file extension and application/gamaray-gddf MIME type, which is an abbreviation of &quot;Gamaray Dimension Description File&quot;. DDFs contain all information that the client requires to render a dimension, with the only exception of image data; image data is loaded from an URL.
 		</p>
 		
-		<h2>Schema</h2>
+		<h3>Schema</h3>
 		<ul>
-		<li><a href="#dimension">&lt;dimension&gt;</a></li>
-		<ul>
-			<li><a href="#refreshTime">&lt;refreshTime&gt;</a></li>
-			<li><a href="#refreshDistance">&lt;refreshDistance&gt;</a></li>
-			
-			<li><a href="#locations">&lt;locations&gt;</a></li>
-			<ul>
-				<li><a href="#location">&lt;location&gt;</a></li>
-			</ul>
-			
-			<li><a href="#assets">&lt;assets&gt;</a></li>
-			<ul>
-				<li><a href="#asset">&lt;asset&gt;</a></li>
-			</ul>
-			
-			<li><a href="#features">&lt;features&gt;</a></li>
-			<ul>
-				<li><a href="#featureTxt">&lt;featureTxt&gt;</a></li>
-				<li><a href="#featureImg">&lt;featureImg&gt;</a></li>
-			</ul>
-			
-			<li><a href="#overlays">&lt;overlays&gt;</a></li>
-			<ul>
-				<li><a href="#overlayTxt">&lt;overlayTxt&gt;</a></li>
-				<li><a href="#overlayImg">&lt;overlayImg&gt;</a></li>
-			</ul>
+			<li><a href="#dimension">&lt;dimension&gt;</a>
+				<ul>
+					<li><a href="#refreshTime">&lt;refreshTime&gt;</a></li>
+					<li><a href="#refreshDistance">&lt;refreshDistance&gt;</a></li>
+
+					<li><a href="#locations">&lt;locations&gt;</a>
+						<ul>
+							<li><a href="#location">&lt;location&gt;</a></li>
+						</ul>
+					</li>
+
+					<li><a href="#assets">&lt;assets&gt;</a>
+						<ul>
+							<li><a href="#asset">&lt;asset&gt;</a></li>
+						</ul>
+					</li>
+
+					<li><a href="#features-tag">&lt;features&gt;</a>
+						<ul>
+							<li><a href="#featureTxt">&lt;featureTxt&gt;</a></li>
+							<li><a href="#featureImg">&lt;featureImg&gt;</a></li>
+						</ul>
+					</li>
+
+					<li><a href="#overlays">&lt;overlays&gt;</a>
+						<ul>
+							<li><a href="#overlayTxt">&lt;overlayTxt&gt;</a></li>
+							<li><a href="#overlayImg">&lt;overlayImg&gt;</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
 		</ul>
 
 		
-		<h3><a name="dimension">dimension</a></h3>
-		This is the top level tag in the DDF file. It contains all other elements.
-		<table class="tag">
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		<h3 id="dimension">dimension</h3>
+		<p>
+			This is the top level tag in the DDF file. It contains all other elements.
+		</p>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;name&gt;</td>
 				<td>string</td>
@@ -102,9 +114,10 @@
 				<td>This is the URL that should be used to refresh this dimension. See <a href="#dynamic-dimensions">the section about dynamic dimensions</a>.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#refreshTime">&lt;refreshTime&gt;</a></td>
 				<td>zero or one</td>
@@ -137,11 +150,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="refreshTime">refreshTime</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		<h3 id="refreshTime">refreshTime</h3>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;validFor&gt;</td>
 				<td>float, &gt;= 0</td>
@@ -150,11 +162,11 @@
 			</tr>
 		</table>
 		
-		<h3><a name="refreshDistance">refreshDistance</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		<h3 id="refreshDistance">refreshDistance</h3>
+		
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;validWithinRange&gt;</td>
 				<td>float, &gt;= 0</td>
@@ -163,11 +175,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="locations">locations</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		<h3 id="locations">locations</h3>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#location">&lt;location&gt;</a></td>
 				<td>any</td>
@@ -175,11 +186,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="location">location</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</td>
-			</tr>
+		<h3 id="location">location</h3>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -187,9 +197,10 @@
 				<td>A unique location identifier that can be used by features to reference this location.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;lat&gt;</td>
 				<td>float</td>
@@ -210,11 +221,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="assets">assets</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		<h3 id="assets">assets</h3>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#asset">&lt;asset&gt;</a></td>
 				<td>any</td>
@@ -222,11 +232,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="asset">asset</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</td>
-			</tr>
+		<h3 id="asset">asset</h3>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -234,9 +243,10 @@
 				<td>A unique asset identifier that can be used by features to reference this asset.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;url&gt;</td>
 				<td>url</td>
@@ -245,11 +255,11 @@
 			</tr>
 		</table>
 		
-		<h3><a name="features">features</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		<h3 id="features-tag">features</h3>
+
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#featureTxt">&lt;featureTxt&gt;</a></td>
 				<td>any</td>
@@ -262,11 +272,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="featureTxt">featureTxt</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</td>
-			</tr>
+		<h3 id="featureTxt">featureTxt</h3>
+		
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -274,9 +283,10 @@
 				<td>A unique feature identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;locationId&gt;</td>
 				<td>string</td>
@@ -330,9 +340,10 @@
 				<td>The text that should be displayed for this feature.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#featureImg">&lt;featureImg&gt;</a></td>
 				<td>zero or one</td>
@@ -340,11 +351,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="featureImg">featureImg</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</td>
-			</tr>
+		<h3 id="featureImg">featureImg</h3>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -352,9 +362,10 @@
 				<td>A unique feature identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;locationId&gt;</td>
 				<td>string</td>
@@ -408,9 +419,10 @@
 				<td>The asset identifier for the image to display. This identifier must match the identifier of an <a href="#asset">&lt;asset&gt;</a> defined in <a href="#assets">&lt;assets&gt;</a>.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#featureImg">&lt;featureImg&gt;</a></td>
 				<td>zero or one</td>
@@ -418,11 +430,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="overlays">overlays</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		<h3 id="overlays">overlays</h3>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#overlayTxt">&lt;overlayTxt&gt;</a></td>
 				<td>any</td>
@@ -435,11 +446,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="overlayTxt">overlayTxt</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</td>
-			</tr>
+		<h3 id="overlayTxt">overlayTxt</h3>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -447,9 +457,10 @@
 				<td>A unique overlay identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;x&gt;</td>
 				<td>float</td>
@@ -491,9 +502,10 @@
 				<td>The width of this overlay.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#overlayImg">&lt;overlayImg&gt;</a></td>
 				<td>zero or one</td>
@@ -501,11 +513,10 @@
 			</tr>
 		</table>
 		
-		<h3><a name="overlayImg">overlayImg</a></h3>
-		<table class="tag">
-			<tr>
-				<th colspan="4">Attributes</td>
-			</tr>
+		<h3 id="overlayImg">overlayImg</h3>
+
+		<table class="attributes">
+			<caption>Attributes</caption>
 			<tr>
 				<td>id</td>
 				<td>string</td>
@@ -513,9 +524,10 @@
 				<td>A unique overlay identifier that will be sent to the server when a refresh or dimension onPress event is executed.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Simple child tags</td>
-			</tr>
+		</table>
+
+		<table class="simple-child-tags">
+			<caption>Simple child tags</caption>
 			<tr>
 				<td>&lt;x&gt;</td>
 				<td>float</td>
@@ -551,9 +563,10 @@
 				<td>The asset identifier for the image to display. This identifier must match the identifier of an <a href="#asset">&lt;asset&gt;</a> defined in <a href="#assets">&lt;assets&gt;</a>.</td>
 			</tr>
 			
-			<tr>
-				<th colspan="4">Advanced child tags</td>
-			</tr>
+		</table>
+
+		<table class="advanced-child-tags">
+			<caption>Advanced child tags</caption>
 			<tr>
 				<td><a href="#overlayImg">&lt;overlayImg&gt;</a></td>
 				<td>zero or one</td>
@@ -561,7 +574,7 @@
 			</tr>
 		</table>
 		
-		<h1><a name="dynamic-dimensions">Dynamic Dimensions</a></h1>
+		<h2 id="dynamic-dimensions">Dynamic Dimensions</h2>
 		<p>
 			To make an interactive world, a server can be used to generate a DDF dynamically. Whenever iBetelgeuse loads a dimension from a HTTP URL, it sends HTTP POST data to the server, indicating its current location, orientation, and other relevant information, as shown in the table below. This information can then be used by the server to generate a custom dimension, by for example filtering out distant objects or modifying features and overlays based on user events.
 		</p>
@@ -628,11 +641,11 @@
 			</tr>
 		</table>
 		
-		<h1><a name="examples">Examples</a></h1>
+		<h2 id="examples">Examples</h2>
 		
-		<h1><a name="arena">ARena</a></h1>
+		<h2 id="arena">ARena</h2>
 		
-		<h1>Differences between Gamaray and iBetelgeuse</h1>
+		<h2 id="gamaray">Differences between Gamaray and iBetelgeuse</h2>
 		no support for 3d models
 		no support for "waitForAssets"
 		added "roll"
@@ -640,7 +653,7 @@
 		default for showOnRadar differs for text features: false in Gamaray, true in iBetelgeuse
 		iBetelgeuse returns a user-unique identifier, Betelgeuse returns a installation-unique identifier
 		
-		<h1>Contact and Support</h1>
+		<h2 id="contact">Feedback and Support</h2>
 		
 	</body>
 </html>
