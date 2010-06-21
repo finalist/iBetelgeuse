@@ -649,12 +649,17 @@
 		<h2 id="arena">ARena</h2>
 		
 		<h2 id="gamaray">Differences between Gamaray and iBetelgeuse</h2>
-		no support for 3d models
-		no support for "waitForAssets"
-		added "roll"
-		asset "format" ignored, image assumed.
-		default for showOnRadar differs for text features: false in Gamaray, true in iBetelgeuse
-		iBetelgeuse returns a user-unique identifier, Betelgeuse returns a installation-unique identifier
+		<p>
+			Although Betelgeuse and iBetelgeuse are mostly compatible, there are some differences in implementation. This section lists those differences. There may be other undocumented differences, since the <a href="http://www.gamaray.com/developers.html">original specification of the Gamaray browser</a> lacks clear data types and does not describe which elements are required and which are optional.
+		</p>
+		<ul>
+			<li>iBetelgeuse does not support 3D models, because the GAMA3D format is not currently usable (there are no tools to create and/or convert GAMA3D models), and implementing 3D models is currently not a priority.</li>
+			<li>iBetelgeuse ignores the &lt;waitForAssets&gt; child tag of &lt;refreshTime&gt;. It always loads assets asynchronously, which makes &lt;waitForAssets&gt; obsolete.</li>
+			<li>iBetelgeuse sends the corrent roll of the device, along with the current bearing and pitch.</li>
+			<li>iBetelgeuse does not require the &quot;format&quot; tag in assets, since GAMA3D models are not supported and all image formats are treated the same. Dimensions that are designed to be compatible with both browsers should set the value of this tag to what Betelgeuse expects.</li>
+			<li>The default value for &lt;showOnRadar&gt; for &lt;featureTxt&gt; was changed from false to true in iBetelgeuse to be consistent with &lt;featureImg&gt;. For both features, the default value of &lt;showOnRadar&gt; is now true.</li>
+			<li>In iBetelgeuse, the &quot;uid&quot; that is sent in the HTTP POST request is quaranteed to be the iPhone device id, which never changes. Betelgeuse uses an id that changes whenever you reinstall the application.</li>
+		</ul>
 		
 		<h2 id="contact">Feedback and Support</h2>
 		
