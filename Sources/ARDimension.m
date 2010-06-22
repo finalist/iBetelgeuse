@@ -249,7 +249,7 @@ typedef enum {
 			}
 			else if ([name isEqualToString:@"radarRange"]) {
 				double value = [content doubleValue];
-				if (value == 0.0 || value == HUGE_VAL || value == -HUGE_VAL) {
+				if (value <= 0 || value == HUGE_VAL) {
 					DebugLog(@"Invalid value for radarRange element: %@", content);
 				}
 				else {
@@ -261,7 +261,7 @@ typedef enum {
 		case ARDimensionXMLParserDelegateStateRefreshTime:
 			if ([name isEqualToString:@"validFor"]) {
 				double value = [content doubleValue];
-				if (value == 0.0 || value == HUGE_VAL || value == -HUGE_VAL) {
+				if (value < 0 || value == HUGE_VAL) {
 					DebugLog(@"Invalid value for validFor element: %@", content);
 				}
 				else {
@@ -276,7 +276,7 @@ typedef enum {
 		case ARDimensionXMLParserDelegateStateRefreshDistance:
 			if ([name isEqualToString:@"validWithinRange"]) {
 				double value = [content doubleValue];
-				if (value == 0.0 || value == HUGE_VAL || value == -HUGE_VAL) {
+				if (value < 0 || value == HUGE_VAL) {
 					DebugLog(@"Invalid value for validWithinRange element: %@", content);
 				}
 				else {

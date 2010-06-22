@@ -93,7 +93,7 @@
 	}
 	else if ([name isEqualToString:@"width"]) {
 		double value = [content doubleValue];
-		if (value == HUGE_VAL || value == -HUGE_VAL) {
+		if (value < 0 || value == HUGE_VAL) {
 			DebugLog(@"Invalid value for width element: %@", content);
 		}
 		else {
