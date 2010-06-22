@@ -215,7 +215,7 @@
 
 - (void)updateForSimulation {
 	static CGFloat simulatedLatitude = 0.0;
-	[self updateWithRawLatitude:simulatedLatitude longitude:0 altitude:0];
+	[self updateWithRawLatitude:simulatedLatitude longitude:0 altitude:0 reliable:YES];
 	//	simulatedLatitude += 0.00005;
 	
 	// Assume the device is being held with the home button at the bottom
