@@ -16,6 +16,7 @@
 				<li><a href="#ddf">Dimension Description Files</a></li>
 				<li><a href="#loading">Loading Dimensions</a></li>
 				<li><a href="#dynamic-dimensions">Dynamic Dimensions</a></li>
+				<li><a href="#example">Example</a></li>
 				<li><a href="#arena">ARena</a></li>
 				<li><a href="#gamaray">Differences with Gamaray</a></li>
 				<li><a href="#contact">Feedback and Support</a></li>
@@ -726,7 +727,75 @@
 			</tr>
 		</table>
 		
-		<h2 id="examples">Examples</h2>
+		<h2 id="example">Example</h2>
+		<p>
+			This is a large example showing most of the elements that can be used. Note that, unfortunately, the place where this page is hosted (GitHub Pages) does not support POST requests, so loading this dimension directly from this server is not possible. You can leave out most options, which will then use the default values. The default values for optional elements are described in the <a href="ddf">section about DDFs</a> above.
+		</p>
+		<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;dimension&gt;
+	&lt;name&gt;Rotterdam&lt;/name&gt;
+	&lt;radarRange&gt;500&lt;/radarRange&gt;
+	&lt;relativeAltitude&gt;true&lt;/relativeAltitude&gt;
+	&lt;refreshUrl&gt;gamaray://finalist.github.com/iBetelgeuse/example-large.gddf&lt;/refreshUrl&gt;
+	&lt;refreshTime&gt;&lt;validFor&gt;5000&lt;/validFor&gt;&lt;/refreshTime&gt;
+	&lt;refreshDistance&gt;&lt;validWithinRange&gt;100&lt;/validWithinRange&gt;&lt;/refreshDistance&gt;
+	&lt;locations&gt;
+		&lt;location id=&quot;centralstation&quot;&gt;
+			&lt;lat&gt;51.924125&lt;/lat&gt;
+			&lt;lon&gt;4.470041&lt;/lon&gt;
+			&lt;alt&gt;0&lt;/alt&gt;
+		&lt;/location&gt;
+		&lt;location id=&quot;finalist-unused&quot;&gt;
+			&lt;lat&gt;51.92348&lt;/lat&gt;
+			&lt;lon&gt;4.469547&lt;/lon&gt;
+			&lt;alt&gt;0&lt;/alt&gt;
+		&lt;/location&gt;
+	&lt;/locations&gt;
+	&lt;assets&gt;
+		&lt;asset id=&quot;betelgeuse-background&quot;&gt;
+			&lt;url&gt;http://finalist.github.com/iBetelgeuse/background.jpg&lt;/url&gt;
+		&lt;/asset&gt;
+		&lt;asset id=&quot;betelgeuse-icon&quot;&gt;
+			&lt;url&gt;http://finalist.github.com/iBetelgeuse/icon.png&lt;/url&gt;
+		&lt;/asset&gt;
+	&lt;/assets&gt;
+	&lt;features&gt;
+		&lt;featureImg id=&quot;someImage&quot;&gt;
+			&lt;locationId&gt;centralstation&lt;/locationId&gt;
+			&lt;onPress&gt;dimension: gamaray://finalist.github.com/iBetelgeuse/example.gddf&lt;/onPress&gt;
+			&lt;assetId&gt;betelgeuse-background&lt;/assetId&gt;
+		&lt;/featureImg&gt;
+		&lt;featureTxt&gt;
+			&lt;location&gt;
+				&lt;lat&gt;51.92348&lt;/lat&gt;
+				&lt;lon&gt;4.469547&lt;/lon&gt;
+				&lt;alt&gt;0&lt;/alt&gt;
+			&lt;/location&gt;
+			&lt;xLoc&gt;0&lt;/xLoc&gt;
+			&lt;yLoc&gt;0&lt;/yLoc&gt;
+			&lt;zLoc&gt;20&lt;/zLoc&gt;
+			&lt;anchor&gt;BC&lt;/anchor&gt;
+			&lt;onPress&gt;webpage: http://www.finalist.com/&lt;/onPress&gt;
+			&lt;showInRadar&gt;true&lt;/showInRadar&gt;
+			&lt;text&gt;Finalist&lt;/text&gt;
+		&lt;/featureTxt&gt;
+	&lt;/features&gt;
+	&lt;overlays&gt;
+		&lt;overlayImg&gt;
+			&lt;x&gt;10&lt;/x&gt;
+			&lt;y&gt;100&lt;/y&gt;
+			&lt;anchor&gt;TL&lt;/anchor&gt;
+			&lt;assetId&gt;betelgeuse-icon&lt;/assetId&gt;
+		&lt;/overlayImg&gt;
+		&lt;overlayTxt&gt;
+			&lt;x&gt;100&lt;/x&gt;
+			&lt;y&gt;100&lt;/y&gt;
+			&lt;onPress&gt;refresh&lt;/onPress&gt;
+			&lt;text&gt;Refresh&lt;/text&gt;
+			&lt;width&gt;100&lt;/width&gt;
+		&lt;/overlayTxt&gt;
+	&lt;/overlays&gt;
+&lt;/dimension&gt;</pre>
 		
 		<h2 id="arena">ARena</h2>
 		
