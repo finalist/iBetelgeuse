@@ -488,7 +488,27 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)assetManager:(ARAssetManager *)manager didFailWithError:(NSError *)error forAsset:(ARAsset *)asset {
-	// TODO: What to do with the overlay/feature views?
+	// Find overlays that need this data
+	// TODO: Refactor
+	for (UIView *view in [overlayContainerView subviews]) {
+		if ([view conformsToProtocol:@protocol(ARAssetDataUser)]) {
+			id <ARAssetDataUser> user = (id <ARAssetDataUser>)view;
+			if ([[user assetIdentifiersForNeededData] containsObject:[asset identifier]]) {
+				[user setDataUnavailableForAssetIdentifier:[asset identifier]];
+			}
+		}
+	}
+	
+	// Find features that need this data
+	// TODO: Refactor
+	for (UIView *view in [featureContainerView subviews]) {
+		if ([view conformsToProtocol:@protocol(ARAssetDataUser)]) {
+			id <ARAssetDataUser> user = (id <ARAssetDataUser>)view;
+			if ([[user assetIdentifiersForNeededData] containsObject:[asset identifier]]) {
+				[user setDataUnavailableForAssetIdentifier:[asset identifier]];
+			}
+		}
+	}
 }
 
 #pragma mark ARSpatialStateManagerDelegate

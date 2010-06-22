@@ -44,4 +44,11 @@
  */
 - (void)useData:(NSData *)data forAssetIdentifier:(NSString *)identifier;
 
+/**
+ * Tells the receiver that no data is available for the given asset identifier. It is always possible that data becomes available later.
+ *
+ * @param identifier The asset identifier for which data is unavailable. May not be nil. Unknown asset identifiers are ignored.
+ */
+- (void)setDataUnavailableForAssetIdentifier:(NSString *)identifier;
+
 @end

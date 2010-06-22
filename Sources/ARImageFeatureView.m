@@ -104,8 +104,19 @@
 		UIImage *image = [UIImage imageWithData:data]; // imageWithData: returns nil when data is nil
 		if (data != nil && image == nil) {
 			DebugLog(@"Image could not be initialized from asset data");
+			[self showImageViewWithImage:[UIImage imageNamed:@"AssetFailed.png"]];
 		}
-		[self showImageViewWithImage:image];
+		else {
+			[self showImageViewWithImage:image];
+		}
+	}
+}
+
+- (void)setDataUnavailableForAssetIdentifier:(NSString *)identifier {
+	NSAssert(identifier != nil, @"Expected non-nil identifier.");
+	
+	if ([identifier isEqual:[feature assetIdentifier]]) {
+		[self showImageViewWithImage:[UIImage imageNamed:@"AssetFailed.png"]];
 	}
 }
 
