@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dimension>
+	<name>Rotterdam</name>
+	<radarRange>500</radarRange>
+	<relativeAltitude>true</relativeAltitude>
+	<refreshUrl>gamaray://finalist.github.com/iBetelgeuse/example-large.gddf</refreshUrl>
+	<refreshTime><validFor>5000</validFor></refreshTime>
+	<refreshDistance><validWithinRange>100</validWithinRange></refreshDistance>
+	<locations>
+		<location id="centralstation">
+			<lat>51.924125</lat>
+			<lon>4.470041</lon>
+			<alt>0</alt>
+		</location>
+		<location id="finalist-unused">
+			<lat>51.92348</lat>
+			<lon>4.469547</lon>
+			<alt>0</alt>
+		</location>
+	</locations>
+	<assets>
+		<asset id="betelgeuse-background">
+			<url>http://finalist.github.com/iBetelgeuse/background.jpg</url>
+		</asset>
+		<asset id="betelgeuse-icon">
+			<url>http://finalist.github.com/iBetelgeuse/icon.png</url>
+		</asset>
+	</assets>
+	<features>
+		<featureImg id="someImage">
+			<locationId>centralstation</locationId>
+			<onPress>dimension: gamaray://finalist.github.com/iBetelgeuse/example.gddf</onPress>
+			<assetId>betelgeuse-background</assetId>
+		</featureImg>
+		<featureTxt>
+			<location>
+				<lat>51.92348</lat>
+				<lon>4.469547</lon>
+				<alt>0</alt>
+			</location>
+			<xLoc>0</xLoc>
+			<yLoc>0</yLoc>
+			<zLoc>20</zLoc>
+			<anchor>BC</anchor>
+			<onPress>webpage: http://www.finalist.com/</onPress>
+			<showInRadar>true</showInRadar>
+			<text>Finalist</text>
+		</featureTxt>
+	</features>
+	<overlays>
+		<overlayImg>
+			<x>10</x>
+			<y>100</y>
+			<anchor>TL</anchor>
+			<assetId>betelgeuse-icon</assetId>
+		</overlayImg>
+		<overlayTxt>
+			<x>100</x>
+			<y>100</y>
+			<onPress>refresh</onPress>
+			<text>Refresh</text>
+			<width>100</width>
+		</overlayTxt>
+	</overlays>
+</dimension>

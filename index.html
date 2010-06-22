@@ -16,7 +16,7 @@
 				<li><a href="#ddf">Dimension Description Files</a></li>
 				<li><a href="#loading">Loading Dimensions</a></li>
 				<li><a href="#dynamic-dimensions">Dynamic Dimensions</a></li>
-				<li><a href="#arena">ARena</a></li>
+				<li><a href="#example">Example</a></li>
 				<li><a href="#betelgeuse">Differences with Betelgeuse for Android</a></li>
 				<li><a href="#contact">Feedback and Support</a></li>
 			</ul>
@@ -27,7 +27,7 @@
 			iBetelgeuse is an open source Augmented Reality (AR) browser for iPhone, designed to be compatible with <a href="http://github.com/finalist/betelgeuse"><em>Betelgeuse</em></a>, a fork of the <a href="http://opengamaray.sourceforge.net/"><em>Open Gamaray AR browser</em></a> available for Android. The browser loads a virtual world&ndash;called <em>dimension</em>&ndash;from the web, which contains text boxes and images that are positioned in this virtual world. This virtual world is then projected on the camera image to create an augmented reality. The user can look &quot;through&quot; the screen of their iPhone to see this augmented world, and move and rotate the device to look around.
 		</p>
 		<p>
-			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files below, or using a web based designer, called <a href="#arena"><em>ARena</em></a>.
+			This browser's focus is on interaction. Any text box or image that is displayed on the screen can be clicked, which can result in a new world being loaded or a webpage being opened. This allows highly interactive worlds to be made, such as tours, quizes, or games. Users can create their own worlds using the Dimension Description Files as described below, or using the web based <a href="#arena"><em>Betelgeuse designer</em></a>. This designer shows labels in the virtual world and shows their corresponding images when the user gets closer. This is only one example of the application of the (i)Betelgeuse browser however. With a <a href="#dynamic-dimensions">custom backend</a>, much more is possible!
 		</p>
 		
 		<h2 id="Definitions">Definitions</h2>
@@ -203,7 +203,7 @@
 				<td>&lt;validFor&gt;</td>
 				<td>float, &gt;= 0</td>
 				<td>0</td>
-				<td>The time interval&ndash;from the time at which the dimension was requested to the current time&ndash;after which the dimension will be reloaded. A value of 0 means that the dimension is never reloaded based on time.</td>
+				<td>The time interval in milliseconds&ndash;from the time at which the dimension was requested to the current time&ndash;after which the dimension will be reloaded. A value of 0 means that the dimension is never reloaded based on time.</td>
 			</tr>
 		</table>
 		
@@ -216,7 +216,7 @@
 				<td>&lt;validWithinRange&gt;</td>
 				<td>float, &gt;= 0</td>
 				<td>0</td>
-				<td>The distance&ndash;from the location where the dimension was requested to the current location of the device&ndash;after which the dimension will be reloaded. A value of 0 means that the dimension is never reloaded based on distance.</td>
+				<td>The distance in meters&ndash;from the location where the dimension was requested to the current location of the device&ndash;after which the dimension will be reloaded. A value of 0 means that the dimension is never reloaded based on distance.</td>
 			</tr>
 		</table>
 		
@@ -726,9 +726,75 @@
 			</tr>
 		</table>
 		
-		<h2 id="examples">Examples</h2>
-		
-		<h2 id="arena">ARena</h2>
+		<h2 id="example">Example</h2>
+		<p>
+			This is a large example showing most of the elements that can be used. You can leave out most options, which will then use the default values. The default values for optional elements are described in the <a href="ddf">section about DDFs</a> above. Note that, unfortunately, the place where this page is hosted (GitHub Pages) does not support HTTP POST requests, so loading this dimension directly from this server is not possible.
+		</p>
+		<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;dimension&gt;
+	&lt;name&gt;Rotterdam&lt;/name&gt;
+	&lt;radarRange&gt;500&lt;/radarRange&gt;
+	&lt;relativeAltitude&gt;true&lt;/relativeAltitude&gt;
+	&lt;refreshUrl&gt;gamaray://finalist.github.com/iBetelgeuse/example-large.gddf&lt;/refreshUrl&gt;
+	&lt;refreshTime&gt;&lt;validFor&gt;5000&lt;/validFor&gt;&lt;/refreshTime&gt;
+	&lt;refreshDistance&gt;&lt;validWithinRange&gt;100&lt;/validWithinRange&gt;&lt;/refreshDistance&gt;
+	&lt;locations&gt;
+		&lt;location id=&quot;centralstation&quot;&gt;
+			&lt;lat&gt;51.924125&lt;/lat&gt;
+			&lt;lon&gt;4.470041&lt;/lon&gt;
+			&lt;alt&gt;0&lt;/alt&gt;
+		&lt;/location&gt;
+		&lt;location id=&quot;finalist-unused&quot;&gt;
+			&lt;lat&gt;51.92348&lt;/lat&gt;
+			&lt;lon&gt;4.469547&lt;/lon&gt;
+			&lt;alt&gt;0&lt;/alt&gt;
+		&lt;/location&gt;
+	&lt;/locations&gt;
+	&lt;assets&gt;
+		&lt;asset id=&quot;betelgeuse-background&quot;&gt;
+			&lt;url&gt;http://finalist.github.com/iBetelgeuse/background.jpg&lt;/url&gt;
+		&lt;/asset&gt;
+		&lt;asset id=&quot;betelgeuse-icon&quot;&gt;
+			&lt;url&gt;http://finalist.github.com/iBetelgeuse/icon.png&lt;/url&gt;
+		&lt;/asset&gt;
+	&lt;/assets&gt;
+	&lt;features&gt;
+		&lt;featureImg id=&quot;someImage&quot;&gt;
+			&lt;locationId&gt;centralstation&lt;/locationId&gt;
+			&lt;onPress&gt;dimension: gamaray://finalist.github.com/iBetelgeuse/example.gddf&lt;/onPress&gt;
+			&lt;assetId&gt;betelgeuse-background&lt;/assetId&gt;
+		&lt;/featureImg&gt;
+		&lt;featureTxt&gt;
+			&lt;location&gt;
+				&lt;lat&gt;51.92348&lt;/lat&gt;
+				&lt;lon&gt;4.469547&lt;/lon&gt;
+				&lt;alt&gt;0&lt;/alt&gt;
+			&lt;/location&gt;
+			&lt;xLoc&gt;0&lt;/xLoc&gt;
+			&lt;yLoc&gt;0&lt;/yLoc&gt;
+			&lt;zLoc&gt;20&lt;/zLoc&gt;
+			&lt;anchor&gt;BC&lt;/anchor&gt;
+			&lt;onPress&gt;webpage: http://www.finalist.com/&lt;/onPress&gt;
+			&lt;showInRadar&gt;true&lt;/showInRadar&gt;
+			&lt;text&gt;Finalist&lt;/text&gt;
+		&lt;/featureTxt&gt;
+	&lt;/features&gt;
+	&lt;overlays&gt;
+		&lt;overlayImg&gt;
+			&lt;x&gt;10&lt;/x&gt;
+			&lt;y&gt;100&lt;/y&gt;
+			&lt;anchor&gt;TL&lt;/anchor&gt;
+			&lt;assetId&gt;betelgeuse-icon&lt;/assetId&gt;
+		&lt;/overlayImg&gt;
+		&lt;overlayTxt&gt;
+			&lt;x&gt;100&lt;/x&gt;
+			&lt;y&gt;100&lt;/y&gt;
+			&lt;onPress&gt;refresh&lt;/onPress&gt;
+			&lt;text&gt;Refresh&lt;/text&gt;
+			&lt;width&gt;100&lt;/width&gt;
+		&lt;/overlayTxt&gt;
+	&lt;/overlays&gt;
+&lt;/dimension&gt;</pre>
 		
 		<h2 id="betelgeuse">Differences with Betelgeuse for Android</h2>
 		<p>
