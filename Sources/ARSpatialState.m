@@ -30,20 +30,20 @@
 #pragma mark NSObject
 
 - (id)initWithLocationAvailable:(BOOL)isLocationAvailable 
-						 recent:(BOOL)isLocationRecent 
+						 reliable:(BOOL)isLocationRecent 
 					   latitude:(CLLocationDegrees)aLatitude 
 					  longitude:(CLLocationDegrees)aLongitude
 					   altitude:(CLLocationDistance)anAltitude 
 		   orientationAvailable:(BOOL)isOrientationAvailable 
-						 recent:(BOOL)isOrientationRecent 
+					   reliable:(BOOL)isOrientationRecent 
 	 ENUToDeviceSpaceQuaternion:(ARQuaternion)anENUToDeviceSpaceQuaternion
 			EFToECEFSpaceOffset:(ARPoint3D)anEFToECEFSpaceOffset 
 					  timestamp:(NSDate *)aTimestamp {
 	if (self = [super init]) {
 		flags.locationAvailable = isLocationAvailable;
-		flags.locationRecent = isLocationRecent;
+		flags.locationReliable = isLocationRecent;
 		flags.orientationAvailable = isOrientationAvailable;
-		flags.orientationRecent = isOrientationRecent;
+		flags.orientationReliable = isOrientationRecent;
 		latitude = aLatitude;
 		longitude = aLongitude;
 		altitude = anAltitude;
@@ -67,16 +67,16 @@
 	return flags.locationAvailable;
 }
 
-- (BOOL)isLocationRecent {
-	return flags.locationRecent;
+- (BOOL)isLocationReliable {
+	return flags.locationReliable;
 }
 
 - (BOOL)isOrientationAvailable {
 	return flags.orientationAvailable;
 }
 
-- (BOOL)isOrientationRecent {
-	return flags.orientationRecent;
+- (BOOL)isOrientationReliable {
+	return flags.orientationReliable;
 }
 
 @synthesize timestamp;

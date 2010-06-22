@@ -48,9 +48,9 @@
 	
 	struct {
 		BOOL locationAvailable:1;
-		BOOL locationRecent:1;
+		BOOL locationReliable:1;
 		BOOL orientationAvailable:1;
-		BOOL orientationRecent:1;
+		BOOL orientationReliable:1;
 		BOOL haveUpDirectionInDeviceSpace:1;
 		BOOL haveNorthDirectionInDeviceSpace:1;
 		BOOL haveLocationInECEFSpace:1;
@@ -62,9 +62,9 @@
 }
 
 @property(nonatomic, readonly, getter=isLocationAvailable) BOOL locationAvailable;
-@property(nonatomic, readonly, getter=isLocationRecent) BOOL locationRecent;
+@property(nonatomic, readonly, getter=isLocationReliable) BOOL locationReliable;
 @property(nonatomic, readonly, getter=isOrientationAvailable) BOOL orientationAvailable;
-@property(nonatomic, readonly, getter=isOrientationRecent) BOOL orientationRecent;
+@property(nonatomic, readonly, getter=isOrientationReliable) BOOL orientationReliable;
 @property(nonatomic, readonly, retain) NSDate *timestamp;
 
 @property(nonatomic, readonly, retain) ARLocation *location;
@@ -90,12 +90,12 @@
 @property(nonatomic, readonly) ARPoint3D EFToECEFSpaceOffset;
 
 - (id)initWithLocationAvailable:(BOOL)locationAvailable
-						 recent:(BOOL)locationRecent
+						 reliable:(BOOL)locationRecent
 					   latitude:(CLLocationDegrees)latitude
 					  longitude:(CLLocationDegrees)longitude
 					   altitude:(CLLocationDistance)altitude
 		   orientationAvailable:(BOOL)orientationAvailable
-						 recent:(BOOL)isOrientationRecent
+					   reliable:(BOOL)isOrientationRecent
 	 ENUToDeviceSpaceQuaternion:(ARQuaternion)anENUToDeviceSpaceQuaternion
 			EFToECEFSpaceOffset:(ARPoint3D)EFToECEFSpaceOffset
 					  timestamp:(NSDate *)timestamp;

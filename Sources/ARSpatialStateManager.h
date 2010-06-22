@@ -45,6 +45,7 @@
 #endif
 
 	BOOL locationAvailable;
+	BOOL locationReliable;
 	NSTimeInterval locationTimeIntervalSinceReferenceDate;
 	BOOL upDirectionAvailable;
 	NSTimeInterval upDirectionTimeIntervalSinceReferenceDate;

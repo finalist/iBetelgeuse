@@ -30,9 +30,10 @@
 
 
 #define ACCELEROMETER_UPDATE_FREQUENCY 30 // Hz
-#define LOCATION_EXPIRATION 60 // seconds
+#define LOCATION_EXPIRATION 10 // seconds
 #define UP_DIRECTION_EXPIRATION 1 // seconds
 #define NORTH_DIRECTION_EXPIRATION 1 // seconds
+#define LOCATION_MINIMUM_HORIZONTAL_ACCURACY 100 // meters
 
 
 @interface ARSpatialStateManager () <UIAccelerometerDelegate, CLLocationManagerDelegate>
@@ -44,7 +45,7 @@
 #endif
 
 - (void)updateOrientation;
-- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude;
+- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable;
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection;
 - (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination;
 
@@ -117,13 +118,15 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newRawLocation fromLocation:(CLLocation *)previousRawLocation {
 	// Ignore invalid or old locations
-	if (signbit([newRawLocation horizontalAccuracy]) || [[newRawLocation timestamp] timeIntervalSinceNow] < -LOCATION_EXPIRATION) {
+	if (signbit([newRawLocation horizontalAccuracy]) || [[newRawLocation timestamp] timeIntervalSinceNow] < -LOCATION_EXPIRATION || [newRawLocation horizontalAccuracy] > LOCATION_MINIMUM_HORIZONTAL_ACCURACY) {
 		return;
 	}
 	
 	DebugLog(@"Got location location fix: %@", newRawLocation);
+	//DebugLog(@"%f %f", [newRawLocation altitude], [newRawLocation verticalAccuracy]);
 	
-	[self updateWithRawLatitude:[newRawLocation coordinate].latitude longitude:[newRawLocation coordinate].longitude altitude:[newRawLocation altitude]];
+	// Note: when verticalAccuracy < 0 we probably don't have a GPS fix
+	[self updateWithRawLatitude:[newRawLocation coordinate].latitude longitude:[newRawLocation coordinate].longitude altitude:[newRawLocation altitude] reliable:[newRawLocation verticalAccuracy] >= 0];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
@@ -275,8 +278,9 @@
 	[delegate spatialStateManagerDidUpdate:self];
 }
 
-- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude {
+- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable {
 	locationAvailable = YES;
+	locationReliable = reliable;
 	locationTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
 	
 	latitude = rawLatitude;
@@ -321,12 +325,12 @@
 		BOOL northDirectionRecent = (timeIntervalSinceReferenceDate - northDirectionTimeIntervalSinceReferenceDate) <= NORTH_DIRECTION_EXPIRATION;
 		
 		spatialState = [[ARSpatialState alloc] initWithLocationAvailable:locationAvailable
-																  recent:locationRecent
+																reliable:(locationReliable && locationRecent)
 																latitude:latitude
 															   longitude:longitude
 																altitude:altitude
 													orientationAvailable:(upDirectionAvailable && northDirectionAvailable)
-																  recent:(upDirectionRecent && northDirectionRecent)
+																  reliable:(upDirectionRecent && northDirectionRecent)
 											  ENUToDeviceSpaceQuaternion:ENUToDeviceSpaceQuaternion
 													 EFToECEFSpaceOffset:EFToECEFSpaceOffset
 															   timestamp:timestamp];

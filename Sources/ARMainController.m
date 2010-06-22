@@ -838,8 +838,8 @@ CGImageRef UIGetScreenImage(void);
 - (void)updateIfNeeded {
 	ARSpatialState *spatialState = [spatialStateManager spatialState];
 	[dimensionWarningView setHidden:[self dimension] != nil];
-	[locationWarningView setHidden:[spatialState isLocationAvailable]]; // Note: a location not being recent is not necessarily bad when the user is not moving
-	[orientationWarningView setHidden:[spatialState isOrientationAvailable] && [spatialState isOrientationRecent]];
+	[locationWarningView setHidden:[spatialState isLocationAvailable] && [spatialState isLocationReliable]];
+	[orientationWarningView setHidden:[spatialState isOrientationAvailable] && [spatialState isOrientationReliable]];
 	
 	if (needsUpdate) {
 		needsUpdate = NO;
