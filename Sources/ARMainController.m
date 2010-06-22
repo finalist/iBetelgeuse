@@ -422,6 +422,8 @@ CGImageRef UIGetScreenImage(void);
 	
 	// Forget the dimension request
 	[self setDimensionRequest:nil];
+	
+	dimensionReliable = YES;
 
 	// Cancel loading any assets before we start reloading them in the create... methods below
 	[[self assetManagerIfAvailable] cancelLoadingAllAssets];
@@ -445,13 +447,12 @@ CGImageRef UIGetScreenImage(void);
 - (void)dimensionRequest:(ARDimensionRequest *)request didFailWithError:(NSError *)error {
 	// Forget the dimension request
 	[self setDimensionRequest:nil];
-	
-	// Set the refresh time, making sure it isn't too soon after this error
-	[self setRefreshTime:[NSDate dateWithTimeIntervalSinceNow:MAX(MINIMUM_REFRESH_TIME_AFTER_ERROR, [[self dimension] refreshTime])]];
 
+	dimensionReliable = NO;
+	
 	[self startRefreshingOnTime];
 	[self startRefreshingOnDistance];
-	
+
 	UIAlertView *alert = [[UIAlertView alloc] init];
 	[alert setDelegate:self];
 	[alert setTitle:NSLocalizedString(@"Could not update dimension", @"main controller alert title")];
@@ -837,7 +838,7 @@ CGImageRef UIGetScreenImage(void);
 
 - (void)updateIfNeeded {
 	ARSpatialState *spatialState = [spatialStateManager spatialState];
-	[dimensionWarningView setHidden:[self dimension] != nil];
+	[dimensionWarningView setHidden:[self dimension] != nil && dimensionReliable];
 	[locationWarningView setHidden:[spatialState isLocationAvailable] && [spatialState isLocationReliable]];
 	[orientationWarningView setHidden:[spatialState isOrientationAvailable] && [spatialState isOrientationReliable]];
 	
@@ -874,7 +875,7 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)startRefreshingOnTime {
-	if (![[self dimension] refreshURL] || [[self dimension] refreshTime] == ARDimensionRefreshTimeInfinite) {
+	if (!dimensionReliable || ![[self dimension] refreshURL] || [[self dimension] refreshTime] == ARDimensionRefreshTimeInfinite) {
 		[self setRefreshTimer:nil];
 		
 		DebugLog(@"Dimension refresh timer not scheduled");
@@ -892,7 +893,7 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)startRefreshingOnDistance {
-	if (![[self dimension] refreshURL] || [[self dimension] refreshDistance] == ARDimensionRefreshDistanceInfinite) {
+	if (!dimensionReliable || ![[self dimension] refreshURL] || [[self dimension] refreshDistance] == ARDimensionRefreshDistanceInfinite) {
 		[self setRefreshingOnDistance:NO];
 	}
 	else {

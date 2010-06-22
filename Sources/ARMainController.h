@@ -33,6 +33,7 @@
 @private
 	NSURL *pendingDimensionURL;
 	ARDimension *dimension;
+	BOOL dimensionReliable;
 	UIImagePickerController *cameraViewController;
 	ARFeatureContainerView *featureContainerView; // Non-retained instance variable
 	AROverlayContainerView *overlayContainerView; // Non-retained instance variable
