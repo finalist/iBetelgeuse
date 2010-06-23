@@ -29,9 +29,6 @@
 // The ARAssertClassInvariant macro can be used to assert the class invariant holds within a class implementation
 #define ARAssertClassInvariant() [self ar_assertClassInvariantHolds]
 
-// The ARAssertClassInvariant macro can be used to assert the class invariant of a certain object
-#define ARAssertClassInvariantOfObject(obj) [obj ar_assertClassInvariantHolds]
-
 // The ARSuperClassInvariant can be used to get the super class invariant within a class implementation
 #define ARSuperClassInvariant [super ar_classInvariant]
 
@@ -48,7 +45,6 @@
 #else
 
 #define ARAssertClassInvariant()
-#define ARAssertClassInvariantOfObject(obj)
 #define ARSuperClassInvariant
 #define ARDefineClassInvariant(cond)
 

@@ -22,7 +22,6 @@
 
 #import "ARAsset.h"
 #import "TCXMLParserDelegate+Protected.h"
-#import "NSObject+ARClassInvariant.h"
 
 
 @interface ARAsset ()
@@ -47,8 +46,6 @@
 
 @implementation ARAsset
 
-ARDefineClassInvariant(ARSuperClassInvariant && URL != nil);
-
 @synthesize identifier, format, URL;
 
 #pragma mark NSObject
@@ -60,7 +57,6 @@ ARDefineClassInvariant(ARSuperClassInvariant && URL != nil);
 		format = [aFormat copy];
 		URL = [aURL retain];
 	}
-	ARAssertClassInvariant();
 	return self;
 }
 
@@ -80,6 +76,14 @@ ARDefineClassInvariant(ARSuperClassInvariant && URL != nil);
 	ARAssetXMLParserDelegate *delegate = [[ARAssetXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
+}
+
+- (void)setURL:(NSURL *)aURL {
+	NSAssert(aURL != nil, @"Expected non-nil URL.");
+	
+	[aURL retain];
+	[URL release];
+	URL = aURL;
 }
 
 @end
@@ -123,7 +127,6 @@ ARDefineClassInvariant(ARSuperClassInvariant && URL != nil);
 	if (![asset identifier] || ![asset URL]) {
 		return nil;
 	} else {
-		ARAssertClassInvariantOfObject(asset);
 		return asset;
 	}
 }

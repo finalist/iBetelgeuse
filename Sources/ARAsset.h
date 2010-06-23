@@ -66,7 +66,7 @@
 @property(nonatomic, readonly, copy) NSString *format;
 
 /**
- * The URL of the receiver.
+ * The URL of the receiver, which may be nil initially but may not be set to a non-nil value.
  */
 @property(nonatomic, readonly, copy) NSURL *URL;
 

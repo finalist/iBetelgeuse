@@ -23,7 +23,6 @@
 #import "ARImageFeature.h"
 #import "ARFeature+Protected.h"
 #import "TCXMLParserDelegate+Protected.h"
-#import "NSObject+ARClassInvariant.h"
 
 
 /**
@@ -46,8 +45,6 @@
 
 @implementation ARImageFeature
 
-ARDefineClassInvariant(ARSuperClassInvariant && assetIdentifier != nil);
-
 @synthesize assetIdentifier;
 
 #pragma mark NSObject
@@ -66,13 +63,6 @@ ARDefineClassInvariant(ARSuperClassInvariant && assetIdentifier != nil);
 	ARImageFeatureXMLParserDelegate *delegate = [[ARImageFeatureXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
-}
-
-- (void)setAssetIdentifier:(NSString *)aIdentifier {
-	NSAssert(aIdentifier != nil, @"Expected non-nil identifier.");
-	
-	[assetIdentifier release];
-	assetIdentifier = [aIdentifier copy];
 }
 
 @end
@@ -110,9 +100,7 @@ ARDefineClassInvariant(ARSuperClassInvariant && assetIdentifier != nil);
 
 - (id)parsingDidEndWithElementContent:(NSString *)content {
 	if ([imageFeature assetIdentifier] != nil) {
-		id result = [super parsingDidEndWithElementContent:content];
-		ARAssertClassInvariantOfObject(result);
-		return result;		
+		return [super parsingDidEndWithElementContent:content];
 	}
 	else {
 		return nil;

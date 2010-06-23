@@ -57,6 +57,13 @@ ARDefineClassInvariant(ARSuperClassInvariant && (width == ARTextOverlayWidthUnde
 
 #pragma mark NSObject
 
+- (id)init {
+	if (self = [super init]) {
+		ARAssertClassInvariant();
+	}
+	return self;
+}
+
 - (void)dealloc {
 	[text release];
 	
@@ -75,8 +82,11 @@ ARDefineClassInvariant(ARSuperClassInvariant && (width == ARTextOverlayWidthUnde
 
 - (void)setWidth:(CGFloat)aWidth {
 	NSAssert(aWidth == ARTextOverlayWidthUndefined || aWidth > 0, @"Expected undefined or positive width.");
+	ARAssertClassInvariant();
 	
 	width = aWidth;
+	
+	ARAssertClassInvariant();
 }
 
 @end
@@ -125,9 +135,7 @@ ARDefineClassInvariant(ARSuperClassInvariant && (width == ARTextOverlayWidthUnde
 
 - (id)parsingDidEndWithElementContent:(NSString *)content {
 	if ([textOverlay text] != nil && widthSet) {
-		id result = [super parsingDidEndWithElementContent:content];
-		ARAssertClassInvariantOfObject(result);
-		return result;
+		return [super parsingDidEndWithElementContent:content];
 	}
 	else {
 		return nil;

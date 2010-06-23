@@ -131,8 +131,9 @@ ARDefineClassInvariant(ARSuperClassInvariant && refreshTime >= 0 && refreshDista
 - (id)init {
 	if (self = [super init]) {
 		radarRadius = DEFAULT_RADAR_RADIUS;
+		
+		ARAssertClassInvariant();
 	}
-	ARAssertClassInvariant();
 	return self;
 }
 
@@ -457,8 +458,7 @@ ARDefineClassInvariant(ARSuperClassInvariant && refreshTime >= 0 && refreshDista
 	[dimension setOverlays:overlays];
 	
 	[dimension resolveIdentifiers];
-	
-	ARAssertClassInvariantOfObject(dimension);
+
 	return dimension;
 }
 
