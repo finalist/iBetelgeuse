@@ -41,6 +41,8 @@
 /**
  * Starts parsing an overlay using the given XML parser and start element. Notifies the given target after the end element has been parsed, passing the result as the first argument which is either an instance of the receiver or nil when parsing has failed.
  *
+ * Subclasses must implement this method.
+ *
  * @param parser Must be non-nil.
  * @param element The name of the start element. Must be non-nil.
  * @param attributes The attributes of the start element.
@@ -50,9 +52,26 @@
  */
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo;
 
+/**
+ * The identifier of the receiver, may be nil.
+ */
 @property(nonatomic, readonly, copy) NSString *identifier;
+
+/**
+ * The origin of the receiver. Determines the location in the parent coordinate space relative to the anchor.
+ */
 @property(nonatomic, readonly) CGPoint origin;
-@property(nonatomic, readonly) CGPoint anchor;
+
+/**
+ * The anchor of the receiver.
+ *
+ * @see #origin
+ */
+@property(nonatomic, readonly) ARAnchor anchor;
+
+/**
+ * The action that should be executed when the user taps this overlay, may be nil.
+ */
 @property(nonatomic, readonly, retain) ARAction *action;
 
 @end

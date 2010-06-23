@@ -70,7 +70,7 @@
 #pragma mark UIView
 
 - (CGSize)sizeThatFits:(CGSize)size {
-	if ([overlay width]) {
+	if ([overlay width] != ARTextOverlayWidthUndefined) {
 		CGFloat targetWidth = [overlay width] - 2.0 * HORIZONTAL_PADDING;
 		size = [label sizeThatFits:CGSizeMake(targetWidth, HUGE_VAL)];
 		size.width = targetWidth;

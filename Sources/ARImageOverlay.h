@@ -31,6 +31,9 @@
 	NSString *assetIdentifier;
 }
 
+/**
+ * The identifier of the asset that represents the image, may not be nil.
+ */
 @property(nonatomic, readonly, copy) NSString *assetIdentifier;
 
 @end
