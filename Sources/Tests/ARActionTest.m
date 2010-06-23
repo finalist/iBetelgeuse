@@ -31,6 +31,10 @@
 - (void)setUp {
 }
 
+- (void)testNil {
+	GHAssertNil([[ARAction alloc] initWithString:nil], nil);
+}
+
 - (void)testRefresh {
 	ARAction *action = [[ARAction alloc] initWithString:@"refresh"];
 	

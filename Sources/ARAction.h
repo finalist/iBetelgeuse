@@ -23,6 +23,9 @@
 #import <Foundation/Foundation.h>
 
 
+/**
+ * Describes the type of an ARAction.
+ */
 typedef enum {
 	ARActionTypeRefresh,
 	ARActionTypeURL,
@@ -39,22 +42,28 @@ typedef enum {
 	NSURL *URL;
 }
 
-@property(nonatomic, readonly) ARActionType type;
-@property(nonatomic, readonly) NSURL *URL;
-
 /**
  * Initialize with a string formatted as one of the following:
  *
  * "<action>"
  * "<action>: <URL>"
  *
- * <action> may be one of: refresh, webpage, dimension.
- * If <action> is webpage or dimension, not specifying a URL results in nil.
- * If the string is formatted differently, this function returns nil.
+ * <action> may be one of: refresh, webpage, dimension. If <action> is webpage or dimension, not specifying a URL results in nil.
  *
- * @param string String to be parsed; may not be nil.
- * @return self may be nil
+ * @param string String to be parsed, may be nil.
+ *
+ * @return The receiver, or nil if the string was nil or incorrectly formatted.
  */
 - (ARAction *)initWithString:(NSString *)string;
+
+/**
+ * The type of the receiver.
+ */
+@property(nonatomic, readonly) ARActionType type;
+
+/**
+ * The URL of the receiver, which may be nil if type equals ARActionTypeRefresh, and non-nil otherwise.
+ */
+@property(nonatomic, readonly) NSURL *URL;
 
 @end

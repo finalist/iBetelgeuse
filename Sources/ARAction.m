@@ -21,9 +21,15 @@
 //
 
 #import "ARAction.h"
+#import "NSObject+ARClassInvariant.h"
 
 
 @implementation ARAction
+
+ARDefineClassInvariant(ARSuperClassInvariant &&
+					   ((type == ARActionTypeRefresh) ||
+						(type == ARActionTypeDimension && URL != nil) ||
+						(type == ARActionTypeURL && URL != nil)));
 
 @synthesize type, URL;
 
@@ -38,8 +44,6 @@
 #pragma mark ARAction
 
 - (ARAction *)initWithString:(NSString *)string {
-	NSAssert(string != nil, @"Expected non-nil string.");
-	
 	if (!(self = [super init])) {
 		return nil;
 	}
@@ -78,6 +82,7 @@
 		return nil;
 	}
 	
+	ARAssertClassInvariant();
 	return self;
 }
 
