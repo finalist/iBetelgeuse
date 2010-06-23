@@ -11,5 +11,14 @@
 		<key>imagePlaneHeight</key>
 		<real>0.00358</real>
 	</dict>
+	<key>iPhone3,1</key>
+	<dict>
+		<key>focalLength</key>
+		<real>0.00385</real>
+		<key>imagePlaneWidth</key>
+		<real>0.0034</real>
+		<key>imagePlaneHeight</key>
+		<real>0.00454</real>
+	</dict>
 </dict>
 </plist>
