@@ -43,7 +43,7 @@ ARQuaternion ARQuaternionWeightedSum(int n, const ARQuaternion quaternions[], co
 // Unlike in the example code, this inverts vPerp when costheta < 0 (to make quaternions work properly).
 // Assumes sum of weights is 1.
 // Assumes initialEstimate to be unit length
-ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuaternion quaternions[], const double weights[], ARQuaternion initialEstimate, double tolerance, int maxIterationCount) 
+ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuaternion quaternions[], const double weights[], ARQuaternion initialEstimate, double errorTolerance, int maxIterationCount) 
 {
 	// Based on http://math.ucsd.edu/~sbuss/ResearchWeb/spheremean/
 	// Samuel R. Buss and Jay Fillmore.
@@ -93,7 +93,7 @@ ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuatern
 		xVec = ARQuaternionNormalize(xVec);
 		
 		double error = ARQuaternionElementsMaxAbs(ARQuaternionSubtract(xVec, xVecOld));
-		if (error <= tolerance) {
+		if (error <= errorTolerance) {
 			break;
 		}
 	}

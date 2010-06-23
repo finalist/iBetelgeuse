@@ -172,7 +172,7 @@ static inline BOOL ARQuaternionEquals(ARQuaternion a, ARQuaternion b) {
 }
 
 static inline BOOL ARQuaternionEqualsWithAccuracy(ARQuaternion a, ARQuaternion b, double accuracy) {
-	if (a.w * b.w < 0) {
+	if (ARQuaternionDotProduct(a, b) < 0) {
 		b = ARQuaternionNegate(b);
 	}
 	ARQuaternion difference = ARQuaternionSubtract(a, b);
@@ -205,7 +205,7 @@ static inline ARQuaternion ARQuaternionSLERP(ARQuaternion a, ARQuaternion b, dou
 	ARQuaternion result;
 	
 	// Calculate angle between the quaternions
-	double cosAngle = a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
+	double cosAngle = ARQuaternionDotProduct(a, b);
 	if (cosAngle < 0) {
 		b = ARQuaternionNegate(b);
 		cosAngle = -cosAngle;
@@ -229,10 +229,8 @@ static inline ARQuaternion ARQuaternionNLERP(ARQuaternion a, ARQuaternion b, dou
 	// http://www.allegro.cc/forums/thread/599059
 	ARQuaternion result;
 	
-	double cosAngle = a.w * b.w + a.x * b.x + a.y * b.y + a.z * b.z;
-	if (cosAngle < 0) {
+	if (ARQuaternionDotProduct(a, b) < 0) {
 		b = ARQuaternionNegate(b);
-		cosAngle = -cosAngle;
 	}
 	
 	result = ARQuaternionAdd(ARQuaternionMultiplyByScalar(a, 1. - t), ARQuaternionMultiplyByScalar(b, t));
@@ -302,5 +300,5 @@ static inline ARQuaternion ARQuaternionRotateInDirection(ARQuaternion x, ARQuate
 }
 
 ARQuaternion ARQuaternionWeightedSum(int n, const ARQuaternion quaternions[], const double weights[]);
-ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuaternion quaternions[], const double weights[], ARQuaternion initialEstimate, double tolerance, int maxIterationCount);
+ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuaternion quaternions[], const double weights[], ARQuaternion initialEstimate, double errorTolerance, int maxIterationCount);
 ARQuaternion ARQuaternionSphericalWeightedAverage(int n, const ARQuaternion quaternions[], const double weights[], double errorTolerance, int maxIterationCount);
