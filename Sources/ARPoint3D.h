@@ -21,6 +21,9 @@
 //
 
 
+/**
+ * A 3D point.
+ */
 typedef struct {
 	double x;
 	double y;
@@ -28,6 +31,9 @@ typedef struct {
 } ARPoint3D;
 
 
+/**
+ * The indices of each of the coordinates.
+ */
 typedef enum {
 	ARPoint3DCoordinateX = 0,
 	ARPoint3DCoordinateY,
@@ -35,9 +41,19 @@ typedef enum {
 } ARPoint3DCoordinate;
 
 
+/**
+ * A point with all coordinates set to 0.
+ */
 const ARPoint3D ARPoint3DZero;
 
 
+/**
+ * Create a point based on its coordinates.
+ * @param x the x coordinate.
+ * @param y the y coordinate.
+ * @param z the z coordinate.
+ * @return the constructed point.
+ */
 static inline ARPoint3D ARPoint3DCreate(double x, double y, double z) {
 	ARPoint3D result = {x, y, z};
 	return result;
@@ -47,7 +63,6 @@ static inline ARPoint3D ARPoint3DCreate(double x, double y, double z) {
  * Determines whether two points represent the same real value.
  * No epsilon is used, so use caution when applying to values that may
  * be affected by floating point errors.
- *
  * @param a first point to compare
  * @param a second point to compare
  * @return YES if the points are equal, NO otherwise.
@@ -61,7 +76,6 @@ static inline BOOL ARPoint3DEquals(ARPoint3D a, ARPoint3D b) {
 
 /**
  * Determines whether two points represent the same real value, with a fixed maximum difference for each component.
- *
  * @param a first point to compare
  * @param a second point to compare
  * @param the maximal difference between each element. 
@@ -74,12 +88,24 @@ static inline BOOL ARPoint3DEqualsWithAccuracy(ARPoint3D a, ARPoint3D b, double 
 		abs(a.z == b.z) <= accuracy;
 }
 
+/**
+ * Get a coordinate by its index.
+ * @param point the point.
+ * @param coordinate the index of the coordinate.
+ * @return the value of the coordinate.
+ */
 static inline double ARPoint3DGetCoordinate(ARPoint3D point, ARPoint3DCoordinate coordinate) {
 	NSCAssert(coordinate >= 0 && coordinate <= 2, @"Unexpected coordinate.");
 	
 	return ((double *)&point)[coordinate];
 }
 
+/**
+ * Set a point's coordinate by its index.
+ * @param point the point.
+ * @param coordinate the index of the coordinate.
+ * @param value the new value of the coordinate.
+ */
 static inline void ARPoint3DSetCoordinate(ARPoint3D *point, ARPoint3DCoordinate coordinate, double value) {
 	NSCAssert(coordinate >= 0 && coordinate <= 2, @"Unexpected coordinate.");
 	
@@ -88,7 +114,6 @@ static inline void ARPoint3DSetCoordinate(ARPoint3D *point, ARPoint3DCoordinate 
 
 /**
  * Computes the dot product of a and b.
- * 
  * @param a first point
  * @param b second point
  * @param The result of "a <dot> b".
@@ -103,7 +128,6 @@ static inline double ARPoint3DDotProduct(ARPoint3D a, ARPoint3D b) {
 /**
  * Computes the cross product of a and b, assuming a right handed coordinate
  * system.
- * 
  * @param a first point
  * @param b second point
  * @param The result of "a <cross> b".
@@ -119,7 +143,6 @@ static inline ARPoint3D ARPoint3DCrossProduct(ARPoint3D a, ARPoint3D b) {
 
 /**
  * Computes the length of the vector from the origin to this point.
- * 
  * @param the point
  * @return the length of the vector "|point|"
  */
@@ -128,8 +151,7 @@ static inline double ARPoint3DLength(ARPoint3D point) {
 }
 
 /**
- * Adds the x, y, and z components of a point to another point.
- * 
+ * Adds the x, y, and z components of one point to another point.
  * @param a first point
  * @param b second point
  * @return the resulting point "a + b"
@@ -144,8 +166,7 @@ static inline ARPoint3D ARPoint3DAdd(ARPoint3D a, ARPoint3D b) {
 }
 
 /**
- * Subtracts the x, y, and z components of a point from another point.
- * 
+ * Subtracts the x, y, and z components of one point from another point.
  * @param a first point
  * @param b second point
  * @return the resulting point "a - b"
@@ -161,7 +182,6 @@ static inline ARPoint3D ARPoint3DSubtract(ARPoint3D a, ARPoint3D b) {
 
 /**
  * Multiplies the x, y, and z components of a point by a scalar.
- * 
  * @param point the vector to scale
  * @param scale the scale factor
  * @return the resulting point "a * scale"
@@ -178,7 +198,6 @@ static inline ARPoint3D ARPoint3DScale(ARPoint3D point, double scale) {
 /**
  * Normalize the vector to unit length. This is equivalent to scaling with a
  * factor of 1/|point|
- * 
  * @param point the point to be normalized
  * @return the normalized point
  */
