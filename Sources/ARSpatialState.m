@@ -107,8 +107,6 @@
 	return ARPoint3DSubtract([self locationInECEFSpace], [self EFToECEFSpaceOffset]);
 }
 
-// In range [-pi..pi]
-// The bearing increases in a clockwise direction (90 degrees = east)
 - (CLLocationDegrees)bearing {
 	double bearing;
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
@@ -122,16 +120,12 @@
 	return bearing;
 }
 
-// In range [-pi..pi]
-// The pitch is positive for upwards angles (90 degrees = straight up, towards the sky)
 - (CLLocationDegrees)pitch {
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
 	double pitch = asin(-transform.m33);
 	return pitch;
 }
 
-// In range [-pi..pi]
-// The pitch is positive for a counter-clockwise orientation (0 degrees = top of the device points towards the sky; 90 degrees = top of the device points left)
 - (CLLocationDegrees)roll {
 	double roll;
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
