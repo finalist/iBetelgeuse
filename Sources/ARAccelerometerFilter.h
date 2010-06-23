@@ -24,6 +24,12 @@
 #import "ARPoint3DFilter.h"
 
 
+/**
+ * The filter that is used for filtering accelerometer data. Note that most of
+ * the actual filtering is actually done when the quaternion is constructed.
+ * This filter only delays the accelerometer signal slightly, because it seems
+ * to be slightly ahead on the compass.
+ */
 @interface ARAccelerometerFilter : ARPoint3DFilter {
 	ARPoint3DFilter *delayFilter;
 }

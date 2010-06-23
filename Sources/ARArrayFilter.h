@@ -24,13 +24,30 @@
 #import "ARFilter.h"
 
 
+/**
+ * This class is used to filter an array of doubles, typically an ARQuaternion
+ * or ARPoint3D.
+ */
 @interface ARArrayFilter : NSObject {
 @private
 	int size;
 	ARFilter **filters;
 }
 
+/**
+ * Initialize an array filter.
+ * @param aSize the number of elements in each array to be filtered.
+ * @param aFactory the factory that constructs a filter for each element.
+ * @return the filter.
+ */
 - (id)initWithSize:(int)aSize factory:(ARFilterFactory *)aFactory;
+
+/**
+ * Filter an array of doubles.
+ * @param input the input value array.
+ * @param output the output value array
+ * @param aTimestamp the time at which this sample was determined.
+ */
 - (void)filterWithInputArray:(ARFilterValue *)input outputArray:(ARFilterValue *)output timestamp:(NSTimeInterval)aTimestamp;
 
 @end
