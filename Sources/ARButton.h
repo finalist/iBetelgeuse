@@ -26,6 +26,4 @@
 @interface ARButton : UIButton {
 }
 
-- (id)init;
-
 @end
