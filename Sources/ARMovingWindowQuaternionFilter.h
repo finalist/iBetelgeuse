@@ -24,6 +24,10 @@
 #include "ARQuaternionFilter.h"
 
 
+/**
+ * This is an abstract filter class, which implements a moving window that can
+ * be used by child classes to access a fixed number of previous inputs.
+ */
 @interface ARMovingWindowQuaternionFilter : ARQuaternionFilter {
 	NSUInteger windowSize;
 	
@@ -33,9 +37,26 @@
 	NSUInteger sampleCount;
 }
 
+/**
+ * The size of the window that will be stored; this many samples will be stored.
+ */
 @property(nonatomic, readonly) NSUInteger windowSize;
 
+/**
+ * Initialize a filter with a given window size.
+ * @param windowSize the desired window size.
+ * @return the filter.
+ */
 - (id)initWithWindowSize:(NSUInteger)windowSize;
+
+/**
+ * Applies the filter function on the determined window.
+ * @param sampleValues the sampled values.
+ * @param sampleTimestamps the timestamps corresponding to the timestamps.
+ * @param sampleIndex the index of the most recent sample in the array. The previous sample is in index (sampleIndex-1) or at the end of the array if (sampleIndex == 0).
+ * @param sampleCount the number of actually measured samples; this value is always smaller than windowSize.
+ * @return the filtered value.
+ */
 - (ARQuaternion)filterWithSampleValues:(ARQuaternion *)sampleValues sampleTimestamps:(NSTimeInterval *)sampleTimestamps lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)sampleCount;
 
 @end
