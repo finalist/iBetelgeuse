@@ -28,6 +28,10 @@
 @class ARSpatialState;
 
 
+/**
+ * This class contains all features, and applies the required transformations to
+ * them so that they are properly projected.
+ */
 @interface ARFeatureContainerView : UIView {
 @private
 	CATransform3D EFToDeviceSpaceTransform;
@@ -37,6 +41,12 @@
 	CGFloat distanceFactor;
 }
 
+/**
+ * Update the transformation, the positions and orientations of the features,
+ * etc. based on the new spatial state.
+ * @param spatialState the new spatial state.
+ * @param relativeAltitude YES if relative altitudes is enabled for the dimension.
+ */
 - (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)relativeAltitude;
 
 @end

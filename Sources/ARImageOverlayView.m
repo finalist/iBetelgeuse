@@ -29,7 +29,16 @@
 
 @interface ARImageOverlayView ()
 
+/**
+ * Display the activity indicator placeholder, to be used when the image data is
+ * not yet loaded.
+ */
 - (void)showActivityIndicatorView;
+
+/**
+ * Remove a possible placeholder and display an image.
+ * @param image the image.
+ */
 - (void)showImageViewWithImage:(UIImage *)image;
 
 @end

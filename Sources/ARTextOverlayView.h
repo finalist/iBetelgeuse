@@ -26,6 +26,9 @@
 @class ARTextOverlay;
 
 
+/**
+ * Shows a text overlay.
+ */
 @interface ARTextOverlayView : AROverlayView {
 @private
 	ARTextOverlay *overlay;
