@@ -122,6 +122,20 @@ CGImageRef UIGetScreenImage(void);
 - (void)didEnterState:(int)state;
 - (void)didLeaveState:(int)state;
 
+- (void)didTapMenuButton;
+- (void)didTapCancelButton;
+- (void)updateWithDisplayLink:(CADisplayLink *)sender;
+- (void)didTapAboutControllerCloseButton;
+- (void)makeStatusBarVisible;
+- (void)didTapOverlay:(AROverlayView *)view;
+- (void)didTapFeature:(ARFeatureView *)view;
+
+- (void)refreshTimerDidFire:(NSTimer *)aTimer;
+- (void)scanTimerDidFire;
+- (void)setDisplayLink:(CADisplayLink *)aLink;
+- (void)setRefreshTimer:(NSTimer *)aTimer;
+- (void)setScanTimer:(NSTimer *)aTimer;
+
 @end
 
 
