@@ -34,6 +34,8 @@
 	CLLocationDegrees latitude;
 	CLLocationDegrees longitude;
 	CLLocationDistance altitude;
+	BOOL haveLocationInECEFSpace;
+	ARPoint3D locationInECEFSpace;
 }
 
 /**
@@ -51,12 +53,16 @@
 /**
  * Initializes the receiver with the given values.
  *
+ * @param latitude The WGS84 latitude.
+ * @param longitude The WGS84 longitude.
+ * @param altitude The WGS84 altitude.
+ *
  * @return The receiver.
  */
 - (id)initWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude altitude:(CLLocationDistance)altitude;
 
 /**
- * Initializes the receiver with the coordinate and altitude of the given CoreLocation location.
+ * Initializes the receiver with the coordinates of the given CoreLocation location.
  *
  * @param location Must be non-nil.
  *
@@ -64,12 +70,38 @@
  */
 - (id)initWithCLLocation:(CLLocation *)location;
 
+/**
+ * The identifier of the receiver. May be nil.
+ */
 @property(nonatomic, readonly, copy) NSString *identifier;
+
+/**
+ * The WGS84 latitude of the receiver.
+ */
 @property(nonatomic, readonly) CLLocationDegrees latitude;
+
+/**
+ * The WGS84 longitude of the receiver.
+ */
 @property(nonatomic, readonly) CLLocationDegrees longitude;
+
+/**
+ * The WGS84 altitude of the receiver.
+ */
 @property(nonatomic, readonly) CLLocationDistance altitude;
 
-- (ARPoint3D)locationInECEFSpace;
+/**
+ * The location of the receiver in Earth-Centered Earth-Fixed coordinate space.
+ */
+@property(nonatomic, readonly) ARPoint3D locationInECEFSpace;
+
+/**
+ * Calculates the shortest distance between the receiver and the given location.
+ *
+ * @param location The other location. May not be nil.
+ *
+ * @return A distance in meters.
+ */
 - (CLLocationDistance)straightLineDistanceToLocation:(ARLocation *)location;
 
 @end

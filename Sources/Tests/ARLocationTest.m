@@ -82,6 +82,9 @@
 - (void)testIdentity {
 	ARLocation *l = [[ARLocation alloc] initWithLatitude:10.0 longitude:20.0 altitude:30.0];
 	
+	// Test equality with same object
+	GHAssertTrue([l isEqual:l], nil);
+	
 	// Test equality with same parameters
 	ARLocation *m = [[ARLocation alloc] initWithLatitude:10.0 longitude:20.0 altitude:30.0];
 	GHAssertTrue([l isEqual:m], nil);
@@ -155,19 +158,49 @@
 }
 
 - (void)testParseFail {
-	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARLocationTestFailIdentifier.xml"];
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARLocationTestFailLatitude.xml"];
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARLocationTestFailLongitude.xml"];
-	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARLocationTestFailAltitude.xml"];
 }
 
-- (void)testPositionInEcefCoordinates {
+- (void)testParseInvalidAltitude {
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARLocationTestFailAltitude.xml"]];
+	[parser setDelegate:self];
+	[parser parse];
+	
+	GHAssertNotNil(location, nil);
+	GHAssertEquals([location latitude], (CLLocationDegrees)12.34, nil);
+	GHAssertEquals([location longitude], (CLLocationDegrees)23.45, nil);
+	GHAssertEquals([location altitude], (CLLocationDistance)0, nil);
+	
+	[parser release];
+}
+
+- (void)testLocationInECEFSpace {
 	ARLocation *l = [[ARLocation alloc] initWithLatitude:52.469397 longitude:5.509644 altitude:10.0];
+	
 	ARPoint3D ecef = [l locationInECEFSpace];
 	GHAssertEqualsWithAccuracy(ecef.x, 3875688., 0.5, nil);
 	GHAssertEqualsWithAccuracy(ecef.y, 373845., 0.5, nil);
 	GHAssertEqualsWithAccuracy(ecef.z, 5034799., 0.5, nil);
+	
+	// Try it a second time to test lazy loading
+	ecef = [l locationInECEFSpace];
+	GHAssertEqualsWithAccuracy(ecef.x, 3875688., 0.5, nil);
+	GHAssertEqualsWithAccuracy(ecef.y, 373845., 0.5, nil);
+	GHAssertEqualsWithAccuracy(ecef.z, 5034799., 0.5, nil);
+	
 	[l release];
+}
+
+- (void)testStraightLineDistance {
+	ARLocation *l = [[ARLocation alloc] initWithLatitude:52.469397 longitude:5.509644 altitude:10.0];
+	ARLocation *m = [[ARLocation alloc] initWithLatitude:52.469397 longitude:5.509644 altitude:20.0];
+	
+	GHAssertEqualsWithAccuracy([l straightLineDistanceToLocation:l], 0.0, 1e-6, nil);
+	GHAssertEqualsWithAccuracy([l straightLineDistanceToLocation:m], 10.0, 1e-6, nil);
+	
+	[l release];
+	[m release];
 }
 
 #pragma mark NSXMLParserDelegate

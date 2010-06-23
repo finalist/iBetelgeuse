@@ -108,19 +108,25 @@
 #pragma mark ARLocation
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
+	// Note: pre-conditions of this method are enforced by the TCXMLParserDelegate method
+	
 	ARLocationXMLParserDelegate *delegate = [[ARLocationXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
 }
 
 - (ARPoint3D)locationInECEFSpace {
-	return ARWGS84GetECEF(latitude, longitude, altitude);
+	// Lazily calculate the ECEF coordinates
+	if (!haveLocationInECEFSpace) {
+		locationInECEFSpace = ARWGS84GetECEF(latitude, longitude, altitude);
+		haveLocationInECEFSpace = YES;
+	}
+	return locationInECEFSpace;
 }
 
 - (CLLocationDistance)straightLineDistanceToLocation:(ARLocation *)location {
-	ARPoint3D a = [self locationInECEFSpace];
-	ARPoint3D b = [location locationInECEFSpace];
-	return ARPoint3DLength(ARPoint3DSubtract(a, b));
+	// Simply calculate the length of the difference between the two ECEF vectors
+	return ARPoint3DLength(ARPoint3DSubtract([self locationInECEFSpace], [location locationInECEFSpace]));
 }
 
 @end
