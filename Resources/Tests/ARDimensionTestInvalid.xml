@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dimension version="1.0">
+	<relativeAltitude>blah</relativeAltitude>
+	<refreshTime><validFor>-1</validFor></refreshTime>
+	<refreshDistance><validWithinRange>-1</validWithinRange></refreshDistance>
+	<radarRange>-1</radarRange>
+	<locations>
+		<location id="location1"> </location>
+		<location>
+			<lat>0</lat>
+			<lon>0</lon>
+			<alt>0</alt>
+		</location>
+	</locations>
+	<assets>
+		<asset id="asset1"> </asset>
+		<asset>
+			<format>JPG</format>
+			<url>http://www.example.org/</url>
+		</asset>
+	</assets>
+	<features>
+		<featureImg> </featureImg>
+		<featureTxt> </featureTxt>
+	</features>
+	<overlays>
+		<overlayImg> </overlayImg>
+		<overlayTxt> </overlayTxt>
+	</overlays>
+</dimension>

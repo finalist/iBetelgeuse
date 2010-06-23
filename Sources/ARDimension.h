@@ -110,7 +110,7 @@ extern const CLLocationDistance ARDimensionRefreshDistanceInfinite;
 @property(nonatomic, readonly) CLLocationDistance refreshDistance;
 
 /**
- * The radius in which objects should be displayed on the radar.
+ * The radius in which objects should be displayed on the radar, in meters.
  */
 @property(nonatomic, readonly) CLLocationDistance radarRadius;
 

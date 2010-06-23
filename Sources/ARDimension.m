@@ -30,7 +30,7 @@
 #import "TCXMLParserDelegate+Protected.h"
 
 
-#define DEFAULT_RADAR_RADIUS 1000
+#define DEFAULT_RADAR_RADIUS 1000 // meters
 
 
 const NSTimeInterval ARDimensionRefreshTimeInfinite = 0.0;
@@ -75,6 +75,44 @@ typedef enum {
 	NSMutableArray *overlays;
 }
 
+/**
+ * Callback used when parsing a location.
+ *
+ * @param location The location that has been parsed, or nil if parsing failed.
+ */
+- (void)parserDidFindLocation:(ARLocation *)location;
+
+/**
+ * Callback used when parsing an asset.
+ *
+ * @param asset The asset that has been parsed, or nil if parsing failed.
+ */
+- (void)parserDidFindAsset:(ARAsset *)asset;
+
+/**
+ * Callback used when parsing a feature.
+ *
+ * @param feature The feature that has been parsed, or nil if parsing failed.
+ */
+- (void)parserDidFindFeature:(ARFeature *)feature;
+
+/**
+ * Callback used when parsing an overlay.
+ *
+ * @param overlay The overlay that has been parsed, or nil if parsing failed.
+ */
+- (void)parserDidFindOverlay:(AROverlay *)overlay;
+
+@end
+
+
+@interface ARDimension ()
+
+/**
+ * Resolves the concrete location for features that only have a location identifier.
+ */
+- (void)resolveIdentifiers;
+
 @end
 
 
@@ -96,6 +134,7 @@ typedef enum {
 	[overlays release];
 	[locations release];
 	[assets release];
+	[name release];
 	[refreshURL release];
 	
 	[super dealloc];
@@ -112,6 +151,8 @@ typedef enum {
 }
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
+	// Note: pre-conditions of this method are enforced by the TCXMLParserDelegate method
+	
 	ARDimensionXMLParserDelegate *delegate = [[ARDimensionXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
@@ -153,7 +194,7 @@ typedef enum {
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
-	// Indicates whether we handed of parsing this element to another parser
+	// Indicates whether we handed off parsing this element to another parser
 	BOOL didHandOff = NO;
 	
 	switch (state) {
@@ -376,6 +417,7 @@ typedef enum {
 	[dimension setAssets:assets];
 	[dimension setFeatures:features];
 	[dimension setOverlays:overlays];
+	
 	[dimension resolveIdentifiers];
 	
 	return dimension;

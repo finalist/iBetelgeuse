@@ -86,6 +86,37 @@
 	[parser release];
 }
 
+- (void)testParseInvalid {
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARDimensionTestInvalid.xml"]];
+	[parser setDelegate:self];
+	[parser parse];
+	
+	GHAssertNotNil(dimension, nil);
+	GHAssertEquals([[dimension features] count], (NSUInteger)0, nil);
+	GHAssertEquals([[dimension overlays] count], (NSUInteger)0, nil);
+	GHAssertEquals([[dimension locations] count], (NSUInteger)0, nil);
+	GHAssertEquals([[dimension assets] count], (NSUInteger)0, nil);
+	GHAssertNil([dimension name], nil);
+	GHAssertFalse([dimension relativeAltitude], nil);
+	GHAssertNil([dimension refreshURL], nil);
+	GHAssertEquals([dimension refreshTime], (NSTimeInterval)0, nil);
+	GHAssertEquals([dimension refreshDistance], (CLLocationDistance)0, nil);
+	GHAssertEquals([dimension radarRadius], (CLLocationDistance)1000.0, nil);
+	
+	[parser release];
+}
+
+- (void)testParseOther {
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARDimensionTestOther.xml"]];
+	[parser setDelegate:self];
+	[parser parse];
+	
+	GHAssertNotNil(dimension, nil);
+	GHAssertFalse([dimension relativeAltitude], nil);
+	
+	[parser release];
+}
+
 - (void)testParseSkipLocationWithoutIdentifier {
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARDimensionTestSkipLocationIdentifier.xml"]];
 	[parser setDelegate:self];

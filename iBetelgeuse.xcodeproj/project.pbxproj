@@ -41,6 +41,8 @@
 		950ECB3411C8C22D009E1314 /* ARMenuButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 950ECB3311C8C22D009E1314 /* ARMenuButton@2x.png */; };
 		950ECB5211C8C325009E1314 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 950ECB5111C8C325009E1314 /* Default@2x.png */; };
 		958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958DF27A11ABB40000047790 /* ARImageFeatureView.m */; };
+		958E3E1D11D1FDB000466267 /* ARDimensionTestInvalid.xml in Resources */ = {isa = PBXBuildFile; fileRef = 958E3E1C11D1FDB000466267 /* ARDimensionTestInvalid.xml */; };
+		958E3E4C11D1FFB400466267 /* ARDimensionTestOther.xml in Resources */ = {isa = PBXBuildFile; fileRef = 958E3E4B11D1FFB400466267 /* ARDimensionTestOther.xml */; };
 		95919EE311A41A61006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE411A41A67006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE711A41B0B006FCDFC /* ARWGS84Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE611A41B0B006FCDFC /* ARWGS84Test.m */; };
@@ -203,6 +205,8 @@
 		958DF27911ABB40000047790 /* ARImageFeatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageFeatureView.h; sourceTree = "<group>"; };
 		958DF27A11ABB40000047790 /* ARImageFeatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageFeatureView.m; sourceTree = "<group>"; };
 		958DF36211ABC6FD00047790 /* ARDimensionRequestInvalidTest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionRequestInvalidTest.xml; sourceTree = "<group>"; };
+		958E3E1C11D1FDB000466267 /* ARDimensionTestInvalid.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestInvalid.xml; sourceTree = "<group>"; };
+		958E3E4B11D1FFB400466267 /* ARDimensionTestOther.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestOther.xml; sourceTree = "<group>"; };
 		95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCNetworkActivityIndicator.h; sourceTree = "<group>"; };
 		95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		95919EE111A41A61006FCDFC /* ARWGS84.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84.h; sourceTree = "<group>"; };
@@ -595,6 +599,8 @@
 				C334648411A159D100228C9A /* ARLocationTestFailLongitude.xml */,
 				95B9BEEF11A1362700EDD870 /* ARDimensionTestComplete.xml */,
 				95B9BEEE11A1362700EDD870 /* ARDimensionTestBare.xml */,
+				958E3E1C11D1FDB000466267 /* ARDimensionTestInvalid.xml */,
+				958E3E4B11D1FFB400466267 /* ARDimensionTestOther.xml */,
 				95919F0711A41D86006FCDFC /* ARDimensionTestSkipAssetIdentifier.xml */,
 				95919F0811A41D86006FCDFC /* ARDimensionTestSkipLocationIdentifier.xml */,
 				95B9C11711A1691100EDD870 /* ARTextOverlayTestComplete.xml */,
@@ -956,6 +962,8 @@
 				95A8608311CB9491005DE882 /* DimensionWarning@2x.png in Resources */,
 				959247AE11D0A2B70012698B /* AssetFailed.png in Resources */,
 				959247AF11D0A2B70012698B /* AssetFailed@2x.png in Resources */,
+				958E3E1D11D1FDB000466267 /* ARDimensionTestInvalid.xml in Resources */,
+				958E3E4C11D1FFB400466267 /* ARDimensionTestOther.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
