@@ -74,6 +74,9 @@
 }
 
 - (void)testParseFail {
+	// TODO: Perform this 'invalid' test isolated for each property
+	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARTextOverlayTestInvalid.xml"];
+	
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARTextOverlayTestFailText.xml"];
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARTextOverlayTestFailWidth.xml"];
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARTextOverlayTestFailX.xml"];

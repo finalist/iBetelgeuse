@@ -210,6 +210,9 @@
 		958E3E1C11D1FDB000466267 /* ARDimensionTestInvalid.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestInvalid.xml; sourceTree = "<group>"; };
 		958E3E4B11D1FFB400466267 /* ARDimensionTestOther.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionTestOther.xml; sourceTree = "<group>"; };
 		958E3EA111D2054000466267 /* ARLocationTestFailAltitude.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARLocationTestFailAltitude.xml; sourceTree = "<group>"; };
+		958E3FC211D222ED00466267 /* ARTextOverlayTestInvalid.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextOverlayTestInvalid.xml; sourceTree = "<group>"; };
+		958E3FE211D2245400466267 /* ARTextFeatureTestInvalid.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestInvalid.xml; sourceTree = "<group>"; };
+		958E3FFA11D2252500466267 /* ARTextFeatureTestOther.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestOther.xml; sourceTree = "<group>"; };
 		95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCNetworkActivityIndicator.h; sourceTree = "<group>"; };
 		95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		95919EE111A41A61006FCDFC /* ARWGS84.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84.h; sourceTree = "<group>"; };
@@ -592,6 +595,8 @@
 				C334681C11A28C0C00228C9A /* ARTextFeatureTestBareLocation.xml */,
 				C334681D11A28C0C00228C9A /* ARTextFeatureTestBareLocationId.xml */,
 				C33467FC11A28A3000228C9A /* ARTextFeatureTestComplete.xml */,
+				958E3FE211D2245400466267 /* ARTextFeatureTestInvalid.xml */,
+				958E3FFA11D2252500466267 /* ARTextFeatureTestOther.xml */,
 				C33465DF11A1766E00228C9A /* ARAssetTestBare.xml */,
 				C33465E011A1766E00228C9A /* ARAssetTestComplete.xml */,
 				C33465E111A1766E00228C9A /* ARAssetTestFailIdentifier.xml */,
@@ -609,6 +614,7 @@
 				95919F0811A41D86006FCDFC /* ARDimensionTestSkipLocationIdentifier.xml */,
 				95B9C11711A1691100EDD870 /* ARTextOverlayTestComplete.xml */,
 				95B9C11911A16C7200EDD870 /* ARTextOverlayTestBare.xml */,
+				958E3FC211D222ED00466267 /* ARTextOverlayTestInvalid.xml */,
 				95B9C11D11A16CE200EDD870 /* ARTextOverlayTestFailText.xml */,
 				95B9C11E11A16CE200EDD870 /* ARTextOverlayTestFailWidth.xml */,
 				95B9C11F11A16CE200EDD870 /* ARTextOverlayTestFailX.xml */,
