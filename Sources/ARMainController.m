@@ -618,7 +618,7 @@ CGImageRef UIGetScreenImage(void);
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 	}
 	else if (buttonIndex == menuButtonIndices.refresh) {
-		[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeActionRefresh source:nil];
+		[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeInit source:nil];
 	}
 	else if (buttonIndex == menuButtonIndices.qr) {
 		[self setState:STATE_QR];
