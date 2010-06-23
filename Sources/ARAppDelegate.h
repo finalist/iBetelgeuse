@@ -25,7 +25,7 @@
 
 @interface ARAppDelegate : NSObject <UIApplicationDelegate> {
 @private
-	NSURL *initialURL;
+	NSURL *initialURL; // The URL to load when the application is started.
 	
 	UIWindow *window;
     UIViewController *viewController;
