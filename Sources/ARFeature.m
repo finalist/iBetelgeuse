@@ -75,6 +75,8 @@
 }
 
 - (void)setIdentifiedLocation:(ARLocation *)aLocation {
+	NSAssert([[aLocation identifier] isEqualToString:locationIdentifier], @"Expected given location's identifier to the location identifier.");
+	
 	if (aLocation != location) {
 		[location release];
 		location = [aLocation retain];

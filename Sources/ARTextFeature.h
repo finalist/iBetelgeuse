@@ -23,11 +23,17 @@
 #import "ARFeature.h"
 
 
+/**
+ * Represents a text feature in a Gamaray dimension.
+ */
 @interface ARTextFeature : ARFeature {
 @private
 	NSString *text;
 }
 
+/**
+ * The text that should be displayed, may be nil or empty.
+ */
 @property(nonatomic, readonly, copy) NSString *text;
 
 @end

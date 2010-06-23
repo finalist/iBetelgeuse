@@ -23,8 +23,12 @@
 #import "ARImageFeature.h"
 #import "ARFeature+Protected.h"
 #import "TCXMLParserDelegate+Protected.h"
+#import "NSObject+ARClassInvariant.h"
 
 
+/**
+ * Class that can be used as a delegate of an NSXMLParser to parse an image feature.
+ */
 @interface ARImageFeatureXMLParserDelegate : ARFeatureXMLParserDelegate {
 @private
 	ARImageFeature *imageFeature;
@@ -42,6 +46,8 @@
 
 @implementation ARImageFeature
 
+ARDefineClassInvariant(ARSuperClassInvariant && assetIdentifier != nil);
+
 @synthesize assetIdentifier;
 
 #pragma mark NSObject
@@ -55,9 +61,18 @@
 #pragma mark ARFeature
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
+	// Note: pre-conditions of this method are enforced by the TCXMLParserDelegate method
+	
 	ARImageFeatureXMLParserDelegate *delegate = [[ARImageFeatureXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
+}
+
+- (void)setAssetIdentifier:(NSString *)aIdentifier {
+	NSAssert(aIdentifier != nil, @"Expected non-nil identifier.");
+	
+	[assetIdentifier release];
+	assetIdentifier = [aIdentifier copy];
 }
 
 @end
@@ -95,7 +110,9 @@
 
 - (id)parsingDidEndWithElementContent:(NSString *)content {
 	if ([imageFeature assetIdentifier] != nil) {
-		return [super parsingDidEndWithElementContent:content];
+		id result = [super parsingDidEndWithElementContent:content];
+		ARAssertClassInvariantOfObject(result);
+		return result;		
 	}
 	else {
 		return nil;
