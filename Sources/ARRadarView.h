@@ -26,6 +26,9 @@
 @class ARSpatialState, ARRadarBackgroundLayer, ARRadarExtentOfViewLayer, ARRadarBlipsLayer;
 
 
+/**
+ * This view renders the radar.
+ */
 @interface ARRadarView : UIView {
 @private
 	CGRect laidOutBounds;
@@ -39,6 +42,11 @@
 @property(nonatomic, readwrite, copy) NSArray *features;
 @property(nonatomic, readwrite) CGFloat radius;
 
+/**
+ * Update the blips shown on the radar, as well as the view extent indicator.
+ * @param spatialState the new spatial state.
+ * @param useRelativeAltitude YES iff relative altitudes are used.
+ */
 - (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude;
 
 @end
