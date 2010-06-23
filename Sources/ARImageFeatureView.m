@@ -45,7 +45,7 @@
 #pragma mark NSObject
 
 - (id)initWithFeature:(ARFeature *)aFeature {
-	NSAssert([aFeature isKindOfClass:[ARImageFeature class]], @"Expected image overlay.");
+	NSAssert([aFeature isKindOfClass:[ARImageFeature class]], @"Expected image feature.");
 	
 	if (self = [super initWithFeature:aFeature]) {
 		feature = (ARImageFeature *)[aFeature retain];
@@ -120,7 +120,7 @@
 	}
 }
 
-#pragma mark ARImageOverlayView
+#pragma mark ARImageFeatureView
 
 - (void)showActivityIndicatorView {
 	if (imageView != nil) {
