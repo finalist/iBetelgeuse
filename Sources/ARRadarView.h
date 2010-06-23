@@ -39,7 +39,14 @@
 	ARRadarBlipsLayer *blipsLayer;
 }
 
+/**
+ * The features that should be displayed on the radar.
+ */
 @property(nonatomic, readwrite, copy) NSArray *features;
+
+/**
+ * The radar's radius in meters.
+ */
 @property(nonatomic, readwrite) CGFloat radius;
 
 /**
