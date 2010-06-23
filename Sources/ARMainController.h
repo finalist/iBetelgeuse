@@ -33,7 +33,7 @@
 @private
 	NSURL *pendingDimensionURL;
 	ARDimension *dimension;
-	BOOL dimensionReliable;
+	BOOL dimensionReliable; // Indicates whether the latest dimension request succeeded.
 	UIImagePickerController *cameraViewController;
 	ARFeatureContainerView *featureContainerView; // Non-retained instance variable
 	AROverlayContainerView *overlayContainerView; // Non-retained instance variable
@@ -48,7 +48,7 @@
 	CADisplayLink *displayLink;
 	BOOL needsUpdate;
 	
-	ARDimensionRequest *dimensionRequest;
+	ARDimensionRequest *dimensionRequest; // The current dimension request, or nil if no request is currently in progress.
 	ARAssetManager *assetManager;
 	ARSpatialStateManager *spatialStateManager;
 	NSTimer *refreshTimer;
@@ -69,9 +69,7 @@
 
 /**
  * Initialize the receiver with the given URL. If a URL is given, the controller will start loading the dimension at that URL as soon as it becomes visible.
- *
  * @param url A URL to start loading a dimension from. May be nil.
- *
  * @return The receiver.
  */
 - (id)initWithURL:(NSURL *)url;

@@ -97,44 +97,192 @@ CGImageRef UIGetScreenImage(void);
 @property(nonatomic, getter=isRefreshingOnDistance) BOOL refreshingOnDistance;
 @property(nonatomic, retain) ARLocation *refreshLocation;
 
+
+/**
+ * Handle the refresh timer expiring; this should initite a dimension refresh.
+ * @param aTimer the timer that expired.
+ */
+- (void)refreshTimerDidFire:(NSTimer *)aTimer;
+
+/**
+ * Handle the scan timer expiring; this should try to scan the current camera
+ * image for QR codes and try to load it if found.
+ */
+- (void)scanTimerDidFire;
+
+/**
+ * Set the display link, stopping the current display link if it is already set.
+ * @param aLink the new display link.
+ */
+- (void)setDisplayLink:(CADisplayLink *)aLink;
+
+/**
+ * Set the refresh timer, stopping the current timer if it is already set.
+ * @param aTimer the new timer.
+ */
+- (void)setRefreshTimer:(NSTimer *)aTimer;
+
+/**
+ * Set the scan timer, stopping the current timer if it is already set.
+ * @param aTimer the new timer.
+ */
+- (void)setScanTimer:(NSTimer *)aTimer;
+
+/**
+ * Update the elements on the screen so that they are in the proper positions
+ * for the new orientation.
+ * @param interfaceOrientation the orientation of the device.
+ */
 - (void)updateWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
+
+/**
+ * Make the status bar visible if it is not already visible.
+ */
 - (void)ensureStatusBarVisible;
 
+/**
+ * Make the status bar visible.
+ */
+- (void)makeStatusBarVisible;
+
+/**
+ * Ensure that the overlay views for the overlays in the current dimension
+ * exist, and remove overlays that are no longer in the dimension.
+ */
 - (void)createOverlayViews;
+
+/**
+ * Ensure that the feature views for the overlays in the current dimension
+ * exist, and remove features that are no longer in the dimension.
+ */
 - (void)createFeatureViews;
+
+/**
+ * Update the features and radar, after the spatial state has changed.
+ */
 - (void)updateFeatureViews;
 
+/**
+ * Indicate that the views need to be updated.
+ */
 - (void)setNeedsUpdate;
+
+/**
+ * Update the warning indicator views, and if the view was previously invalidated update the feature views.
+ */
 - (void)updateIfNeeded;
 
+/**
+ * Start a dimension request, disabling updating and asset loading while the new
+ * dimension is updated.
+ * @param aURL the URL that should be loaded.
+ * @param type the type of request.
+ * @param source the identifier of the object that triggered this event.
+ */
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type source:(NSString *)source;
+
+/**
+ * Schedule a dimension refresh when the defined time interval expires. Does
+ * nothing if automatic updates should not be enabled, ie. when the dimension is
+ * outdated, the refresh time is set to infinite or the refresh URL is not set.
+ */
 - (void)startRefreshingOnTime;
+
+
+/**
+ * Cancel the scheduled dimension refresh.
+ */
 - (void)stopRefreshingOnTime;
+
+/**
+ * Enable refreshing based on distance since the last dimension request. Does
+ * nothing if automatic updates should not be enabled, ie. when the dimension is
+ * outdated, the refresh distance is set to infinite or the refresh URL is not set.
+ */
 - (void)startRefreshingOnDistance;
+
+/**
+ * Disable refreshing based on distance.
+ */
 - (void)stopRefreshingOnDistance;
+
+/**
+ * Check whether the distance is large enough to trigger a refresh.
+ */
 - (void)refreshOnDistanceIfNecessary;
+
+/**
+ * Start scanning for QR codes. Initializes the QR code scanner itself, but does
+ * not change the user interface.
+ */
 - (void)startScanning;
+
+/**
+ * Stop scanning for QR codes. Disabled and frees up resources used by the
+ * scanner, but does not change the user interface.
+ */
 - (void)stopScanning;
 
-- (void)performAction:(ARAction *)action source:(NSString *)source;
-
-- (void)setState:(int)state;
-- (void)didEnterState:(int)state;
-- (void)didLeaveState:(int)state;
-
-- (void)didTapMenuButton;
-- (void)didTapCancelButton;
-- (void)updateWithDisplayLink:(CADisplayLink *)sender;
-- (void)didTapAboutControllerCloseButton;
-- (void)makeStatusBarVisible;
+/**
+ * Handle an overlay being tapped. Perform the corresponding action.
+ * @param view the view for the overlay that was tapped.
+ */
 - (void)didTapOverlay:(AROverlayView *)view;
+
+/**
+ * Handle a feature being tapped. Perform the corresponding action.
+ * @param view the view for the feature that was tapped.
+ */
 - (void)didTapFeature:(ARFeatureView *)view;
 
-- (void)refreshTimerDidFire:(NSTimer *)aTimer;
-- (void)scanTimerDidFire;
-- (void)setDisplayLink:(CADisplayLink *)aLink;
-- (void)setRefreshTimer:(NSTimer *)aTimer;
-- (void)setScanTimer:(NSTimer *)aTimer;
+/**
+ * Handle the menu button being tapped.
+ */
+- (void)didTapMenuButton;
+
+/**
+ * Handle the cancel button being tapped.
+ */
+- (void)didTapCancelButton;
+
+/**
+ * Handle the about window's close button being tapped.
+ */
+- (void)didTapAboutControllerCloseButton;
+	
+/**
+ * Perform an action, which can lead to an URL being opened, a new dimension
+ * being loaded or the same dimension being reloaded.
+ * @param action the action to perform
+ * @param source the identifier of the object that triggered this action.
+ */
+- (void)performAction:(ARAction *)action source:(NSString *)source;
+
+/**
+ * Change the current state of the application. This function controls the state
+ * machine, which means that it calls the didLeaveState, then sets the new
+ * state, and finally calls didEnterState for the newly entered state. If the
+ * new state is equal to the current state, neither function is called.
+ * @param state the new state.
+ */
+- (void)setState:(int)state;
+
+/**
+ * Handle a state change, right after this state is entered. This function
+ * enables features and views, so that they match what is necessary
+ * in the new state. This function can assume that all features and view used by
+ * other views are already disabled or hidden.
+ * @param state the newly entered state.
+ */
+- (void)didEnterState:(int)state;
+
+/**
+ * Handle a state change, right before this state is left. This function
+ * disables features and views unique to this state, so that the new state can
+ * assume there is nothing but a bare camera view.
+ * @param state the state that will be left.
+ */
+- (void)didLeaveState:(int)state;
 
 @end
 
