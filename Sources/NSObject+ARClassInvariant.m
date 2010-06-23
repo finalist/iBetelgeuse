@@ -1,5 +1,5 @@
 //
-//  ARTextFeature.h
+//  NSObject+ARClassInvariant.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,20 +20,21 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARFeature.h"
+#import "NSObject+ARClassInvariant.h"
 
 
-/**
- * Represents a text feature in a Gamaray dimension.
- */
-@interface ARTextFeature : ARFeature {
-@private
-	NSString *text;
+#ifndef NS_BLOCK_ASSERTIONS
+
+@implementation NSObject (ARClassInvariant)
+
+- (BOOL)ar_classInvariant {
+	return YES;
 }
 
-/**
- * The text that should be displayed, may be nil or empty.
- */
-@property(nonatomic, readonly, copy) NSString *text;
+- (void)ar_assertClassInvariantHolds {
+	NSAssert([self ar_classInvariant], @"Expected the class invariant to hold.");
+}
 
 @end
+
+#endif

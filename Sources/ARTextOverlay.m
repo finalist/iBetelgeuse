@@ -23,8 +23,15 @@
 #import "ARTextOverlay.h"
 #import "AROverlay+Protected.h"
 #import "TCXMLParserDelegate+Protected.h"
+#import "NSObject+ARClassInvariant.h"
 
 
+const CGFloat ARTextOverlayWidthUndefined = 0.;
+
+
+/**
+ * Class that can be used as a delegate of an NSXMLParser to parse a text overlay.
+ */
 @interface ARTextOverlayXMLParserDelegate : AROverlayXMLParserDelegate {
 @private
 	ARTextOverlay *textOverlay;
@@ -44,9 +51,18 @@
 
 @implementation ARTextOverlay
 
+ARDefineClassInvariant(ARSuperClassInvariant && (width == ARTextOverlayWidthUndefined || width > 0));
+
 @synthesize text, width;
 
 #pragma mark NSObject
+
+- (id)init {
+	if (self = [super init]) {
+		ARAssertClassInvariant();
+	}
+	return self;
+}
 
 - (void)dealloc {
 	[text release];
@@ -57,9 +73,20 @@
 #pragma mark AROverlay
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
+	// Note: pre-conditions of this method are enforced by the TCXMLParserDelegate method
+	
 	ARTextOverlayXMLParserDelegate *delegate = [[ARTextOverlayXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
+}
+
+- (void)setWidth:(CGFloat)aWidth {
+	NSAssert(aWidth == ARTextOverlayWidthUndefined || aWidth > 0, @"Expected undefined or positive width.");
+	ARAssertClassInvariant();
+	
+	width = aWidth;
+	
+	ARAssertClassInvariant();
 }
 
 @end

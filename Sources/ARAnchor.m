@@ -24,11 +24,10 @@
 
 
 ARAnchor ARAnchorMakeWithXMLString(NSString *string, BOOL *resultValid) {
-	NSCAssert(string != nil, @"Expected non-nil string.");
-	
 	BOOL valid = [string length] == 2;
 	CGPoint result;
 	
+	// If still valid, parse the horizontal component
 	if (valid) {
 		switch ([string characterAtIndex:1]) {
 			case 'L':
@@ -52,6 +51,7 @@ ARAnchor ARAnchorMakeWithXMLString(NSString *string, BOOL *resultValid) {
 		}
 	}
 	
+	// If still valid, parse the vertical component
 	if (valid) {
 		switch ([string characterAtIndex:0]) {
 			case 'T':

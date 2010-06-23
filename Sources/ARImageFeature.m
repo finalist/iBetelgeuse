@@ -25,6 +25,9 @@
 #import "TCXMLParserDelegate+Protected.h"
 
 
+/**
+ * Class that can be used as a delegate of an NSXMLParser to parse an image feature.
+ */
 @interface ARImageFeatureXMLParserDelegate : ARFeatureXMLParserDelegate {
 @private
 	ARImageFeature *imageFeature;
@@ -55,6 +58,8 @@
 #pragma mark ARFeature
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
+	// Note: pre-conditions of this method are enforced by the TCXMLParserDelegate method
+	
 	ARImageFeatureXMLParserDelegate *delegate = [[ARImageFeatureXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];

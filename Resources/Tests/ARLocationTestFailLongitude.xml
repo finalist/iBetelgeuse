@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <location id="aLocation">
 	<lat>12.34</lat>
+	<lon>200</lon>
 	<alt>34.56</alt>
 </location>

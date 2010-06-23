@@ -23,12 +23,15 @@
 #import <Foundation/Foundation.h>
 
 
+/**
+ * Category on NSURLRequest that adds methods for encoding and decoding dictionaries as application/x-www-form-urlencoded strings. See http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1 for details about this encoding.
+ */
 @interface NSURLRequest (ARFormURLEncoding)
 
 /**
- * Encodes the given keys and values into a application/x-www-form-urlencoded encoded string.
+ * Encodes the given keys and values into an application/x-www-form-urlencoded encoded string.
  *
- * @param dictionary A dictionary. May be nil, in which case an empty string is returned.
+ * @param dictionary A dictionary with NSString keys and NSString values. May be nil, in which case an empty string is returned.
  *
  * @return An application/x-www-form-urlencoded encoded string.
  */
@@ -42,5 +45,23 @@
  * @return A dictionary.
  */
 + (NSDictionary *)ar_dictionaryWithFormURLEncodedString:(NSString *)string;
+
+/**
+ * Encodes the given string into a URL encoded string by adding percent escapes. Unlike stringByAddingPercentEscapesUsingEncoding: this method also escapes the = and & characters.
+ *
+ * @param string A string. May be nil, in which case nil is returned.
+ *
+ * @return An application/x-www-form-urlencoded encoded string, or nil if the input was nil.
+ */
++ (NSString *)ar_stringByURLEncodingString:(NSString *)string;
+
+/**
+ * Decodes the given URL encoded string by removing percent escapes.
+ *
+ * @param string A string. May be nil, in which case nil is returned.
+ *
+ * @return A string, or nil if the input was nil.
+ */
++ (NSString *)ar_stringByURLDecodingString:(NSString *)string;
 
 @end

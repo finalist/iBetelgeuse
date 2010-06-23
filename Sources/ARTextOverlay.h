@@ -24,6 +24,12 @@
 
 
 /**
+ * Value that can be used to indicate an undefined width.
+ */
+extern const CGFloat ARTextOverlayWidthUndefined;
+
+
+/**
  * Represents a text overlay in a Gamaray dimension.
  */
 @interface ARTextOverlay : AROverlay {
@@ -32,7 +38,14 @@
 	CGFloat width;
 }
 
+/**
+ * The text that should be displayed, may be nil or empty.
+ */
 @property(nonatomic, readonly, copy) NSString *text;
+
+/**
+ * The width of the text. If the text doesn't fit in this width, it should be wrapped. Must either be ARTextOverlayWidthUndefined or strictly positive.
+ */
 @property(nonatomic, readonly) CGFloat width;
 
 @end

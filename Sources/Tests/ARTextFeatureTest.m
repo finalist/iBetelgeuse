@@ -97,8 +97,22 @@
 }
 
 - (void)testParseFail {
+	// TODO: Perform this 'invalid' test isolated for each property
+	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARTextFeatureTestInvalid.xml"];
+	
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARTextFeatureTestFailLocation.xml"];
 	[self assertParseDidFailWithPath:TEST_RESOURCES_PATH @"/ARTextFeatureTestFailText.xml"];
+}
+
+- (void)testParseOther {
+	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:TEST_RESOURCES_PATH @"/ARTextFeatureTestOther.xml"]];
+	[parser setDelegate:self];
+	[parser parse];
+	
+	GHAssertNotNil(feature, nil);
+	GHAssertTrue([feature showInRadar], nil);
+	
+	[parser release];
 }
 
 #pragma mark ARTextFeatureTest

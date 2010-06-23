@@ -24,12 +24,18 @@
 #import "TCXMLParserDelegate.h"
 
 
+/**
+ * Abstract class whose subclasses can be used as a delegate of an NSXMLParser to parse an overlay.
+ */
 @interface AROverlayXMLParserDelegate : TCXMLParserDelegate {
 @private
 	BOOL xSet;
 	BOOL ySet;
 }
 
+/**
+ * The overlay the receiver is parsing. Subclasses must implement this property.
+ */
 @property(nonatomic, readonly) AROverlay *overlay;
 
 @end

@@ -45,10 +45,29 @@
  */
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo;
 
+/**
+ * Initializes the receiver with the given values.
+ *
+ * @param url The URL of the asset. Must be non-nil.
+ * @param format The format of the asset. May be nil.
+ *
+ * @return The receiver.
+ */
 - (id)initWithURL:(NSURL *)url format:(NSString *)format;
 
+/**
+ * The identifier of the receiver, which may be nil.
+ */
 @property(nonatomic, readonly, copy) NSString *identifier;
+
+/**
+ * The format of the receiver, which may be nil.
+ */
 @property(nonatomic, readonly, copy) NSString *format;
+
+/**
+ * The URL of the receiver, which may be nil initially but may not be set to a non-nil value.
+ */
 @property(nonatomic, readonly, copy) NSURL *URL;
 
 @end

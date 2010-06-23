@@ -28,9 +28,10 @@
 #import "ARImageFeature.h"
 #import "ARTextFeature.h"
 #import "TCXMLParserDelegate+Protected.h"
+#import "NSObject+ARClassInvariant.h"
 
 
-#define DEFAULT_RADAR_RADIUS 1000
+#define DEFAULT_RADAR_RADIUS 1000 // meters
 
 
 const NSTimeInterval ARDimensionRefreshTimeInfinite = 0.0;
@@ -64,6 +65,9 @@ typedef enum {
 } ARDimensionXMLParserDelegateState;
 
 
+/**
+ * Class that can be used as a delegate of an NSXMLParser to parse a dimension.
+ */
 @interface ARDimensionXMLParserDelegate : TCXMLParserDelegate {
 @private
 	ARDimension *dimension;
@@ -75,10 +79,50 @@ typedef enum {
 	NSMutableArray *overlays;
 }
 
+/**
+ * Callback used when parsing a location.
+ *
+ * @param location The location that has been parsed, or nil if parsing failed.
+ */
+- (void)parserDidFindLocation:(ARLocation *)location;
+
+/**
+ * Callback used when parsing an asset.
+ *
+ * @param asset The asset that has been parsed, or nil if parsing failed.
+ */
+- (void)parserDidFindAsset:(ARAsset *)asset;
+
+/**
+ * Callback used when parsing a feature.
+ *
+ * @param feature The feature that has been parsed, or nil if parsing failed.
+ */
+- (void)parserDidFindFeature:(ARFeature *)feature;
+
+/**
+ * Callback used when parsing an overlay.
+ *
+ * @param overlay The overlay that has been parsed, or nil if parsing failed.
+ */
+- (void)parserDidFindOverlay:(AROverlay *)overlay;
+
+@end
+
+
+@interface ARDimension ()
+
+/**
+ * Resolves the concrete location for features that only have a location identifier.
+ */
+- (void)resolveIdentifiers;
+
 @end
 
 
 @implementation ARDimension
+
+ARDefineClassInvariant(ARSuperClassInvariant && refreshTime >= 0 && refreshDistance >= 0 && radarRadius > 0);
 
 @synthesize features, overlays, locations, assets, name, relativeAltitude, refreshURL, refreshTime, refreshDistance, radarRadius;
 
@@ -87,6 +131,8 @@ typedef enum {
 - (id)init {
 	if (self = [super init]) {
 		radarRadius = DEFAULT_RADAR_RADIUS;
+		
+		ARAssertClassInvariant();
 	}
 	return self;
 }
@@ -96,6 +142,7 @@ typedef enum {
 	[overlays release];
 	[locations release];
 	[assets release];
+	[name release];
 	[refreshURL release];
 	
 	[super dealloc];
@@ -104,14 +151,47 @@ typedef enum {
 #pragma mark ARDimension
 
 - (void)resolveIdentifiers {
+	ARAssertClassInvariant();
+	
 	for (ARFeature *feature in features) {
 		if (![feature location] && [feature locationIdentifier]) {
 			[feature setIdentifiedLocation:[locations objectForKey:[feature locationIdentifier]]];
 		}
 	}
+	
+	ARAssertClassInvariant();
+}
+
+- (void)setRefreshTime:(NSTimeInterval)aTime {
+	NSAssert(aTime >= 0, @"Expected zero or positive refresh time.");
+	ARAssertClassInvariant();
+	
+	refreshTime = aTime;
+	
+	ARAssertClassInvariant();
+}
+
+- (void)setRefreshDistance:(CLLocationDistance)aDistance {
+	NSAssert(aDistance >= 0, @"Expected zero or positive refresh distance.");
+	ARAssertClassInvariant();
+	
+	refreshDistance = aDistance;
+	
+	ARAssertClassInvariant();
+}
+
+- (void)setRadarRadius:(CLLocationDistance)aRadius {
+	NSAssert(aRadius >= 0, @"Expected strictly positive radar radius.");
+	ARAssertClassInvariant();
+	
+	radarRadius = aRadius;
+	
+	ARAssertClassInvariant();
 }
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
+	// Note: pre-conditions of this method are enforced by the TCXMLParserDelegate method
+	
 	ARDimensionXMLParserDelegate *delegate = [[ARDimensionXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
@@ -153,7 +233,7 @@ typedef enum {
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
-	// Indicates whether we handed of parsing this element to another parser
+	// Indicates whether we handed off parsing this element to another parser
 	BOOL didHandOff = NO;
 	
 	switch (state) {
@@ -376,8 +456,9 @@ typedef enum {
 	[dimension setAssets:assets];
 	[dimension setFeatures:features];
 	[dimension setOverlays:overlays];
-	[dimension resolveIdentifiers];
 	
+	[dimension resolveIdentifiers];
+
 	return dimension;
 }
 

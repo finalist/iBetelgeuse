@@ -24,9 +24,15 @@
 #import "TCXMLParserDelegate.h"
 
 
+/**
+ * Abstract class whose subclasses can be used as a delegate of an NSXMLParser to parse a feature.
+ */
 @interface ARFeatureXMLParserDelegate : TCXMLParserDelegate {
 }
 
+/**
+ * The feature the receiver is parsing. Subclasses must implement this property.
+ */
 @property(nonatomic, readonly) ARFeature *feature;
 
 @end
