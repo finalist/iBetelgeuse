@@ -29,6 +29,11 @@
 @class ARFeatureContainerView, AROverlayContainerView, ARRadarView, ARScannerOverlayView, ARLocation;
 
 
+/**
+ * This is the main controller, connecting the model with the view classes for
+ * the main screen of the application. It controls the main dimension mode, as
+ * well as the QR scanner mode.
+ */
 @interface ARMainController : UIViewController <ARDimensionRequestDelegate, ARAssetManagerDelegate, ARSpatialStateManagerDelegate> {
 @private
 	NSURL *pendingDimensionURL;

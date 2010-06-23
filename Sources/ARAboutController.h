@@ -23,6 +23,9 @@
 #import <UIKit/UIKit.h>
 
 
+/**
+ * This class controls the about screen.
+ */
 @interface ARAboutController : UIViewController {
 }
 
