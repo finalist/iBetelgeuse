@@ -76,10 +76,14 @@
 @property(nonatomic, readonly) CLLocationDegrees roll;
 
 @property(nonatomic, readonly) ARPoint3D upDirectionInDeviceSpace;
+@property(nonatomic, readonly) ARPoint3D upDirectionInENUSpace;
+
 @property(nonatomic, readonly) ARPoint3D upDirectionInECEFSpace;
 @property(nonatomic, readonly) ARPoint3D upDirectionInEFSpace;
 
 @property(nonatomic, readonly) ARPoint3D northDirectionInDeviceSpace;
+@property(nonatomic, readonly) ARPoint3D northDirectionInENUSpace;
+
 @property(nonatomic, readonly) ARPoint3D northDirectionInECEFSpace;
 @property(nonatomic, readonly) ARPoint3D northDirectionInEFSpace;
 
@@ -90,12 +94,12 @@
 @property(nonatomic, readonly) ARPoint3D EFToECEFSpaceOffset;
 
 - (id)initWithLocationAvailable:(BOOL)locationAvailable
-						 reliable:(BOOL)locationRecent
+					   reliable:(BOOL)locationReliable
 					   latitude:(CLLocationDegrees)latitude
 					  longitude:(CLLocationDegrees)longitude
 					   altitude:(CLLocationDistance)altitude
 		   orientationAvailable:(BOOL)orientationAvailable
-					   reliable:(BOOL)isOrientationRecent
+					   reliable:(BOOL)isOrientationReliable
 	 ENUToDeviceSpaceQuaternion:(ARQuaternion)anENUToDeviceSpaceQuaternion
 			EFToECEFSpaceOffset:(ARPoint3D)EFToECEFSpaceOffset
 					  timestamp:(NSDate *)timestamp;
