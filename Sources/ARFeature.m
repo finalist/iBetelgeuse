@@ -39,6 +39,18 @@
 @end
 
 
+@interface ARFeatureXMLParserDelegate ()
+
+/**
+ * Callback used when parsing a location.
+ *
+ * @param location The location that has been parsed, or nil if parsing failed.
+ */
+- (void)didParseLocation:(ARLocation *)location;
+
+@end
+
+
 @implementation ARFeature
 
 @synthesize identifier, locationIdentifier, location, anchor, action, offset, showInRadar;
