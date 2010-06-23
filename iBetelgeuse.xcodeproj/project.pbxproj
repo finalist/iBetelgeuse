@@ -42,9 +42,6 @@
 		950ECB5211C8C325009E1314 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 950ECB5111C8C325009E1314 /* Default@2x.png */; };
 		958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958DF27A11ABB40000047790 /* ARImageFeatureView.m */; };
 		958E3DA311D1EC9300466267 /* NSObject+ARClassInvariant.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E3DA211D1EC9300466267 /* NSObject+ARClassInvariant.m */; };
-		958E3E1D11D1FDB000466267 /* ARDimensionTestInvalid.xml in Resources */ = {isa = PBXBuildFile; fileRef = 958E3E1C11D1FDB000466267 /* ARDimensionTestInvalid.xml */; };
-		958E3E4C11D1FFB400466267 /* ARDimensionTestOther.xml in Resources */ = {isa = PBXBuildFile; fileRef = 958E3E4B11D1FFB400466267 /* ARDimensionTestOther.xml */; };
-		958E3EA211D2054000466267 /* ARLocationTestFailAltitude.xml in Resources */ = {isa = PBXBuildFile; fileRef = 958E3EA111D2054000466267 /* ARLocationTestFailAltitude.xml */; };
 		958E3F0B11D20E8E00466267 /* NSObject+ARClassInvariant.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E3DA211D1EC9300466267 /* NSObject+ARClassInvariant.m */; };
 		95919EE311A41A61006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE411A41A67006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
@@ -969,9 +966,6 @@
 				95A8608311CB9491005DE882 /* DimensionWarning@2x.png in Resources */,
 				959247AE11D0A2B70012698B /* AssetFailed.png in Resources */,
 				959247AF11D0A2B70012698B /* AssetFailed@2x.png in Resources */,
-				958E3E1D11D1FDB000466267 /* ARDimensionTestInvalid.xml in Resources */,
-				958E3E4C11D1FFB400466267 /* ARDimensionTestOther.xml in Resources */,
-				958E3EA211D2054000466267 /* ARLocationTestFailAltitude.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
