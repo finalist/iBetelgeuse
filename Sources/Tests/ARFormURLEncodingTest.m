@@ -44,6 +44,10 @@
 	[self assertBijectionWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"", @"b", nil]];
 	[self assertBijectionWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"a", @"", nil]];
 	[self assertBijectionWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"a", @"b", @"", @"d", @"e", @"", @"g", @"h", nil]];
+	
+	NSNumber *number = [NSNumber numberWithInteger:3];
+	GHAssertThrows([NSURLRequest ar_formURLEncodedStringWithDictionary:[NSDictionary dictionaryWithObject:number forKey:@"a"]], nil);
+	GHAssertThrows([NSURLRequest ar_formURLEncodedStringWithDictionary:[NSDictionary dictionaryWithObject:@"a" forKey:number]], nil);
 }
 
 - (void)testURLEncoding {

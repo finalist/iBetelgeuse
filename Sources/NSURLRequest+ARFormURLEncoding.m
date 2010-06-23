@@ -29,9 +29,15 @@
 	NSMutableString *result = [[NSMutableString alloc] init];
 	
 	for (NSString *key in [dictionary keyEnumerator]) {
+		NSAssert([key isKindOfClass:[NSString class]], @"Expected string key.");
 		[result appendString:[self ar_stringByURLEncodingString:key]];
+		
 		[result appendString:@"="];
-		[result appendString:[self ar_stringByURLEncodingString:[[dictionary objectForKey:key] description]]];
+		
+		NSString *value = [dictionary objectForKey:key];
+		NSAssert([value isKindOfClass:[NSString class]], @"Expected string value.");
+		[result appendString:[self ar_stringByURLEncodingString:value]];
+		
 		[result appendString:@"&"];
 	}
 	

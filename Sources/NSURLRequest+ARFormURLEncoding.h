@@ -31,7 +31,7 @@
 /**
  * Encodes the given keys and values into an application/x-www-form-urlencoded encoded string.
  *
- * @param dictionary A dictionary. May be nil, in which case an empty string is returned.
+ * @param dictionary A dictionary with NSString keys and NSString values. May be nil, in which case an empty string is returned.
  *
  * @return An application/x-www-form-urlencoded encoded string.
  */
