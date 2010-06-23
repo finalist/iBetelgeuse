@@ -28,6 +28,7 @@
 #import "ARImageFeature.h"
 #import "ARTextFeature.h"
 #import "TCXMLParserDelegate+Protected.h"
+#import "NSObject+ARClassInvariant.h"
 
 
 #define DEFAULT_RADAR_RADIUS 1000 // meters
@@ -118,6 +119,8 @@ typedef enum {
 
 @implementation ARDimension
 
+ARDefineClassInvariant(ARSuperClassInvariant && refreshTime >= 0 && refreshDistance >= 0 && radarRadius > 0);
+
 @synthesize features, overlays, locations, assets, name, relativeAltitude, refreshURL, refreshTime, refreshDistance, radarRadius;
 
 #pragma mark NSObject
@@ -126,6 +129,7 @@ typedef enum {
 	if (self = [super init]) {
 		radarRadius = DEFAULT_RADAR_RADIUS;
 	}
+	ARAssertClassInvariant();
 	return self;
 }
 
@@ -143,11 +147,42 @@ typedef enum {
 #pragma mark ARDimension
 
 - (void)resolveIdentifiers {
+	ARAssertClassInvariant();
+	
 	for (ARFeature *feature in features) {
 		if (![feature location] && [feature locationIdentifier]) {
 			[feature setIdentifiedLocation:[locations objectForKey:[feature locationIdentifier]]];
 		}
 	}
+	
+	ARAssertClassInvariant();
+}
+
+- (void)setRefreshTime:(NSTimeInterval)aTime {
+	NSAssert(aTime >= 0, @"Expected zero or positive refresh time.");
+	ARAssertClassInvariant();
+	
+	refreshTime = aTime;
+	
+	ARAssertClassInvariant();
+}
+
+- (void)setRefreshDistance:(CLLocationDistance)aDistance {
+	NSAssert(aDistance >= 0, @"Expected zero or positive refresh distance.");
+	ARAssertClassInvariant();
+	
+	refreshDistance = aDistance;
+	
+	ARAssertClassInvariant();
+}
+
+- (void)setRadarRadius:(CLLocationDistance)aRadius {
+	NSAssert(aRadius >= 0, @"Expected strictly positive radar radius.");
+	ARAssertClassInvariant();
+	
+	radarRadius = aRadius;
+	
+	ARAssertClassInvariant();
 }
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
@@ -420,6 +455,7 @@ typedef enum {
 	
 	[dimension resolveIdentifiers];
 	
+	ARAssertClassInvariantOfObject(dimension);
 	return dimension;
 }
 
