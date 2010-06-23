@@ -29,27 +29,82 @@
 #import "ARAccelerometerFilter.h"
 
 
+// The frequency at which we like to get accelerometer updates
 #define ACCELEROMETER_UPDATE_FREQUENCY 30 // Hz
+
+// The maximum age of a location that we (a) consider a valid new measurement and (b) we deem a reliable old measurement
 #define LOCATION_EXPIRATION 10 // seconds
-#define UP_DIRECTION_EXPIRATION 1 // seconds
-#define NORTH_DIRECTION_EXPIRATION 1 // seconds
-#define LOCATION_MINIMUM_HORIZONTAL_ACCURACY 100 // meters
+
+// The maximum horizontal accuracy of a location that we consider at all
+#define LOCATION_MINIMUM_HORIZONTAL_ACCURACY 1000 // meters
+
+// The maximum age of an orientation measurement that we deem reliable
+#define ORIENTATION_EXPIRATION 1 // seconds
 
 
+#if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 @interface ARSpatialStateManager () <UIAccelerometerDelegate, CLLocationManagerDelegate>
+#else
+@interface ARSpatialStateManager ()
+#endif
 
 @property(nonatomic, readwrite, getter=isUpdating) BOOL updating;
 
-#if TARGET_IPHONE_SIMULATOR
+#if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_SIMULATOR
+
+/**
+ * Updates the receiver with a fresh simulated set of measurements.
+ */
 - (void)updateForSimulation;
+
+/**
+ * Callback for the UIApplicationDidChangeStatusBarOrientationNotification to use the iPhone Simulator's rotation to simulate actual device rotation.
+ */
+- (void)statusBarOrientationDidChange;
+
+/**
+ * Callback for an NSTimer that runs a simulation.
+ */
+- (void)updateTimerDidFire;
+
 #endif
 
+/**
+ * Updates the receiver's orientation (in particular, the ENU to device quaternion) using the most recently measured raw up and north directions.
+ */
 - (void)updateOrientation;
+
+/**
+ * Updates the receiver's location with the given raw location.
+ *
+ * @param rawLatitude The raw WGS84 latitude.
+ * @param rawLongitude The raw WGS84 longitude.
+ * @param rawAltitude The raw WGS84 altitude.
+ * @param reliable A flag indicating whether the given location information should be considered reliable (at discretion of the caller).
+ */
 - (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable;
+
+/**
+ * Updates the receiver's orientation with the given raw up direction.
+ *
+ * @param rawUpDirection The raw up direction vector in device space.
+ */
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection;
+
+/**
+ * Updates the receiver's orientation with the given raw North direction.
+ *
+ * @param rawUpDirection The raw North direction vector in device space.
+ * @param declination The raw declination between true and magnetic North in radians.
+ */
 - (void)updateWithRawNorthDirection:(ARPoint3D)rawNorthDirection declination:(CGFloat)declination;
 
-- (void)invalidateSpatialState;
+/**
+ * Invalidates the spatial state of the receiver, optionally resetting the timestamp of the spatial state to the current time. When someone requests the spatial state following this method, a new spatial state object will be constructed.
+ *
+ * @param resetTimestamp Whether the timestamp of the spatial state should be reset to the current time. Should be YES if and only if new measurements were done to the location or the orientation.
+ */
+- (void)invalidateSpatialStateResettingTimestamp:(BOOL)resetTimestamp;
 
 @end
 
@@ -70,22 +125,23 @@
 }
 
 - (void)dealloc {
-#if TARGET_IPHONE_SIMULATOR
+#if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_SIMULATOR
 	[updateTimer invalidate];
 	[updateTimer release];
-#else
+#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	[locationManager release];
 #endif
 
 	[upDirectionFilter release];
 	[orientationFilter release];
+	
 	[timestamp release];
 	[spatialState release];
 	
 	[super dealloc];
 }
 
-#if !TARGET_IPHONE_SIMULATOR
+#if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 
 #pragma mark UIAccelerometerDelegate
 
@@ -153,6 +209,13 @@
 	delegateRespondsToLocationDidUpdate = [delegate respondsToSelector:@selector(spatialStateManagerLocationDidUpdate:)];
 }
 
+- (void)setEFToECEFSpaceOffset:(ARPoint3D)anOffset {
+	EFToECEFSpaceOffset = anOffset;
+	
+	// Invalidate the spatial state, but don't reset the timestamp since no actual measurements have changed
+	[self invalidateSpatialStateResettingTimestamp:NO];
+}
+
 - (void)startUpdating {
 	if ([self isUpdating]) {
 		return;
@@ -161,12 +224,12 @@
 		[self setUpdating:YES];
 	}
 
-#if TARGET_IPHONE_SIMULATOR
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarOrientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+#if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_SIMULATOR
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarOrientationDidChange) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
 	
 	[updateTimer invalidate];
 	updateTimer = [[NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(updateTimerDidFire) userInfo:nil repeats:YES] retain];
-#else
+#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	[accelerometer setDelegate:self];
 	[accelerometer setUpdateInterval:1. / ACCELEROMETER_UPDATE_FREQUENCY];
@@ -176,7 +239,10 @@
 	[locationManager setDelegate:self];
 	[locationManager setDistanceFilter:kCLDistanceFilterNone];
 	[locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+	
+	// We don't check the locationServicesEnabled property, the user should know that this application wants to know his/her location
 	[locationManager startUpdatingLocation];
+	
 	if ([locationManager headingAvailable]) {
 		[locationManager startUpdatingHeading];
 	}
@@ -184,19 +250,28 @@
 }
 
 - (void)stopUpdating {
-#if TARGET_IPHONE_SIMULATOR
+	if (![self isUpdating]) {
+		return;
+	}
+	
+#if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_SIMULATOR
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[updateTimer invalidate];
 	[updateTimer release];
 	updateTimer = nil;
-#else
+#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	// Make sure the accelerometer stops calling us
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	if ([accelerometer delegate] == self) {
 		[accelerometer setDelegate:nil];
 	}
+	else {
+		DebugLog(@"Warning: the accelerometer delegate was inadvertedly changed by another object");
+	}
 
+	[locationManager stopUpdatingLocation];
+	[locationManager stopUpdatingHeading];
 	[locationManager release];
 	locationManager = nil;
 #endif
@@ -204,8 +279,8 @@
 	[self setUpdating:NO];
 }
 
-#if TARGET_IPHONE_SIMULATOR
-- (void)statusBarOrientationDidChange:(UIDevice *)device {
+#if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_SIMULATOR
+- (void)statusBarOrientationDidChange {
 	[self updateForSimulation];
 }
 
@@ -237,7 +312,7 @@
 			[self updateWithRawUpDirection:ARPoint3DCreate(-cosf(simulatedUpAngle), 0, -sinf(simulatedUpAngle))];
 			break;
 	}
-	// simulatedUpAngle += .5f / 180.f * M_PI;
+	 simulatedUpAngle += .5f / 180.f * M_PI;
 	
 	// Assume the back of the device is pointing towards the north with a declination of -10º
 	static CGFloat simulatedNorthAngle = 0.0;
@@ -269,13 +344,16 @@
 	// * towards the sky, which is given by the up vector; and
 	// * oriented towards the North pole, which is given by the north vector.
 	if (upDirectionAvailable && northDirectionAvailable) {
+		orientationAvailable = YES;
+		orientationTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
+		
 		ARTransform3D ENUToDeviceSpaceTransform = ARTransform3DLookAtRelative(ARPoint3DZero, lastUpDirectionInDeviceSpace, lastNorthDirectionInDeviceSpace, ARPoint3DZero);
-		ENUToDeviceSpaceQuaternion = [orientationFilter filterWithInput:ARQuaternionMakeWithTransform(ENUToDeviceSpaceTransform) timestamp:[NSDate timeIntervalSinceReferenceDate]];
+		ENUToDeviceSpaceQuaternion = [orientationFilter filterWithInput:ARQuaternionMakeWithTransform(ENUToDeviceSpaceTransform) timestamp:orientationTimeIntervalSinceReferenceDate];
+
+		[self invalidateSpatialStateResettingTimestamp:YES];
+		
+		[delegate spatialStateManagerDidUpdate:self];
 	}
-	
-	[self invalidateSpatialState];
-	
-	[delegate spatialStateManagerDidUpdate:self];
 }
 
 - (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable {
@@ -287,7 +365,7 @@
 	longitude = rawLongitude;
 	altitude = rawAltitude;
 	
-	[self invalidateSpatialState];
+	[self invalidateSpatialStateResettingTimestamp:YES];
 	
 	if (delegateRespondsToLocationDidUpdate) {
 		[delegate spatialStateManagerLocationDidUpdate:self];
@@ -297,8 +375,7 @@
 
 - (void)updateWithRawUpDirection:(ARPoint3D)rawUpDirection {
 	upDirectionAvailable = YES;
-	upDirectionTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
-	lastUpDirectionInDeviceSpace = [upDirectionFilter filterWithInput:rawUpDirection timestamp:upDirectionTimeIntervalSinceReferenceDate];
+	lastUpDirectionInDeviceSpace = [upDirectionFilter filterWithInput:rawUpDirection timestamp:[NSDate timeIntervalSinceReferenceDate]];
 
 	[self updateOrientation];
 }
@@ -311,7 +388,6 @@
 	}
 	
 	northDirectionAvailable = YES;
-	northDirectionTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
 	lastNorthDirectionInDeviceSpace = rawNorthDirection;
 
 	[self updateOrientation];
@@ -321,16 +397,15 @@
 	if (spatialState == nil) {
 		NSTimeInterval timeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
 		BOOL locationRecent = (timeIntervalSinceReferenceDate - locationTimeIntervalSinceReferenceDate) <= LOCATION_EXPIRATION;
-		BOOL upDirectionRecent = (timeIntervalSinceReferenceDate - upDirectionTimeIntervalSinceReferenceDate) <= UP_DIRECTION_EXPIRATION;
-		BOOL northDirectionRecent = (timeIntervalSinceReferenceDate - northDirectionTimeIntervalSinceReferenceDate) <= NORTH_DIRECTION_EXPIRATION;
+		BOOL orientationRecent = (timeIntervalSinceReferenceDate - orientationTimeIntervalSinceReferenceDate) <= ORIENTATION_EXPIRATION;
 		
 		spatialState = [[ARSpatialState alloc] initWithLocationAvailable:locationAvailable
 																reliable:(locationReliable && locationRecent)
 																latitude:latitude
 															   longitude:longitude
 																altitude:altitude
-													orientationAvailable:(upDirectionAvailable && northDirectionAvailable)
-																  reliable:(upDirectionRecent && northDirectionRecent)
+													orientationAvailable:orientationAvailable
+																reliable:orientationRecent
 											  ENUToDeviceSpaceQuaternion:ENUToDeviceSpaceQuaternion
 													 EFToECEFSpaceOffset:EFToECEFSpaceOffset
 															   timestamp:timestamp];
@@ -338,9 +413,11 @@
 	return spatialState;
 }
 
-- (void)invalidateSpatialState {
-	[timestamp release];
-	timestamp = [[NSDate alloc] init];
+- (void)invalidateSpatialStateResettingTimestamp:(BOOL)resetTimestamp {
+	if (resetTimestamp) {
+		[timestamp release];
+		timestamp = [[NSDate alloc] init];
+	}
 	
 	[spatialState release];
 	spatialState = nil;
