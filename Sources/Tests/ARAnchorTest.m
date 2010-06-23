@@ -36,10 +36,6 @@
 
 #pragma mark GHTestCase
 
-- (void)testMakeWithNilXMLString {
-	GHAssertThrows(ARAnchorMakeWithXMLString(nil, NULL), nil);
-}
-
 - (void)testMakeWithValidXMLString {
 	[self assertAnchor:ARAnchorMake(0.0, 0.0) isMadeWithValidXMLString:@"TL"];
 	[self assertAnchor:ARAnchorMake(0.5, 0.0) isMadeWithValidXMLString:@"TC"];
@@ -56,6 +52,7 @@
 }
 
 - (void)testMakeWithInvalidXMLString {
+	[self assertDefaultAnchorIsMadeWithInvalidXMLString:nil];
 	[self assertDefaultAnchorIsMadeWithInvalidXMLString:@""];
 	[self assertDefaultAnchorIsMadeWithInvalidXMLString:@"T"];
 	[self assertDefaultAnchorIsMadeWithInvalidXMLString:@"TX"];

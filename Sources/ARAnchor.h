@@ -22,19 +22,32 @@
 
 #import <Foundation/Foundation.h>
 
+
 /**
- * An anchor of an object is given as a point in unit coordinate space.
+ * An anchor of an object is given by a point in unit coordinate space.
  */
 typedef CGPoint ARAnchor;
 
+
+/**
+ * Creates an anchor with the given values.
+ *
+ * @param x Value in the range [-1,1].
+ * @param y Value in the range [-1,1].
+ *
+ * @return An anchor.
+ */
 static inline ARAnchor ARAnchorMake(CGFloat x, CGFloat y) {
+	NSCAssert(fabsf(x) <= 1., @"Expected x in range [-1,1].");
+	NSCAssert(fabsf(y) <= 1., @"Expected y in range [-1,1].");
+	
 	return CGPointMake(x, y);
 }
 
 /**
- * Returns the anchor represented by the given Gamaray XML string, which is one of TL, TC, TR, CL, CC, CR, BL, BC and BR.
+ * Creates the anchor represented by the given Gamaray XML string, which is one of TL, TC, TR, CL, CC, CR, BL, BC and BR.
  *
- * @param string The string to parse. May not be nil.
+ * @param string The string to parse. May be nil.
  * @param valid Upon return of this method, the referenced variable will indicate whether the given string was valid. May be NULL if this value is not needed.
  *
  * @return The anchor, or (0.5, 0.5) if the given string was not valid.
