@@ -24,6 +24,10 @@
 #import "ARTransform3D.h"
 
 
+/**
+ * A quaternion, usually a (normalized) rotation or orientation quaternion, but
+ * can also be a quaternion representing a point or translation.
+ */
 typedef struct {
 	double w;
 	double x;
@@ -31,6 +35,10 @@ typedef struct {
 	double z;
 } ARQuaternion;
 
+/**
+ * Enum containing the indices of each coordinate. ARQuaternionCoordinateCount
+ * is used to count the total number of coordinates.
+ */
 typedef enum {
 	ARQuaternionCoordinateIdW,
 	ARQuaternionCoordinateIdX,
@@ -41,9 +49,20 @@ typedef enum {
 } ARQuaternionCoordinateId;
 
 
+/**
+ * A quaternion with every coordinate set to 0.
+ */
 extern const ARQuaternion ARQuaternionZero;
+
+/**
+ * Identify quaternion [1, 0, 0, 0]. Note that quaternions have two identity
+ * quaternions, since identity represents the same rotation as -identity.
+ */
 extern const ARQuaternion ARQuaternionIdentity;
 
+/**
+ * The epsilon value used by some quaternion functions.
+ */
 static const double ARQuaternionEpsilon = 1.e-6;
 
 
@@ -476,7 +495,7 @@ ARQuaternion ARQuaternionWeightedSum(int n, const ARQuaternion quaternions[], co
  * @param n the number of quaternions
  * @param quaternions the quaternions.
  * @param weights the weight for each of the quaternions.
- * @param initialEstimate the initial estimate of the result.
+ * @param initialEstimate the initial estimate of the result. Must be a unit vector.
  * @param errorTolerance the desired accuracy.
  * @param maxIterationCount the maximum number of iterations after which the
  *   algorithm is cancelled, returning a estimate that is less accurate than the
