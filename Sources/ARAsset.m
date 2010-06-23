@@ -22,6 +22,7 @@
 
 #import "ARAsset.h"
 #import "TCXMLParserDelegate+Protected.h"
+#import "NSObject+ARClassInvariant.h"
 
 
 @interface ARAsset ()
@@ -43,15 +44,20 @@
 
 @implementation ARAsset
 
+ARDefineClassInvariant(ARSuperClassInvariant && URL != nil);
+
 @synthesize identifier, format, URL;
 
 #pragma mark NSObject
 
 - (id)initWithURL:(NSURL *)aURL format:(NSString *)aFormat {
+	NSAssert(aURL != nil, @"Expected non-nil URL.");
+	
 	if (self = [super init]) {
 		format = [aFormat copy];
 		URL = [aURL retain];
 	}
+	ARAssertClassInvariant();
 	return self;
 }
 
@@ -112,6 +118,7 @@
 	if (![asset identifier] || ![asset URL]) {
 		return nil;
 	} else {
+		ARAssertClassInvariantOfObject(asset);
 		return asset;
 	}
 }
