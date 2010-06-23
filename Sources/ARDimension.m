@@ -65,6 +65,9 @@ typedef enum {
 } ARDimensionXMLParserDelegateState;
 
 
+/**
+ * Class that can be used as a delegate of an NSXMLParser to parse a dimension.
+ */
 @interface ARDimensionXMLParserDelegate : TCXMLParserDelegate {
 @private
 	ARDimension *dimension;

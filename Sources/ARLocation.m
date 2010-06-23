@@ -35,6 +35,9 @@
 @end
 
 
+/**
+ * Class that can be used as a delegate of an NSXMLParser to parse a location.
+ */
 @interface ARLocationXMLParserDelegate : TCXMLParserDelegate {
 @private
 	ARLocation *location;

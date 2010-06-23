@@ -34,6 +34,9 @@
 @end
 
 
+/**
+ * Class that can be used as a delegate of an NSXMLParser to parse an asset.
+ */
 @interface ARAssetXMLParserDelegate : TCXMLParserDelegate {
 @private
 	ARAsset *asset;
@@ -72,6 +75,8 @@ ARDefineClassInvariant(ARSuperClassInvariant && URL != nil);
 #pragma mark ARAsset
 
 + (void)startParsingWithXMLParser:(NSXMLParser *)parser element:(NSString *)element attributes:(NSDictionary *)attributes notifyTarget:(id)target selector:(SEL)selector userInfo:(id)userInfo {
+	// Note: pre-conditions of this method are enforced by the TCXMLParserDelegate method
+	
 	ARAssetXMLParserDelegate *delegate = [[ARAssetXMLParserDelegate alloc] init];
 	[delegate startWithXMLParser:parser element:element attributes:attributes notifyTarget:target selector:selector userInfo:userInfo];
 	[delegate release];
