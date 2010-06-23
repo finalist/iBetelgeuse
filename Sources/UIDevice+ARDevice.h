@@ -23,8 +23,24 @@
 #import <UIKit/UIKit.h>
 
 
+/**
+ * Category on UIDevice that adds a method for determining the exact model identifier of the device.
+ */
 @interface UIDevice (ARDevice)
 
+/**
+ * The model identifier of the receiver. This method may only be called on the instance returned by the currentDevice class method. The value may be nil and is undefined on the iPhone Simulator.
+ *
+ * Known model identifiers are:
+ * iPhone3,1	iPhone 4
+ * iPhone2,1	iPhone 3GS
+ * iPhone1,2	iPhone 3G
+ * iPhone1,1	iPhone (original)
+ * iPod3,1		iPod touch (3rd generation)
+ * iPod2,1		iPod touch (2nd generation)
+ * iPod1,1		iPod touch (original)
+ * iPad1,1		iPad
+ */
 @property(nonatomic, readonly, retain) NSString *ar_modelIdentifier;
 
 @end

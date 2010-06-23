@@ -25,12 +25,15 @@
 #import <sys/sysctl.h>
 
 
+// Cached model identifier of the current device
 static NSString *modelIdentifier = nil;
 
 
 @implementation UIDevice (ARDevice)
 
 - (NSString *)ar_modelIdentifier {
+	NSAssert(self == [UIDevice currentDevice], @"Expected this method to be called on the current device instance.");
+	
 	if (modelIdentifier == nil) {
 		size_t length = 0;
 		sysctlbyname("hw.machine", NULL, &length, NULL, 0);
