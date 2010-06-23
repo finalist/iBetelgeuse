@@ -23,23 +23,15 @@
 #import "NSURLRequest+ARFormURLEncoding.h"
 
 
-@interface NSURLRequest (_ARFormURLEncoding)
-
-+ (NSString *)_ar_stringByURLEncodingString:(NSString *)string;
-+ (NSString *)_ar_stringByURLDecodingString:(NSString *)string;
-
-@end
-
-
 @implementation NSURLRequest (ARFormURLEncoding)
 
 + (NSString *)ar_formURLEncodedStringWithDictionary:(NSDictionary *)dictionary {
 	NSMutableString *result = [[NSMutableString alloc] init];
 	
 	for (NSString *key in [dictionary keyEnumerator]) {
-		[result appendString:[self _ar_stringByURLEncodingString:key]];
+		[result appendString:[self ar_stringByURLEncodingString:key]];
 		[result appendString:@"="];
-		[result appendString:[self _ar_stringByURLEncodingString:[[dictionary objectForKey:key] description]]];
+		[result appendString:[self ar_stringByURLEncodingString:[[dictionary objectForKey:key] description]]];
 		[result appendString:@"&"];
 	}
 	
@@ -51,29 +43,47 @@
 	
 	NSScanner *scanner = [[NSScanner alloc] initWithString:string];
 	NSString *buffer;
-	while ([scanner scanUpToString:@"=" intoString:&buffer]) {
-		NSString *key = [self _ar_stringByURLDecodingString:buffer];
-		
-		[scanner scanString:@"=" intoString:NULL];
-		if ([scanner scanUpToString:@"&" intoString:&buffer]) {
-			NSString *value = [self _ar_stringByURLDecodingString:buffer];
-			[result setObject:value forKey:key];
-			
-			[scanner scanString:@"&" intoString:NULL];
+	while (![scanner isAtEnd]) {
+		// Scan the key up to an equal sign
+		if (![scanner scanUpToString:@"=" intoString:&buffer]) {
+			buffer = @"";
 		}
+		
+		// Eat the =
+		[scanner scanString:@"=" intoString:NULL];
+		
+		NSAssert(buffer != nil, @"Expected buffer to be non-nil.");
+		NSString *key = [self ar_stringByURLDecodingString:buffer];
+
+		// Scan the value up to an ampersand
+		if (![scanner scanUpToString:@"&" intoString:&buffer]) {
+			buffer = @"";
+		}
+		
+		// Eat the &
+		[scanner scanString:@"&" intoString:NULL];
+
+		NSAssert(buffer != nil, @"Expected buffer to be non-nil.");
+		NSString *value = [self ar_stringByURLDecodingString:buffer];
+
+		[result setObject:value forKey:key];
 	}
 	[scanner release];
 	
 	return [result autorelease];
 }
 
-+ (NSString *)_ar_stringByURLEncodingString:(NSString *)string {
-	// We don't use stringByAddingPercentEscapesUsingEncoding: because we explicitly need to additionally encode = and & characters
++ (NSString *)ar_stringByURLEncodingString:(NSString *)string {
+	if (string == nil) {
+		return nil;
+	}
+	
+	// We don't use stringByAddingPercentEscapesUsingEncoding: because we explicitly need to encode = and & characters as well
 	CFStringRef result = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (CFStringRef)string, NULL, CFSTR("=&"), kCFStringEncodingUTF8);
 	return [(NSString *)result autorelease];
 }
 
-+ (NSString *)_ar_stringByURLDecodingString:(NSString *)string {
++ (NSString *)ar_stringByURLDecodingString:(NSString *)string {
 	return [string stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 

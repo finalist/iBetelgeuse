@@ -35,17 +35,31 @@
 
 #pragma mark GHTestCase
 
-- (void)testNil {
+- (void)testFormURLEncodingAndDecoding {
 	GHAssertEqualObjects([NSURLRequest ar_formURLEncodedStringWithDictionary:nil], @"", nil);
 	GHAssertEqualObjects([NSURLRequest ar_dictionaryWithFormURLEncodedString:nil], [NSDictionary dictionary], nil);
-}
-
-- (void)testEmpty {
+	
 	[self assertBijectionWithDictionary:[NSDictionary dictionary]];
+	[self assertBijectionWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"aValue", @"aKey", @"baz +&=", @"=&+ foo", nil]];
+	[self assertBijectionWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"", @"b", nil]];
+	[self assertBijectionWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"a", @"", nil]];
+	[self assertBijectionWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"a", @"b", @"", @"d", @"e", @"", @"g", @"h", nil]];
 }
 
-- (void)testNonEmpty {
-	[self assertBijectionWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:@"aValue", @"aKey", @"baz +&=", @"-&+ foo", nil]];
+- (void)testURLEncoding {
+	GHAssertNil([NSURLRequest ar_stringByURLEncodingString:nil], nil);
+	GHAssertEqualObjects([NSURLRequest ar_stringByURLEncodingString:@""], @"", nil);
+	GHAssertEqualObjects([NSURLRequest ar_stringByURLEncodingString:@"aValue"], @"aValue", nil);
+	GHAssertEqualObjects([NSURLRequest ar_stringByURLEncodingString:@"baz +&="], @"baz%20+%26%3D", nil);
+	GHAssertEqualObjects([NSURLRequest ar_stringByURLEncodingString:@"=&+ foo"], @"%3D%26+%20foo", nil);
+}
+
+- (void)testURLDecoding {
+	GHAssertNil([NSURLRequest ar_stringByURLDecodingString:nil], nil);
+	GHAssertEqualObjects([NSURLRequest ar_stringByURLDecodingString:@""], @"", nil);
+	GHAssertEqualObjects([NSURLRequest ar_stringByURLDecodingString:@"aValue"], @"aValue", nil);
+	GHAssertEqualObjects([NSURLRequest ar_stringByURLDecodingString:@"baz%20+%26%3D"], @"baz +&=", nil);
+	GHAssertEqualObjects([NSURLRequest ar_stringByURLDecodingString:@"%3D%26+%20foo"], @"=&+ foo", nil);
 }
 
 #pragma mark ARFormURLEncodingTest
