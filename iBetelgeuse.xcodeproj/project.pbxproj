@@ -157,6 +157,22 @@
 		C35C5EDB11BFAC8000C0FF1A /* ARQuaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5EDA11BFAC8000C0FF1A /* ARQuaternion.m */; };
 		C35C5EDC11BFAC8000C0FF1A /* ARQuaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5EDA11BFAC8000C0FF1A /* ARQuaternion.m */; };
 		C35C5F1411BFB70400C0FF1A /* ARQuaternionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5F1211BFB70400C0FF1A /* ARQuaternionTest.m */; };
+		C3946CC011D39484000D1F88 /* ARDelayFilterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */; };
+		C3946CC111D39484000D1F88 /* ARFilterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CBF11D39484000D1F88 /* ARFilterTest.m */; };
+		C3946CC211D39489000D1F88 /* ARMovingAverageQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C32966BF11C7671F006859E7 /* ARMovingAverageQuaternionFilter.m */; };
+		C3946CC311D3948A000D1F88 /* ARMovingWindowQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C329678111C781AB006859E7 /* ARMovingWindowQuaternionFilter.m */; };
+		C3946CC411D3948B000D1F88 /* AROrientationFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C329607411C0E136006859E7 /* AROrientationFilter.m */; };
+		C3946CC511D3948C000D1F88 /* ARDelayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5E6B11BF914000C0FF1A /* ARDelayFilter.m */; };
+		C3946CC611D3948E000D1F88 /* ARDerivativeSmoothQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217B1511C8B727000BE2E1 /* ARDerivativeSmoothQuaternionFilter.m */; };
+		C3946CC711D3948F000D1F88 /* ARAccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75F0711B678F400B71931 /* ARAccelerometerFilter.m */; };
+		C3946CC811D3948F000D1F88 /* ARArrayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EBA11B66E8A00B71931 /* ARArrayFilter.m */; };
+		C3946CC911D39490000D1F88 /* ARMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EB411B66E4700B71931 /* ARMovingAverageFilter.m */; };
+		C3946CCA11D39491000D1F88 /* ARMovingWindowFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75ECD11B6700B00B71931 /* ARMovingWindowFilter.m */; };
+		C3946CCB11D39492000D1F88 /* ARFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EAC11B66E0300B71931 /* ARFilter.m */; };
+		C3946CCC11D39493000D1F88 /* ARSimplePoint3DFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C32964B711C27EC9006859E7 /* ARSimplePoint3DFilter.m */; };
+		C3946CCD11D39494000D1F88 /* ARPoint3DFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A7E11C8ACC2000BE2E1 /* ARPoint3DFilter.m */; };
+		C3946CCE11D39495000D1F88 /* ARSimpleQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8511C8ADB9000BE2E1 /* ARSimpleQuaternionFilter.m */; };
+		C3946CCF11D39496000D1F88 /* ARQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8311C8ADB9000BE2E1 /* ARQuaternionFilter.m */; };
 		C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C62E8611ABE7D500553407 /* ARRadarView.m */; };
 /* End PBXBuildFile section */
 
@@ -306,7 +322,7 @@
 		95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHUnitTestMain.m; sourceTree = "<group>"; };
 		95E77E401198094800A1F2B9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		95E77EC51198097400A1F2B9 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = iBetelgeuseTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		95EC614211C22B200027FF5D /* ARCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCamera.h; sourceTree = "<group>"; };
 		95EC614311C22B200027FF5D /* ARCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCamera.m; sourceTree = "<group>"; };
 		95EC614911C22CC70027FF5D /* UIDevice+ARDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+ARDevice.h"; sourceTree = "<group>"; };
@@ -422,6 +438,10 @@
 		C35C5EDA11BFAC8000C0FF1A /* ARQuaternion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuaternion.m; sourceTree = "<group>"; };
 		C35C5F1111BFB70400C0FF1A /* ARQuaternionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARQuaternionTest.h; sourceTree = "<group>"; };
 		C35C5F1211BFB70400C0FF1A /* ARQuaternionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuaternionTest.m; sourceTree = "<group>"; };
+		C3946CBC11D39484000D1F88 /* ARDelayFilterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDelayFilterTest.h; sourceTree = "<group>"; };
+		C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDelayFilterTest.m; sourceTree = "<group>"; };
+		C3946CBE11D39484000D1F88 /* ARFilterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilterTest.h; sourceTree = "<group>"; };
+		C3946CBF11D39484000D1F88 /* ARFilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilterTest.m; sourceTree = "<group>"; };
 		C3C62E8511ABE7D500553407 /* ARRadarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRadarView.h; sourceTree = "<group>"; };
 		C3C62E8611ABE7D500553407 /* ARRadarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRadarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -792,6 +812,7 @@
 		95E77E1D1198085900A1F2B9 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C3946CBB11D39469000D1F88 /* Filter */,
 				95B9BFDD11A1412500EDD870 /* Prefix.pch */,
 				95E77E2A1198090900A1F2B9 /* GHUnitTestMain.m */,
 				95D3CFC911A2BB46007B7148 /* ARFormURLEncodingTest.h */,
@@ -859,6 +880,17 @@
 				C35C57F211B5048200C0FF1A /* libzbar.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C3946CBB11D39469000D1F88 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				C3946CBC11D39484000D1F88 /* ARDelayFilterTest.h */,
+				C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */,
+				C3946CBE11D39484000D1F88 /* ARFilterTest.h */,
+				C3946CBF11D39484000D1F88 /* ARFilterTest.m */,
+			);
+			name = Filter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1102,6 +1134,22 @@
 				C35C5F1411BFB70400C0FF1A /* ARQuaternionTest.m in Sources */,
 				C32180E711CB5059000BE2E1 /* ARSpatialState.m in Sources */,
 				958E3F0B11D20E8E00466267 /* NSObject+ARClassInvariant.m in Sources */,
+				C3946CC011D39484000D1F88 /* ARDelayFilterTest.m in Sources */,
+				C3946CC111D39484000D1F88 /* ARFilterTest.m in Sources */,
+				C3946CC211D39489000D1F88 /* ARMovingAverageQuaternionFilter.m in Sources */,
+				C3946CC311D3948A000D1F88 /* ARMovingWindowQuaternionFilter.m in Sources */,
+				C3946CC411D3948B000D1F88 /* AROrientationFilter.m in Sources */,
+				C3946CC511D3948C000D1F88 /* ARDelayFilter.m in Sources */,
+				C3946CC611D3948E000D1F88 /* ARDerivativeSmoothQuaternionFilter.m in Sources */,
+				C3946CC711D3948F000D1F88 /* ARAccelerometerFilter.m in Sources */,
+				C3946CC811D3948F000D1F88 /* ARArrayFilter.m in Sources */,
+				C3946CC911D39490000D1F88 /* ARMovingAverageFilter.m in Sources */,
+				C3946CCA11D39491000D1F88 /* ARMovingWindowFilter.m in Sources */,
+				C3946CCB11D39492000D1F88 /* ARFilter.m in Sources */,
+				C3946CCC11D39493000D1F88 /* ARSimplePoint3DFilter.m in Sources */,
+				C3946CCD11D39494000D1F88 /* ARPoint3DFilter.m in Sources */,
+				C3946CCE11D39495000D1F88 /* ARSimpleQuaternionFilter.m in Sources */,
+				C3946CCF11D39496000D1F88 /* ARQuaternionFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
