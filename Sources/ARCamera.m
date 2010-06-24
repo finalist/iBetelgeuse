@@ -21,6 +21,7 @@
 //
 
 #import "ARCamera.h"
+#import <UIKit/UIKit.h>
 #import "UIDevice+ARDevice.h"
 
 
