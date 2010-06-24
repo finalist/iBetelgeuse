@@ -25,7 +25,7 @@
 
 
 /**
- * Singleton class that provides information about the current device's camera. If the current device does not have a camera, an appropriate default perspective transformation is returned.
+ * Class that provides information about a camera.
  */
 @interface ARCamera : NSObject {
 @private
@@ -38,10 +38,23 @@
 	CATransform3D perspectiveTransform;
 }
 
+#if TARGET_OS_IPHONE
 /**
- * Returns the shared instance of this class.
+ * Returns the shared instance that represents the camera of the current device. For devices without a camera, a virtual camera is returned that corresponds to looking through the device at arm's length. For devices with more than one camera, the most appropriate camera is returned (e.g. the back-facing camera on an iPhone).
  */
-+ (ARCamera *)sharedCamera;
++ (ARCamera *)currentCamera;
+#endif
+
+/**
+ * Initializes the receiver with the given properties.
+ *
+ * @param focalLength The focal length of the camera lens in meters. Must be strictly positive.
+ * @param imagePlaneSize The size of the camera sensor in meters. Must be strictly positive.
+ * @param physical Whether the values given correspond to an actual physical camera.
+ *
+ * @return The receiver.
+ */
+- (id)initWithFocalLength:(CGFloat)focalLength imagePlaneSize:(CGSize)imagePlaneSize physical:(BOOL)physical;
 
 /**
  * Flag indicating whether the receiver represents a physical camera, i.e. whether the current device has an actual camera.

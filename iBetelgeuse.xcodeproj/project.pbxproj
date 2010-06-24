@@ -46,6 +46,8 @@
 		958E420111D36F1E00466267 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E41FE11D36F1E00466267 /* TCXMLParserDelegate.m */; };
 		958E420211D36F1E00466267 /* TCNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E41FC11D36F1E00466267 /* TCNetworkActivityIndicator.m */; };
 		958E420311D36F1E00466267 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E41FE11D36F1E00466267 /* TCXMLParserDelegate.m */; };
+		958E42BA11D3937900466267 /* ARCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC614311C22B200027FF5D /* ARCamera.m */; };
+		958E42C111D393D800466267 /* ARCameraTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E42C011D393D800466267 /* ARCameraTest.m */; };
 		95919EE311A41A61006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE411A41A67006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE711A41B0B006FCDFC /* ARWGS84Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE611A41B0B006FCDFC /* ARWGS84Test.m */; };
@@ -218,6 +220,8 @@
 		958E41FD11D36F1E00466267 /* TCXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCXMLParserDelegate.h; sourceTree = "<group>"; };
 		958E41FE11D36F1E00466267 /* TCXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCXMLParserDelegate.m; sourceTree = "<group>"; };
 		958E41FF11D36F1E00466267 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
+		958E42BF11D393D800466267 /* ARCameraTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCameraTest.h; sourceTree = "<group>"; };
+		958E42C011D393D800466267 /* ARCameraTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCameraTest.m; sourceTree = "<group>"; };
 		95919EE111A41A61006FCDFC /* ARWGS84.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84.h; sourceTree = "<group>"; };
 		95919EE211A41A61006FCDFC /* ARWGS84.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWGS84.m; sourceTree = "<group>"; };
 		95919EE511A41B0B006FCDFC /* ARWGS84Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84Test.h; sourceTree = "<group>"; };
@@ -823,6 +827,8 @@
 				95E28EED11BE447A00C716F0 /* ARViewUtilTest.m */,
 				C35C5F1111BFB70400C0FF1A /* ARQuaternionTest.h */,
 				C35C5F1211BFB70400C0FF1A /* ARQuaternionTest.m */,
+				958E42BF11D393D800466267 /* ARCameraTest.h */,
+				958E42C011D393D800466267 /* ARCameraTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1102,6 +1108,8 @@
 				C32180E711CB5059000BE2E1 /* ARSpatialState.m in Sources */,
 				958E3F0B11D20E8E00466267 /* NSObject+ARClassInvariant.m in Sources */,
 				958E420111D36F1E00466267 /* TCXMLParserDelegate.m in Sources */,
+				958E42BA11D3937900466267 /* ARCamera.m in Sources */,
+				958E42C111D393D800466267 /* ARCameraTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

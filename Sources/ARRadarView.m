@@ -318,7 +318,7 @@
 	CGContextScaleCTM(ctx, 1.0, -1.0);
 
 	CGFloat viewHeading = atan2f(viewVector.y, viewVector.x);
-	CGFloat angleOfView = [[ARCamera sharedCamera] angleOfView];
+	CGFloat angleOfView = [[ARCamera currentCamera] angleOfView];
 	
 	// Determine the area indicating the extent of view
 	CGContextBeginPath(ctx);

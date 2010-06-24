@@ -21,8 +21,11 @@
 //
 
 #import "ARCamera.h"
+
+#if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #import "UIDevice+ARDevice.h"
+#endif
 
 
 // Taken from an iPhone 3GS
@@ -42,7 +45,9 @@
 #define IMAGE_PLANE_HEIGHT_KEY @"imagePlaneHeight"
 
 
-static ARCamera *sharedInstance = nil;
+#if TARGET_OS_IPHONE
+static ARCamera *currentInstance = nil;
+#endif
 
 
 @implementation ARCamera
@@ -53,35 +58,22 @@ static ARCamera *sharedInstance = nil;
 #pragma mark NSObject
 
 - (id)init {
+	NSAssert(NO, @"Unexpected use of initializer.");
+	return nil;
+}
+
+- (id)initWithFocalLength:(CGFloat)aFocalLength imagePlaneSize:(CGSize)anImagePlaneSize physical:(BOOL)isPhysical {
+	NSAssert(aFocalLength > 0, @"Expected strictly positive focal length.");
+	NSAssert(anImagePlaneSize.width > 0 && anImagePlaneSize.height > 0, @"Expected strictly positive image plane size.");
+	
 	if (self = [super init]) {
-		physical = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-		
-		if (physical) {
-			// Set defaults
-			focalLength = DEFAULT_PHYSICAL_FOCAL_LENGTH;
-			imagePlaneSize.width = DEFAULT_PHYSICAL_IMAGE_PLANE_WIDTH;
-			imagePlaneSize.height = DEFAULT_PHYSICAL_IMAGE_PLANE_HEIGHT;
-			
-			// Try to override the defaults 
-			NSString *modelIdentifier = [[UIDevice currentDevice] ar_modelIdentifier];
-			NSDictionary *models = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:CAMERA_MODELS_FILE_NAME ofType:CAMERA_MODELS_FILE_EXTENSION]];
-			NSDictionary *model = [models objectForKey:modelIdentifier];
-			if (model) {
-				focalLength = [[model objectForKey:FOCAL_LENGTH_KEY] floatValue];
-				imagePlaneSize.width = [[model objectForKey:IMAGE_PLANE_WIDTH_KEY] floatValue];
-				imagePlaneSize.height = [[model objectForKey:IMAGE_PLANE_HEIGHT_KEY] floatValue];
-			}
-			[models release];
-		}
-		else {
-			focalLength = VIRTUAL_FOCAL_LENGTH;
-			imagePlaneSize.width = VIRTUAL_IMAGE_PLANE_WIDTH;
-			imagePlaneSize.height = VIRTUAL_IMAGE_PLANE_HEIGHT;
-		}
+		physical = isPhysical;
+		focalLength = aFocalLength;
+		imagePlaneSize = anImagePlaneSize;
 		
 		distanceToViewPlane = 2. * focalLength / MAX(imagePlaneSize.width, imagePlaneSize.height);
 		
-		angleOfView = 2. * tanf(1. / distanceToViewPlane);
+		angleOfView = 2. * atanf(1. / distanceToViewPlane);
 		
 		perspectiveTransform = CATransform3DIdentity;
 		// Inverted because the depth increases as the z-axis decreases (going from 0 towards negative values)
@@ -93,11 +85,43 @@ static ARCamera *sharedInstance = nil;
 
 #pragma mark ARCamera
 
-+ (ARCamera *)sharedCamera {
-	if (sharedInstance == nil) {
-		sharedInstance = [[ARCamera alloc] init];
+#if TARGET_OS_IPHONE
++ (ARCamera *)currentCamera {
+	if (currentInstance == nil) {
+		BOOL physical = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
+		CGFloat focalLength;
+		CGSize imagePlaneSize;
+		
+		if (physical) {
+			NSString *modelIdentifier = [[UIDevice currentDevice] ar_modelIdentifier];
+			NSDictionary *models = [[NSDictionary alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:CAMERA_MODELS_FILE_NAME ofType:CAMERA_MODELS_FILE_EXTENSION]];
+			NSDictionary *model = [models objectForKey:modelIdentifier];
+			
+			if (model) {
+				// Read the model's camera properties
+				focalLength = [[model objectForKey:FOCAL_LENGTH_KEY] floatValue];
+				imagePlaneSize.width = [[model objectForKey:IMAGE_PLANE_WIDTH_KEY] floatValue];
+				imagePlaneSize.height = [[model objectForKey:IMAGE_PLANE_HEIGHT_KEY] floatValue];
+			}
+			else {
+				// Use defaults
+				focalLength = DEFAULT_PHYSICAL_FOCAL_LENGTH;
+				imagePlaneSize.width = DEFAULT_PHYSICAL_IMAGE_PLANE_WIDTH;
+				imagePlaneSize.height = DEFAULT_PHYSICAL_IMAGE_PLANE_HEIGHT;
+			}
+			
+			[models release];
+		}
+		else {
+			focalLength = VIRTUAL_FOCAL_LENGTH;
+			imagePlaneSize.width = VIRTUAL_IMAGE_PLANE_WIDTH;
+			imagePlaneSize.height = VIRTUAL_IMAGE_PLANE_HEIGHT;
+		}
+		
+		currentInstance = [[ARCamera alloc] initWithFocalLength:focalLength imagePlaneSize:imagePlaneSize physical:physical];
 	}
-	return sharedInstance;
+	return currentInstance;
 }
+#endif
 
 @end
