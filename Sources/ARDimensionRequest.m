@@ -38,14 +38,29 @@ NSString *const ARDimensionRequestErrorHTTPStatusCodeKey = @"statusCode";
 const NSInteger ARDimensionRequestErrorDocument = 2;
 
 
-@interface ARDimensionRequest ()
-
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_6
-	<NSXMLParserDelegate>
+@interface ARDimensionRequest () <NSXMLParserDelegate>
+#else
+@interface ARDimensionRequest ()
 #endif
 
+/**
+ * Returns a unique identifier suitable for a dimension request. In practice, returns the identifier of the device.
+ */
 - (NSString *)uniqueIdentifier;
+
+/**
+ * Creates and returns a NSURLRequest using the current values of the receiver.
+ */
 - (NSURLRequest *)prepareRequest;
+
+
+/**
+ * Callback for the dimension parsing.
+ *
+ * @param aDimension The dimension that was parsed, or nil if parsing failed.
+ */
+- (void)didParseDimension:(ARDimension *)aDimension;
 
 @end
 
@@ -108,7 +123,7 @@ const NSInteger ARDimensionRequestErrorDocument = 2;
 - (NSURLRequest *)prepareRequest {
 	NSURL *requestURL = url;
 	
-	// Strip out non-http schemes
+	// Replace non-http schemes
 	if (![requestURL isFileURL] && ![[requestURL scheme] isEqualToString:@"http"]) {
 		NSString *urlString = [requestURL absoluteString];
 		NSRange urlSchemeRange = [urlString rangeOfString:[requestURL scheme] options:NSAnchoredSearch];
