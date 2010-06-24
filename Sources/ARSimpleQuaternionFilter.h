@@ -26,10 +26,21 @@
 @class ARArrayFilter, ARFilterFactory;
 
 
+/**
+ * This class is a wrapper around ARArrayFilter, so that ARQuaternion objects can
+ * be easily filtered, using the same type of filter with the same parameters
+ * for each coordinate.
+ */
 @interface ARSimpleQuaternionFilter : ARQuaternionFilter {
 	ARArrayFilter *arrayFilter;
 }
 
+/**
+ * Initialize a quaternion filter.
+ * @param aFactory the factory that should be used to create the filters for
+ *   each coordinate of the quaternion.
+ * @return the initialized filter.
+ */
 - (id)initWithFactory:(ARFilterFactory *)aFactory;
 
 @end
