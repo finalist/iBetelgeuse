@@ -31,7 +31,7 @@
 
 - (id)init {
 	if (self = [super init]) {
-		ARDelayFilterFactory *delayFilterFactory = [[ARDelayFilterFactory alloc] initWithWindowSize:2];
+		ARDelayFilterFactory *delayFilterFactory = [[ARDelayFilterFactory alloc] initWithWindowSize:2]; // One sample seems to be enough.
 		delayFilter = [[ARSimplePoint3DFilter alloc] initWithFactory:delayFilterFactory];
 		[delayFilterFactory release];
 	}

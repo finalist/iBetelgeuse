@@ -24,12 +24,19 @@
 #import "ARMovingWindowFilter.h"
 
 
+/**
+ * This filter computes the movign average with a given window. See
+ * ARMovingWindowFilter.
+ */
 @interface ARMovingAverageFilter : ARMovingWindowFilter {
 }
 
 @end
 
 
+/**
+ * This constructs an ARMovingAverageFilter.
+ */
 @interface ARMovingAverageFilterFactory : ARMovingWindowFilterFactory {
 }
 

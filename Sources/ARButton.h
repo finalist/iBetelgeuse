@@ -23,9 +23,10 @@
 #import <Foundation/Foundation.h>
 
 
+/**
+ * A generic button using the browser's style.
+ */
 @interface ARButton : UIButton {
 }
-
-- (id)init;
 
 @end

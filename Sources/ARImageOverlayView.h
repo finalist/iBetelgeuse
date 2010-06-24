@@ -27,6 +27,9 @@
 @class ARImageOverlay;
 
 
+/**
+ * Shows an image overlay.
+ */
 @interface ARImageOverlayView : AROverlayView <ARAssetDataUser> {
 @private
 	ARImageOverlay *overlay;

@@ -23,6 +23,9 @@
 #import <UIKit/UIKit.h>
 
 
+/**
+ * Contains all overlays.
+ */
 @interface AROverlayContainerView : UIView {
 }
 

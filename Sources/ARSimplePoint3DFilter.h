@@ -26,10 +26,21 @@
 @class ARArrayFilter, ARFilterFactory;
 
 
+/**
+ * This class is a wrapper around ARArrayFilter, so that ARPoint3D objects can
+ * be easily filtered, using the same type of filter with the same parameters
+ * for each coordinate.
+ */
 @interface ARSimplePoint3DFilter : ARPoint3DFilter {
 	ARArrayFilter *arrayFilter;
 }
 
+/**
+ * Initialize a point filter.
+ * @param aFactory the factory that should be used to create the filters for
+ *   each coordinate of the point.
+ * @return the initialized filter.
+ */
 - (id)initWithFactory:(ARFilterFactory *)aFactory;
 
 @end

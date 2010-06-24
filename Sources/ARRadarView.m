@@ -58,12 +58,18 @@
 @end
 
 
+/**
+ * The background of the radar, basically the circle showing the radar's radius.
+ */
 @interface ARRadarBackgroundLayer : CALayer {
 }
 
 @end
 
-
+/**
+ * The viewing direction and angle of view indicator. This is the pie-shaped
+ * gradient.
+ */
 @interface ARRadarExtentOfViewLayer : CALayer {
 @private
 	CGPoint viewVector;
@@ -80,7 +86,9 @@
 
 @end
 
-
+/**
+ * The layer containing all radar blibs.
+ */
 @interface ARRadarBlipsLayer : CALayer {
 @private
 	NSArray *features;

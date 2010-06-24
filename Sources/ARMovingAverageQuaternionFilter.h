@@ -24,6 +24,10 @@
 #import "ARMovingWindowQuaternionFilter.h"
 
 
+/**
+ * This filter computes a spherical average of the values a moving window. The
+ * window size is set in advance, see ARMovingWindowQuaternionFilter.
+ */
 @interface ARMovingAverageQuaternionFilter : ARMovingWindowQuaternionFilter {
 	double *weights;
 }

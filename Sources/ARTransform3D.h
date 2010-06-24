@@ -141,6 +141,8 @@ ARPoint3D ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransfo
 
 /**
  * Returns a string representing the given matrix that is suitable for pasting into MATLAB.
+ * @param t the transform to format
+ * @return the MATLAB-formatted matrix string.
  */
 NSString *ARTransform3DGetMATLABString(CATransform3D t);
 

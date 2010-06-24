@@ -41,9 +41,7 @@ ARQuaternion ARQuaternionWeightedSum(int n, const ARQuaternion quaternions[], co
 
 // This uses the slow method - ComputeMeanSphereSlow described in the paper (for simplicity).
 // Unlike in the example code, this inverts vPerp when costheta < 0 (to make quaternions work properly).
-// Assumes sum of weights is 1.
-// Assumes initialEstimate to be unit length
-ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuaternion quaternions[], const double weights[], ARQuaternion initialEstimate, double tolerance, int maxIterationCount) 
+ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuaternion quaternions[], const double weights[], ARQuaternion initialEstimate, double errorTolerance, int maxIterationCount) 
 {
 	// Based on http://math.ucsd.edu/~sbuss/ResearchWeb/spheremean/
 	// Samuel R. Buss and Jay Fillmore.
@@ -59,7 +57,7 @@ ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuatern
 #endif
 	
 	
-	//  Step 1: get an initial estimate for the mean
+	//  Step 1: get an initial estimate for the mean.
 	ARQuaternion xVec = initialEstimate;
 	
 	// Step 2: loop, doing non-Newton-style iterations to improve the estimate.
@@ -84,7 +82,7 @@ ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuatern
 			}
 		}
 		
-		// Step 2b: compute the mean of the vectors resulting from Step 2a
+		// Step 2b: compute the mean of the vectors resulting from Step 2a.
 		ARQuaternion xDisp = ARQuaternionWeightedSum(n, localvv, weights);
 		
 		// Step 2c: rotate xVec in direction xDisp, for new estimate.
@@ -93,7 +91,7 @@ ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuatern
 		xVec = ARQuaternionNormalize(xVec);
 		
 		double error = ARQuaternionElementsMaxAbs(ARQuaternionSubtract(xVec, xVecOld));
-		if (error <= tolerance) {
+		if (error <= errorTolerance) {
 			break;
 		}
 	}
@@ -123,6 +121,7 @@ ARQuaternion ARQuaternionSphericalWeightedAverage(int n, const ARQuaternion quat
 		zAbsSum += fabs(quaternions[i].z);
 	}
 	
+	// Compute initial estimate, based on the largest coordinate.
 	ARQuaternion initialEstimate = ARQuaternionZero;
 	if (xAbsSum > yAbsSum) {
 		if (xAbsSum > zAbsSum) {
@@ -157,15 +156,20 @@ ARQuaternion ARQuaternionSphericalWeightedAverage(int n, const ARQuaternion quat
 		}
 	}
 	
+	// Correct all quaternions so that they are better comparable.
 	ARQuaternion* correctedQuaternions = malloc(n * sizeof(ARQuaternion));
 	for (int i = 0; i < n; ++i) {
 		correctedQuaternions[i] = ARQuaternionDotProduct(initialEstimate, quaternions[i]) >= 0 ? quaternions[i] : ARQuaternionNegate(quaternions[i]);
 	}
 	
+	// Estimate the weighted quaternion sum by computing the normalized weighted average.
 	initialEstimate = ARQuaternionWeightedSum(n, correctedQuaternions, weights);
 	initialEstimate = ARQuaternionNormalize(initialEstimate);
 	
+	// Compute the actual weighted average.
 	ARQuaternion result = ARQuaternionSphericalWeightedAverageInternal(n, correctedQuaternions, weights, initialEstimate, errorTolerance, maxIterationCount);
+	
+	// Free up resources.
 	free(correctedQuaternions);
 	
 	return result;

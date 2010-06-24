@@ -24,9 +24,20 @@
 #import "ARPoint3D.h"
 
 
+/**
+ * This is the base class of all ARPoint3D filters.
+ */
 @interface ARPoint3DFilter : NSObject {
 }
 
+/**
+ * This function takes a new input value, processes it and generates an output
+ * value. Child classes should override this function to implement useful
+ * filtering.
+ * @param input the current value of the signal
+ * @param aTimestamp a relative timestamp; this value is guaranteed to be greater than or equal to previously provided timestamps, but does not necessarily represent an accurate UNIX timestamp.
+ * @return the output of the filter.
+ */
 - (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp;
 
 @end

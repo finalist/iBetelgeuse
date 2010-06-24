@@ -35,12 +35,11 @@
 // The maximum age of a location that we (a) consider a valid new measurement and (b) we deem a reliable old measurement
 #define LOCATION_EXPIRATION 10 // seconds
 
-// The maximum horizontal accuracy of a location that we consider at all
-#define LOCATION_MINIMUM_HORIZONTAL_ACCURACY 1000 // meters
-
 // The maximum age of an orientation measurement that we deem reliable
 #define ORIENTATION_EXPIRATION 1 // seconds
 
+// The maximal expected speed of the user in m/s
+#define MAXIMAL_EXPECTED_SPEED 200.
 
 #if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 @interface ARSpatialStateManager () <UIAccelerometerDelegate, CLLocationManagerDelegate>
@@ -82,7 +81,7 @@
  * @param rawAltitude The raw WGS84 altitude.
  * @param reliable A flag indicating whether the given location information should be considered reliable (at discretion of the caller).
  */
-- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable;
+- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable accuracy:(CLLocationDistance)accuracy;
 
 /**
  * Updates the receiver's orientation with the given raw up direction.
@@ -174,7 +173,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newRawLocation fromLocation:(CLLocation *)previousRawLocation {
 	// Ignore invalid or old locations
-	if (signbit([newRawLocation horizontalAccuracy]) || [[newRawLocation timestamp] timeIntervalSinceNow] < -LOCATION_EXPIRATION || [newRawLocation horizontalAccuracy] > LOCATION_MINIMUM_HORIZONTAL_ACCURACY) {
+	if (signbit([newRawLocation horizontalAccuracy]) || [[newRawLocation timestamp] timeIntervalSinceNow] < -LOCATION_EXPIRATION) {
 		return;
 	}
 	
@@ -182,7 +181,7 @@
 	//DebugLog(@"%f %f", [newRawLocation altitude], [newRawLocation verticalAccuracy]);
 	
 	// Note: when verticalAccuracy < 0 we probably don't have a GPS fix
-	[self updateWithRawLatitude:[newRawLocation coordinate].latitude longitude:[newRawLocation coordinate].longitude altitude:[newRawLocation altitude] reliable:[newRawLocation verticalAccuracy] >= 0];
+	[self updateWithRawLatitude:[newRawLocation coordinate].latitude longitude:[newRawLocation coordinate].longitude altitude:[newRawLocation altitude] reliable:[newRawLocation verticalAccuracy] >= 0 accuracy:[newRawLocation horizontalAccuracy]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
@@ -290,7 +289,7 @@
 
 - (void)updateForSimulation {
 	static CGFloat simulatedLatitude = 0.0;
-	[self updateWithRawLatitude:simulatedLatitude longitude:0 altitude:0 reliable:YES];
+	[self updateWithRawLatitude:simulatedLatitude longitude:0 altitude:0 reliable:YES accuracy:0];
 	//	simulatedLatitude += 0.00005;
 	
 	// Assume the device is being held with the home button at the bottom
@@ -356,10 +355,19 @@
 	}
 }
 
-- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable {
+- (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable accuracy:(CLLocationDistance)accuracy {
+	if (locationAvailable) {
+		double previousLocationAccuracy = locationAccuracy + MAXIMAL_EXPECTED_SPEED * ([NSDate timeIntervalSinceReferenceDate] - locationTimeIntervalSinceReferenceDate);
+		if (accuracy > previousLocationAccuracy) {
+			DebugLog(@"Ignoring last location (%14.7f %14.7f)", accuracy, previousLocationAccuracy);
+			return;
+		}
+	}
+	
 	locationAvailable = YES;
 	locationReliable = reliable;
 	locationTimeIntervalSinceReferenceDate = [NSDate timeIntervalSinceReferenceDate];
+	locationAccuracy = accuracy;
 	
 	latitude = rawLatitude;
 	longitude = rawLongitude;

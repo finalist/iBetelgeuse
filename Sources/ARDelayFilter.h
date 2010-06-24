@@ -24,13 +24,18 @@
 #import "ARMovingWindowFilter.h"
 
 
+/**
+ * A filter to delay a sample for a given amount of samples.
+ */
 @interface ARDelayFilter : ARMovingWindowFilter {
 }
 
 @end
 
 
-
+/**
+ * Factory class for ARDelayFilter.
+ */
 @interface ARDelayFilterFactory : ARMovingWindowFilterFactory {
 }
 

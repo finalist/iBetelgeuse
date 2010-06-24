@@ -54,10 +54,11 @@
 - (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
 	NSUInteger previousSampleIndex = sampleIndex;
 	
+	// Update samples
 	sampleValues[sampleIndex] = input;
 	sampleTimestamps[sampleIndex] = timestamp;
 	sampleIndex = (sampleIndex + 1) % windowSize;
-	sampleCount = MIN(sampleCount + 1, windowSize);
+	sampleCount = MIN(sampleCount + 1, windowSize); // When enough samples are known, sampleCount should equal windowSize.
 	
 	return [self filterWithSampleValues:sampleValues sampleTimestamps:sampleTimestamps lastSampleIndex:previousSampleIndex sampleCount:sampleCount];
 }

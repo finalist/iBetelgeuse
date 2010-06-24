@@ -26,6 +26,9 @@
 @class ARTextFeature;
 
 
+/**
+ * This view displays a text feature.
+ */
 @interface ARTextFeatureView : ARFeatureView {
 @private
 	ARTextFeature *feature;

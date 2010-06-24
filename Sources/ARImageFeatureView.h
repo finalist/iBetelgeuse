@@ -27,6 +27,9 @@
 @class ARImageFeature;
 
 
+/**
+ * This view displays an image feature.
+ */
 @interface ARImageFeatureView : ARFeatureView <ARAssetDataUser> {
 @private
 	ARImageFeature *feature;

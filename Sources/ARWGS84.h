@@ -28,4 +28,11 @@ extern const CLLocationDistance ARWGS84SemiMajorAxis;
 extern const CLLocationDistance ARWGS84SemiMinorAxis;
 
 
+/**
+ * Convert a WGS84 coordinate to a ECEF coordinate.
+ * @param latitude the WGS84 latitude.
+ * @param longitude the WGS84 longitude.
+ * @param altitude the WGS84 altitude.
+ * @return the point in ECEF coordinate space.
+ */
 ARPoint3D ARWGS84GetECEF(CLLocationDegrees latitude, CLLocationDegrees longitude, CLLocationDistance altitude);

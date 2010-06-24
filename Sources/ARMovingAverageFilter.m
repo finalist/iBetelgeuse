@@ -36,13 +36,13 @@
 	for (NSUInteger i = 0; i < sampleCount; i++) {
 		double weight = sampleTimestamps[i] - sampleTimestamps[(i + sampleCount - 1) % sampleCount];
 		if (weight < 0) {
-			weight = 0;
+			weight = 0; // Note that this sets the oldest sample's weight to 0
 		}
 		totalWeight += weight;
 		sum += sampleValues[i] * weight;
 	}
 	
-	// If all weights are zero, recompute average weighing every sample equally. (This happens at least when the first value is received, and in the unlikely case when all timestamps are equal)
+	// If all weights are zero, recompute the average by weighing every sample equally. (This happens at least when the first value is received, and in the unlikely case when all samples are determined at the same time)
 	if (totalWeight == 0) {
 		sum = 0;
 		for (NSUInteger i = 0; i < sampleCount; i++) {

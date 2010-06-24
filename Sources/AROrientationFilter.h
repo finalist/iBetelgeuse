@@ -21,15 +21,14 @@
 //
 
 
-#import "ARQuaternion.h"
-
-@class ARExponentialQuaternionFilter;
+#import "ARQuaternionFilter.h"
 
 
-@interface AROrientationFilter : NSObject {
-	ARExponentialQuaternionFilter *quaternionFilter;
+/**
+ * The filter that is used for filtering the orientation of the device.
+ */
+@interface AROrientationFilter : ARQuaternionFilter {
+	ARQuaternionFilter *quaternionFilter;
 }
-
-- (ARQuaternion)filterWithInput:(ARQuaternion)input timestamp:(NSTimeInterval)timestamp;
 
 @end
