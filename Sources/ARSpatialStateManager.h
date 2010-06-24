@@ -69,6 +69,7 @@
 	BOOL locationAvailable;
 	BOOL locationReliable;
 	NSTimeInterval locationTimeIntervalSinceReferenceDate;
+	CLLocationDistance locationAccuracy;
 	CLLocationDegrees latitude;
 	CLLocationDegrees longitude;
 	CLLocationDistance altitude;
