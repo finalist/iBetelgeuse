@@ -26,9 +26,24 @@
 @protocol ARAssetManagerDelegate;
 
 
+/**
+ * The domain of errors returned by the ARAssetManager class.
+ */
 extern NSString *const ARAssetManagerErrorDomain;
+
+/**
+ * Error code that indicates the asset failed to load due to an unknown error.
+ */
 extern const NSInteger ARAssetManagerErrorUnknown;
+
+/**
+ * Error code that indicates the dimension request failed due to an HTTP error.
+ */
 extern const NSInteger ARAssetManagerErrorHTTP;
+
+/**
+ * Key into the userInfo dictionary of an error that indicates the returned HTTP status code. Only used together with the ARAssetManagerErrorHTTP error code.
+ */
 extern NSString *const ARAssetManagerErrorHTTPStatusCodeKey;
 
 
@@ -42,6 +57,9 @@ extern NSString *const ARAssetManagerErrorHTTPStatusCodeKey;
 	NSMutableDictionary *operations;
 }
 
+/**
+ * The delegate of the receiver that will be notified when loading an asset finishes or fails.
+ */
 @property(nonatomic, assign) id <ARAssetManagerDelegate> delegate;
 
 /**
@@ -71,13 +89,33 @@ extern NSString *const ARAssetManagerErrorHTTPStatusCodeKey;
  */
 @protocol ARAssetManagerDelegate <NSObject>
 
+/**
+ * Called when the asset manager has finished and successfully loaded asset data.
+ *
+ * @param manager The sender of the message.
+ * @param data The asset data that has been loaded.
+ * @param asset The asset for which data has been loaded.
+ */
 - (void)assetManager:(ARAssetManager *)manager didLoadData:(NSData *)data forAsset:(ARAsset *)asset;
+
+/**
+ * Called when the asset manager has failed to load asset data.
+ *
+ * @param manager The sender of the message.
+ * @param error The error that occured. May be nil or any kind of error.
+ * @param asset The asset for which data has failed to load.
+ */
 - (void)assetManager:(ARAssetManager *)manager didFailWithError:(NSError *)error forAsset:(ARAsset *)asset;
 
 @optional
 
 /**
  * Optional method that allows the delegate to inject a specific response to a request, which is useful for testing.
+ *
+ * @param manager The sender of the message.
+ * @param request The request that needs a response.
+ * @param response This memory location should hold the response to the request, or nil. Should not be a NULL-reference.
+ * @param error This memory location should hold the error that occured, or nil. Should not be a NULL-reference.
  *
  * @note This method may be called on a thread other than the main thread.
  */
