@@ -1152,6 +1152,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
 				INFOPLIST_FILE = Resources/Info.plist;
 				OTHER_CFLAGS = "-DDEBUG";
@@ -1171,6 +1172,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
 				INFOPLIST_FILE = Resources/Info.plist;
 				OTHER_LDFLAGS = (
