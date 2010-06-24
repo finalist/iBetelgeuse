@@ -127,7 +127,7 @@
 #if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_SIMULATOR
 	[updateTimer invalidate];
 	[updateTimer release];
-#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
+#elif SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	[locationManager release];
 #endif
 
@@ -228,7 +228,7 @@
 	
 	[updateTimer invalidate];
 	updateTimer = [[NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(updateTimerDidFire) userInfo:nil repeats:YES] retain];
-#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
+#elif SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	[accelerometer setDelegate:self];
 	[accelerometer setUpdateInterval:1. / ACCELEROMETER_UPDATE_FREQUENCY];
@@ -259,7 +259,7 @@
 	[updateTimer invalidate];
 	[updateTimer release];
 	updateTimer = nil;
-#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
+#elif SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	// Make sure the accelerometer stops calling us
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	if ([accelerometer delegate] == self) {
