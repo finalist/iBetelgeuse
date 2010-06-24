@@ -83,9 +83,9 @@ static inline BOOL ARPoint3DEquals(ARPoint3D a, ARPoint3D b) {
  */
 static inline BOOL ARPoint3DEqualsWithAccuracy(ARPoint3D a, ARPoint3D b, double accuracy) {
 	return
-		abs(a.x == b.x) <= accuracy &&
-		abs(a.y == b.y) <= accuracy &&
-		abs(a.z == b.z) <= accuracy;
+		fabs(a.x - b.x) <= accuracy &&
+		fabs(a.y - b.y) <= accuracy &&
+		fabs(a.z - b.z) <= accuracy;
 }
 
 /**
