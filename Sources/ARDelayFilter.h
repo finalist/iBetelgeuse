@@ -30,6 +30,13 @@
 @interface ARDelayFilter : ARMovingWindowFilter {
 }
 
+/**
+ * Initialize this filter.
+ * @param delay the desired delay, in samples.
+ * @return the initialized filter.
+ */
+- (id)initWithDelay:(NSUInteger)delay;
+
 @end
 
 
@@ -38,5 +45,12 @@
  */
 @interface ARDelayFilterFactory : ARMovingWindowFilterFactory {
 }
+
+/**
+ * Initialize this filter factory.
+ * @param delay the desired delay, in samples.
+ * @return the initialized filter factory.
+ */
+- (id)initWithDelay:(NSUInteger)delay;
 
 @end

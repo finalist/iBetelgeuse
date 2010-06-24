@@ -26,6 +26,12 @@
 
 @implementation ARDelayFilter
 
+#pragma mark NSObject
+
+- (id)initWithDelay:(NSUInteger)delay {
+	return [super initWithWindowSize:delay+1];
+}
+
 #pragma mark ARMovingWindowFilter
 
 - (ARFilterValue)filterWithSampleValues:(ARFilterValue *)sampleValues sampleTimestamps:(NSTimeInterval *)sampleTimestamps lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)sampleCount {
@@ -38,6 +44,12 @@
 
 
 @implementation ARDelayFilterFactory
+
+#pragma mark NSObject
+
+- (id)initWithDelay:(NSUInteger)delay {
+	return [super initWithWindowSize:delay+1];
+}
 
 #pragma mark ARFilterFactory
 
