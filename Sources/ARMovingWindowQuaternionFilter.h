@@ -31,10 +31,10 @@
 @interface ARMovingWindowQuaternionFilter : ARQuaternionFilter {
 	NSUInteger windowSize;
 	
-	ARQuaternion *sampleValues;
-	NSTimeInterval *sampleTimestamps;
-	NSUInteger sampleIndex;
-	NSUInteger sampleCount;
+	ARQuaternion *sampleValues; // A circular buffer of sample values.
+	NSTimeInterval *sampleTimestamps; // A circular buffer of timestamps, corresponding to the sample values.
+	NSUInteger sampleIndex; // The most recent sample's index.
+	NSUInteger sampleCount; // The amount of samples, if enough samples are available, this will be equal to the window size.
 }
 
 /**
@@ -50,7 +50,7 @@
 - (id)initWithWindowSize:(NSUInteger)windowSize;
 
 /**
- * Applies the filter function on the determined window.
+ * Applies the filter function on the determined window. This should be overridden by a child class.
  * @param sampleValues the sampled values.
  * @param sampleTimestamps the timestamps corresponding to the timestamps.
  * @param sampleIndex the index of the most recent sample in the array. The previous sample is in index (sampleIndex-1) or at the end of the array if (sampleIndex == 0).
