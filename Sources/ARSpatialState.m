@@ -39,6 +39,10 @@
 	 ENUToDeviceSpaceQuaternion:(ARQuaternion)anENUToDeviceSpaceQuaternion
 			EFToECEFSpaceOffset:(ARPoint3D)anEFToECEFSpaceOffset 
 					  timestamp:(NSDate *)aTimestamp {
+	NSAssert(!isLocationAvailable || (-90. <= aLatitude && aLatitude <= 90.), @"Expected latitude in range [-90,90] degrees.");
+	NSAssert(!isLocationAvailable || (-180. <= aLongitude && aLongitude <= 180.), @"Expected longitude in range [-180,180] degrees.");
+	NSAssert(aTimestamp != nil, @"Expected non-nil timestamp.");
+	
 	if (self = [super init]) {
 		flags.locationAvailable = isLocationAvailable;
 		flags.locationReliable = isLocationReliable;
@@ -107,10 +111,11 @@
 	return ARPoint3DSubtract([self locationInECEFSpace], [self EFToECEFSpaceOffset]);
 }
 
-- (CLLocationDegrees)bearing {
+- (double)bearing {
 	double bearing;
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
 	
+	// Different calculations for when the device is horizontal (i.e. when the device z-axis about matches ENU's z-axis)
 	if (fabs(transform.m33) > .999) {
 		bearing = -atan2(transform.m12, transform.m11);
 	} else {
@@ -120,16 +125,17 @@
 	return bearing;
 }
 
-- (CLLocationDegrees)pitch {
+- (double)pitch {
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
 	double pitch = asin(-transform.m33);
 	return pitch;
 }
 
-- (CLLocationDegrees)roll {
+- (double)roll {
 	double roll;
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
 	
+	// Different calculations for when the device is horizontal (i.e. when the device z-axis about matches ENU's z-axis)
 	if (fabs(transform.m33) > .999) {
 		roll = 0;
 	} else {
@@ -145,11 +151,7 @@
 
 - (ARPoint3D)upDirectionInDeviceSpace {
 	if (!flags.haveUpDirectionInDeviceSpace) {
-		if ([self isOrientationAvailable]) {
-			upDirectionInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply([self upDirectionInENUSpace], [self ENUToDeviceSpaceTransform]);
-		} else {
-			upDirectionInDeviceSpace = [self upDirectionInENUSpace];
-		}
+		upDirectionInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply([self upDirectionInENUSpace], [self ENUToDeviceSpaceTransform]);
 		flags.haveUpDirectionInDeviceSpace = true;
 	}
 	return upDirectionInDeviceSpace;
@@ -164,16 +166,12 @@
 }
 
 - (ARPoint3D)northDirectionInENUSpace {
-	return ARPoint3DCreate(0., 1., 0.); // By definition; alongst the horizontal plane. TODO: Document that the northDirectionIn...Space methods do -not- return the same vector if transformed back to the same space.
+	return ARPoint3DCreate(0., 1., 0.); // By definition; alongst the horizontal plane. TODO: Document that the northDirectionIn...Space methods do -not- return the same vector when transformed back to the same space.
 }
 
 - (ARPoint3D)northDirectionInDeviceSpace {
 	if (!flags.haveNorthDirectionInDeviceSpace) {
-		if ([self isOrientationAvailable]) {
-			northDirectionInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply([self northDirectionInENUSpace], [self ENUToDeviceSpaceTransform]);
-		} else {
-			northDirectionInDeviceSpace = [self northDirectionInENUSpace];
-		}
+		northDirectionInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply([self northDirectionInENUSpace], [self ENUToDeviceSpaceTransform]);
 		flags.haveNorthDirectionInDeviceSpace = true;
 	}
 	return northDirectionInDeviceSpace;
@@ -230,8 +228,8 @@
 
 - (CATransform3D)EFToENUSpaceTransform {
 	if (!flags.haveEFToENUSpaceTransform) {
-		// Since we're dealing with orthogonal matrices, transposing is the same as inverting (but then easier)
-		EFToENUSpaceTransform = ARTransform3DTranspose([self ENUToEFSpaceTransform]);
+		// Note: due to translation this is not an orthogonal matrix, so we really need to invert
+		EFToENUSpaceTransform = CATransform3DInvert([self ENUToEFSpaceTransform]);
 		flags.haveEFToENUSpaceTransform = YES;
 	}
 	return EFToENUSpaceTransform;

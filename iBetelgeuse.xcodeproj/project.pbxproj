@@ -48,6 +48,7 @@
 		958E420311D36F1E00466267 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E41FE11D36F1E00466267 /* TCXMLParserDelegate.m */; };
 		958E42BA11D3937900466267 /* ARCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC614311C22B200027FF5D /* ARCamera.m */; };
 		958E42C111D393D800466267 /* ARCameraTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E42C011D393D800466267 /* ARCameraTest.m */; };
+		958E436211D3A4EE00466267 /* ARSpatialStateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E436111D3A4EE00466267 /* ARSpatialStateTest.m */; };
 		95919EE311A41A61006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE411A41A67006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE711A41B0B006FCDFC /* ARWGS84Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE611A41B0B006FCDFC /* ARWGS84Test.m */; };
@@ -242,6 +243,8 @@
 		958E41FF11D36F1E00466267 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
 		958E42BF11D393D800466267 /* ARCameraTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCameraTest.h; sourceTree = "<group>"; };
 		958E42C011D393D800466267 /* ARCameraTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCameraTest.m; sourceTree = "<group>"; };
+		958E436011D3A4EE00466267 /* ARSpatialStateTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpatialStateTest.h; sourceTree = "<group>"; };
+		958E436111D3A4EE00466267 /* ARSpatialStateTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpatialStateTest.m; sourceTree = "<group>"; };
 		95919EE111A41A61006FCDFC /* ARWGS84.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84.h; sourceTree = "<group>"; };
 		95919EE211A41A61006FCDFC /* ARWGS84.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWGS84.m; sourceTree = "<group>"; };
 		95919EE511A41B0B006FCDFC /* ARWGS84Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84Test.h; sourceTree = "<group>"; };
@@ -864,6 +867,8 @@
 				958E42C011D393D800466267 /* ARCameraTest.m */,
 				C3946DFC11D496F1000D1F88 /* ARCyclicBufferTest.h */,
 				C3946DFD11D496F1000D1F88 /* ARCyclicBufferTest.m */,
+				958E436011D3A4EE00466267 /* ARSpatialStateTest.h */,
+				958E436111D3A4EE00466267 /* ARSpatialStateTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1178,6 +1183,7 @@
 				C3946D6411D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.m in Sources */,
 				C3946D9711D48E6F000D1F88 /* ARWeightedMovingAverageQuaternionFilter.m in Sources */,
 				C3946DFE11D496F1000D1F88 /* ARCyclicBufferTest.m in Sources */,
+				958E436211D3A4EE00466267 /* ARSpatialStateTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -59,7 +59,7 @@
 	ENUToDeviceSpaceQuaternion = ARQuaternionMultiply(ARQuaternionMakeWithCoordinates(cos(DIMENSION_PITCH/2.), sin(DIMENSION_PITCH/2.), 0., 0.), ENUToDeviceSpaceQuaternion);
 	ENUToDeviceSpaceQuaternion = ARQuaternionMultiply(ARQuaternionMakeWithCoordinates(cos(-DIMENSION_BEARING/2.), 0., 0., sin(-DIMENSION_BEARING/2.)), ENUToDeviceSpaceQuaternion);
 	
-	spatialState = [[ARSpatialState alloc] initWithLocationAvailable:YES reliable:YES latitude:DIMENSION_LAT longitude:DIMENSION_LON altitude:DIMENSION_ALT orientationAvailable:YES reliable:YES ENUToDeviceSpaceQuaternion:ENUToDeviceSpaceQuaternion EFToECEFSpaceOffset:ARPoint3DZero timestamp:nil];
+	spatialState = [[ARSpatialState alloc] initWithLocationAvailable:YES reliable:YES latitude:DIMENSION_LAT longitude:DIMENSION_LON altitude:DIMENSION_ALT orientationAvailable:YES reliable:YES ENUToDeviceSpaceQuaternion:ENUToDeviceSpaceQuaternion EFToECEFSpaceOffset:ARPoint3DZero timestamp:[NSDate date]];
 }
 
 - (void)tearDownClass {
