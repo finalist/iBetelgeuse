@@ -173,6 +173,9 @@
 		C3946CCD11D39494000D1F88 /* ARPoint3DFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A7E11C8ACC2000BE2E1 /* ARPoint3DFilter.m */; };
 		C3946CCE11D39495000D1F88 /* ARSimpleQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8511C8ADB9000BE2E1 /* ARSimpleQuaternionFilter.m */; };
 		C3946CCF11D39496000D1F88 /* ARQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8311C8ADB9000BE2E1 /* ARQuaternionFilter.m */; };
+		C3946CDB11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CDA11D398DB000D1F88 /* ARCyclicBuffer.m */; };
+		C3946CDC11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CDA11D398DB000D1F88 /* ARCyclicBuffer.m */; };
+		C3946DFE11D496F1000D1F88 /* ARCyclicBufferTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946DFD11D496F1000D1F88 /* ARCyclicBufferTest.m */; };
 		C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C62E8611ABE7D500553407 /* ARRadarView.m */; };
 /* End PBXBuildFile section */
 
@@ -442,6 +445,10 @@
 		C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDelayFilterTest.m; sourceTree = "<group>"; };
 		C3946CBE11D39484000D1F88 /* ARFilterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilterTest.h; sourceTree = "<group>"; };
 		C3946CBF11D39484000D1F88 /* ARFilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilterTest.m; sourceTree = "<group>"; };
+		C3946CD911D398DB000D1F88 /* ARCyclicBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCyclicBuffer.h; sourceTree = "<group>"; };
+		C3946CDA11D398DB000D1F88 /* ARCyclicBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCyclicBuffer.m; sourceTree = "<group>"; };
+		C3946DFC11D496F1000D1F88 /* ARCyclicBufferTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCyclicBufferTest.h; sourceTree = "<group>"; };
+		C3946DFD11D496F1000D1F88 /* ARCyclicBufferTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCyclicBufferTest.m; sourceTree = "<group>"; };
 		C3C62E8511ABE7D500553407 /* ARRadarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRadarView.h; sourceTree = "<group>"; };
 		C3C62E8611ABE7D500553407 /* ARRadarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARRadarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -763,6 +770,8 @@
 				95EC614311C22B200027FF5D /* ARCamera.m */,
 				C32180E411CB5059000BE2E1 /* ARSpatialState.h */,
 				C32180E511CB5059000BE2E1 /* ARSpatialState.m */,
+				C3946CD911D398DB000D1F88 /* ARCyclicBuffer.h */,
+				C3946CDA11D398DB000D1F88 /* ARCyclicBuffer.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -849,6 +858,8 @@
 				95E28EED11BE447A00C716F0 /* ARViewUtilTest.m */,
 				C35C5F1111BFB70400C0FF1A /* ARQuaternionTest.h */,
 				C35C5F1211BFB70400C0FF1A /* ARQuaternionTest.m */,
+				C3946DFC11D496F1000D1F88 /* ARCyclicBufferTest.h */,
+				C3946DFD11D496F1000D1F88 /* ARCyclicBufferTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -1087,6 +1098,7 @@
 				C32182CF11D0EF0D000BE2E1 /* ARMovingAverageQuaternionFilter.m in Sources */,
 				C32182D211D0EF11000BE2E1 /* ARMovingWindowQuaternionFilter.m in Sources */,
 				958E3DA311D1EC9300466267 /* NSObject+ARClassInvariant.m in Sources */,
+				C3946CDC11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1150,6 +1162,8 @@
 				C3946CCD11D39494000D1F88 /* ARPoint3DFilter.m in Sources */,
 				C3946CCE11D39495000D1F88 /* ARSimpleQuaternionFilter.m in Sources */,
 				C3946CCF11D39496000D1F88 /* ARQuaternionFilter.m in Sources */,
+				C3946CDB11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */,
+				C3946DFE11D496F1000D1F88 /* ARCyclicBufferTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
