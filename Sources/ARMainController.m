@@ -97,6 +97,12 @@ CGImageRef UIGetScreenImage(void);
 @property(nonatomic, getter=isRefreshingOnDistance) BOOL refreshingOnDistance;
 @property(nonatomic, retain) ARLocation *refreshLocation;
 
+/**
+ * Callback for the display link.
+ *
+ * @param sender The sender of the message.
+ */
+- (void)updateWithDisplayLink:(CADisplayLink *)sender;
 
 /**
  * Handle the refresh timer expiring; this should initite a dimension refresh.
