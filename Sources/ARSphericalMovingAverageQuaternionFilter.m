@@ -30,27 +30,33 @@
 #pragma mark NSObject
 
 - (id)initWithWindowSize:(NSUInteger)aWindowSize {
-	if (self = [super initWithWindowSize:aWindowSize]) {
-		weights = malloc([self windowSize] * sizeof(double));
+	if (self = [super init]) {
+		weights = malloc(aWindowSize * sizeof(double));
+		sampleBuffer = [[ARCyclicBuffer alloc] initWithElementSize:sizeof(ARQuaternion) maxElementCount:aWindowSize];
 	}
 	return self;
 }
 
 - (void)dealloc {
+	[sampleBuffer release];
 	free(weights);
 	[super dealloc];
 }
 
-#pragma mark ARMovingWindowQuaternionFilter
+#pragma mark ARQuaternionFilter
 
-- (ARQuaternion)filterWithSampleValues:(ARQuaternion *)someSampleValues sampleTimestamps:(NSTimeInterval *)someSampleTimestamps lastSampleIndex:(NSUInteger)aSampleIndex sampleCount:(NSUInteger)aSampleCount {
+- (ARQuaternion)filterWithInput:(ARQuaternion)input timestamp:(NSTimeInterval)aTimestamp {
+	[sampleBuffer pushElement:&input];
 	
-	// Average with equal weights.
-	for (int i = 0; i < aSampleCount; ++i) {
-		weights[i] = 1. / aSampleCount;
+	ARQuaternion *samples = [sampleBuffer elements];
+	int sampleCount = [sampleBuffer elementCount];
+	
+	// Average with equal weights. Could be optimized to do this only once.
+	for (int i = 0; i < sampleCount; ++i) {
+		weights[i] = 1. / sampleCount;
 	}
 	
-	ARQuaternion output = ARQuaternionSphericalWeightedAverage(sampleCount, someSampleValues, weights, 1.e-6, 50);
+	ARQuaternion output = ARQuaternionSphericalWeightedAverage(sampleCount, samples, weights, 1.e-6, 50);
 	return output;
 }
 
