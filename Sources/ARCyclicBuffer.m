@@ -45,6 +45,11 @@
 	return self;
 }
 
+- (void)dealloc {
+	free(elements);
+	[super dealloc];
+}
+
 - (void)pushElement:(const void *)element {
 	memcpy(elements + oldestElementIndex * elementSize, element, elementSize);
 	
