@@ -101,7 +101,7 @@
 		0.093186229180646,
 	};
 	
-	ARFilter *filter = [[ARDelayFilter alloc] initWithDelay:2];
+	ARFilter *filter = [[[[ARDelayFilterFactory alloc] initWithDelay:2] autorelease] newFilter];
 	for (int i = 0; i < sampleCount; ++i) {
 		// Fetch variables.
 		ARFilterValue input = inputs[i];
@@ -189,7 +189,7 @@
 		0.288885562862673,
 	};
 	
-	ARFilter *filter = [[ARDelayFilter alloc] initWithDelay:0];
+	ARFilter *filter = [[[[ARDelayFilterFactory alloc] initWithDelay:0] autorelease] newFilter];
 	for (int i = 0; i < sampleCount; ++i) {
 		// Fetch variables.
 		ARFilterValue input = inputs[i];

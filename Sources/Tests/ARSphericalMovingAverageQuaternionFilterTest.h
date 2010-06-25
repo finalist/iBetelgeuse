@@ -1,5 +1,5 @@
 //
-//  ARSimpleQuaternionFilter.m
+//  ARSphericalMovingAverageQuaternionFilterTest.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -21,32 +21,10 @@
 //
 
 
-#import "ARSimpleQuaternionFilter.h"
-#import "ARArrayFilter.h"
+#import <GHUnit/GHUnit.h>
 
 
-@implementation ARSimpleQuaternionFilter
-
-#pragma mark NSObject
-
-- (id)initWithFactory:(ARFilterFactory *)aFactory {
-	if (self = [super init]) {
-		arrayFilter = [[ARArrayFilter alloc] initWithSize:4 factory:aFactory];
-	}
-	return self;
-}
-
-- (void)dealloc {
-	[arrayFilter release];
-	[super dealloc];
-}
-
-#pragma mark ARQuaternionFilter
-
-- (ARQuaternion)filterWithInput:(ARQuaternion)input timestamp:(NSTimeInterval)aTimestamp {
-	ARQuaternion output;
-	[arrayFilter filterWithInputArray:(ARFilterValue *)&input outputArray:(ARFilterValue *)&output timestamp:aTimestamp];
-	return output;
+@interface ARSphericalMovingAverageQuaternionFilterTest : GHTestCase {
 }
 
 @end

@@ -21,15 +21,24 @@
 //
 
 
-#import "ARMovingWindowQuaternionFilter.h"
+#import "ARQuaternionFilter.h"
+#import "ARCyclicBuffer.h"
 
 
 /**
- * This filter computes a spherical average of the values a moving window. The
- * window size is set in advance, see ARMovingWindowQuaternionFilter.
+ * This filter computes a spherical average of the values a fixed size moving
+ * window.
  */
-@interface ARSphericalMovingAverageQuaternionFilter : ARMovingWindowQuaternionFilter {
+@interface ARSphericalMovingAverageQuaternionFilter : ARQuaternionFilter {
 	double *weights;
+	ARCyclicBuffer *sampleBuffer;
 }
+
+/**
+ * Initialize the filter
+ * @param aWindowSize the window size to be used.
+ * @return the initialized filter.
+ */
+- (id)initWithWindowSize:(NSUInteger)aWindowSize;
 
 @end
