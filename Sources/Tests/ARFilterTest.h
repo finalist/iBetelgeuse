@@ -28,6 +28,5 @@
 }
 
 - (void)testConstantInputWithFilterFactory:(ARFilterFactory *)filterFactory input:(ARFilterValue)input sampleCount:(int)sampleCount accuracy:(ARFilterValue)accuracy;
-- (void)testSimpleCasesWithFilterFactory:(ARFilterFactory *)filterFactory sampleCount:(int)sampleCount accuracy:(ARFilterValue)accuracy;
 
 @end

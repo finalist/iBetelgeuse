@@ -39,9 +39,4 @@
 	[filter release];
 }
 
-- (void)testSimpleCasesWithFilterFactory:(ARFilterFactory *)filterFactory sampleCount:(int)sampleCount accuracy:(ARFilterValue)accuracy {
-	[self testConstantInputWithFilterFactory:filterFactory input:0. sampleCount:sampleCount accuracy:accuracy];
-	[self testConstantInputWithFilterFactory:filterFactory input:-123.45 sampleCount:sampleCount accuracy:accuracy];
-}
-
 @end
