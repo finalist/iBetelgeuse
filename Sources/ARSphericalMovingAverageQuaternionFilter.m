@@ -44,7 +44,6 @@
 #pragma mark ARMovingWindowQuaternionFilter
 
 - (ARQuaternion)filterWithSampleValues:(ARQuaternion *)someSampleValues sampleTimestamps:(NSTimeInterval *)someSampleTimestamps lastSampleIndex:(NSUInteger)aSampleIndex sampleCount:(NSUInteger)aSampleCount {
-	// TODO: The paper describes that if input coordinates are not on a hemisphere, unexpected things may occur. Investigate what this means in our situation.
 	
 	// Average with equal weights.
 	for (int i = 0; i < aSampleCount; ++i) {

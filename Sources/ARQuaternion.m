@@ -47,6 +47,8 @@ ARQuaternion ARQuaternionSphericalWeightedAverageInternal(int n, const ARQuatern
 	// Samuel R. Buss and Jay Fillmore.
 	// "Spherical Averages and Applications to Spherical Splines and Interpolation."
 	
+	// TODO: The paper describes that if input coordinates are not on a hemisphere, unexpected things may occur. Investigate what this means in our situation.
+	
 	NSCAssert(n > 0, @"at least one quaternion must be given");
 	NSCAssert(quaternions, @"expected non-nil argument");
 	NSCAssert(weights, @"expected non-nil argument");
@@ -111,6 +113,8 @@ ARQuaternion ARQuaternionSphericalWeightedAverage(int n, const ARQuaternion quat
 	// Based on http://math.ucsd.edu/~sbuss/ResearchWeb/spheremean/
 	// Samuel R. Buss and Jay Fillmore.
 	// "Spherical Averages and Applications to Spherical Splines and Interpolation."
+	
+	// TODO: The paper describes that if input coordinates are not on a hemisphere, unexpected things may occur. Investigate what this means in our situation.
 	
 	// Find the coordinate with the max. total absolute value.
 	double xAbsSum=0, yAbsSum=0, zAbsSum=0, wAbsSum=0;
