@@ -156,9 +156,7 @@
 		C3946CC011D39484000D1F88 /* ARDelayFilterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */; };
 		C3946CC111D39484000D1F88 /* ARFilterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CBF11D39484000D1F88 /* ARFilterTest.m */; };
 		C3946CC211D39489000D1F88 /* ARSphericalMovingAverageQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C32966BF11C7671F006859E7 /* ARSphericalMovingAverageQuaternionFilter.m */; };
-		C3946CC411D3948B000D1F88 /* AROrientationFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C329607411C0E136006859E7 /* AROrientationFilter.m */; };
 		C3946CC511D3948C000D1F88 /* ARDelayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5E6B11BF914000C0FF1A /* ARDelayFilter.m */; };
-		C3946CC611D3948E000D1F88 /* ARDerivativeSmoothQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217B1511C8B727000BE2E1 /* ARDerivativeSmoothQuaternionFilter.m */; };
 		C3946CC811D3948F000D1F88 /* ARArrayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EBA11B66E8A00B71931 /* ARArrayFilter.m */; };
 		C3946CC911D39490000D1F88 /* ARWeightedMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EB411B66E4700B71931 /* ARWeightedMovingAverageFilter.m */; };
 		C3946CCB11D39492000D1F88 /* ARFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EAC11B66E0300B71931 /* ARFilter.m */; };
@@ -1164,9 +1162,7 @@
 				C3946CC011D39484000D1F88 /* ARDelayFilterTest.m in Sources */,
 				C3946CC111D39484000D1F88 /* ARFilterTest.m in Sources */,
 				C3946CC211D39489000D1F88 /* ARSphericalMovingAverageQuaternionFilter.m in Sources */,
-				C3946CC411D3948B000D1F88 /* AROrientationFilter.m in Sources */,
 				C3946CC511D3948C000D1F88 /* ARDelayFilter.m in Sources */,
-				C3946CC611D3948E000D1F88 /* ARDerivativeSmoothQuaternionFilter.m in Sources */,
 				C3946CC811D3948F000D1F88 /* ARArrayFilter.m in Sources */,
 				C3946CC911D39490000D1F88 /* ARWeightedMovingAverageFilter.m in Sources */,
 				C3946CCB11D39492000D1F88 /* ARFilter.m in Sources */,

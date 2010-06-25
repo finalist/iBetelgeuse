@@ -22,7 +22,6 @@
 
 
 #import "ARDerivativeSmoothQuaternionFilter.h"
-#import "ARSimpleQuaternionFilter.h"
 #import "ARSphericalMovingAverageQuaternionFilter.h"
 #import "ARWeightedMovingAverageQuaternionFilter.h"
 
