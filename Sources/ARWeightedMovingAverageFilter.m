@@ -1,5 +1,5 @@
 //
-//  ARMovingAverageFilter.m
+//  ARWeightedMovingAverageFilter.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -21,47 +21,49 @@
 //
 
 
-#import "ARMovingAverageFilter.h"
+#import "ARWeightedMovingAverageFilter.h"
 
 
-@implementation ARMovingAverageFilter
+@implementation ARWeightedMovingAverageFilter
 
-#pragma mark ARMovingWindowFilter
+#pragma mark NSObject
 
-- (ARFilterValue)filterWithSampleValues:(ARFilterValue *)sampleValues sampleTimestamps:(NSTimeInterval *)sampleTimestamps lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)sampleCount {
+- (id)initWithWindowSize:(NSUInteger)windowSize {
+	if (self = [super init]) {
+		sampleBuffer = [[ARCyclicBuffer alloc] initWithElementSize:sizeof(ARWeightedFilterValue) maxElementCount:windowSize];
+	}
+	return self;
+}
+
+#pragma mark ARWeightedMovingAverageFilter
+
+- (ARFilterValue)filterWithInput:(ARFilterValue)input weight:(double)weight {
+	ARWeightedFilterValue value = {input, weight};
+	[sampleBuffer pushElement:&value];
+	
+	ARWeightedFilterValue *samples = [sampleBuffer elements];
+	int sampleCount = [sampleBuffer elementCount];
+	
 	ARFilterValue sum = 0;
 	double totalWeight = 0;
 	
 	// Compute average weighted by time step
 	for (NSUInteger i = 0; i < sampleCount; i++) {
-		double weight = sampleTimestamps[i] - sampleTimestamps[(i + sampleCount - 1) % sampleCount];
-		if (weight < 0) {
-			weight = 0; // Note that this sets the oldest sample's weight to 0
-		}
-		totalWeight += weight;
-		sum += sampleValues[i] * weight;
+		totalWeight += samples[i].weight;
+		sum += samples[i].value * samples[i].weight;
 	}
 	
 	// If all weights are zero, recompute the average by weighing every sample equally. (This happens at least when the first value is received, and in the unlikely case when all samples are determined at the same time)
 	if (totalWeight == 0) {
 		sum = 0;
 		for (NSUInteger i = 0; i < sampleCount; i++) {
-			sum += sampleValues[i];
+			sum += samples[i].value;
 		}
 		totalWeight = sampleCount;
 	}
 	
 	ARFilterValue output = sum / totalWeight;
 	return output;
-}
-
-@end
-
-
-@implementation ARMovingAverageFilterFactory
-
-- (ARFilter *)newFilter {
-	return [[ARMovingAverageFilter alloc] initWithWindowSize:[self windowSize]];
 }
 
 @end

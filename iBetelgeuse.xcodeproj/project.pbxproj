@@ -115,10 +115,9 @@
 		C32182BF11D0EBDB000BE2E1 /* ARPoint3DFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A7E11C8ACC2000BE2E1 /* ARPoint3DFilter.m */; };
 		C32182C211D0ED84000BE2E1 /* ARQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8311C8ADB9000BE2E1 /* ARQuaternionFilter.m */; };
 		C32182C311D0EED0000BE2E1 /* ARDelayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5E6B11BF914000C0FF1A /* ARDelayFilter.m */; };
-		C32182C611D0EEE4000BE2E1 /* ARMovingWindowFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75ECD11B6700B00B71931 /* ARMovingWindowFilter.m */; };
 		C32182C711D0EEE8000BE2E1 /* ARArrayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EBA11B66E8A00B71931 /* ARArrayFilter.m */; };
 		C32182C811D0EEF0000BE2E1 /* ARSimpleQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8511C8ADB9000BE2E1 /* ARSimpleQuaternionFilter.m */; };
-		C32182CB11D0EEF8000BE2E1 /* ARMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EB411B66E4700B71931 /* ARMovingAverageFilter.m */; };
+		C32182CB11D0EEF8000BE2E1 /* ARWeightedMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EB411B66E4700B71931 /* ARWeightedMovingAverageFilter.m */; };
 		C32182CC11D0EF00000BE2E1 /* ARFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EAC11B66E0300B71931 /* ARFilter.m */; };
 		C32182CF11D0EF0D000BE2E1 /* ARMovingAverageQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C32966BF11C7671F006859E7 /* ARMovingAverageQuaternionFilter.m */; };
 		C32182D211D0EF11000BE2E1 /* ARMovingWindowQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C329678111C781AB006859E7 /* ARMovingWindowQuaternionFilter.m */; };
@@ -166,8 +165,7 @@
 		C3946CC611D3948E000D1F88 /* ARDerivativeSmoothQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217B1511C8B727000BE2E1 /* ARDerivativeSmoothQuaternionFilter.m */; };
 		C3946CC711D3948F000D1F88 /* ARAccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75F0711B678F400B71931 /* ARAccelerometerFilter.m */; };
 		C3946CC811D3948F000D1F88 /* ARArrayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EBA11B66E8A00B71931 /* ARArrayFilter.m */; };
-		C3946CC911D39490000D1F88 /* ARMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EB411B66E4700B71931 /* ARMovingAverageFilter.m */; };
-		C3946CCA11D39491000D1F88 /* ARMovingWindowFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75ECD11B6700B00B71931 /* ARMovingWindowFilter.m */; };
+		C3946CC911D39490000D1F88 /* ARWeightedMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EB411B66E4700B71931 /* ARWeightedMovingAverageFilter.m */; };
 		C3946CCB11D39492000D1F88 /* ARFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EAC11B66E0300B71931 /* ARFilter.m */; };
 		C3946CCC11D39493000D1F88 /* ARSimplePoint3DFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C32964B711C27EC9006859E7 /* ARSimplePoint3DFilter.m */; };
 		C3946CCD11D39494000D1F88 /* ARPoint3DFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A7E11C8ACC2000BE2E1 /* ARPoint3DFilter.m */; };
@@ -175,6 +173,9 @@
 		C3946CCF11D39496000D1F88 /* ARQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3217A8311C8ADB9000BE2E1 /* ARQuaternionFilter.m */; };
 		C3946CDB11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CDA11D398DB000D1F88 /* ARCyclicBuffer.m */; };
 		C3946CDC11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CDA11D398DB000D1F88 /* ARCyclicBuffer.m */; };
+		C3946D6411D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946D6211D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.m */; };
+		C3946D9611D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946D9511D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.m */; };
+		C3946D9711D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946D9511D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.m */; };
 		C3946DFE11D496F1000D1F88 /* ARCyclicBufferTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946DFD11D496F1000D1F88 /* ARCyclicBufferTest.m */; };
 		C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C62E8611ABE7D500553407 /* ARRadarView.m */; };
 /* End PBXBuildFile section */
@@ -298,12 +299,10 @@
 		95C758E811B3D5F000B71931 /* AROverlayContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROverlayContainerView.m; sourceTree = "<group>"; };
 		95C75EAB11B66E0300B71931 /* ARFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilter.h; sourceTree = "<group>"; };
 		95C75EAC11B66E0300B71931 /* ARFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilter.m; sourceTree = "<group>"; };
-		95C75EB311B66E4700B71931 /* ARMovingAverageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMovingAverageFilter.h; sourceTree = "<group>"; };
-		95C75EB411B66E4700B71931 /* ARMovingAverageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMovingAverageFilter.m; sourceTree = "<group>"; };
+		95C75EB311B66E4700B71931 /* ARWeightedMovingAverageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWeightedMovingAverageFilter.h; sourceTree = "<group>"; };
+		95C75EB411B66E4700B71931 /* ARWeightedMovingAverageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWeightedMovingAverageFilter.m; sourceTree = "<group>"; };
 		95C75EB911B66E8A00B71931 /* ARArrayFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARArrayFilter.h; sourceTree = "<group>"; };
 		95C75EBA11B66E8A00B71931 /* ARArrayFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARArrayFilter.m; sourceTree = "<group>"; };
-		95C75ECC11B6700B00B71931 /* ARMovingWindowFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMovingWindowFilter.h; sourceTree = "<group>"; };
-		95C75ECD11B6700B00B71931 /* ARMovingWindowFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMovingWindowFilter.m; sourceTree = "<group>"; };
 		95C75F0611B678F400B71931 /* ARAccelerometerFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAccelerometerFilter.h; sourceTree = "<group>"; };
 		95C75F0711B678F400B71931 /* ARAccelerometerFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAccelerometerFilter.m; sourceTree = "<group>"; };
 		95C765F511BD25EB00B71931 /* ARButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButton.h; sourceTree = "<group>"; };
@@ -447,6 +446,10 @@
 		C3946CBF11D39484000D1F88 /* ARFilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilterTest.m; sourceTree = "<group>"; };
 		C3946CD911D398DB000D1F88 /* ARCyclicBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCyclicBuffer.h; sourceTree = "<group>"; };
 		C3946CDA11D398DB000D1F88 /* ARCyclicBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCyclicBuffer.m; sourceTree = "<group>"; };
+		C3946D6111D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWeightedMovingAverageFilterTest.h; sourceTree = "<group>"; };
+		C3946D6211D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWeightedMovingAverageFilterTest.m; sourceTree = "<group>"; };
+		C3946D9411D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARQuaternionWeightedMovingAverageFilter.h; sourceTree = "<group>"; };
+		C3946D9511D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuaternionWeightedMovingAverageFilter.m; sourceTree = "<group>"; };
 		C3946DFC11D496F1000D1F88 /* ARCyclicBufferTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCyclicBufferTest.h; sourceTree = "<group>"; };
 		C3946DFD11D496F1000D1F88 /* ARCyclicBufferTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCyclicBufferTest.m; sourceTree = "<group>"; };
 		C3C62E8511ABE7D500553407 /* ARRadarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARRadarView.h; sourceTree = "<group>"; };
@@ -671,10 +674,8 @@
 				C32964B711C27EC9006859E7 /* ARSimplePoint3DFilter.m */,
 				95C75EAB11B66E0300B71931 /* ARFilter.h */,
 				95C75EAC11B66E0300B71931 /* ARFilter.m */,
-				95C75ECC11B6700B00B71931 /* ARMovingWindowFilter.h */,
-				95C75ECD11B6700B00B71931 /* ARMovingWindowFilter.m */,
-				95C75EB311B66E4700B71931 /* ARMovingAverageFilter.h */,
-				95C75EB411B66E4700B71931 /* ARMovingAverageFilter.m */,
+				95C75EB311B66E4700B71931 /* ARWeightedMovingAverageFilter.h */,
+				95C75EB411B66E4700B71931 /* ARWeightedMovingAverageFilter.m */,
 				95C75EB911B66E8A00B71931 /* ARArrayFilter.h */,
 				95C75EBA11B66E8A00B71931 /* ARArrayFilter.m */,
 				95C75F0611B678F400B71931 /* ARAccelerometerFilter.h */,
@@ -689,6 +690,8 @@
 				C329678111C781AB006859E7 /* ARMovingWindowQuaternionFilter.m */,
 				C32966BE11C7671F006859E7 /* ARMovingAverageQuaternionFilter.h */,
 				C32966BF11C7671F006859E7 /* ARMovingAverageQuaternionFilter.m */,
+				C3946D9411D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.h */,
+				C3946D9511D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.m */,
 			);
 			name = Filter;
 			sourceTree = "<group>";
@@ -900,6 +903,8 @@
 				C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */,
 				C3946CBE11D39484000D1F88 /* ARFilterTest.h */,
 				C3946CBF11D39484000D1F88 /* ARFilterTest.m */,
+				C3946D6111D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.h */,
+				C3946D6211D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.m */,
 			);
 			name = Filter;
 			sourceTree = "<group>";
@@ -1090,15 +1095,15 @@
 				C32182BF11D0EBDB000BE2E1 /* ARPoint3DFilter.m in Sources */,
 				C32182C211D0ED84000BE2E1 /* ARQuaternionFilter.m in Sources */,
 				C32182C311D0EED0000BE2E1 /* ARDelayFilter.m in Sources */,
-				C32182C611D0EEE4000BE2E1 /* ARMovingWindowFilter.m in Sources */,
 				C32182C711D0EEE8000BE2E1 /* ARArrayFilter.m in Sources */,
 				C32182C811D0EEF0000BE2E1 /* ARSimpleQuaternionFilter.m in Sources */,
-				C32182CB11D0EEF8000BE2E1 /* ARMovingAverageFilter.m in Sources */,
+				C32182CB11D0EEF8000BE2E1 /* ARWeightedMovingAverageFilter.m in Sources */,
 				C32182CC11D0EF00000BE2E1 /* ARFilter.m in Sources */,
 				C32182CF11D0EF0D000BE2E1 /* ARMovingAverageQuaternionFilter.m in Sources */,
 				C32182D211D0EF11000BE2E1 /* ARMovingWindowQuaternionFilter.m in Sources */,
 				958E3DA311D1EC9300466267 /* NSObject+ARClassInvariant.m in Sources */,
 				C3946CDC11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */,
+				C3946D9611D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1155,14 +1160,15 @@
 				C3946CC611D3948E000D1F88 /* ARDerivativeSmoothQuaternionFilter.m in Sources */,
 				C3946CC711D3948F000D1F88 /* ARAccelerometerFilter.m in Sources */,
 				C3946CC811D3948F000D1F88 /* ARArrayFilter.m in Sources */,
-				C3946CC911D39490000D1F88 /* ARMovingAverageFilter.m in Sources */,
-				C3946CCA11D39491000D1F88 /* ARMovingWindowFilter.m in Sources */,
+				C3946CC911D39490000D1F88 /* ARWeightedMovingAverageFilter.m in Sources */,
 				C3946CCB11D39492000D1F88 /* ARFilter.m in Sources */,
 				C3946CCC11D39493000D1F88 /* ARSimplePoint3DFilter.m in Sources */,
 				C3946CCD11D39494000D1F88 /* ARPoint3DFilter.m in Sources */,
 				C3946CCE11D39495000D1F88 /* ARSimpleQuaternionFilter.m in Sources */,
 				C3946CCF11D39496000D1F88 /* ARQuaternionFilter.m in Sources */,
 				C3946CDB11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */,
+				C3946D6411D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.m in Sources */,
+				C3946D9711D48E6F000D1F88 /* ARQuaternionWeightedMovingAverageFilter.m in Sources */,
 				C3946DFE11D496F1000D1F88 /* ARCyclicBufferTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
