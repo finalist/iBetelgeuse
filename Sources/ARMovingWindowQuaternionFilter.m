@@ -62,7 +62,7 @@
 	sampleValues[sampleIndex] = input;
 	sampleTimestamps[sampleIndex] = timestamp;
 	sampleIndex = (sampleIndex + 1) % windowSize;
-	sampleCount = MIN(sampleCount + 1, windowSize);
+	sampleCount = ARMin(sampleCount + 1, windowSize);
 	
 	return [self filterWithSampleValues:sampleValues sampleTimestamps:sampleTimestamps lastSampleIndex:previousSampleIndex sampleCount:sampleCount];
 }

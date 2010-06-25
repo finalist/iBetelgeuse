@@ -65,7 +65,7 @@
 	CGRect bounds = [self bounds];
 	
 	// Invert the y-axis because the view y-axis extends towards the bottom, not the top, of the device
-	CGFloat size = MAX(bounds.size.width, bounds.size.height);
+	CGFloat size = ARMax(bounds.size.width, bounds.size.height);
 	screenTransform = CATransform3DMakeScale(size / 2., -size / 2., 1.);
 	invertedScreenTransform = CATransform3DInvert(screenTransform);
 	

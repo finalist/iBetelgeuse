@@ -71,7 +71,7 @@ static ARCamera *currentInstance = nil;
 		focalLength = aFocalLength;
 		imagePlaneSize = anImagePlaneSize;
 		
-		distanceToViewPlane = 2. * focalLength / MAX(imagePlaneSize.width, imagePlaneSize.height);
+		distanceToViewPlane = 2. * focalLength / ARMax(imagePlaneSize.width, imagePlaneSize.height);
 		
 		angleOfView = 2. * atanf(1. / distanceToViewPlane);
 		

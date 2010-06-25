@@ -48,7 +48,7 @@
 - (void)pushElement:(const void *)element {
 	memcpy(elements + oldestElementIndex * elementSize, element, elementSize);
 	
-	elementCount = MIN(elementCount + 1, maxElementCount);
+	elementCount = ARMin(elementCount + 1, maxElementCount);
 	oldestElementIndex = (oldestElementIndex + 1) % maxElementCount;
 }
 

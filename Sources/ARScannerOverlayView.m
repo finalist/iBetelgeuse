@@ -48,7 +48,7 @@
 	CGRect bounds = [self bounds];
 
 	// Inset the red rectangle from our bounds
-	CGFloat boxMargin = MIN(bounds.size.width, bounds.size.height) * BOX_MARGIN_FACTOR;
+	CGFloat boxMargin = ARMin(bounds.size.width, bounds.size.height) * BOX_MARGIN_FACTOR;
 	CGRect box = CGRectInset(bounds, boxMargin, boxMargin);
 	
 	// Turn it into a centered square
