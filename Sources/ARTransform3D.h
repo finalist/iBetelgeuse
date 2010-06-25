@@ -68,7 +68,7 @@ ARTransform3D ARTransform3DMakeFromAxes(ARPoint3D xAxis, ARPoint3D yAxis, ARPoin
  * @param accuracy the maximal allowed difference between two element values to be considered equal.
  * @return YES if all elements of the matrices are less than or equal to the specified accuracy.
  */
-BOOL ARTransform3DEqualsWithAccuracy(ARTransform3D a, ARTransform3D b, double accuracy);
+BOOL ARTransform3DEqualsWithAccuracy(ARTransform3D a, ARTransform3D b, CGFloat accuracy);
 
 /**
  * Construct an orthogonal transformation matrix A with a translation
