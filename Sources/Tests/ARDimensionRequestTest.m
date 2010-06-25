@@ -25,7 +25,7 @@
 #import "ARDimension.h"
 #import "ARSpatialState.h"
 #import "NSURLRequest+ARFormURLEncoding.h"
-#import "ARMockNSURLConnection.h"
+#import <GHUnit/GHMockNSURLConnection.h>
 
 #define DIMENSION_URL @"http://www.foobar.com/?baz=1"
 #define DIMENSION_LAT 10.0
