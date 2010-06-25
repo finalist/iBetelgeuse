@@ -299,8 +299,8 @@
 	CGFloat viewDistance = sqrtf(viewVector.x * viewVector.x + viewVector.y * viewVector.y);
 	
 	// Correct for the cutoff that happens when the device is in the horizontal position (i.e. when isDeviceInHorizontalPosition is YES)
-	double horizontalCutoffViewDistance = sin(HORIZONAL_THRESHOLD_ANGLE_HIGH);
-	double correctedViewDistance = ARClamp((viewDistance - horizontalCutoffViewDistance) / (1.0 - horizontalCutoffViewDistance), 0.0, 1.0);
+	CGFloat horizontalCutoffViewDistance = sinf(HORIZONAL_THRESHOLD_ANGLE_HIGH);
+	CGFloat correctedViewDistance = ARClamp((viewDistance - horizontalCutoffViewDistance) / (1.0 - horizontalCutoffViewDistance), 0.0, 1.0);
 	CGPoint correctedViewVector;
 	correctedViewVector.x = viewVector.x * correctedViewDistance / viewDistance;
 	correctedViewVector.y = viewVector.y * correctedViewDistance / viewDistance;

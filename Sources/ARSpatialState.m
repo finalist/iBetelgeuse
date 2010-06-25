@@ -116,10 +116,10 @@
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
 	
 	// Different calculations for when the device is horizontal (i.e. when the device z-axis about matches ENU's z-axis)
-	if (fabs(transform.m33) > .999) {
-		bearing = -atan2(transform.m12, transform.m11);
+	if (fabsf(transform.m33) > .999) {
+		bearing = -atan2f(transform.m12, transform.m11);
 	} else {
-		bearing = -atan2(transform.m31, -transform.m32);
+		bearing = -atan2f(transform.m31, -transform.m32);
 	}
 	
 	return bearing;
@@ -127,7 +127,7 @@
 
 - (double)pitch {
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
-	double pitch = asin(-transform.m33);
+	double pitch = asinf(-transform.m33);
 	return pitch;
 }
 
@@ -136,10 +136,10 @@
 	ARTransform3D transform = [self DeviceToENUSpaceTransform];
 	
 	// Different calculations for when the device is horizontal (i.e. when the device z-axis about matches ENU's z-axis)
-	if (fabs(transform.m33) > .999) {
+	if (fabsf(transform.m33) > .999) {
 		roll = 0;
 	} else {
-		roll = atan2(transform.m13, transform.m23);
+		roll = atan2f(transform.m13, transform.m23);
 	}
 	
 	return roll;

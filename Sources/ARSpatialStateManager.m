@@ -357,7 +357,7 @@
 
 - (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable accuracy:(CLLocationDistance)accuracy {
 	if (locationAvailable) {
-		double previousLocationAccuracy = locationAccuracy + MAXIMAL_EXPECTED_SPEED * ([NSDate timeIntervalSinceReferenceDate] - locationTimeIntervalSinceReferenceDate);
+		CLLocationDistance previousLocationAccuracy = locationAccuracy + MAXIMAL_EXPECTED_SPEED * ([NSDate timeIntervalSinceReferenceDate] - locationTimeIntervalSinceReferenceDate);
 		if (accuracy > previousLocationAccuracy) {
 			DebugLog(@"Ignoring last location (%14.7f %14.7f)", accuracy, previousLocationAccuracy);
 			return;

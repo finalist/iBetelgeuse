@@ -84,7 +84,7 @@
 - (void)parsingDidFindSimpleElement:(NSString *)name attributes:(NSDictionary *)attributes content:(NSString *)content {
 	if ([name isEqualToString:@"x"]) {
 		double value = [content doubleValue];
-		if (value == HUGE_VAL || value == -HUGE_VAL) {
+		if (value < CGFLOAT_MIN || value > CGFLOAT_MAX) {
 			DebugLog(@"Invalid value for x element: %@", content);
 		}
 		else {
@@ -97,7 +97,7 @@
 	}
 	else if ([name isEqualToString:@"y"]) {
 		double value = [content doubleValue];
-		if (value == HUGE_VAL || value == -HUGE_VAL) {
+		if (value < CGFLOAT_MIN || value > CGFLOAT_MAX) {
 			DebugLog(@"Invalid value for y element: %@", content);
 		}
 		else {

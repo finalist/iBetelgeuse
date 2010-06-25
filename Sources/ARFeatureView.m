@@ -95,7 +95,7 @@
 	}
 }
 
-- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor {
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(CGFloat)distanceFactor {
 	// This function uses EF coordinates for all variables unless specified otherwise.
 	ARPoint3D featurePosition = ARPoint3DSubtract([[[self feature] location] locationInECEFSpace], [spatialState EFToECEFSpaceOffset]);
 	ARPoint3D devicePosition = [spatialState locationInEFSpace];
@@ -111,7 +111,7 @@
 		[self setHidden:YES];
 	}
 	else {
-		const float scale = ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) * distanceFactor; // This is done so that feature coordinates are measured in pixels, not in meters (by undoing screen and perspective transform)
+		const CGFloat scale = ARPoint3DLength(ARPoint3DSubtract(featurePosition, devicePosition)) * distanceFactor; // This is done so that feature coordinates are measured in pixels, not in meters (by undoing screen and perspective transform)
 		
 		[[self layer] setPosition:CGPointZero];
 		[[self layer] setTransform:CATransform3DConcat(CATransform3DMakeScale(scale, -scale, scale), ARTransform3DLookAt(featurePosition, devicePosition, upDirection, ARPoint3DMake(0., 0., 1.)))]; // Invert the Y axis because the view Y axis increases to the bottom, not to the top.
