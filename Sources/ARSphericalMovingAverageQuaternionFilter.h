@@ -1,5 +1,5 @@
 //
-//  ARMovingAverageQuaternionFilter.h
+//  ARSphericalMovingAverageQuaternionFilter.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -28,7 +28,7 @@
  * This filter computes a spherical average of the values a moving window. The
  * window size is set in advance, see ARMovingWindowQuaternionFilter.
  */
-@interface ARMovingAverageQuaternionFilter : ARMovingWindowQuaternionFilter {
+@interface ARSphericalMovingAverageQuaternionFilter : ARMovingWindowQuaternionFilter {
 	double *weights;
 }
 

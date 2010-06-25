@@ -23,8 +23,8 @@
 
 #import "ARDerivativeSmoothQuaternionFilter.h"
 #import "ARSimpleQuaternionFilter.h"
-#import "ARMovingAverageQuaternionFilter.h"
-#import "ARQuaternionWeightedMovingAverageFilter.h"
+#import "ARSphericalMovingAverageQuaternionFilter.h"
+#import "ARWeightedMovingAverageQuaternionFilter.h"
 
 
 @implementation ARDerivativeSmoothQuaternionFilter
@@ -37,8 +37,8 @@
 		correctionFactorDerivativeGain = aCorrectionFactorDerivativeGain;
 		stabilizerAngularVelocity = aStabilizerAngularVelocity;
 		
-		derivativeAverageFilter = [[ARQuaternionWeightedMovingAverageFilter alloc] initWithWindowSize:aDerivativeAverageWindowSize];
-		correctingInputAverageFilter = [[ARMovingAverageQuaternionFilter alloc] initWithWindowSize:aCorrectingInputAverageWindowSize];
+		derivativeAverageFilter = [[ARWeightedMovingAverageQuaternionFilter alloc] initWithWindowSize:aDerivativeAverageWindowSize];
+		correctingInputAverageFilter = [[ARSphericalMovingAverageQuaternionFilter alloc] initWithWindowSize:aCorrectingInputAverageWindowSize];
 	}
 	return self;
 }

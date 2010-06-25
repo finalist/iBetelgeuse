@@ -1,5 +1,5 @@
 //
-//  ARMovingAverageQuaternionFilter.m
+//  ARSphericalMovingAverageQuaternionFilter.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -21,11 +21,11 @@
 //
 
 
-#import "ARMovingAverageQuaternionFilter.h"
+#import "ARSphericalMovingAverageQuaternionFilter.h"
 #import "ARQuaternion.h"
 
 
-@implementation ARMovingAverageQuaternionFilter
+@implementation ARSphericalMovingAverageQuaternionFilter
 
 #pragma mark NSObject
 

@@ -1,5 +1,5 @@
 //
-//  ARQuaternionWeightedMovingAverageFilter.h
+//  ARWeightedMovingAverageQuaternionFilter.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -29,7 +29,7 @@
  * This implements an elementwise weighted moving average filter for quaternions.
  * @see ARWeightedMovingAverageFilter
  */
-@interface ARQuaternionWeightedMovingAverageFilter : NSObject {
+@interface ARWeightedMovingAverageQuaternionFilter : NSObject {
 	ARWeightedMovingAverageFilter *filters[3];
 }
 
