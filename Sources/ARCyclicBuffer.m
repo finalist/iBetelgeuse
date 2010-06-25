@@ -1,5 +1,5 @@
 //
-//  ARAccelerometerFilter.m
+//  ARCyclicBuffer.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,31 +20,36 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARAccelerometerFilter.h"
-#import "ARSimplePoint3DFilter.h"
-#import "ARDelayFilter.h"
+
+#import "ARCyclicBuffer.h"
 
 
-@implementation ARAccelerometerFilter
+@implementation ARCyclicBuffer
 
-#pragma mark ARAccelerometerFilter
+@synthesize elements;
+@synthesize elementCount;
 
-- (id)init {
+- (const void*)oldestElement {
+	void *oldestElement = elements + (oldestElementIndex % elementCount) * elementSize;
+	return oldestElement;
+}
+
+- (id)initWithElementSize:(int)anElementSize maxElementCount:(int)aMaxElementCount {
 	if (self = [super init]) {
-		ARDelayFilterFactory *delayFilterFactory = [[ARDelayFilterFactory alloc] initWithDelay:1];
-		delayFilter = [[ARSimplePoint3DFilter alloc] initWithFactory:delayFilterFactory];
-		[delayFilterFactory release];
+		elementCount = 0;
+		maxElementCount = aMaxElementCount;
+		elementSize = anElementSize;
+		elements = calloc(maxElementCount, elementSize);
+		oldestElementIndex = 0;
 	}
 	return self;
 }
 
-- (void)dealloc {
-	[delayFilter release];
-	[super dealloc];
-}
-
-- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp {
-	return [delayFilter filterWithInput:input timestamp:aTimestamp];
+- (void)pushElement:(const void *)element {
+	memcpy(elements + oldestElementIndex * elementSize, element, elementSize);
+	
+	elementCount = MIN(elementCount + 1, maxElementCount);
+	oldestElementIndex = (oldestElementIndex + 1) % maxElementCount;
 }
 
 @end

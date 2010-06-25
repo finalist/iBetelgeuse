@@ -1,5 +1,5 @@
 //
-//  ARAccelerometerFilter.m
+//  ARWeightedMovingAverageQuaternionFilter.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,31 +20,40 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARAccelerometerFilter.h"
-#import "ARSimplePoint3DFilter.h"
-#import "ARDelayFilter.h"
+
+#import "ARWeightedMovingAverageQuaternionFilter.h"
 
 
-@implementation ARAccelerometerFilter
+@implementation ARWeightedMovingAverageQuaternionFilter
 
-#pragma mark ARAccelerometerFilter
+#pragma mark NSObject
 
-- (id)init {
+- (id)initWithWindowSize:(NSUInteger)windowSize {
 	if (self = [super init]) {
-		ARDelayFilterFactory *delayFilterFactory = [[ARDelayFilterFactory alloc] initWithDelay:1];
-		delayFilter = [[ARSimplePoint3DFilter alloc] initWithFactory:delayFilterFactory];
-		[delayFilterFactory release];
+		for (int i = 0; i < ARQuaternionCoordinateCount; ++i) {
+			filters[i] = [[ARWeightedMovingAverageFilter alloc] initWithWindowSize:windowSize];
+		}
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[delayFilter release];
+	for (int i = 0; i < ARQuaternionCoordinateCount; ++i) {
+		[filters[i] release];
+	}
 	[super dealloc];
 }
 
-- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp {
-	return [delayFilter filterWithInput:input timestamp:aTimestamp];
+#pragma mark ARQuaternionFilter
+
+- (ARQuaternion)filterWithInput:(ARQuaternion)input weight:(double)weight {
+	ARQuaternion output;
+	double *inputs = (double*)&input;
+	double *outputs = (double*)&output;
+	for (int i = 0; i < ARQuaternionCoordinateCount; ++i) {
+		outputs[i] = [filters[i] filterWithInput:inputs[i] weight:weight];
+	}
+	return output;
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-//  ARMovingAverageFilter.h
+//  ARWeightedMovingAverageFilter.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -21,23 +21,25 @@
 //
 
 
-#import "ARMovingWindowFilter.h"
+#import "ARFilter.h"
+#import "ARCyclicBuffer.h"
+
+
+typedef struct {
+	ARFilterValue value;
+	double weight;
+} ARWeightedFilterValue;
 
 
 /**
- * This filter computes the movign average with a given window. See
- * ARMovingWindowFilter.
+ * This filter computes the moving average with a given window.
  */
-@interface ARMovingAverageFilter : ARMovingWindowFilter {
+@interface ARWeightedMovingAverageFilter : NSObject {
+	ARCyclicBuffer *sampleBuffer;
 }
+
+- (id)initWithWindowSize:(NSUInteger)windowSize;
+- (ARFilterValue)filterWithInput:(ARFilterValue)input weight:(double)weight;
 
 @end
 
-
-/**
- * This constructs an ARMovingAverageFilter.
- */
-@interface ARMovingAverageFilterFactory : ARMovingWindowFilterFactory {
-}
-
-@end

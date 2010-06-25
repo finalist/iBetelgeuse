@@ -1,5 +1,5 @@
 //
-//  ARMovingAverageQuaternionFilter.h
+//  ARFilterTest.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,16 +20,13 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#import <GHUnit/GHUnit.h>
+#import "ARFilter.h"
 
-#import "ARMovingWindowQuaternionFilter.h"
 
-
-/**
- * This filter computes a spherical average of the values a moving window. The
- * window size is set in advance, see ARMovingWindowQuaternionFilter.
- */
-@interface ARMovingAverageQuaternionFilter : ARMovingWindowQuaternionFilter {
-	double *weights;
+@interface ARFilterTest : GHTestCase {
 }
+
+- (void)testConstantInputWithFilterFactory:(ARFilterFactory *)filterFactory input:(ARFilterValue)input sampleCount:(int)sampleCount accuracy:(ARFilterValue)accuracy;
 
 @end

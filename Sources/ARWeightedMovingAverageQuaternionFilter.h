@@ -1,5 +1,5 @@
 //
-//  ARAccelerometerFilter.m
+//  ARWeightedMovingAverageQuaternionFilter.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,31 +20,27 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARAccelerometerFilter.h"
-#import "ARSimplePoint3DFilter.h"
-#import "ARDelayFilter.h"
+
+#import "ARWeightedMovingAverageFilter.h"
+#import "ARQuaternion.h"
 
 
-@implementation ARAccelerometerFilter
-
-#pragma mark ARAccelerometerFilter
-
-- (id)init {
-	if (self = [super init]) {
-		ARDelayFilterFactory *delayFilterFactory = [[ARDelayFilterFactory alloc] initWithDelay:1];
-		delayFilter = [[ARSimplePoint3DFilter alloc] initWithFactory:delayFilterFactory];
-		[delayFilterFactory release];
-	}
-	return self;
+/**
+ * This implements an elementwise weighted moving average filter for quaternions.
+ * @see ARWeightedMovingAverageFilter
+ */
+@interface ARWeightedMovingAverageQuaternionFilter : NSObject {
+	ARWeightedMovingAverageFilter *filters[3];
 }
 
-- (void)dealloc {
-	[delayFilter release];
-	[super dealloc];
-}
-
-- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp {
-	return [delayFilter filterWithInput:input timestamp:aTimestamp];
-}
+/**
+ * This function takes a new input value, processes it and generates an output
+ * value by applying the weighted moving average filter on all elements of the
+ * quaternion.
+ * @param input the current value of the signal
+ * @param weight the weight of this value.
+ * @return the output of the filter.
+ */
+- (ARQuaternion)filterWithInput:(ARQuaternion)input weight:(double)weight;
 
 @end

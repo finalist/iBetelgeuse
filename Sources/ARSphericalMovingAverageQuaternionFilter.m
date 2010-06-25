@@ -1,5 +1,5 @@
 //
-//  ARMovingAverageQuaternionFilter.m
+//  ARSphericalMovingAverageQuaternionFilter.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -21,11 +21,11 @@
 //
 
 
-#import "ARMovingAverageQuaternionFilter.h"
+#import "ARSphericalMovingAverageQuaternionFilter.h"
 #import "ARQuaternion.h"
 
 
-@implementation ARMovingAverageQuaternionFilter
+@implementation ARSphericalMovingAverageQuaternionFilter
 
 #pragma mark NSObject
 
@@ -46,23 +46,9 @@
 - (ARQuaternion)filterWithSampleValues:(ARQuaternion *)someSampleValues sampleTimestamps:(NSTimeInterval *)someSampleTimestamps lastSampleIndex:(NSUInteger)aSampleIndex sampleCount:(NSUInteger)aSampleCount {
 	// TODO: The paper describes that if input coordinates are not on a hemisphere, unexpected things may occur. Investigate what this means in our situation.
 	
-	double totalWeight = 0.;
-	for (int i = 0; i < sampleCount; ++i) {
-		weights[i] = someSampleTimestamps[i] - someSampleTimestamps[(i+sampleCount-1) % sampleCount];
-		if (weights[i] < 0) {
-			weights[i] = 0;
-		}
-		totalWeight += weights[i];
-	}
-	
-	if (totalWeight == 0) {
-		for (int i = 0; i < aSampleCount; ++i) {
-			weights[i] = 1. / aSampleCount;
-		}
-	} else {
-		for (int i = 0; i < aSampleCount; ++i) {
-			weights[i] /= totalWeight;
-		}
+	// Average with equal weights.
+	for (int i = 0; i < aSampleCount; ++i) {
+		weights[i] = 1. / aSampleCount;
 	}
 	
 	ARQuaternion output = ARQuaternionSphericalWeightedAverage(sampleCount, someSampleValues, weights, 1.e-6, 50);

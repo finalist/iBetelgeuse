@@ -21,14 +21,23 @@
 //
 
 
-#import "ARMovingWindowFilter.h"
+#import "ARFilter.h"
+#import "ARCyclicBuffer.h"
 
 
 /**
  * A filter to delay a sample for a given amount of samples.
  */
-@interface ARDelayFilter : ARMovingWindowFilter {
+@interface ARDelayFilter : ARFilter {
+	ARCyclicBuffer *sampleBuffer;
 }
+
+/**
+ * Initialize this filter.
+ * @param delay the desired delay, in samples.
+ * @return the initialized filter.
+ */
+- (id)initWithDelay:(NSUInteger)delay;
 
 @end
 
@@ -36,7 +45,15 @@
 /**
  * Factory class for ARDelayFilter.
  */
-@interface ARDelayFilterFactory : ARMovingWindowFilterFactory {
+@interface ARDelayFilterFactory : ARFilterFactory {
+	NSUInteger delay;
 }
+
+/**
+ * Initialize this filter factory.
+ * @param delay the desired delay, in samples.
+ * @return the initialized filter factory.
+ */
+- (id)initWithDelay:(NSUInteger)delay;
 
 @end

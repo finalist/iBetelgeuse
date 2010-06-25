@@ -1,5 +1,5 @@
 //
-//  ARAccelerometerFilter.m
+//  ARSphericalMovingAverageQuaternionFilter.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,31 +20,16 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARAccelerometerFilter.h"
-#import "ARSimplePoint3DFilter.h"
-#import "ARDelayFilter.h"
+
+#import "ARMovingWindowQuaternionFilter.h"
 
 
-@implementation ARAccelerometerFilter
-
-#pragma mark ARAccelerometerFilter
-
-- (id)init {
-	if (self = [super init]) {
-		ARDelayFilterFactory *delayFilterFactory = [[ARDelayFilterFactory alloc] initWithDelay:1];
-		delayFilter = [[ARSimplePoint3DFilter alloc] initWithFactory:delayFilterFactory];
-		[delayFilterFactory release];
-	}
-	return self;
-}
-
-- (void)dealloc {
-	[delayFilter release];
-	[super dealloc];
-}
-
-- (ARPoint3D)filterWithInput:(ARPoint3D)input timestamp:(NSTimeInterval)aTimestamp {
-	return [delayFilter filterWithInput:input timestamp:aTimestamp];
+/**
+ * This filter computes a spherical average of the values a moving window. The
+ * window size is set in advance, see ARMovingWindowQuaternionFilter.
+ */
+@interface ARSphericalMovingAverageQuaternionFilter : ARMovingWindowQuaternionFilter {
+	double *weights;
 }
 
 @end

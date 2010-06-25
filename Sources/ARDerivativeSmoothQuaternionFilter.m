@@ -23,8 +23,8 @@
 
 #import "ARDerivativeSmoothQuaternionFilter.h"
 #import "ARSimpleQuaternionFilter.h"
-#import "ARMovingAverageFilter.h"
-#import "ARMovingAverageQuaternionFilter.h"
+#import "ARSphericalMovingAverageQuaternionFilter.h"
+#import "ARWeightedMovingAverageQuaternionFilter.h"
 
 
 @implementation ARDerivativeSmoothQuaternionFilter
@@ -37,10 +37,8 @@
 		correctionFactorDerivativeGain = aCorrectionFactorDerivativeGain;
 		stabilizerAngularVelocity = aStabilizerAngularVelocity;
 		
-		ARFilterFactory *derivativeAverageFilterFactory = [[ARMovingAverageFilterFactory alloc] initWithWindowSize:aDerivativeAverageWindowSize];
-		derivativeAverageFilter = [[ARSimpleQuaternionFilter alloc] initWithFactory:derivativeAverageFilterFactory];
-		correctingInputAverageFilter = [[ARMovingAverageQuaternionFilter alloc] initWithWindowSize:aCorrectingInputAverageWindowSize];
-		[derivativeAverageFilterFactory release];
+		derivativeAverageFilter = [[ARWeightedMovingAverageQuaternionFilter alloc] initWithWindowSize:aDerivativeAverageWindowSize];
+		correctingInputAverageFilter = [[ARSphericalMovingAverageQuaternionFilter alloc] initWithWindowSize:aCorrectingInputAverageWindowSize];
 	}
 	return self;
 }
@@ -73,7 +71,7 @@
 		ARQuaternion inputAngularVelocity = ARQuaternionMultiply(ARQuaternionConjugate(lastInput), ARQuaternionMultiplyByScalar(inputDerivative, 2.));
 		
 		// Filter angular velocity
-		ARQuaternion outputAngularVelocity = [derivativeAverageFilter filterWithInput:inputAngularVelocity timestamp:timestamp];
+		ARQuaternion outputAngularVelocity = [derivativeAverageFilter filterWithInput:inputAngularVelocity weight:timeStep];
 		
 		// Apply stabilizer:  reduce angular velocity by a fixed amount (without changing the direction). This leads to a slightly longer response time, but removes noise.
 		if (ARQuaternionNorm(outputAngularVelocity) < stabilizerAngularVelocity) {

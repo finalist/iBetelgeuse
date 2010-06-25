@@ -26,12 +26,21 @@
 
 @implementation ARDelayFilter
 
-#pragma mark ARMovingWindowFilter
+#pragma mark NSObject
 
-- (ARFilterValue)filterWithSampleValues:(ARFilterValue *)sampleValues sampleTimestamps:(NSTimeInterval *)sampleTimestamps lastSampleIndex:(NSUInteger)sampleIndex sampleCount:(NSUInteger)sampleCount {
-	NSUInteger oldestSampleIndex = (sampleIndex + 1) % sampleCount;
-	ARFilterValue oldestSample = sampleValues[oldestSampleIndex];
-	return oldestSample;
+- (id)initWithDelay:(NSUInteger)delay {
+	if (self = [super init]) {
+		sampleBuffer = [[ARCyclicBuffer alloc] initWithElementSize:sizeof(ARFilterValue) maxElementCount:delay+1];
+	}
+	return self;
+}
+
+#pragma mark ARFilter
+
+- (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {
+	[sampleBuffer pushElement:&input];
+	ARFilterValue oldestSampleValue = *(ARFilterValue*)[sampleBuffer oldestElement];
+	return oldestSampleValue;
 }
 
 @end
@@ -39,10 +48,19 @@
 
 @implementation ARDelayFilterFactory
 
+#pragma mark NSObject
+
+- (id)initWithDelay:(NSUInteger)aDelay {
+	if (self = [super init]) {
+		delay = aDelay;
+	}
+	return self;
+}
+
 #pragma mark ARFilterFactory
 
 - (ARFilter *)newFilter {
-	return [[ARDelayFilter alloc] initWithWindowSize:[self windowSize]];
+	return [[ARDelayFilter alloc] initWithDelay:delay];
 }
 
 @end
