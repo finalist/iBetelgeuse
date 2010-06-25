@@ -48,7 +48,7 @@
 	GHAssertTrue(CGSizeEqualToSize([camera imagePlaneSize], CGSizeMake(2, 2)), nil);
 	GHAssertEquals([camera distanceToViewPlane], (CGFloat)1, nil);
 	GHAssertEqualsWithAccuracy([camera angleOfView], (CGFloat)(M_PI / 2.), 1e-6, nil);
-	GHAssertTrue(ARPoint3DEquals(ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DCreate(1.0, 1.0, 2.0), [camera perspectiveTransform]), ARPoint3DCreate(-0.5, -0.5, -1.0)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DMake(1.0, 1.0, 2.0), [camera perspectiveTransform]), ARPoint3DMake(-0.5, -0.5, -1.0)), nil);
 	[camera release];
 	
 	camera = [[ARCamera alloc] initWithFocalLength:1 imagePlaneSize:CGSizeMake(2, 2) physical:NO];

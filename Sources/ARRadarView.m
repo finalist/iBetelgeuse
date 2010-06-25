@@ -188,7 +188,7 @@
 
 - (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude {
 	// Determine the direction in which the user is facing
-	ARPoint3D viewUnitVectorInDeviceSpace = ARPoint3DCreate(0., 0., -1.);
+	ARPoint3D viewUnitVectorInDeviceSpace = ARPoint3DMake(0., 0., -1.);
 	ARPoint3D viewUnitVectorInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(viewUnitVectorInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
 	
 	// Determine whether the device is horizontal
@@ -217,16 +217,16 @@
 		ARTransform3D ENUToRadarTransform;
 		if (deviceHorizontal) {
 			// The normal method (making the transforms) is unusable when the view vector is (almost) parallel to the up vector
-			ARPoint3D bearingInDeviceSpace = ARPoint3DCreate(0, 1, 0);
+			ARPoint3D bearingInDeviceSpace = ARPoint3DMake(0, 1, 0);
 			ARPoint3D bearingInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(bearingInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
 			
-			ENUToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), bearingInENUSpace, ARPoint3DZero);
+			ENUToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DMake(0, 0, 1), bearingInENUSpace, ARPoint3DZero);
 		}
 		else {
 			// ENU coordinates can be interpreted as having been projected onto the xy plane by ignoring the z-axis
-			ARTransform3D MapToENUTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), viewUnitVectorInENUSpace, ARPoint3DZero);
+			ARTransform3D MapToENUTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DMake(0, 0, 1), viewUnitVectorInENUSpace, ARPoint3DZero);
 
-			ARTransform3D MapToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DCreate(0, 0, 1), [spatialState upDirectionInDeviceSpace], ARPoint3DZero);
+			ARTransform3D MapToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DMake(0, 0, 1), [spatialState upDirectionInDeviceSpace], ARPoint3DZero);
 			ARTransform3D RadarToMapTransform = ARTransform3DTranspose(MapToRadarTransform);
 			
 			ENUToRadarTransform = CATransform3DConcat(RadarToMapTransform, MapToENUTransform);

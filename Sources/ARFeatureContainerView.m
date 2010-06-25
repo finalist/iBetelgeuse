@@ -75,7 +75,7 @@
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 	// Convert the point to a point on the view plane
-	ARPoint3D pointOnViewPlaneInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DCreate(point.x, point.y, 0), invertedScreenTransform);
+	ARPoint3D pointOnViewPlaneInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DMake(point.x, point.y, 0), invertedScreenTransform);
 	pointOnViewPlaneInDeviceSpace.z = -[[ARCamera currentCamera] distanceToViewPlane];
 
 	for (UIView *featureView in [self subviews]) {

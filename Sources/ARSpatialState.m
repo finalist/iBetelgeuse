@@ -146,7 +146,7 @@
 }
 
 - (ARPoint3D)upDirectionInENUSpace {
-	return ARPoint3DCreate(0., 0., 1.); // By definition
+	return ARPoint3DMake(0., 0., 1.); // By definition
 }
 
 - (ARPoint3D)upDirectionInDeviceSpace {
@@ -166,7 +166,7 @@
 }
 
 - (ARPoint3D)northDirectionInENUSpace {
-	return ARPoint3DCreate(0., 1., 0.); // By definition; alongst the horizontal plane. TODO: Document that the northDirectionIn...Space methods do -not- return the same vector when transformed back to the same space.
+	return ARPoint3DMake(0., 1., 0.); // By definition; alongst the horizontal plane. TODO: Document that the northDirectionIn...Space methods do -not- return the same vector when transformed back to the same space.
 }
 
 - (ARPoint3D)northDirectionInDeviceSpace {
@@ -179,7 +179,7 @@
 
 - (ARPoint3D)northDirectionInECEFSpace {
 	// By definition of ECEF, the North pole is located along the z-axis
-	return ARPoint3DCreate(0., 0., 1.);
+	return ARPoint3DMake(0., 0., 1.);
 }
 
 - (ARPoint3D)northDirectionInEFSpace {

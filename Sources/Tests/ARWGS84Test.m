@@ -36,16 +36,16 @@
 #pragma mark GHTestCase
 
 - (void)testGetECEF {
-	[self assertPoint3D:ARWGS84GetECEF(0, 0, 0) equals:ARPoint3DCreate(ARWGS84SemiMajorAxis, 0, 0) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(0, 180, 0) equals:ARPoint3DCreate(-ARWGS84SemiMajorAxis, 0, 0) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(90, 0, 0) equals:ARPoint3DCreate(0, 0, ARWGS84SemiMinorAxis) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(-90, 0, 0) equals:ARPoint3DCreate(0, 0, -ARWGS84SemiMinorAxis) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(0, 90, 0) equals:ARPoint3DCreate(0, ARWGS84SemiMajorAxis, 0) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(0, -90, 0) equals:ARPoint3DCreate(0, -ARWGS84SemiMajorAxis, 0) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(52.469397, 5.509644, 10.0) equals:ARPoint3DCreate(3875688., 373845., 5034799.) withAccuracy:0.5];
+	[self assertPoint3D:ARWGS84GetECEF(0, 0, 0) equals:ARPoint3DMake(ARWGS84SemiMajorAxis, 0, 0) withAccuracy:0.5];
+	[self assertPoint3D:ARWGS84GetECEF(0, 180, 0) equals:ARPoint3DMake(-ARWGS84SemiMajorAxis, 0, 0) withAccuracy:0.5];
+	[self assertPoint3D:ARWGS84GetECEF(90, 0, 0) equals:ARPoint3DMake(0, 0, ARWGS84SemiMinorAxis) withAccuracy:0.5];
+	[self assertPoint3D:ARWGS84GetECEF(-90, 0, 0) equals:ARPoint3DMake(0, 0, -ARWGS84SemiMinorAxis) withAccuracy:0.5];
+	[self assertPoint3D:ARWGS84GetECEF(0, 90, 0) equals:ARPoint3DMake(0, ARWGS84SemiMajorAxis, 0) withAccuracy:0.5];
+	[self assertPoint3D:ARWGS84GetECEF(0, -90, 0) equals:ARPoint3DMake(0, -ARWGS84SemiMajorAxis, 0) withAccuracy:0.5];
+	[self assertPoint3D:ARWGS84GetECEF(52.469397, 5.509644, 10.0) equals:ARPoint3DMake(3875688., 373845., 5034799.) withAccuracy:0.5];
 	
 	// Finally, assert that the assertion works
-	GHAssertThrows([self assertPoint3D:ARWGS84GetECEF(0, 0, 0) equals:ARPoint3DCreate(ARWGS84SemiMajorAxis + 1., 0, 0) withAccuracy:0.5], nil);
+	GHAssertThrows([self assertPoint3D:ARWGS84GetECEF(0, 0, 0) equals:ARPoint3DMake(ARWGS84SemiMajorAxis + 1., 0, 0) withAccuracy:0.5], nil);
 }
 
 #pragma mark ARWGS84Test

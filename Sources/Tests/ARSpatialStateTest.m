@@ -122,7 +122,7 @@
 															timestamp:timestamp] release], nil);
 	
 	// Test with one good set of values
-	EFToECEFSpaceOffset = ARPoint3DCreate(10., 10., 10.);
+	EFToECEFSpaceOffset = ARPoint3DMake(10., 10., 10.);
 	timestamp = [NSDate dateWithTimeIntervalSince1970:3600.];
 	s = [[ARSpatialState alloc] initWithLocationAvailable:YES 
 												 reliable:YES 
@@ -135,7 +135,7 @@
 									  EFToECEFSpaceOffset:EFToECEFSpaceOffset 
 												timestamp:timestamp];
 	
-	locationInECEFSpace = ARPoint3DCreate(3194414., 3194414., 4487341.);
+	locationInECEFSpace = ARPoint3DMake(3194414., 3194414., 4487341.);
 	GHAssertTrue([s isLocationAvailable], nil);
 	GHAssertTrue([s isLocationReliable], nil);
 	GHAssertTrue([s isOrientationAvailable], nil);
@@ -147,12 +147,12 @@
 	GHAssertEquals([s altitude], (CLLocationDistance)-10., nil);
 	GHAssertTrue(ARPoint3DEqualsWithAccuracy([s locationInECEFSpace], locationInECEFSpace, 0.5), nil);
 	GHAssertTrue(ARPoint3DEqualsWithAccuracy([s locationInEFSpace], ARPoint3DSubtract(locationInECEFSpace, EFToECEFSpaceOffset), 0.5), nil);
-	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s upDirectionInENUSpace]), ARPoint3DCreate(0., 0., 1.), 1e-6), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s upDirectionInENUSpace]), ARPoint3DMake(0., 0., 1.), 1e-6), nil);
 	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s upDirectionInECEFSpace]), ARPoint3DNormalize(locationInECEFSpace), 1e-6), nil);
 	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s upDirectionInEFSpace]), ARPoint3DNormalize(locationInECEFSpace), 1e-6), nil);
-	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInENUSpace]), ARPoint3DCreate(0., 1., 0.), 1e-6), nil);
-	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInECEFSpace]), ARPoint3DCreate(0., 0., 1.), 1e-6), nil);
-	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInEFSpace]), ARPoint3DCreate(0., 0., 1.), 1e-6), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInENUSpace]), ARPoint3DMake(0., 1., 0.), 1e-6), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInECEFSpace]), ARPoint3DMake(0., 0., 1.), 1e-6), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInEFSpace]), ARPoint3DMake(0., 0., 1.), 1e-6), nil);
 	GHAssertTrue(ARPoint3DEquals([s EFToECEFSpaceOffset], EFToECEFSpaceOffset), nil);
 	
 	// Check some lazily loaded properties again
@@ -165,7 +165,7 @@
 	[s release];
 
 	// Test with a another good set of values
-	EFToECEFSpaceOffset = ARPoint3DCreate(20., 20., 20.);
+	EFToECEFSpaceOffset = ARPoint3DMake(20., 20., 20.);
 	timestamp = [NSDate dateWithTimeIntervalSince1970:86400.];
 	s = [[ARSpatialState alloc] initWithLocationAvailable:NO 
 												 reliable:NO 
@@ -242,8 +242,8 @@
 									  EFToECEFSpaceOffset:ARPoint3DZero
 												timestamp:[NSDate date]];
 	// Note: assert twice to ensure lazy calculation is working
-	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s upDirectionInDeviceSpace]), ARPoint3DCreate(1., 0., 0.), 1e-6), nil);
-	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s upDirectionInDeviceSpace]), ARPoint3DCreate(1., 0., 0.), 1e-6), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s upDirectionInDeviceSpace]), ARPoint3DMake(1., 0., 0.), 1e-6), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s upDirectionInDeviceSpace]), ARPoint3DMake(1., 0., 0.), 1e-6), nil);
 	[s release];
 }
 
@@ -261,8 +261,8 @@
 									  EFToECEFSpaceOffset:ARPoint3DZero
 												timestamp:[NSDate date]];
 	// Note: assert twice to ensure lazy calculation is working
-	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInDeviceSpace]), ARPoint3DCreate(-1., 0., 0.), 1e-6), nil);
-	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInDeviceSpace]), ARPoint3DCreate(-1., 0., 0.), 1e-6), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInDeviceSpace]), ARPoint3DMake(-1., 0., 0.), 1e-6), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARPoint3DNormalize([s northDirectionInDeviceSpace]), ARPoint3DMake(-1., 0., 0.), 1e-6), nil);
 	[s release];
 }
 
@@ -301,10 +301,10 @@
 									  EFToECEFSpaceOffset:ARPoint3DZero
 												timestamp:[NSDate date]];
 	// Note: assert twice to ensure lazy calculation is working
-	GHAssertTrue(ARTransform3DEqualsWithAccuracy([s EFToENUSpaceTransform], ARTransform3DLookAtRelative(ARPoint3DCreate(0., 0., -ARWGS84SemiMajorAxis), ARPoint3DCreate(0., 1., 0.), ARPoint3DCreate(1., 0., 0.), ARPoint3DZero), 1e-6), nil);
-	GHAssertTrue(ARTransform3DEqualsWithAccuracy([s EFToENUSpaceTransform], ARTransform3DLookAtRelative(ARPoint3DCreate(0., 0., -ARWGS84SemiMajorAxis), ARPoint3DCreate(0., 1., 0.), ARPoint3DCreate(1., 0., 0.), ARPoint3DZero), 1e-6), nil);
-	GHAssertTrue(ARTransform3DEqualsWithAccuracy([s ENUToEFSpaceTransform], ARTransform3DLookAtRelative(ARPoint3DCreate(ARWGS84SemiMajorAxis, 0., 0.), ARPoint3DCreate(1., 0., 0.), ARPoint3DCreate(0., 0., 1.), ARPoint3DZero), 1e-6), nil);
-	GHAssertTrue(ARTransform3DEqualsWithAccuracy([s ENUToEFSpaceTransform], ARTransform3DLookAtRelative(ARPoint3DCreate(ARWGS84SemiMajorAxis, 0., 0.), ARPoint3DCreate(1., 0., 0.), ARPoint3DCreate(0., 0., 1.), ARPoint3DZero), 1e-6), nil);
+	GHAssertTrue(ARTransform3DEqualsWithAccuracy([s EFToENUSpaceTransform], ARTransform3DLookAtRelative(ARPoint3DMake(0., 0., -ARWGS84SemiMajorAxis), ARPoint3DMake(0., 1., 0.), ARPoint3DMake(1., 0., 0.), ARPoint3DZero), 1e-6), nil);
+	GHAssertTrue(ARTransform3DEqualsWithAccuracy([s EFToENUSpaceTransform], ARTransform3DLookAtRelative(ARPoint3DMake(0., 0., -ARWGS84SemiMajorAxis), ARPoint3DMake(0., 1., 0.), ARPoint3DMake(1., 0., 0.), ARPoint3DZero), 1e-6), nil);
+	GHAssertTrue(ARTransform3DEqualsWithAccuracy([s ENUToEFSpaceTransform], ARTransform3DLookAtRelative(ARPoint3DMake(ARWGS84SemiMajorAxis, 0., 0.), ARPoint3DMake(1., 0., 0.), ARPoint3DMake(0., 0., 1.), ARPoint3DZero), 1e-6), nil);
+	GHAssertTrue(ARTransform3DEqualsWithAccuracy([s ENUToEFSpaceTransform], ARTransform3DLookAtRelative(ARPoint3DMake(ARWGS84SemiMajorAxis, 0., 0.), ARPoint3DMake(1., 0., 0.), ARPoint3DMake(0., 0., 1.), ARPoint3DZero), 1e-6), nil);
 	[s release];
 }
 

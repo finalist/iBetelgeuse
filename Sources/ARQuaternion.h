@@ -408,7 +408,7 @@ static inline ARQuaternion ARQuaternionTransformPointQuaternion(ARQuaternion q, 
  */
 static inline ARPoint3D ARQuaternionTransformPoint(ARQuaternion q, ARPoint3D p) {
 	ARQuaternion result = ARQuaternionTransformPointQuaternion(q, ARQuaternionMakeWithPoint(p));
-	return ARPoint3DCreate(result.x, result.y, result.z);
+	return ARPoint3DMake(result.x, result.y, result.z);
 }
 
 /**

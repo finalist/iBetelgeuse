@@ -75,8 +75,8 @@ ARTransform3D ARTransform3DLookAt(ARPoint3D origin, ARPoint3D target, ARPoint3D 
 }
 
 ARTransform3D ARTransform3DLookAtRelative(ARPoint3D origin, ARPoint3D targetDirection, ARPoint3D upDirection, ARPoint3D alternativeUpDirection) {
-	NSCAssert(!ARPoint3DEquals(targetDirection, ARPoint3DCreate(0., 0., 0.)), nil);
-	NSCAssert(!ARPoint3DEquals(upDirection, ARPoint3DCreate(0., 0., 0.)), nil);
+	NSCAssert(!ARPoint3DEquals(targetDirection, ARPoint3DMake(0., 0., 0.)), nil);
+	NSCAssert(!ARPoint3DEquals(upDirection, ARPoint3DMake(0., 0., 0.)), nil);
 	
 	ARPoint3D zAxis = targetDirection;
 	ARPoint3D xAxis = ARPoint3DCrossProduct(upDirection, zAxis);

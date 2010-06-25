@@ -35,7 +35,7 @@
 
 - (void)testMakeWithPoint {
 	ARQuaternion correct = { 0, -1.2, 2.3, -3.4 };
-	ARQuaternion testee = ARQuaternionMakeWithPoint(ARPoint3DCreate(-1.2, 2.3, -3.4));
+	ARQuaternion testee = ARQuaternionMakeWithPoint(ARPoint3DMake(-1.2, 2.3, -3.4));
 	GHAssertTrue(ARQuaternionEquals(testee, correct), nil);
 }
 
