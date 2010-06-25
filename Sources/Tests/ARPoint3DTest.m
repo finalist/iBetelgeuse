@@ -51,7 +51,22 @@ static const ARPoint3D b = {.5, .5, .5};
 }
 
 - (void)testEqualsWithAccuracy {
-	GHFail(@"Test not yet implemented; should be similar to the one used in QuaternionTest");
+	ARPoint3D original = { 1.2, 2.3, 3.4 };
+	ARPoint3D copy     = { 1.2, 2.3, 3.4 };
+	ARPoint3D validX   = { 1.200001, 2.3, 3.4 };
+	ARPoint3D validY   = { 1.2, 2.299999, 3.4 };
+	ARPoint3D validZ   = { 1.2, 2.3, 3.400001 };
+	ARPoint3D invalidX = { 1.200002, 2.3, 3.4 };
+	ARPoint3D invalidY = { 1.2, 2.299998, 3.4 };
+	ARPoint3D invalidZ = { 1.2, 2.3, 3.400002 };
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(original, original, 0.), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(original, copy, 0.), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(original, validX, 0.0000015), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(original, validY, 0.0000015), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(original, validZ, 0.0000015), nil);
+	GHAssertFalse(ARPoint3DEqualsWithAccuracy(original, invalidX, 0.0000015), nil);
+	GHAssertFalse(ARPoint3DEqualsWithAccuracy(original, invalidY, 0.0000015), nil);
+	GHAssertFalse(ARPoint3DEqualsWithAccuracy(original, invalidZ, 0.0000015), nil);
 }
 
 - (void)testAdd {

@@ -30,7 +30,7 @@
 extern const NSTimeInterval ARDimensionRefreshTimeInfinite;
 
 /**
- * Value used to indicate a dimension does not need to refresh after a specific distance has been traveled.
+ * Value used to indicate a dimension does not need to refresh after a specific distance from the last location.
  */
 extern const CLLocationDistance ARDimensionRefreshDistanceInfinite;
 

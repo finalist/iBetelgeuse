@@ -47,6 +47,7 @@
 
 - (void)dealloc {
 	[goodAsset release];
+	[goodAsset2 release];
 	[badAsset release];
 	
 	[super dealloc];
@@ -59,6 +60,9 @@
 	
 	[goodAsset release];
 	goodAsset = [[ARAsset alloc] initWithURL:[NSURL URLWithString:GOOD_ASSET_URL] format:GOOD_ASSET_FORMAT];
+	
+	[goodAsset2 release];
+	goodAsset2 = [[ARAsset alloc] initWithURL:[NSURL URLWithString:GOOD_ASSET_URL] format:GOOD_ASSET_FORMAT];
 	
 	[badAsset release];
 	badAsset = [[ARAsset alloc] initWithURL:[NSURL URLWithString:BAD_ASSET_URL] format:BAD_ASSET_FORMAT];
@@ -136,6 +140,19 @@
 	[manager release];
 }
 
+- (void)testLoadingTwoAssetsWithSameURL {
+	ARAssetManager *manager = [[ARAssetManager alloc] init];
+	[manager setDelegate:self];
+	
+	[self prepare];
+	[manager startLoadingAsset:goodAsset];
+	[manager startLoadingAsset:goodAsset2];
+	pendingDidLoads = 2;
+	[self waitForStatus:kGHUnitWaitStatusSuccess timeout:0.5];
+	
+	[manager release];
+}
+
 - (void)testCancelLoadingAllAssets {
 	ARAssetManager *manager = [[ARAssetManager alloc] init];
 	[manager setDelegate:self];
@@ -155,7 +172,7 @@
 #pragma mark ARAssetManagerTest
 
 - (void)assetManager:(ARAssetManager *)manager didLoadData:(NSData *)data forAsset:(ARAsset *)asset {
-	if (asset == goodAsset) {
+	if (asset == goodAsset || asset == goodAsset2) {
 		GHAssertEqualObjects(data, [NSData dataWithBytesNoCopy:GOOD_ASSET_DATA length:strlen(GOOD_ASSET_DATA) freeWhenDone:NO], nil);
 		
 		pendingDidLoads--;

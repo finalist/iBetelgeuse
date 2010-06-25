@@ -28,6 +28,7 @@
 
 @interface ARAssetManagerTest : GHAsyncTestCase {
 	ARAsset *goodAsset;
+	ARAsset *goodAsset2;
 	ARAsset *badAsset;
 	NSInteger pendingDidLoads;
 	NSInteger pendingDidFails;

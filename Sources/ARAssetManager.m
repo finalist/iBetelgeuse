@@ -33,14 +33,22 @@ const NSInteger ARAssetManagerErrorHTTP = 1;
 NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 
 
+/**
+ * Class used as a key in the dictionary of asset loading operations.
+ */
 @interface ARAssetManagerOperationKey : NSObject <NSCopying> {
 @private
-	NSURL *URL;
+	ARAsset *asset;
 }
 
+/**
+ * Initializes the receiver with the given asset.
+ *
+ * @param asset The asset this key should represent.
+ *
+ * @return The receiver.
+ */
 - (id)initWithAsset:(ARAsset *)asset;
-
-@property(nonatomic, readonly) NSURL *URL;
 
 @end
 
@@ -48,6 +56,9 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 @protocol ARAssetManagerOperationDelegate;
 
 
+/**
+ * Operation class that loads a specific asset.
+ */
 @interface ARAssetManagerOperation : NSOperation {
 @private
 	id <ARAssetManagerOperationDelegate> delegate; // Non-retained instance variable
@@ -55,20 +66,75 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 	ARAsset *asset;
 }
 
+/**
+ * Initializes the receiver with the given asset.
+ *
+ * @param asset The asset this operation should load.
+ *
+ * @return The receiver.
+ */
 - (id)initWithAsset:(ARAsset *)asset;
 
+/**
+ * The delegate that is notified when the operation finishes.
+ */
 @property(nonatomic, assign) id <ARAssetManagerOperationDelegate> delegate;
+
+/**
+ * The asset that this operation is responsible for.
+ */
 @property(nonatomic, readonly) ARAsset *asset;
+
+/**
+ * Notifies the delegate that the asset data has been loaded.
+ *
+ * @param data The data that has been loaded.
+ *
+ * @note This is a helper method that can be used with performSelectorOnMainThread.
+ */
+- (void)notifyDidFinishWithData:(NSData *)data;
+
+/**
+ * Notifies the delegate that the asset data has failed to load.
+ *
+ * @param error The error that occured, which may be nil.
+ *
+ * @note This is a helper method that can be used with performSelectorOnMainThread.
+ */
+- (void)notifyDidFinishWithError:(NSError *)error;
 
 @end
 
 
+/**
+ * Protocol that should be implemented by users of the ARAssetManagerOperation class.
+ */
 @protocol ARAssetManagerOperationDelegate <NSObject>
 
+/**
+ * Called when the operation has finished and successfully loaded asset data.
+ *
+ * @param operation The sender of the message.
+ * @param data The asset data that has been loaded.
+ */
 - (void)assetManagerOperation:(ARAssetManagerOperation *)operation didFinishWithData:(NSData *)data;
+
+/**
+ * Called when the operation has failed to load asset data.
+ *
+ * @param operation The sender of the message.
+ * @param error The error that occured. May be nil or any kind of error.
+ */
 - (void)assetManagerOperation:(ARAssetManagerOperation *)operation didFinishWithError:(NSError *)error;
 
 /**
+ * Optional method that allows the delegate to inject a specific response to a request, which is useful for testing.
+ *
+ * @param operation The sender of the message.
+ * @param request The request that needs a response.
+ * @param response This memory location should hold the response to the request, or nil. Should not be a NULL-reference.
+ * @param error This memory location should hold the error that occured, or nil. Should not be a NULL-reference.
+ *
  * @note This method may be called on a thread other than the main thread.
  */
 - (NSData *)assetManagerOperation:(ARAssetManagerOperation *)operation respondToSynchronousRequest:(NSURLRequest *)request withResponse:(NSURLResponse **)response error:(NSError **)error;
@@ -78,8 +144,19 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 
 @interface ARAssetManager () <ARAssetManagerOperationDelegate>
 
+/**
+ * The operation queue used to execute load operations.
+ */
 @property(nonatomic, readonly) NSOperationQueue *operationQueue;
+
+/**
+ * The currently active operations keyed by ARAssetManagerOperationKeys.
+ */
 @property(nonatomic, readonly) NSMutableDictionary *operations;
+
+/**
+ * As the operations property, but then without lazily creating a new mutable dictionary. Use only for finding or removing items.
+ */
 @property(nonatomic, readonly) NSMutableDictionary *operationsIfAvailable;
 
 - (void)unregisterOperationForAsset:(ARAsset *)asset;
@@ -223,19 +300,17 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 
 @implementation ARAssetManagerOperationKey
 
-@synthesize URL;
-
 #pragma mark NSObject
 
-- (id)initWithAsset:(ARAsset *)asset {
+- (id)initWithAsset:(ARAsset *)anAsset {
 	if (self = [super init]) {
-		URL = [[asset URL] retain];
+		asset = [anAsset retain];
 	}
 	return self;
 }
 
 - (void)dealloc {
-	[URL release];
+	[asset release];
 	
 	[super dealloc];
 }
@@ -246,7 +321,7 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 	}
 	else if ([other isKindOfClass:[ARAssetManagerOperationKey class]]) {
 		ARAssetManagerOperationKey *otherKey = (ARAssetManagerOperationKey *)other;
-		return URL == otherKey->URL || [URL isEqual:otherKey->URL];
+		return asset == otherKey->asset;
 	}
 	else {
 		return NO;
@@ -254,17 +329,17 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 }
 
 - (NSUInteger)hash {
-	return [URL hash];
+	return (NSUInteger)asset;
 }
 
 - (NSString *)description {
-	return [URL absoluteString];
+	return [NSString stringWithFormat:@"%p", asset];
 }
 
 #pragma mark NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
-	// Since this is a fully immutable object, just retain ourselves
+	// Since this is an immutable object, just retain ourselves
 	return [self retain];
 }
 

@@ -21,20 +21,53 @@
 //
 
 
-extern NSString *const ARDimensionRequestErrorDomain;
-extern const NSInteger ARDimensionRequestErrorHTTP;
-extern NSString *const ARDimensionRequestErrorHTTPStatusCodeKey;
-extern const NSInteger ARDimensionRequestErrorDocument;
-
-
 @class ARDimension, ARSpatialState;
 @protocol ARDimensionRequestDelegate;
 
 
+/**
+ * The domain of errors returned by the ARDimensionRequest class.
+ */
+extern NSString *const ARDimensionRequestErrorDomain;
+
+/**
+ * Error code that indicates the dimension request failed due to an HTTP error.
+ */
+extern const NSInteger ARDimensionRequestErrorHTTP;
+
+/**
+ * Key into the userInfo dictionary of an error that indicates the returned HTTP status code. Only used together with the ARDimensionRequestErrorHTTP error code.
+ */
+extern NSString *const ARDimensionRequestErrorHTTPStatusCodeKey;
+
+/**
+ * Error code that indicates the dimension request was not able to find a dimension in the response. (Not even an invalid dimension.)
+ */
+extern const NSInteger ARDimensionRequestErrorDocument;
+
+
+/**
+ * Used to indicate the type of the dimension request.
+ */
 typedef enum {
+	/**
+	 * Indicates an initial request. Could be the first time a dimension is loaded or a manual refresh.
+	 */
 	ARDimensionRequestTypeInit,
+	
+	/**
+	 * Indicates this is dimension request due to the elapsed refreshTime since the last request.
+	 */
 	ARDimensionRequestTypeTimeRefresh,
+	
+	/**
+	 * Indicates this is dimension request due to the travelled refreshDistance from the location of the last request.
+	 */
 	ARDimensionRequestTypeDistanceRefresh,
+	
+	/**
+	 * Indicates this is dimension request due to a user action, such as tapping on an item.
+	 */
 	ARDimensionRequestTypeActionRefresh,
 } ARDimensionRequestType;
 
@@ -45,17 +78,21 @@ typedef enum {
 @interface ARDimensionRequest : NSObject {
 @private
 	id <ARDimensionRequestDelegate> delegate;
+	
+	// Parameters of the request
 	NSURL *url;
 	ARSpatialState *spatialState;
 	ARDimensionRequestType type;
 	NSString *source;
 	CGSize screenSize;
 	
+	// Request and parsing facilities
 	NSURLConnection *connection;
 	NSURLResponse *response;
 	NSMutableData *responseData;
 	NSXMLParser *parser;
 	BOOL didAbortParsing;
+	
 	ARDimension *dimension;
 }
 
@@ -63,13 +100,16 @@ typedef enum {
  * Initializes the receiver with the given values.
  *
  * @param url The URL to which the request will be sent, must be non-nil. Supported URL schemes are http, gamaray and file.
- * @param location The current location of the device that will be sent to the server, must be non-nil.
+ * @param spatialState The current spatial state of the device that will be sent to the server, must be non-nil.
  * @param type The type of request that will be sent to the server.
  *
  * @return The receiver.
  */
 - (id)initWithURL:(NSURL *)url spatialState:(ARSpatialState *)spatialState type:(ARDimensionRequestType)type;
 
+/**
+ * The delegate of the receiver that will be notified when the request finishes or fails.
+ */
 @property(nonatomic, assign) id <ARDimensionRequestDelegate> delegate;
 
 /**
@@ -115,13 +155,30 @@ typedef enum {
  */
 @protocol ARDimensionRequestDelegate <NSObject>
 
+/**
+ * Called when the dimension request has finished and successfully loaded a dimension.
+ *
+ * @param request The sender of the message.
+ * @param dimension The dimension that has been loaded.
+ */
 - (void)dimensionRequest:(ARDimensionRequest *)request didFinishWithDimension:(ARDimension *)dimension;
+
+/**
+ * Called when the dimension request has failed to load a dimension.
+ *
+ * @param request The sender of the message.
+ * @param error The error that occured. May be nil or any kind of error, including an ARDimensionRequest error, NSXMLParser error or NSURL error.
+ */
 - (void)dimensionRequest:(ARDimensionRequest *)request didFailWithError:(NSError *)error;
 
 @optional
 
 /**
  * Optional method that allows the delegate to inject a specific kind of NSURLConnection, which is useful for testing.
+ *
+ * @param request The sender of the message.
+ * @param urlRequest The request that should be used to create the NSURLConnection.
+ * @param delegate The delegate that should be given to the NSURLConnection.
  *
  * @note This method may be called on a thread other than the main thread.
  *
