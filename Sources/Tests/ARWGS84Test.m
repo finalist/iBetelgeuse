@@ -24,36 +24,18 @@
 #import "ARWGS84.h"
 
 
-@interface ARWGS84Test ()
-
-- (void)assertPoint3D:(ARPoint3D)a equals:(ARPoint3D)b withAccuracy:(double)accuracy;
-
-@end
-
-
 @implementation ARWGS84Test
 
 #pragma mark GHTestCase
 
 - (void)testGetECEF {
-	[self assertPoint3D:ARWGS84GetECEF(0, 0, 0) equals:ARPoint3DMake(ARWGS84SemiMajorAxis, 0, 0) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(0, 180, 0) equals:ARPoint3DMake(-ARWGS84SemiMajorAxis, 0, 0) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(90, 0, 0) equals:ARPoint3DMake(0, 0, ARWGS84SemiMinorAxis) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(-90, 0, 0) equals:ARPoint3DMake(0, 0, -ARWGS84SemiMinorAxis) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(0, 90, 0) equals:ARPoint3DMake(0, ARWGS84SemiMajorAxis, 0) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(0, -90, 0) equals:ARPoint3DMake(0, -ARWGS84SemiMajorAxis, 0) withAccuracy:0.5];
-	[self assertPoint3D:ARWGS84GetECEF(52.469397, 5.509644, 10.0) equals:ARPoint3DMake(3875688., 373845., 5034799.) withAccuracy:0.5];
-	
-	// Finally, assert that the assertion works
-	GHAssertThrows([self assertPoint3D:ARWGS84GetECEF(0, 0, 0) equals:ARPoint3DMake(ARWGS84SemiMajorAxis + 1., 0, 0) withAccuracy:0.5], nil);
-}
-
-#pragma mark ARWGS84Test
-
-- (void)assertPoint3D:(ARPoint3D)a equals:(ARPoint3D)b withAccuracy:(double)accuracy {
-	GHAssertEqualsWithAccuracy(a.x, b.x, accuracy, nil);
-	GHAssertEqualsWithAccuracy(a.y, b.y, accuracy, nil);
-	GHAssertEqualsWithAccuracy(a.z, b.z, accuracy, nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARWGS84GetECEF(0, 0, 0), ARPoint3DMake(ARWGS84SemiMajorAxis, 0, 0), 0.5), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARWGS84GetECEF(0, 180, 0), ARPoint3DMake(-ARWGS84SemiMajorAxis, 0, 0), 0.5), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARWGS84GetECEF(90, 0, 0), ARPoint3DMake(0, 0, ARWGS84SemiMinorAxis), 0.5), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARWGS84GetECEF(-90, 0, 0), ARPoint3DMake(0, 0, -ARWGS84SemiMinorAxis), 0.5), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARWGS84GetECEF(0, 90, 0), ARPoint3DMake(0, ARWGS84SemiMajorAxis, 0), 0.5), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARWGS84GetECEF(0, -90, 0), ARPoint3DMake(0, -ARWGS84SemiMajorAxis, 0), 0.5), nil);
+	GHAssertTrue(ARPoint3DEqualsWithAccuracy(ARWGS84GetECEF(52.469397, 5.509644, 10.0), ARPoint3DMake(3875688., 373845., 5034799.), 0.5), nil);
 }
 
 @end
