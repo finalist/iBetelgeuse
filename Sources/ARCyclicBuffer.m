@@ -30,11 +30,16 @@
 @synthesize elementCount;
 
 - (const void*)oldestElement {
+	NSAssert(elementCount > 0, @"No elements have been added yet.");
+	
 	void *oldestElement = elements + (oldestElementIndex % elementCount) * elementSize;
 	return oldestElement;
 }
 
 - (id)initWithElementSize:(int)anElementSize maxElementCount:(int)aMaxElementCount {
+	NSAssert(anElementSize > 0, @"Element size must be at least one byte.");
+	NSAssert(aMaxElementCount > 0, @"Max element count must be at least one.");
+	
 	if (self = [super init]) {
 		elementCount = 0;
 		maxElementCount = aMaxElementCount;
@@ -51,6 +56,8 @@
 }
 
 - (void)pushElement:(const void *)element {
+	NSAssert(element, @"Element may not be nil.");
+	
 	memcpy(elements + oldestElementIndex * elementSize, element, elementSize);
 	
 	elementCount = MIN(elementCount + 1, maxElementCount);
