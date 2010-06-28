@@ -1057,7 +1057,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH=\"/usr/local/bin:$PATH\"\n\nBUILD_DIR=\"$CONFIGURATION_BUILD_DIR\"\nOBJS_DIR=\"$CONFIGURATION_TEMP_DIR/iBetelgeuseTests.build/Objects-normal/$NATIVE_ARCH_ACTUAL\"\nLCOV_DIR=\"lcov\"\n\nmkdir -p \"$LCOV_DIR\"\nlcov -d \"$OBJS_DIR\" --zerocounters\nGHUNIT_CLI=\"YES\" \"$BUILD_DIR/iBetelgeuseTests\"\nlcov -d \"$OBJS_DIR\" --capture --output-file \"$LCOV_DIR/iBetelgeuseTests.info\"\ngenhtml -o \"$LCOV_DIR\" \"$LCOV_DIR/iBetelgeuseTests.info\"\n";
+			shellScript = "PATH=\"/usr/local/bin:$PATH\"\n\nBUILD_DIR=\"$CONFIGURATION_BUILD_DIR\"\nOBJS_DIR=\"$CONFIGURATION_TEMP_DIR/iBetelgeuseTests.build/Objects-normal/i386\"\nLCOV_DIR=\"lcov\"\n\nmkdir -p \"$LCOV_DIR\"\nlcov -d \"$OBJS_DIR\" --zerocounters\nGHUNIT_CLI=\"YES\" \"$BUILD_DIR/iBetelgeuseTests\"\nlcov -d \"$OBJS_DIR\" --capture --output-file \"$LCOV_DIR/iBetelgeuseTests.info\"\ngenhtml -o \"$LCOV_DIR\" \"$LCOV_DIR/iBetelgeuseTests.info\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

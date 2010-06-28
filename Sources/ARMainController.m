@@ -137,9 +137,11 @@ CGImageRef UIGetScreenImage(void);
 /**
  * Update the elements on the screen so that they are in the proper positions
  * for the new orientation.
- * @param interfaceOrientation the orientation of the device.
+ *
+ * @param interfaceOrientation The new orientation of the device.
+ * @param animation Whether a change in the interface orientation will be animated. If this is YES, the methods is expected to be called again (with animation = NO) after the animation has finished.
  */
-- (void)updateWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
+- (void)updateWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation prepareForAnimation:(BOOL)animation;
 
 /**
  * Make the status bar visible if it is not already visible.
@@ -479,7 +481,7 @@ CGImageRef UIGetScreenImage(void);
 	[[self cameraViewController] viewWillAppear:animated];
 	
 	// We don't know our orientation in loadView, so update here
-	[self updateWithInterfaceOrientation:[self interfaceOrientation]];
+	[self updateWithInterfaceOrientation:[self interfaceOrientation] prepareForAnimation:NO];
 
 	// Transition to the dimension state
 	[self setState:STATE_DIMENSION];
@@ -512,7 +514,11 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration {
-	[self updateWithInterfaceOrientation:interfaceOrientation];
+	[self updateWithInterfaceOrientation:interfaceOrientation prepareForAnimation:YES];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[self updateWithInterfaceOrientation:[self interfaceOrientation] prepareForAnimation:NO];
 }
 
 #pragma mark UIApplicationNotifications
@@ -876,15 +882,31 @@ CGImageRef UIGetScreenImage(void);
 	}
 }
 
-- (void)updateWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (void)updateWithInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation prepareForAnimation:(BOOL)animation {
 	CGFloat screenRotation = 0.f;
 	switch (interfaceOrientation) {
+		case UIInterfaceOrientationPortrait:
+			if (animation) {
+				// This ensures the animation will go the right way around
+				screenRotation = -1e-6f;
+			}
+			else {
+				screenRotation = 0.f;
+			}
+			break;
+			
 		case UIInterfaceOrientationLandscapeRight:
 			screenRotation = .5f * M_PI;
 			break;
 			
 		case UIInterfaceOrientationPortraitUpsideDown:
-			screenRotation = M_PI;
+			if (animation) {
+				// This ensures the animation will go the right way around
+				screenRotation = -M_PI + 1e-6f;
+			}
+			else {
+				screenRotation = M_PI;
+			}
 			break;
 			
 		case UIInterfaceOrientationLandscapeLeft:
