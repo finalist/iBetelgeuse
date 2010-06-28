@@ -39,3 +39,10 @@ extern const CGFloat ARMinimumTouchTargetSize;
  * @return A rectangle that is equal to or slightly bigger than the given rectangle.
  */
 CGRect ARRectGrowToTouchTarget(CGRect rect);
+
+/**
+ * Grows the given size, if necessary, to make it into a target suitable for touching with a finger on the screen.
+ * @param size A size.
+ * @return A size that is equal to or slightly bigger than the given size.
+ */
+CGSize ARSizeGrowToTouchTarget(CGSize size);

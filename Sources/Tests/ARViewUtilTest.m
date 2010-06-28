@@ -31,6 +31,7 @@
 @interface ARViewUtilTest ()
 
 - (void)assertRect:(CGRect)rect growsToTouchTargetRect:(CGRect)targetRect;
+- (void)assertSize:(CGSize)size growsToTouchTargetSize:(CGSize)targetSize;
 
 @end
 
@@ -51,10 +52,21 @@
 	[self assertRect:CGRectMake(0, 0, TT / 2.f, 2.f * TT) growsToTouchTargetRect:CGRectMake(-TT / 4.f, 0, TT, 2.f * TT)];
 }
 
+- (void)testSizeGrowToTouchTarget {
+	[self assertSize:CGSizeMake(0, 0) growsToTouchTargetSize:CGSizeMake(TT, TT)];
+	[self assertSize:CGSizeMake(TT, TT) growsToTouchTargetSize:CGSizeMake(TT, TT)];
+	[self assertSize:CGSizeMake(2.f * TT, 2.f * TT) growsToTouchTargetSize:CGSizeMake(2.f * TT, 2.f * TT)];
+	[self assertSize:CGSizeMake(TT / 2.f, 2.f * TT) growsToTouchTargetSize:CGSizeMake(TT, 2.f * TT)];
+}
+
 #pragma mark ARViewUtilTest
 
 - (void)assertRect:(CGRect)rect growsToTouchTargetRect:(CGRect)targetRect {
 	GHAssertTrue(CGRectEqualToRect(ARRectGrowToTouchTarget(rect), targetRect), nil);
+}
+
+- (void)assertSize:(CGSize)size growsToTouchTargetSize:(CGSize)targetSize {
+	GHAssertTrue(CGSizeEqualToSize(ARSizeGrowToTouchTarget(size), targetSize), nil);
 }
 
 @end

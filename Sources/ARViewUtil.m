@@ -33,3 +33,7 @@ CGRect ARRectGrowToTouchTarget(CGRect rect) {
 					   roundf(ARMin(rect.size.height - ARMinimumTouchTargetSize, 0.f) / 2.f)
 					   );
 }
+
+CGSize ARSizeGrowToTouchTarget(CGSize size) {
+	return CGSizeMake(ARMax(ARMinimumTouchTargetSize, size.width), ARMax(ARMinimumTouchTargetSize, size.height));
+}

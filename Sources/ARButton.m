@@ -21,6 +21,7 @@
 //
 
 #import "ARButton.h"
+#import "ARViewUtil.h"
 #import <QuartzCore/QuartzCore.h>
 
 
@@ -55,7 +56,7 @@
 #pragma mark UIView
 
 - (CGSize)sizeThatFits:(CGSize)size {
-	return CGSizeMake(44, 44);
+	return ARSizeGrowToTouchTarget(size);
 }
 
 @end
