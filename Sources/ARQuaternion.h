@@ -466,6 +466,7 @@ static inline ARPoint3D ARQuaternionConvertToPoint(ARQuaternion quaternion) {
  */
 static inline ARQuaternion ARQuaternionRotateInDirection(ARQuaternion x, ARQuaternion dir)
 {
+	NSCAssert(fabs(ARQuaternionDotProduct(x, dir)) < ARQuaternionEpsilon, @"Input vectors should be perpendicular.");
 	double theta = ARQuaternionNorm(dir);
 	if (theta == 0.) {
 		return x;
@@ -474,6 +475,7 @@ static inline ARQuaternion ARQuaternionRotateInDirection(ARQuaternion x, ARQuate
 		double sintheta = sin(theta);
 		ARQuaternion dirUnit = ARQuaternionMultiplyByScalar(dir, 1./theta);
 		x = ARQuaternionAdd(ARQuaternionMultiplyByScalar(x, costheta), ARQuaternionMultiplyByScalar(dirUnit, sintheta));
+		NSCAssert(fabs(ARQuaternionNorm(x) - 1.) < ARQuaternionEpsilon, @"Output vector should be normalized.");
 		return x;
 	}
 }
