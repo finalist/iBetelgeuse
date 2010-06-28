@@ -150,7 +150,6 @@
 		C35C5EDC11BFAC8000C0FF1A /* ARQuaternion.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5EDA11BFAC8000C0FF1A /* ARQuaternion.m */; };
 		C35C5F1411BFB70400C0FF1A /* ARQuaternionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5F1211BFB70400C0FF1A /* ARQuaternionTest.m */; };
 		C3946CC011D39484000D1F88 /* ARDelayFilterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */; };
-		C3946CC111D39484000D1F88 /* ARFilterTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C3946CBF11D39484000D1F88 /* ARFilterTest.m */; };
 		C3946CC211D39489000D1F88 /* ARSphericalMovingAverageQuaternionFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C32966BF11C7671F006859E7 /* ARSphericalMovingAverageQuaternionFilter.m */; };
 		C3946CC511D3948C000D1F88 /* ARDelayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C35C5E6B11BF914000C0FF1A /* ARDelayFilter.m */; };
 		C3946CC811D3948F000D1F88 /* ARArrayFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C75EBA11B66E8A00B71931 /* ARArrayFilter.m */; };
@@ -435,8 +434,6 @@
 		C35C5F1211BFB70400C0FF1A /* ARQuaternionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARQuaternionTest.m; sourceTree = "<group>"; };
 		C3946CBC11D39484000D1F88 /* ARDelayFilterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDelayFilterTest.h; sourceTree = "<group>"; };
 		C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDelayFilterTest.m; sourceTree = "<group>"; };
-		C3946CBE11D39484000D1F88 /* ARFilterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFilterTest.h; sourceTree = "<group>"; };
-		C3946CBF11D39484000D1F88 /* ARFilterTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFilterTest.m; sourceTree = "<group>"; };
 		C3946CD911D398DB000D1F88 /* ARCyclicBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCyclicBuffer.h; sourceTree = "<group>"; };
 		C3946CDA11D398DB000D1F88 /* ARCyclicBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCyclicBuffer.m; sourceTree = "<group>"; };
 		C3946D6111D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWeightedMovingAverageFilterTest.h; sourceTree = "<group>"; };
@@ -898,8 +895,6 @@
 			children = (
 				C3946CBC11D39484000D1F88 /* ARDelayFilterTest.h */,
 				C3946CBD11D39484000D1F88 /* ARDelayFilterTest.m */,
-				C3946CBE11D39484000D1F88 /* ARFilterTest.h */,
-				C3946CBF11D39484000D1F88 /* ARFilterTest.m */,
 				C3946D6111D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.h */,
 				C3946D6211D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.m */,
 				C3946E8911D4A92F000D1F88 /* ARSphericalMovingAverageQuaternionFilterTest.h */,
@@ -1155,7 +1150,6 @@
 				C32180E711CB5059000BE2E1 /* ARSpatialState.m in Sources */,
 				958E3F0B11D20E8E00466267 /* NSObject+ARClassInvariant.m in Sources */,
 				C3946CC011D39484000D1F88 /* ARDelayFilterTest.m in Sources */,
-				C3946CC111D39484000D1F88 /* ARFilterTest.m in Sources */,
 				C3946CC211D39489000D1F88 /* ARSphericalMovingAverageQuaternionFilter.m in Sources */,
 				C3946CC511D3948C000D1F88 /* ARDelayFilter.m in Sources */,
 				C3946CC811D3948F000D1F88 /* ARArrayFilter.m in Sources */,
