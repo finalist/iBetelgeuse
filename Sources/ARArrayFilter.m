@@ -54,7 +54,7 @@
 
 #pragma mark ARArrayFilter
 
-- (void)filterWithInputArray:(ARFilterValue *)input outputArray:(ARFilterValue *)output timestamp:(NSTimeInterval)aTimestamp {
+- (void)filterWithInputArray:(const ARFilterValue *)input outputArray:(ARFilterValue *)output timestamp:(NSTimeInterval)aTimestamp {
 	// Filter each element separately.
 	for (int i = 0; i < size; i++) {
 		output[i] = [filters[i] filterWithInput:input[i] timestamp:aTimestamp];
