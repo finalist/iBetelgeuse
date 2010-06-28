@@ -1,5 +1,5 @@
 //
-//  ARFilterTest.h
+//  ARWeightedMovingAverageQuaternionFilterTest.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,13 +20,12 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+
 #import <GHUnit/GHUnit.h>
-#import "ARFilter.h"
 
 
-@interface ARFilterTest : GHTestCase {
+@interface ARWeightedMovingAverageQuaternionFilterTest : GHTestCase {
+
 }
-
-- (void)testConstantInputWithFilterFactory:(ARFilterFactory *)filterFactory input:(ARFilterValue)input sampleCount:(int)sampleCount accuracy:(ARFilterValue)accuracy;
 
 @end

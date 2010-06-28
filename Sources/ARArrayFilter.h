@@ -48,6 +48,6 @@
  * @param output the output value array
  * @param aTimestamp the time at which this sample was determined.
  */
-- (void)filterWithInputArray:(ARFilterValue *)input outputArray:(ARFilterValue *)output timestamp:(NSTimeInterval)aTimestamp;
+- (void)filterWithInputArray:(const ARFilterValue *)input outputArray:(ARFilterValue *)output timestamp:(NSTimeInterval)aTimestamp;
 
 @end

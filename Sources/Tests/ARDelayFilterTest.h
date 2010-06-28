@@ -20,10 +20,10 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARFilterTest.h"
+#import <GHUnit/GHUnit.h>
 
 
-@interface ARDelayFilterTest : ARFilterTest {
+@interface ARDelayFilterTest : GHTestCase {
 }
 
 @end

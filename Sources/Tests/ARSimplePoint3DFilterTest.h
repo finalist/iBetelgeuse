@@ -1,5 +1,5 @@
 //
-//  ARFilterTest.m
+//  ARSimplePoint3DFilterTest.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,23 +20,12 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARFilterTest.h"
-#import "ARFilter.h"
+
 #import <GHUnit/GHUnit.h>
 
 
-@implementation ARFilterTest
+@interface ARSimplePoint3DFilterTest : GHTestCase {
 
-#pragma mark GHTestCase
-
-- (void)testConstantInputWithFilterFactory:(ARFilterFactory *)filterFactory input:(ARFilterValue)input sampleCount:(int)sampleCount accuracy:(ARFilterValue)accuracy {
-	ARFilter *filter = [filterFactory newFilter];
-	for (int i = 0; i < sampleCount; ++i) {
-		NSTimeInterval timestamp = 100 + floor(i/3); // Give the same value three times in a row, before updating to a new timestamp.
-		ARFilterValue output = [filter filterWithInput:input timestamp:timestamp];
-		GHAssertEqualsWithAccuracy(output, input, accuracy, nil);
-	}
-	[filter release];
 }
 
 @end

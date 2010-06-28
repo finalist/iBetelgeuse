@@ -1,5 +1,5 @@
 //
-//  ARWeightedMovingAverageFilterTest.h
+//  ARArrayFilterTest.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,10 +20,12 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+
 #import <GHUnit/GHUnit.h>
 
 
-@interface ARWeightedMovingAverageFilterTest : GHTestCase {
+@interface ARArrayFilterTest : GHTestCase {
+
 }
 
 @end
