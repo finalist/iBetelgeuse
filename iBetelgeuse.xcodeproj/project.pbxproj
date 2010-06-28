@@ -1057,7 +1057,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "PATH=\"/usr/local/bin:$PATH\"\n\nBUILD_DIR=\"$CONFIGURATION_BUILD_DIR\"\nOBJS_DIR=\"$CONFIGURATION_TEMP_DIR/iBetelgeuseTests.build/Objects-normal/i386\"\nLCOV_DIR=\"lcov\"\n\nmkdir -p \"$LCOV_DIR\"\nlcov -d \"$OBJS_DIR\" --zerocounters\nGHUNIT_CLI=\"YES\" \"$BUILD_DIR/iBetelgeuseTests\"\nlcov -d \"$OBJS_DIR\" --capture --output-file \"$LCOV_DIR/iBetelgeuseTests.info\"\ngenhtml -o \"$LCOV_DIR\" \"$LCOV_DIR/iBetelgeuseTests.info\"\n";
+			shellScript = "PATH=\"/usr/local/bin:$PATH\"\n\nBUILD_DIR=\"$CONFIGURATION_BUILD_DIR\"\nOBJS_DIR=\"$CONFIGURATION_TEMP_DIR/iBetelgeuseTests.build/Objects-normal/$ARCHS\"\nLCOV_DIR=\"lcov\"\n\nmkdir -p \"$LCOV_DIR\"\nlcov -d \"$OBJS_DIR\" --zerocounters\nGHUNIT_CLI=\"YES\" \"$BUILD_DIR/iBetelgeuseTests\"\nlcov -d \"$OBJS_DIR\" --capture --output-file \"$LCOV_DIR/iBetelgeuseTests.info\"\ngenhtml -o \"$LCOV_DIR\" \"$LCOV_DIR/iBetelgeuseTests.info\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1341,7 +1341,7 @@
 		958E42A311D386AF00466267 /* App Store Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = i386;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -1405,7 +1405,7 @@
 		95E77FDA119812C100A1F2B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1417,7 +1417,7 @@
 		95E77FDB119812C100A1F2B9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = i386;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
