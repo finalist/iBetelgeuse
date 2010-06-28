@@ -368,12 +368,117 @@
 	GHAssertTrue(ARQuaternionEqualsWithAccuracy(output, correctOutput, 1e-6), nil);
 }
 
-- (void)testSphericalWeightedAverageInternal {
-	GHFail(@"Not yet tested.");
+- (void)testSphericalWeightedAverageConstantInput {
+	const int inputCount = 10;
+	
+	const ARQuaternion inputs[] = {
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+		{0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950},
+	};
+	
+	const double weights[] = {
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+	};
+	
+	const ARQuaternion correctOutput = {0.482150574339783, 0.447776996252703, 0.720383289401084, 0.219258983036950};
+	
+	const ARQuaternion output = ARQuaternionSphericalWeightedAverage(inputCount, inputs, weights, ARQuaternionEpsilon, 50);
+	GHAssertTrue(ARQuaternionEqualsWithAccuracy(correctOutput, output, 1e-6), nil);
 }
 
-- (void)testSphericalWeightedAverage {
-	GHFail(@"Not yet tested.");
+/**
+ * Test whether no spherical weighted average singularities exist near identity.
+ */
+- (void)testSphericalWeightedAverageNearIdentity {
+	const int inputCount = 10;
+	
+	const ARQuaternion inputs[] = {
+		{0.999999314067966,  -0.000291766867754,   0.000834671509205,   0.000768153086423},
+		{0.999999609000598,   0.000560891672884,  -0.000676854587569,   0.000096265517313},
+		{0.999999864657623,  -0.000126686699583,   0.000431270749966,  -0.000261993811118},
+		{0.999999809738666,  -0.000126890411113,   0.000155477722803,  -0.000583307923392},
+		{0.999999577709308,  -0.000901573258561,  -0.000133401989247,  -0.000118113397073},
+		{0.999998882824133,  -0.000900735190680,   0.000768484706729,   0.000912391285049},
+		{0.999999360013604,  -0.000817799125793,  -0.000213896352355,  -0.000751947685467},
+		{0.999999774490669,   0.000188074020476,  -0.000642049549956,  -0.000058473495080},
+		{0.999999575619672,  -0.000517831669904,   0.000266667047472,   0.000713792352645},
+		{0.999999319198170,   0.000682737739135,   0.000248000939785,  -0.000913218435145},
+	};
+	
+	const double weights[] = {
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+	};
+	
+	const ARQuaternion correctOutput = {1, 0, 0, 0};
+	const double accuracy = 1e-3 + 1e-6;
+	
+	const ARQuaternion output = ARQuaternionSphericalWeightedAverage(inputCount, inputs, weights, ARQuaternionEpsilon, 50);
+	GHAssertTrue(ARQuaternionEqualsWithAccuracy(correctOutput, output, accuracy), nil);
+}
+
+/**
+ * Test whether no spherical weighted average singularities exist at a 180 degree angle.
+ */
+- (void)testSphericalWeightedAverageNear180Degrees {
+	const int inputCount = 10;
+	
+	const ARQuaternion inputs[] = {
+		{0.000565101020085,  -0.000807328659370,  -0.999999512767501,   0.000057844904473},
+		{0.000408931406090,   0.000817051394937,   0.999999507056734,  -0.000388700929637},
+		{0.000696308186288,   0.000494393626205,   0.999999469943074,   0.000575189902553},
+		{0.000695820793757,   0.000478976813143,  -0.999999639460948,   0.000086559861291},
+		{0.000569709002023,  -0.000379275560207,  -0.999999683761932,   0.000405040416218},
+		{0.000458336632329,  -0.000736338085281,   0.999999207202214,  -0.000912868390800},
+		{0.000544378352023,  -0.000752998005677,   0.999999562171873,   0.000110915625691},
+		{0.000357953351431,  -0.000618193923252,   0.999999401063151,   0.000829203841734},
+		{0.000659123041868,   0.000708535191576,  -0.999999139872163,  -0.000885318943429},
+		{0.000644364224514,  -0.000170087187066,  -0.999999744417675,   0.000258900906028},
+	};
+	
+	const double weights[] = {
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+		1. / inputCount,
+	};
+	
+	const ARQuaternion correctOutput = {0, 0, 1., 0};
+	const double accuracy = 1e-3 + 1e-6;
+	
+	const ARQuaternion output = ARQuaternionSphericalWeightedAverage(inputCount, inputs, weights, ARQuaternionEpsilon, 50);
+	GHAssertTrue(ARQuaternionEqualsWithAccuracy(correctOutput, output, accuracy), nil);
 }
 
 @end
