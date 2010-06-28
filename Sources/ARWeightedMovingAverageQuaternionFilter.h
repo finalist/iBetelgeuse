@@ -31,7 +31,7 @@
  */
 @interface ARWeightedMovingAverageQuaternionFilter : NSObject {
 @private
-	ARWeightedMovingAverageFilter *filters[3];
+	ARWeightedMovingAverageFilter *filters[ARQuaternionCoordinateCount];
 }
 
 /**
