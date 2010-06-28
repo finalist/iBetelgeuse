@@ -369,17 +369,11 @@
 }
 
 - (void)testSphericalWeightedAverageInternal {
-	ARQuaternion quaternions[0];
-	double weights[0];
-	ARQuaternion testee = ARQuaternionSphericalWeightedAverageInternal(0, quaternions, weights, ARQuaternionIdentity, 1e-6, 50);
-	ARQuaternion correct = ARQuaternionIdentity;
-	GHAssertTrue(ARQuaternionEqualsWithAccuracy(testee, correct, 1e-6), nil);
-	
-	// It is hard to come up with proper thorough test cases for this method; unit testing it is likely not beneficial
+	GHFail(@"Not yet tested.");
 }
 
 - (void)testSphericalWeightedAverage {
-	// It is hard to come up with proper thorough test cases for this method; unit testing it is likely not beneficial
+	GHFail(@"Not yet tested.");
 }
 
 @end
