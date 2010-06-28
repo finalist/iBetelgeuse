@@ -35,6 +35,7 @@ typedef struct {
  * This filter computes the moving average with a given window.
  */
 @interface ARWeightedMovingAverageFilter : NSObject {
+@private
 	ARCyclicBuffer *sampleBuffer;
 }
 

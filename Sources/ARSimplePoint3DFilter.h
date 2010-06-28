@@ -32,6 +32,7 @@
  * for each coordinate.
  */
 @interface ARSimplePoint3DFilter : ARPoint3DFilter {
+@private
 	ARArrayFilter *arrayFilter;
 }
 

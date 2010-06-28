@@ -37,7 +37,9 @@ typedef struct {
 typedef enum {
 	ARPoint3DCoordinateX = 0,
 	ARPoint3DCoordinateY,
-	ARPoint3DCoordinateZ
+	ARPoint3DCoordinateZ,
+	
+	ARPoint3DCoordinateCount
 } ARPoint3DCoordinate;
 
 

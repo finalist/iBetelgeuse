@@ -31,6 +31,7 @@
  * to be slightly ahead on the compass.
  */
 @interface ARAccelerometerFilter : ARPoint3DFilter {
+@private
 	ARPoint3DFilter *delayFilter;
 }
 

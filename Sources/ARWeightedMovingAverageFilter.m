@@ -37,6 +37,7 @@
 
 - (void)dealloc {
 	[sampleBuffer release];
+	
 	[super dealloc];
 }
 

@@ -25,13 +25,20 @@
 #import "ARDerivativeSmoothQuaternionFilter.h"
 
 
+#define BASE_CORRECTION_FACTOR					0.03
+#define CORRECTION_FACTOR_DERIVATIVE_GAIN		0.3
+#define STABILIZER_ANGULAR_VELOCITY				(10 / 180. * M_PI)
+#define DERIVATIVE_AVERAGE_WINDOW_SIZE			33
+#define CORRECTING_INPUT_AVERAGE_WINDOW_SIZE	7
+
+
 @implementation AROrientationFilter
 
 #pragma mark NSObject
 
 - (id)init {
 	if (self = [super init]) {
-		quaternionFilter = [[ARDerivativeSmoothQuaternionFilter alloc] initWithBaseCorrectionFactor:0.03 correctionFactorDerivativeGain:0.3 stabilizerAngularVelocity:(10. / 180. * M_PI) derivativeAverageWindowSize:33 correctingInputAverageWindowSize:7];
+		quaternionFilter = [[ARDerivativeSmoothQuaternionFilter alloc] initWithBaseCorrectionFactor:BASE_CORRECTION_FACTOR correctionFactorDerivativeGain:CORRECTION_FACTOR_DERIVATIVE_GAIN stabilizerAngularVelocity:STABILIZER_ANGULAR_VELOCITY derivativeAverageWindowSize:DERIVATIVE_AVERAGE_WINDOW_SIZE correctingInputAverageWindowSize:CORRECTING_INPUT_AVERAGE_WINDOW_SIZE];
 	}
 	return self;
 }

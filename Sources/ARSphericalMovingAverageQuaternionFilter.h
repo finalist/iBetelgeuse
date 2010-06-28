@@ -30,6 +30,7 @@
  * window.
  */
 @interface ARSphericalMovingAverageQuaternionFilter : ARQuaternionFilter {
+@private
 	double *weights;
 	ARCyclicBuffer *sampleBuffer;
 }

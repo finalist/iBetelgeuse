@@ -31,7 +31,7 @@
 
 - (id)initWithFactory:(ARFilterFactory *)aFactory {
 	if (self = [super init]) {
-		arrayFilter = [[ARArrayFilter alloc] initWithSize:3 factory:aFactory];
+		arrayFilter = [[ARArrayFilter alloc] initWithSize:ARPoint3DCoordinateCount factory:aFactory];
 	}
 	return self;
 }

@@ -222,6 +222,7 @@
 		9504CCDF11C912D500128562 /* AboutBackground.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = AboutBackground.jpg; sourceTree = "<group>"; };
 		950ECB3311C8C22D009E1314 /* ARMenuButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARMenuButton@2x.png"; sourceTree = "<group>"; };
 		950ECB5111C8C325009E1314 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		9575D1ED11D896DE00C69D2E /* lcov */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lcov; sourceTree = "<group>"; };
 		958DF27911ABB40000047790 /* ARImageFeatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageFeatureView.h; sourceTree = "<group>"; };
 		958DF27A11ABB40000047790 /* ARImageFeatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageFeatureView.m; sourceTree = "<group>"; };
 		958DF36211ABC6FD00047790 /* ARDimensionRequestInvalidTest.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARDimensionRequestInvalidTest.xml; sourceTree = "<group>"; };
@@ -514,6 +515,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* iBetelgeuse.app */,
 				95E77EE1119809D200A1F2B9 /* iBetelgeuseTests */,
+				9575D1ED11D896DE00C69D2E /* lcov */,
 			);
 			name = Products;
 			sourceTree = "<group>";

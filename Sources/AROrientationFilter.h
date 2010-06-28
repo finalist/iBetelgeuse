@@ -28,6 +28,7 @@
  * The filter that is used for filtering the orientation of the device.
  */
 @interface AROrientationFilter : ARQuaternionFilter {
+@private
 	ARQuaternionFilter *quaternionFilter;
 }
 

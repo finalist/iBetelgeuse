@@ -29,6 +29,7 @@
  * A filter to delay a sample for a given amount of samples.
  */
 @interface ARDelayFilter : ARFilter {
+@private
 	ARCyclicBuffer *sampleBuffer;
 }
 
@@ -46,6 +47,7 @@
  * Factory class for ARDelayFilter.
  */
 @interface ARDelayFilterFactory : ARFilterFactory {
+@private
 	NSUInteger delay;
 }
 
