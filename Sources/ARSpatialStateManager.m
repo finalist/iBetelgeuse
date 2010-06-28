@@ -127,7 +127,7 @@
 #if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_SIMULATOR
 	[updateTimer invalidate];
 	[updateTimer release];
-#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
+#elif SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	[locationManager release];
 #endif
 
@@ -228,7 +228,7 @@
 	
 	[updateTimer invalidate];
 	updateTimer = [[NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(updateTimerDidFire) userInfo:nil repeats:YES] retain];
-#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
+#elif SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	[accelerometer setDelegate:self];
 	[accelerometer setUpdateInterval:1. / ACCELEROMETER_UPDATE_FREQUENCY];
@@ -259,7 +259,7 @@
 	[updateTimer invalidate];
 	[updateTimer release];
 	updateTimer = nil;
-#else if SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
+#elif SPATIAL_STATE_MANAGER_MODE == SPATIAL_STATE_MANAGER_MODE_DEVICE
 	// Make sure the accelerometer stops calling us
 	UIAccelerometer *accelerometer = [UIAccelerometer sharedAccelerometer];
 	if ([accelerometer delegate] == self) {
@@ -296,19 +296,19 @@
 	static CGFloat simulatedUpAngle = 0.0;
 	switch ([[UIApplication sharedApplication] statusBarOrientation]) {
 		case UIInterfaceOrientationPortrait:
-			[self updateWithRawUpDirection:ARPoint3DCreate(0, cosf(simulatedUpAngle), -sinf(simulatedUpAngle))];
+			[self updateWithRawUpDirection:ARPoint3DMake(0, cosf(simulatedUpAngle), -sinf(simulatedUpAngle))];
 			break;
 			
 		case UIInterfaceOrientationLandscapeRight:
-			[self updateWithRawUpDirection:ARPoint3DCreate(cosf(simulatedUpAngle), 0, -sinf(simulatedUpAngle))];
+			[self updateWithRawUpDirection:ARPoint3DMake(cosf(simulatedUpAngle), 0, -sinf(simulatedUpAngle))];
 			break;
 			
 		case UIInterfaceOrientationPortraitUpsideDown:
-			[self updateWithRawUpDirection:ARPoint3DCreate(0, -cosf(simulatedUpAngle), -sinf(simulatedUpAngle))];
+			[self updateWithRawUpDirection:ARPoint3DMake(0, -cosf(simulatedUpAngle), -sinf(simulatedUpAngle))];
 			break;
 			
 		case UIInterfaceOrientationLandscapeLeft:
-			[self updateWithRawUpDirection:ARPoint3DCreate(-cosf(simulatedUpAngle), 0, -sinf(simulatedUpAngle))];
+			[self updateWithRawUpDirection:ARPoint3DMake(-cosf(simulatedUpAngle), 0, -sinf(simulatedUpAngle))];
 			break;
 	}
 	 simulatedUpAngle += .5f / 180.f * M_PI;
@@ -318,19 +318,19 @@
 	CGFloat declination = -10.f / 180.f * M_PI;
 	switch ([[UIApplication sharedApplication] statusBarOrientation]) {
 		case UIInterfaceOrientationPortrait:
-			[self updateWithRawNorthDirection:ARPoint3DCreate(sinf(declination - simulatedNorthAngle), 0, -cosf(declination - simulatedNorthAngle)) declination:declination];
+			[self updateWithRawNorthDirection:ARPoint3DMake(sinf(declination - simulatedNorthAngle), 0, -cosf(declination - simulatedNorthAngle)) declination:declination];
 			break;
 			
 		case UIInterfaceOrientationLandscapeRight:
-			[self updateWithRawNorthDirection:ARPoint3DCreate(0, -sinf(declination - simulatedNorthAngle), -cosf(declination - simulatedNorthAngle)) declination:declination];
+			[self updateWithRawNorthDirection:ARPoint3DMake(0, -sinf(declination - simulatedNorthAngle), -cosf(declination - simulatedNorthAngle)) declination:declination];
 			break;
 			
 		case UIInterfaceOrientationPortraitUpsideDown:
-			[self updateWithRawNorthDirection:ARPoint3DCreate(-sinf(declination - simulatedNorthAngle), 0, -cosf(declination - simulatedNorthAngle)) declination:declination];
+			[self updateWithRawNorthDirection:ARPoint3DMake(-sinf(declination - simulatedNorthAngle), 0, -cosf(declination - simulatedNorthAngle)) declination:declination];
 			break;
 			
 		case UIInterfaceOrientationLandscapeLeft:
-			[self updateWithRawNorthDirection:ARPoint3DCreate(0, sinf(declination - simulatedNorthAngle), -cosf(declination - simulatedNorthAngle)) declination:declination];
+			[self updateWithRawNorthDirection:ARPoint3DMake(0, sinf(declination - simulatedNorthAngle), -cosf(declination - simulatedNorthAngle)) declination:declination];
 			break;
 	}
 	//	simulatedNorthAngle += 10.f / 180.f * M_PI;
@@ -357,7 +357,7 @@
 
 - (void)updateWithRawLatitude:(CLLocationDegrees)rawLatitude longitude:(CLLocationDegrees)rawLongitude altitude:(CLLocationDistance)rawAltitude reliable:(BOOL)reliable accuracy:(CLLocationDistance)accuracy {
 	if (locationAvailable) {
-		double previousLocationAccuracy = locationAccuracy + MAXIMAL_EXPECTED_SPEED * ([NSDate timeIntervalSinceReferenceDate] - locationTimeIntervalSinceReferenceDate);
+		CLLocationDistance previousLocationAccuracy = locationAccuracy + MAXIMAL_EXPECTED_SPEED * ([NSDate timeIntervalSinceReferenceDate] - locationTimeIntervalSinceReferenceDate);
 		if (accuracy > previousLocationAccuracy) {
 			DebugLog(@"Ignoring last location (%14.7f %14.7f)", accuracy, previousLocationAccuracy);
 			return;

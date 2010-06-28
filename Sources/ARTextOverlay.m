@@ -120,7 +120,7 @@ ARDefineClassInvariant(ARSuperClassInvariant && (width == ARTextOverlayWidthUnde
 	}
 	else if ([name isEqualToString:@"width"]) {
 		double value = [content doubleValue];
-		if (value < 0 || value == HUGE_VAL) {
+		if (value < 0 || value > CGFLOAT_MAX) {
 			DebugLog(@"Invalid value for width element: %@", content);
 		}
 		else {

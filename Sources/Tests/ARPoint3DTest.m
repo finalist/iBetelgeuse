@@ -35,19 +35,19 @@ static const ARPoint3D b = {.5, .5, .5};
 }
 
 - (void)testCreate {
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCreate(2., -3., 5.), a), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DMake(2., -3., 5.), a), nil);
 }
 
 - (void)testEquals {
 	GHAssertTrue(ARPoint3DEquals(xAxis, xAxis), nil);
 	GHAssertFalse(ARPoint3DEquals(xAxis, yAxis), nil);
 	
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCreate(2., -3., 5.), a), nil);
-	GHAssertFalse(ARPoint3DEquals(ARPoint3DCreate(2.0000001, -3., 5.), a), nil);
-	GHAssertFalse(ARPoint3DEquals(ARPoint3DCreate(2., -3.0000001, 5.), a), nil);
-	GHAssertFalse(ARPoint3DEquals(ARPoint3DCreate(2., -3., 5.0000001), a), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DMake(2., -3., 5.), a), nil);
+	GHAssertFalse(ARPoint3DEquals(ARPoint3DMake(2.0000001, -3., 5.), a), nil);
+	GHAssertFalse(ARPoint3DEquals(ARPoint3DMake(2., -3.0000001, 5.), a), nil);
+	GHAssertFalse(ARPoint3DEquals(ARPoint3DMake(2., -3., 5.0000001), a), nil);
 	
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCreate(0., -0., 0.), ARPoint3DCreate(-0., 0., -0.)), nil); // This case fails using a direct memcmp, but should succeed.
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DMake(0., -0., 0.), ARPoint3DMake(-0., 0., -0.)), nil); // This case fails using a direct memcmp, but should succeed.
 }
 
 - (void)testEqualsWithAccuracy {
@@ -70,11 +70,11 @@ static const ARPoint3D b = {.5, .5, .5};
 }
 
 - (void)testAdd {
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DAdd(ARPoint3DCreate(12.34, -23.45, 34.56), ARPoint3DCreate(-45.67, -56.78, 67.89)), ARPoint3DCreate(-33.33, -80.23, 102.45)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DAdd(ARPoint3DMake(12.34, -23.45, 34.56), ARPoint3DMake(-45.67, -56.78, 67.89)), ARPoint3DMake(-33.33, -80.23, 102.45)), nil);
 }
 
 - (void)testSubtract {
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DSubtract(ARPoint3DCreate(12.34, -23.45, 34.56), ARPoint3DCreate(45.67, 56.78, -67.89)), ARPoint3DCreate(-33.33, -80.23, 102.45)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DSubtract(ARPoint3DMake(12.34, -23.45, 34.56), ARPoint3DMake(45.67, 56.78, -67.89)), ARPoint3DMake(-33.33, -80.23, 102.45)), nil);
 }
 
 - (void)testDotProduct {
@@ -95,18 +95,18 @@ static const ARPoint3D b = {.5, .5, .5};
 
 - (void)testCrossProduct {
 	// Note that this is risky due to precision; but it seems to work well.
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(xAxis, xAxis), ARPoint3DCreate( 0.,  0.,  0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(xAxis, yAxis), ARPoint3DCreate( 0.,  0.,  1.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(xAxis, zAxis), ARPoint3DCreate( 0., -1.,  0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(yAxis, xAxis), ARPoint3DCreate( 0.,  0., -1.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(yAxis, yAxis), ARPoint3DCreate( 0.,  0.,  0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(yAxis, zAxis), ARPoint3DCreate( 1.,  0.,  0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(zAxis, xAxis), ARPoint3DCreate( 0.,  1.,  0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(zAxis, yAxis), ARPoint3DCreate(-1.,  0.,  0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(zAxis, zAxis), ARPoint3DCreate( 0.,  0.,  0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(xAxis, xAxis), ARPoint3DMake( 0.,  0.,  0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(xAxis, yAxis), ARPoint3DMake( 0.,  0.,  1.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(xAxis, zAxis), ARPoint3DMake( 0., -1.,  0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(yAxis, xAxis), ARPoint3DMake( 0.,  0., -1.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(yAxis, yAxis), ARPoint3DMake( 0.,  0.,  0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(yAxis, zAxis), ARPoint3DMake( 1.,  0.,  0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(zAxis, xAxis), ARPoint3DMake( 0.,  1.,  0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(zAxis, yAxis), ARPoint3DMake(-1.,  0.,  0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(zAxis, zAxis), ARPoint3DMake( 0.,  0.,  0.)), nil);
 	
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(b, zAxis), ARPoint3DCreate( .5, -.5, 0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(zAxis, b), ARPoint3DCreate(-.5,  .5, 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(b, zAxis), ARPoint3DMake( .5, -.5, 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DCrossProduct(zAxis, b), ARPoint3DMake(-.5,  .5, 0.)), nil);
 }
 
 - (void)testLength {
@@ -121,22 +121,22 @@ static const ARPoint3D b = {.5, .5, .5};
 
 - (void)testScale {
 	// Note that this is risky due to precision; but it seems to work well.
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(xAxis, 2.), ARPoint3DCreate(2., 0., 0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(yAxis, 3.), ARPoint3DCreate(0., 3., 0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(zAxis, -4.), ARPoint3DCreate(0., 0., -4.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(xAxis, 2.), ARPoint3DMake(2., 0., 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(yAxis, 3.), ARPoint3DMake(0., 3., 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(zAxis, -4.), ARPoint3DMake(0., 0., -4.)), nil);
 	
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(a, .5), ARPoint3DCreate(1., -1.5, 2.5)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(b, 0.), ARPoint3DCreate(0., 0., 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(a, .5), ARPoint3DMake(1., -1.5, 2.5)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(b, 0.), ARPoint3DMake(0., 0., 0.)), nil);
 }
 
 - (void)testNormalize {
 	// Note that this is risky due to precision; but it seems to work well.
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(xAxis, 2.), ARPoint3DCreate(2., 0., 0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(yAxis, 3.), ARPoint3DCreate(0., 3., 0.)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(zAxis, -4.), ARPoint3DCreate(0., 0., -4.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(xAxis, 2.), ARPoint3DMake(2., 0., 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(yAxis, 3.), ARPoint3DMake(0., 3., 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(zAxis, -4.), ARPoint3DMake(0., 0., -4.)), nil);
 	
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(a, .5), ARPoint3DCreate(1., -1.5, 2.5)), nil);
-	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(b, 0.), ARPoint3DCreate(0., 0., 0.)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(a, .5), ARPoint3DMake(1., -1.5, 2.5)), nil);
+	GHAssertTrue(ARPoint3DEquals(ARPoint3DScale(b, 0.), ARPoint3DMake(0., 0., 0.)), nil);
 }
 
 @end

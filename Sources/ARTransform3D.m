@@ -49,24 +49,24 @@ ARTransform3D ARTransform3DMakeFromAxes(ARPoint3D xAxis, ARPoint3D yAxis, ARPoin
 	return ARTransform3DMakeFromAxesAndTranslation(xAxis, yAxis, zAxis, ARPoint3DZero);
 }
 
-BOOL ARTransform3DEqualsWithAccuracy(ARTransform3D a, ARTransform3D b, double accuracy) {
+BOOL ARTransform3DEqualsWithAccuracy(ARTransform3D a, ARTransform3D b, CGFloat accuracy) {
 	BOOL result =
-		abs(a.m11 - b.m11) <= accuracy &&
-		abs(a.m12 - b.m12) <= accuracy &&
-		abs(a.m13 - b.m13) <= accuracy &&
-		abs(a.m14 - b.m14) <= accuracy &&
-		abs(a.m21 - b.m21) <= accuracy &&
-		abs(a.m22 - b.m22) <= accuracy &&
-		abs(a.m23 - b.m23) <= accuracy &&
-		abs(a.m24 - b.m24) <= accuracy &&
-		abs(a.m31 - b.m31) <= accuracy &&
-		abs(a.m32 - b.m32) <= accuracy &&
-		abs(a.m33 - b.m33) <= accuracy &&
-		abs(a.m34 - b.m34) <= accuracy &&
-		abs(a.m41 - b.m41) <= accuracy &&
-		abs(a.m42 - b.m42) <= accuracy &&
-		abs(a.m43 - b.m43) <= accuracy &&
-		abs(a.m44 - b.m44) <= accuracy;
+		fabsf(a.m11 - b.m11) <= accuracy &&
+		fabsf(a.m12 - b.m12) <= accuracy &&
+		fabsf(a.m13 - b.m13) <= accuracy &&
+		fabsf(a.m14 - b.m14) <= accuracy &&
+		fabsf(a.m21 - b.m21) <= accuracy &&
+		fabsf(a.m22 - b.m22) <= accuracy &&
+		fabsf(a.m23 - b.m23) <= accuracy &&
+		fabsf(a.m24 - b.m24) <= accuracy &&
+		fabsf(a.m31 - b.m31) <= accuracy &&
+		fabsf(a.m32 - b.m32) <= accuracy &&
+		fabsf(a.m33 - b.m33) <= accuracy &&
+		fabsf(a.m34 - b.m34) <= accuracy &&
+		fabsf(a.m41 - b.m41) <= accuracy &&
+		fabsf(a.m42 - b.m42) <= accuracy &&
+		fabsf(a.m43 - b.m43) <= accuracy &&
+		fabsf(a.m44 - b.m44) <= accuracy;
 	return result;
 }
 
@@ -75,8 +75,8 @@ ARTransform3D ARTransform3DLookAt(ARPoint3D origin, ARPoint3D target, ARPoint3D 
 }
 
 ARTransform3D ARTransform3DLookAtRelative(ARPoint3D origin, ARPoint3D targetDirection, ARPoint3D upDirection, ARPoint3D alternativeUpDirection) {
-	NSCAssert(!ARPoint3DEquals(targetDirection, ARPoint3DCreate(0., 0., 0.)), nil);
-	NSCAssert(!ARPoint3DEquals(upDirection, ARPoint3DCreate(0., 0., 0.)), nil);
+	NSCAssert(!ARPoint3DEquals(targetDirection, ARPoint3DMake(0., 0., 0.)), nil);
+	NSCAssert(!ARPoint3DEquals(upDirection, ARPoint3DMake(0., 0., 0.)), nil);
 	
 	ARPoint3D zAxis = targetDirection;
 	ARPoint3D xAxis = ARPoint3DCrossProduct(upDirection, zAxis);
@@ -113,7 +113,7 @@ ARTransform3D ARTransform3DTranspose(ARTransform3D transform) {
 }
 
 ARPoint3D ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b) {
-	CGFloat inverseOfSuperfluousCoordinate = 1. / (b.m14 * a.x + b.m24 * a.y + b.m34 * a.z + b.m44);
+	double inverseOfSuperfluousCoordinate = 1. / (b.m14 * a.x + b.m24 * a.y + b.m34 * a.z + b.m44);
 	ARPoint3D result = {
 		(b.m11 * a.x + b.m21 * a.y + b.m31 * a.z + b.m41) * inverseOfSuperfluousCoordinate,
 		(b.m12 * a.x + b.m22 * a.y + b.m32 * a.z + b.m42) * inverseOfSuperfluousCoordinate,
@@ -124,9 +124,9 @@ ARPoint3D ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3
 
 ARPoint3D ARTransform3DNonhomogeneousVectorMatrixMultiply(ARPoint3D a, ARTransform3D b) {
 	ARPoint3D result = {
-		b.m11*a.x + b.m21*a.y + b.m31*a.z,
-		b.m12*a.x + b.m22*a.y + b.m32*a.z,
-		b.m13*a.x + b.m23*a.y + b.m33*a.z,
+		b.m11 * a.x + b.m21 * a.y + b.m31 * a.z,
+		b.m12 * a.x + b.m22 * a.y + b.m32 * a.z,
+		b.m13 * a.x + b.m23 * a.y + b.m33 * a.z,
 	};
 	return result;
 }

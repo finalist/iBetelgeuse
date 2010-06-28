@@ -36,7 +36,7 @@
 	if (self = [super initWithFrame:aFrame]) {		
 		EFToDeviceSpaceTransform = CATransform3DIdentity;
 		
-		perspectiveTransform = [[ARCamera sharedCamera] perspectiveTransform];
+		perspectiveTransform = [[ARCamera currentCamera] perspectiveTransform];
 
 		screenTransform = CATransform3DIdentity;
 		distanceFactor = 1.0;
@@ -65,18 +65,18 @@
 	CGRect bounds = [self bounds];
 	
 	// Invert the y-axis because the view y-axis extends towards the bottom, not the top, of the device
-	CGFloat size = MAX(bounds.size.width, bounds.size.height);
+	CGFloat size = ARMax(bounds.size.width, bounds.size.height);
 	screenTransform = CATransform3DMakeScale(size / 2., -size / 2., 1.);
 	invertedScreenTransform = CATransform3DInvert(screenTransform);
 	
 	// Factor that is used to keep feature views the same apparent size by undoing the view and projection transformations 
-	distanceFactor = 2. / size / [[ARCamera sharedCamera] distanceToViewPlane];
+	distanceFactor = 2. / size / [[ARCamera currentCamera] distanceToViewPlane];
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 	// Convert the point to a point on the view plane
-	ARPoint3D pointOnViewPlaneInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DCreate(point.x, point.y, 0), invertedScreenTransform);
-	pointOnViewPlaneInDeviceSpace.z = -[[ARCamera sharedCamera] distanceToViewPlane];
+	ARPoint3D pointOnViewPlaneInDeviceSpace = ARTransform3DHomogeneousVectorMatrixMultiply(ARPoint3DMake(point.x, point.y, 0), invertedScreenTransform);
+	pointOnViewPlaneInDeviceSpace.z = -[[ARCamera currentCamera] distanceToViewPlane];
 
 	for (UIView *featureView in [self subviews]) {
 		CATransform3D DeviceToObjectSpaceTransform = CATransform3DInvert(CATransform3DConcat([[featureView layer] transform], EFToDeviceSpaceTransform));

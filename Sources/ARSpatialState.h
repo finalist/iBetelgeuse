@@ -115,24 +115,25 @@
  */
 @property(nonatomic, readonly) ARPoint3D locationInEFSpace;
 
+
 /**
  * The current bearing, in range [-pi..pi]. The bearing increases in a clockwise
  * direction (90 degrees = east).
  */
-@property(nonatomic, readonly) CLLocationDegrees bearing;
+@property(nonatomic, readonly) double bearing;
 
 /**
  * The current pitch, in range [-pi..pi]. The pitch is positive for upwards
  * angles (90 degrees = straight up, towards the sky).
  */
-@property(nonatomic, readonly) CLLocationDegrees pitch;
+@property(nonatomic, readonly) double pitch;
 
 /**
  * The current roll, in range [-pi..pi]. The roll is positive for a counter-
  * clockwise orientation (0 degrees = top of the device points towards the sky;
  * 90 degrees = top of the device points left).
  */
-@property(nonatomic, readonly) CLLocationDegrees roll;
+@property(nonatomic, readonly) double roll;
 
 
 /**
@@ -233,7 +234,7 @@
  * @param isOrientationReliable YES iff the current orientation is recent.
  * @param anENUToDeviceSpaceQuaternion a quaternion indicating the current device's orientation, defined in ENU space.
  * @param EFToECEFSpaceOffset the offset between EF and ECEF space.
- * @param timestamp the time at which this spatial state was determined.
+ * @param timestamp the time at which this spatial state was determined. May not be nil.
  * @return the spatial state.
  */
 - (id)initWithLocationAvailable:(BOOL)locationAvailable

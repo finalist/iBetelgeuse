@@ -58,6 +58,6 @@
 /**
  * Updates the position and transform in the EF space using the given spatial state.
  */
-- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(float)distanceFactor;
+- (void)updateWithSpatialState:(ARSpatialState *)spatialState usingRelativeAltitude:(BOOL)useRelativeAltitude withDistanceFactor:(CGFloat)distanceFactor;
 
 @end

@@ -54,7 +54,7 @@ const ARPoint3D ARPoint3DZero;
  * @param z the z coordinate.
  * @return the constructed point.
  */
-static inline ARPoint3D ARPoint3DCreate(double x, double y, double z) {
+static inline ARPoint3D ARPoint3DMake(double x, double y, double z) {
 	ARPoint3D result = {x, y, z};
 	return result;
 }

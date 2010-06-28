@@ -1,5 +1,5 @@
 //
-//  ARViewUtil.m
+//  ARSpatialStateTest.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,16 +20,14 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARViewUtil.h"
+#import <GHUnit/GHUnit.h>
 
 
-// Per Apple's iPhone Human Interface Guidelines
-const CGFloat ARMinimumTouchTargetSize = 44.f;
+@class ARSpatialState;
 
 
-CGRect ARRectGrowToTouchTarget(CGRect rect) {
-	return CGRectInset(rect,
-					   roundf(ARMin(rect.size.width  - ARMinimumTouchTargetSize, 0.f) / 2.f),
-					   roundf(ARMin(rect.size.height - ARMinimumTouchTargetSize, 0.f) / 2.f)
-					   );
+@interface ARSpatialStateTest : GHTestCase {
+@private
 }
+
+@end

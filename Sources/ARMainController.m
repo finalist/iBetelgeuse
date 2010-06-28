@@ -97,6 +97,12 @@ CGImageRef UIGetScreenImage(void);
 @property(nonatomic, getter=isRefreshingOnDistance) BOOL refreshingOnDistance;
 @property(nonatomic, retain) ARLocation *refreshLocation;
 
+/**
+ * Callback for the display link.
+ *
+ * @param sender The sender of the message.
+ */
+- (void)updateWithDisplayLink:(CADisplayLink *)sender;
 
 /**
  * Handle the refresh timer expiring; this should initite a dimension refresh.
@@ -1043,10 +1049,10 @@ CGImageRef UIGetScreenImage(void);
 		DebugLog(@"Dimension refresh timer not scheduled");
 	}
 	else {
-		NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:MAX(0., [[self refreshTime] timeIntervalSinceNow]) target:self selector:@selector(refreshTimerDidFire:) userInfo:nil repeats:NO];
+		NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:ARMax(0., [[self refreshTime] timeIntervalSinceNow]) target:self selector:@selector(refreshTimerDidFire:) userInfo:nil repeats:NO];
 		[self setRefreshTimer:timer];
 		
-		DebugLog(@"Scheduling dimension refresh timer with timeout %fs", MAX(0., [[self refreshTime] timeIntervalSinceNow]));
+		DebugLog(@"Scheduling dimension refresh timer with timeout %fs", ARMax(0., [[self refreshTime] timeIntervalSinceNow]));
 	}
 }
 

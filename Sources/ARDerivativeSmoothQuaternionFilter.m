@@ -22,7 +22,6 @@
 
 
 #import "ARDerivativeSmoothQuaternionFilter.h"
-#import "ARSimpleQuaternionFilter.h"
 #import "ARSphericalMovingAverageQuaternionFilter.h"
 #import "ARWeightedMovingAverageQuaternionFilter.h"
 
@@ -87,7 +86,7 @@
 		ARQuaternion estimate = ARQuaternionAdd(lastOutput, ARQuaternionMultiplyByScalar(outputDerivative, timeStep));
 		
 		// Compute correction factor:  correction factor is increased if the device is moving faster, to allow for faster convergence
-		double correctionFactor = fmin(1., baseCorrectionFactor + correctionFactorDerivativeGain * ARQuaternionNorm(outputAngularVelocity));
+		double correctionFactor = ARMin(1., baseCorrectionFactor + correctionFactorDerivativeGain * ARQuaternionNorm(outputAngularVelocity));
 		
 		// Compute linear interpolation between estimate and correct input value, given the correctionFactor.
 		ARQuaternion correctingInputAverage = [correctingInputAverageFilter filterWithInput:input timestamp:timestamp];

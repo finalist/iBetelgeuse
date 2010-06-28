@@ -41,7 +41,7 @@
 	ARWeightedFilterValue value = {input, weight};
 	[sampleBuffer pushElement:&value];
 	
-	ARWeightedFilterValue *samples = [sampleBuffer elements];
+	const ARWeightedFilterValue *samples = [sampleBuffer elements];
 	int sampleCount = [sampleBuffer elementCount];
 	
 	ARFilterValue sum = 0;

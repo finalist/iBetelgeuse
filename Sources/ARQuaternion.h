@@ -94,10 +94,10 @@ static inline ARQuaternion ARQuaternionMakeWithCoordinates(double w, double x, d
 static inline ARQuaternion ARQuaternionMakeWithTransform(ARTransform3D transform) {
 	// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm (Alternative Method)
 	ARQuaternion result;
-	result.w = sqrt(fmax(0., 1. + transform.m11 + transform.m22 + transform.m33)) / 2.;
-	result.x = sqrt(fmax(0., 1. + transform.m11 - transform.m22 - transform.m33)) / 2.;
-	result.y = sqrt(fmax(0., 1. - transform.m11 + transform.m22 - transform.m33)) / 2.;
-	result.z = sqrt(fmax(0., 1. - transform.m11 - transform.m22 + transform.m33)) / 2.;
+	result.w = sqrt(ARMax(0., 1. + transform.m11 + transform.m22 + transform.m33)) / 2.;
+	result.x = sqrt(ARMax(0., 1. + transform.m11 - transform.m22 - transform.m33)) / 2.;
+	result.y = sqrt(ARMax(0., 1. - transform.m11 + transform.m22 - transform.m33)) / 2.;
+	result.z = sqrt(ARMax(0., 1. - transform.m11 - transform.m22 + transform.m33)) / 2.;
 	result.x = copysign(result.x, transform.m32 - transform.m23);
 	result.y = copysign(result.y, transform.m13 - transform.m31);
 	result.z = copysign(result.z, transform.m21 - transform.m12);
@@ -247,7 +247,7 @@ static inline ARQuaternion ARQuaternionMultiplyByScalar(ARQuaternion q, double s
  * @return the value of the largest component. max(|w|, |x|, |y|, |z|).
  */
 static inline double ARQuaternionElementsMaxAbs(ARQuaternion quaternion) {
-	double result = MAX(MAX(fabs(quaternion.w), fabs(quaternion.x)), MAX(fabs(quaternion.y), fabs(quaternion.z)));
+	double result = ARMax(ARMax(fabs(quaternion.w), fabs(quaternion.x)), ARMax(fabs(quaternion.y), fabs(quaternion.z)));
 	return result;
 }
 
@@ -408,7 +408,7 @@ static inline ARQuaternion ARQuaternionTransformPointQuaternion(ARQuaternion q, 
  */
 static inline ARPoint3D ARQuaternionTransformPoint(ARQuaternion q, ARPoint3D p) {
 	ARQuaternion result = ARQuaternionTransformPointQuaternion(q, ARQuaternionMakeWithPoint(p));
-	return ARPoint3DCreate(result.x, result.y, result.z);
+	return ARPoint3DMake(result.x, result.y, result.z);
 }
 
 /**

@@ -1,5 +1,5 @@
 //
-//  ARViewUtil.m
+//  ARMathTest.m
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,16 +20,25 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import "ARViewUtil.h"
+#import "ARMathTest.h"
 
 
-// Per Apple's iPhone Human Interface Guidelines
-const CGFloat ARMinimumTouchTargetSize = 44.f;
+@implementation ARMathTest
 
-
-CGRect ARRectGrowToTouchTarget(CGRect rect) {
-	return CGRectInset(rect,
-					   roundf(ARMin(rect.size.width  - ARMinimumTouchTargetSize, 0.f) / 2.f),
-					   roundf(ARMin(rect.size.height - ARMinimumTouchTargetSize, 0.f) / 2.f)
-					   );
+- (void)testMin {
+	GHAssertEquals(ARMin(1, 2), 1, nil);
+	GHAssertEquals(ARMin(-1, -2), -2, nil);
 }
+
+- (void)testMax {
+	GHAssertEquals(ARMax(1, 2), 2, nil);
+	GHAssertEquals(ARMax(-1, -2), -1, nil);
+}
+
+- (void)testClamp {
+	GHAssertEquals(ARClamp(1, 2, 4), 2, nil);
+	GHAssertEquals(ARClamp(3, 2, 4), 3, nil);
+	GHAssertEquals(ARClamp(5, 2, 4), 4, nil);
+}
+
+@end

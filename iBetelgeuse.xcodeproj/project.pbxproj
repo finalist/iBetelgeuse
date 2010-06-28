@@ -43,6 +43,12 @@
 		958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958DF27A11ABB40000047790 /* ARImageFeatureView.m */; };
 		958E3DA311D1EC9300466267 /* NSObject+ARClassInvariant.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E3DA211D1EC9300466267 /* NSObject+ARClassInvariant.m */; };
 		958E3F0B11D20E8E00466267 /* NSObject+ARClassInvariant.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E3DA211D1EC9300466267 /* NSObject+ARClassInvariant.m */; };
+		958E420111D36F1E00466267 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E41FE11D36F1E00466267 /* TCXMLParserDelegate.m */; };
+		958E420211D36F1E00466267 /* TCNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E41FC11D36F1E00466267 /* TCNetworkActivityIndicator.m */; };
+		958E420311D36F1E00466267 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E41FE11D36F1E00466267 /* TCXMLParserDelegate.m */; };
+		958E42BA11D3937900466267 /* ARCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC614311C22B200027FF5D /* ARCamera.m */; };
+		958E42C111D393D800466267 /* ARCameraTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E42C011D393D800466267 /* ARCameraTest.m */; };
+		958E436211D3A4EE00466267 /* ARSpatialStateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E436111D3A4EE00466267 /* ARSpatialStateTest.m */; };
 		95919EE311A41A61006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE411A41A67006FCDFC /* ARWGS84.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE211A41A61006FCDFC /* ARWGS84.m */; };
 		95919EE711A41B0B006FCDFC /* ARWGS84Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919EE611A41B0B006FCDFC /* ARWGS84Test.m */; };
@@ -51,16 +57,14 @@
 		95A26CB111A51EF5000C0876 /* ARAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB011A51EF5000C0876 /* ARAssetManager.m */; };
 		95A26CB211A51EF5000C0876 /* ARAssetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB011A51EF5000C0876 /* ARAssetManager.m */; };
 		95A26CB911A52489000C0876 /* ARAssetManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A26CB811A52489000C0876 /* ARAssetManagerTest.m */; };
-		95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */; };
 		95A2747D11A6E546000C0876 /* ARImageOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A2747C11A6E546000C0876 /* ARImageOverlayView.m */; };
 		95A8608211CB9491005DE882 /* DimensionWarning.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A8608011CB9491005DE882 /* DimensionWarning.png */; };
 		95A8608311CB9491005DE882 /* DimensionWarning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95A8608111CB9491005DE882 /* DimensionWarning@2x.png */; };
-		95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
+		95B95A1411D4E32800D22678 /* ARMathTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B95A1311D4E32800D22678 /* ARMathTest.m */; };
 		95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
 		95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BECD11A12AF600EDD870 /* ARDimensionTest.m */; };
 		95B9BF1111A139A200EDD870 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95B9BF1011A139A200EDD870 /* CoreLocation.framework */; };
 		95B9BF3911A13A5200EDD870 /* ARDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEAC11A1291600EDD870 /* ARDimension.m */; };
-		95B9BF8511A13DC600EDD870 /* TCXMLParserDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */; };
 		95B9C0ED11A1611200EDD870 /* AROverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0EC11A1611200EDD870 /* AROverlay.m */; };
 		95B9C0EE11A1611200EDD870 /* AROverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0EC11A1611200EDD870 /* AROverlay.m */; };
 		95B9C0F111A1617200EDD870 /* ARImageOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 95B9C0F011A1617200EDD870 /* ARImageOverlay.m */; };
@@ -229,8 +233,15 @@
 		958E3FC211D222ED00466267 /* ARTextOverlayTestInvalid.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextOverlayTestInvalid.xml; sourceTree = "<group>"; };
 		958E3FE211D2245400466267 /* ARTextFeatureTestInvalid.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestInvalid.xml; sourceTree = "<group>"; };
 		958E3FFA11D2252500466267 /* ARTextFeatureTestOther.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ARTextFeatureTestOther.xml; sourceTree = "<group>"; };
-		95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCNetworkActivityIndicator.h; sourceTree = "<group>"; };
-		95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCNetworkActivityIndicator.m; sourceTree = "<group>"; };
+		958E41FB11D36F1E00466267 /* TCNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCNetworkActivityIndicator.h; sourceTree = "<group>"; };
+		958E41FC11D36F1E00466267 /* TCNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCNetworkActivityIndicator.m; sourceTree = "<group>"; };
+		958E41FD11D36F1E00466267 /* TCXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCXMLParserDelegate.h; sourceTree = "<group>"; };
+		958E41FE11D36F1E00466267 /* TCXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCXMLParserDelegate.m; sourceTree = "<group>"; };
+		958E41FF11D36F1E00466267 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
+		958E42BF11D393D800466267 /* ARCameraTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCameraTest.h; sourceTree = "<group>"; };
+		958E42C011D393D800466267 /* ARCameraTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCameraTest.m; sourceTree = "<group>"; };
+		958E436011D3A4EE00466267 /* ARSpatialStateTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARSpatialStateTest.h; sourceTree = "<group>"; };
+		958E436111D3A4EE00466267 /* ARSpatialStateTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSpatialStateTest.m; sourceTree = "<group>"; };
 		95919EE111A41A61006FCDFC /* ARWGS84.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84.h; sourceTree = "<group>"; };
 		95919EE211A41A61006FCDFC /* ARWGS84.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWGS84.m; sourceTree = "<group>"; };
 		95919EE511A41B0B006FCDFC /* ARWGS84Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARWGS84Test.h; sourceTree = "<group>"; };
@@ -248,9 +259,9 @@
 		95A2747F11A6E55E000C0876 /* ARAssetDataUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAssetDataUser.h; sourceTree = "<group>"; };
 		95A8608011CB9491005DE882 /* DimensionWarning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DimensionWarning.png; sourceTree = "<group>"; };
 		95A8608111CB9491005DE882 /* DimensionWarning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DimensionWarning@2x.png"; sourceTree = "<group>"; };
-		95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCXMLParserDelegate.h; sourceTree = "<group>"; };
-		95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCXMLParserDelegate.m; sourceTree = "<group>"; };
-		95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TCXMLParserDelegate+Protected.h"; sourceTree = "<group>"; };
+		95B959E611D4DC8400D22678 /* ARMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMath.h; sourceTree = "<group>"; };
+		95B95A1211D4E32800D22678 /* ARMathTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMathTest.h; sourceTree = "<group>"; };
+		95B95A1311D4E32800D22678 /* ARMathTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMathTest.m; sourceTree = "<group>"; };
 		95B9BEAB11A1291600EDD870 /* ARDimension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDimension.h; sourceTree = "<group>"; };
 		95B9BEAC11A1291600EDD870 /* ARDimension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDimension.m; sourceTree = "<group>"; };
 		95B9BECC11A12AF600EDD870 /* ARDimensionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDimensionTest.h; sourceTree = "<group>"; };
@@ -757,11 +768,6 @@
 				95A272F011A6DC81000C0876 /* Managers */,
 				95A272EF11A6DC63000C0876 /* Math */,
 				95A2747F11A6E55E000C0876 /* ARAssetDataUser.h */,
-				95B9BEA611A1288900EDD870 /* TCXMLParserDelegate.h */,
-				95B9BEA811A1288900EDD870 /* TCXMLParserDelegate+Protected.h */,
-				95B9BEA711A1288900EDD870 /* TCXMLParserDelegate.m */,
-				95919E2011A40C38006FCDFC /* TCNetworkActivityIndicator.h */,
-				95919E2111A40C38006FCDFC /* TCNetworkActivityIndicator.m */,
 				95C75EAE11B66E3100B71931 /* Filter */,
 				95EC614211C22B200027FF5D /* ARCamera.h */,
 				95EC614311C22B200027FF5D /* ARCamera.m */,
@@ -811,6 +817,7 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				95B959E611D4DC8400D22678 /* ARMath.h */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -855,8 +862,14 @@
 				95E28EED11BE447A00C716F0 /* ARViewUtilTest.m */,
 				C35C5F1111BFB70400C0FF1A /* ARQuaternionTest.h */,
 				C35C5F1211BFB70400C0FF1A /* ARQuaternionTest.m */,
+				958E42BF11D393D800466267 /* ARCameraTest.h */,
+				958E42C011D393D800466267 /* ARCameraTest.m */,
 				C3946DFC11D496F1000D1F88 /* ARCyclicBufferTest.h */,
 				C3946DFD11D496F1000D1F88 /* ARCyclicBufferTest.m */,
+				958E436011D3A4EE00466267 /* ARSpatialStateTest.h */,
+				958E436111D3A4EE00466267 /* ARSpatialStateTest.m */,
+				95B95A1211D4E32800D22678 /* ARMathTest.h */,
+				95B95A1311D4E32800D22678 /* ARMathTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -878,6 +891,11 @@
 			children = (
 				C35C581811B507B500C0FF1A /* libiconv.dylib */,
 				C35C57EA11B5048200C0FF1A /* zbar.xcodeproj */,
+				958E41FB11D36F1E00466267 /* TCNetworkActivityIndicator.h */,
+				958E41FC11D36F1E00466267 /* TCNetworkActivityIndicator.m */,
+				958E41FD11D36F1E00466267 /* TCXMLParserDelegate.h */,
+				958E41FE11D36F1E00466267 /* TCXMLParserDelegate.m */,
+				958E41FF11D36F1E00466267 /* TCXMLParserDelegate+Protected.h */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -1050,7 +1068,6 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* ARAppDelegate.m in Sources */,
 				C33462C1119D7B3B00228C9A /* ARMainController.m in Sources */,
-				95B9BEA911A1288900EDD870 /* TCXMLParserDelegate.m in Sources */,
 				95B9BEAD11A1291600EDD870 /* ARDimension.m in Sources */,
 				C334645E11A1495D00228C9A /* ARLocation.m in Sources */,
 				95B9C0ED11A1611200EDD870 /* AROverlay.m in Sources */,
@@ -1073,7 +1090,6 @@
 				C3346D7E11A3C22C00228C9A /* ARTextFeatureView.m in Sources */,
 				C3346E4811A3DD1D00228C9A /* ARTransform3D.m in Sources */,
 				C33474BA11A54E2200228C9A /* ARSpatialStateManager.m in Sources */,
-				95A272B511A6DAD0000C0876 /* TCNetworkActivityIndicator.m in Sources */,
 				95A2747D11A6E546000C0876 /* ARImageOverlayView.m in Sources */,
 				958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */,
 				C3C62E8711ABE7D500553407 /* ARRadarView.m in Sources */,
@@ -1095,6 +1111,8 @@
 				C32182CB11D0EEF8000BE2E1 /* ARWeightedMovingAverageFilter.m in Sources */,
 				C32182CF11D0EF0D000BE2E1 /* ARSphericalMovingAverageQuaternionFilter.m in Sources */,
 				958E3DA311D1EC9300466267 /* NSObject+ARClassInvariant.m in Sources */,
+				958E420211D36F1E00466267 /* TCNetworkActivityIndicator.m in Sources */,
+				958E420311D36F1E00466267 /* TCXMLParserDelegate.m in Sources */,
 				C3946CDC11D398DB000D1F88 /* ARCyclicBuffer.m in Sources */,
 				C3946D9611D48E6F000D1F88 /* ARWeightedMovingAverageQuaternionFilter.m in Sources */,
 				C3946F7811D4E194000D1F88 /* ARQuaternionFilter.m in Sources */,
@@ -1112,7 +1130,6 @@
 				95E77EF3119809F500A1F2B9 /* GHUnitTestMain.m in Sources */,
 				95B9BED011A12B0700EDD870 /* ARDimensionTest.m in Sources */,
 				95B9BF3911A13A5200EDD870 /* ARDimension.m in Sources */,
-				95B9BF8511A13DC600EDD870 /* TCXMLParserDelegate.m in Sources */,
 				C334645F11A1495D00228C9A /* ARLocation.m in Sources */,
 				C334647111A14CD200228C9A /* ARLocationTest.m in Sources */,
 				C33465C311A16EDD00228C9A /* ARAsset.m in Sources */,
@@ -1149,6 +1166,9 @@
 				C35C5F1411BFB70400C0FF1A /* ARQuaternionTest.m in Sources */,
 				C32180E711CB5059000BE2E1 /* ARSpatialState.m in Sources */,
 				958E3F0B11D20E8E00466267 /* NSObject+ARClassInvariant.m in Sources */,
+				958E420111D36F1E00466267 /* TCXMLParserDelegate.m in Sources */,
+				958E42BA11D3937900466267 /* ARCamera.m in Sources */,
+				958E42C111D393D800466267 /* ARCameraTest.m in Sources */,
 				C3946CC011D39484000D1F88 /* ARDelayFilterTest.m in Sources */,
 				C3946CC211D39489000D1F88 /* ARSphericalMovingAverageQuaternionFilter.m in Sources */,
 				C3946CC511D3948C000D1F88 /* ARDelayFilter.m in Sources */,
@@ -1162,6 +1182,8 @@
 				C3946D6411D486D3000D1F88 /* ARWeightedMovingAverageFilterTest.m in Sources */,
 				C3946D9711D48E6F000D1F88 /* ARWeightedMovingAverageQuaternionFilter.m in Sources */,
 				C3946DFE11D496F1000D1F88 /* ARCyclicBufferTest.m in Sources */,
+				958E436211D3A4EE00466267 /* ARSpatialStateTest.m in Sources */,
+				95B95A1411D4E32800D22678 /* ARMathTest.m in Sources */,
 				C3946E8B11D4A92F000D1F88 /* ARSphericalMovingAverageQuaternionFilterTest.m in Sources */,
 				C3946FDB11D4EED1000D1F88 /* ARWeightedMovingAverageQuaternionFilterTest.m in Sources */,
 				C3946FDE11D4EEF1000D1F88 /* ARArrayFilterTest.m in Sources */,
@@ -1216,6 +1238,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
 				INFOPLIST_FILE = Resources/Info.plist;
 				OTHER_CFLAGS = "-DDEBUG";
@@ -1235,6 +1258,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Sources/Prefix.pch;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
 				INFOPLIST_FILE = Resources/Info.plist;
 				OTHER_LDFLAGS = (
@@ -1246,11 +1270,90 @@
 			};
 			name = Release;
 		};
+		958E42A011D386AF00466267 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PREBINDING = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				SDKROOT = iphoneos3.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "App Store Distribution";
+		};
+		958E42A111D386AF00466267 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				HEADER_SEARCH_PATHS = Libraries/zbar/include/;
+				INFOPLIST_FILE = Resources/Info.plist;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
+				PRODUCT_NAME = iBetelgeuse;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "App Store Distribution";
+		};
+		958E42A211D386AF00466267 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = Sources/Tests/Prefix.pch;
+				GCC_VERSION = 4.0;
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_CFLAGS = (
+					"-DDEBUG",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
+				OTHER_LDFLAGS = "-lgcov";
+				PREBINDING = NO;
+				PRODUCT_NAME = iBetelgeuseTests;
+				SDKROOT = "";
+				ZERO_LINK = NO;
+			};
+			name = "App Store Distribution";
+		};
+		958E42A311D386AF00466267 /* App Store Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "iBetelgeuseTests with coverage report";
+				SDKROOT = "";
+				ZERO_LINK = NO;
+			};
+			name = "App Store Distribution";
+		};
 		95E77EE3119809D300A1F2B9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -1274,7 +1377,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
@@ -1332,6 +1435,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				PREBINDING = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos3.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1348,6 +1452,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
+				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos3.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1361,6 +1466,7 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				958E42A111D386AF00466267 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1370,6 +1476,7 @@
 			buildConfigurations = (
 				95E77EE3119809D300A1F2B9 /* Debug */,
 				95E77EE4119809D300A1F2B9 /* Release */,
+				958E42A211D386AF00466267 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1379,6 +1486,7 @@
 			buildConfigurations = (
 				95E77FDA119812C100A1F2B9 /* Debug */,
 				95E77FDB119812C100A1F2B9 /* Release */,
+				958E42A311D386AF00466267 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -1388,6 +1496,7 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				958E42A011D386AF00466267 /* App Store Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
