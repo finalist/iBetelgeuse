@@ -363,7 +363,7 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 - (void)dealloc {
 	[delegateThread release];
 	[asset release];
-	
+
 	[super dealloc];
 }
 
@@ -393,10 +393,10 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 				[self performSelector:@selector(notifyDidFinishWithError:) onThread:delegateThread withObject:error waitUntilDone:NO];
 			}
 			else if (responseData) {
-				[self performSelector:@selector(notifyDidFinishWithData:) onThread:delegateThread withObject:responseData waitUntilDone:NO];
+				[self performSelector:@selector(notifyDidFinishWithData:) onThread:delegateThread withObject:responseData waitUntilDone:YES];
 			}
 			else {
-				[self performSelector:@selector(notifyDidFinishWithError:) onThread:delegateThread withObject:error waitUntilDone:NO];
+				[self performSelector:@selector(notifyDidFinishWithError:) onThread:delegateThread withObject:error waitUntilDone:YES];
 			}
 		}
 		
@@ -406,7 +406,7 @@ NSString *const ARAssetManagerErrorHTTPStatusCodeKey = @"statusCode";
 		NSString *errorDescription = [NSString stringWithFormat:NSLocalizedString(@"Caught exception %@.", @"asset manager error description"), [exception name]];
 		NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:errorDescription, NSLocalizedDescriptionKey, [exception reason], NSLocalizedFailureReasonErrorKey, nil];
 		NSError *error = [NSError errorWithDomain:ARAssetManagerErrorDomain code:ARAssetManagerErrorUnknown userInfo:errorInfo];
-		[self performSelector:@selector(notifyDidFinishWithError:) onThread:delegateThread withObject:error waitUntilDone:NO];
+		[self performSelector:@selector(notifyDidFinishWithError:) onThread:delegateThread withObject:error waitUntilDone:YES];
 	}
 	@finally {
 		// Always release the autorelease pool
