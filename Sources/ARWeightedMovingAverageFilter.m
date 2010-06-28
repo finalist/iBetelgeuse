@@ -35,6 +35,12 @@
 	return self;
 }
 
+- (void)dealloc {
+	[sampleBuffer release];
+	
+	[super dealloc];
+}
+
 #pragma mark ARWeightedMovingAverageFilter
 
 - (ARFilterValue)filterWithInput:(ARFilterValue)input weight:(double)weight {

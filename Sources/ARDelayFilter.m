@@ -35,6 +35,12 @@
 	return self;
 }
 
+- (void)dealloc {
+	[sampleBuffer release];
+	
+	[super dealloc];
+}
+
 #pragma mark ARFilter
 
 - (ARFilterValue)filterWithInput:(ARFilterValue)input timestamp:(NSTimeInterval)timestamp {

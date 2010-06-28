@@ -28,7 +28,7 @@
 	NSURL *initialURL; // The URL to load when the application is started.
 	
 	UIWindow *window;
-    UIViewController *viewController;
+	UIViewController *viewController;
 }
 
 @end

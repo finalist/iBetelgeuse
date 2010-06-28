@@ -58,6 +58,7 @@
  *   controlled by correctingInputAverageFilter
  */
 @interface ARDerivativeSmoothQuaternionFilter : ARQuaternionFilter {
+@private
 	ARWeightedMovingAverageQuaternionFilter *derivativeAverageFilter; // The filter that averages the derivative. Increasing this value gives a smoother value, but a larger delay.
 	ARQuaternionFilter *correctingInputAverageFilter; // The filter that averages the corrector value. Increasing this reduces jitter, but gives a larger delay.
 	double baseCorrectionFactor; // The correction factor when the derivative is 0. High values cause faster convergence, but also introduce more jitter.
