@@ -112,7 +112,7 @@
 		GHAssertTrue(ARQuaternionEqualsWithAccuracy(correctOutput, output, 1e-6), nil);
 	}
 	
-	[filter dealloc];
+	[filter release];
 }
 
 @end

@@ -95,7 +95,7 @@
 		GHAssertEqualsWithAccuracy(correctOutput[2], output[2], 1e-6, nil);
 	}
 	
-	[filter dealloc];
+	[filter release];
 }
 
 @end

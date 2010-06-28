@@ -92,7 +92,7 @@
 		GHAssertTrue(ARPoint3DEqualsWithAccuracy(correctOutput, output, 1e-6), nil);
 	}
 	
-	[filter dealloc];
+	[filter release];
 }
 
 @end
