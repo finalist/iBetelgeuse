@@ -289,8 +289,22 @@
 	GHAssertTrue(ARTransform3DEqualsWithAccuracy(testee, correct, .0001), nil);
 }
 
-- (void)testRotateInDirection {
-	GHFail(@"Not yet tested.");
+- (void)testRotateInDirectionIdentity {
+	const ARQuaternion a = { 0.220579300225954, 0.077938094818352, 0.480122960323525,  0.845430286101751 };
+	const ARQuaternion b = ARQuaternionZero;
+	const ARQuaternion correctOutput = a;
+	
+	const ARQuaternion output = ARQuaternionRotateInDirection(a, b);
+	GHAssertTrue(ARQuaternionEqualsWithAccuracy(output, correctOutput, 1e-6), nil);
+}
+
+- (void)testRotateInDirectionRandom {
+	const ARQuaternion a = { 0.220579300225954, 0.077938094818352, 0.480122960323525,  0.845430286101751 };
+	const ARQuaternion b = { 0.436306290999308, 0.452304569541101, 0.325591902432609, -0.340437343640596 }; // Chosen so that dot(a,b) == 0.
+	const ARQuaternion correctOutput = { 0.548786791607823, 0.462327739189086, 0.632633903216835, 0.291308193214219 };
+	
+	const ARQuaternion output = ARQuaternionRotateInDirection(a, b);
+	GHAssertTrue(ARQuaternionEqualsWithAccuracy(output, correctOutput, 1e-6), nil);
 }
 
 - (void)testWeightedSum {
