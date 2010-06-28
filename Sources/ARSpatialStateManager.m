@@ -416,7 +416,7 @@
 																reliable:orientationRecent
 											  ENUToDeviceSpaceQuaternion:ENUToDeviceSpaceQuaternion
 													 EFToECEFSpaceOffset:EFToECEFSpaceOffset
-															   timestamp:timestamp];
+															   timestamp:timestamp != nil ? timestamp : [NSDate date]];
 	}
 	return spatialState;
 }
