@@ -48,7 +48,7 @@
 - (ARQuaternion)filterWithInput:(ARQuaternion)input timestamp:(NSTimeInterval)aTimestamp {
 	[sampleBuffer pushElement:&input];
 	
-	ARQuaternion *samples = [sampleBuffer elements];
+	const ARQuaternion *samples = [sampleBuffer elements];
 	int sampleCount = [sampleBuffer elementCount];
 	
 	// Average with equal weights. Could be optimized to do this only once.

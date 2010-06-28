@@ -20,21 +20,14 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-
 #import "ARCyclicBuffer.h"
 
 
 @implementation ARCyclicBuffer
 
-@synthesize elements;
-@synthesize elementCount;
+@synthesize elementSize, elementCount;
 
-- (const void*)oldestElement {
-	NSAssert(elementCount > 0, @"No elements have been added yet.");
-	
-	void *oldestElement = elements + (oldestElementIndex % elementCount) * elementSize;
-	return oldestElement;
-}
+#pragma mark NSObject
 
 - (id)initWithElementSize:(int)anElementSize maxElementCount:(int)aMaxElementCount {
 	NSAssert(anElementSize > 0, @"Element size must be at least one byte.");
@@ -52,7 +45,21 @@
 
 - (void)dealloc {
 	free(elements);
+	
 	[super dealloc];
+}
+
+#pragma mark ARCyclicBuffer
+
+- (const void *)elements {
+	return elements;
+}
+
+- (const void *)oldestElement {
+	NSAssert(elementCount > 0, @"No elements have been added yet.");
+	
+	void *oldestElement = elements + (oldestElementIndex % elementCount) * elementSize;
+	return oldestElement;
 }
 
 - (void)pushElement:(const void *)element {
