@@ -629,7 +629,12 @@ CGImageRef UIGetScreenImage(void);
 
 	UIAlertView *alert = [[UIAlertView alloc] init];
 	[alert setDelegate:self];
-	[alert setTitle:NSLocalizedString(@"Could not update dimension", @"main controller alert title")];
+	if ([request type] == ARDimensionRequestTypeInit) {
+		[alert setTitle:NSLocalizedString(@"Dimension failed to load", @"main controller alert title")];
+	}
+	else {
+		[alert setTitle:NSLocalizedString(@"Dimension failed to refresh, automatic refreshing disabled", @"main controller alert title")];
+	}
 	[alert setMessage:[error localizedDescription]];
 	[alert addButtonWithTitle:NSLocalizedString(@"Close", @"main controller alert button")];
 	[alert show];

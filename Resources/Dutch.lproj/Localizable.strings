@@ -31,11 +31,14 @@
    main controller alert button */
 "Close" = "Sluit";
 
-/* main controller alert title */
-"Could not update dimension" = "Kan dimensie niet bijwerken";
-
 /* action sheet title */
 "Current Dimension: %@" = "Huidige dimensie: %@";
+
+/* main controller alert title */
+"Dimension failed to load" = "Dimensie kan niet worden geladen";
+
+/* main controller alert title */
+"Dimension failed to refresh, automatic refreshing disabled" = "Dimensie kan niet worden ververst, automatisch verversen uitgeschakeld";
 
 /* dimension request error description */
 "Dimension not found." = "Dimensie niet gevonden.";
