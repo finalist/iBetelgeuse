@@ -25,6 +25,9 @@
 #import "ARCyclicBuffer.h"
 
 
+/**
+ * This struct is used to store combined value/weight pairs in a buffer.
+ */
 typedef struct {
 	ARFilterValue value;
 	double weight;
@@ -39,7 +42,21 @@ typedef struct {
 	ARCyclicBuffer *sampleBuffer;
 }
 
+/**
+ * Initialize the filter.
+ * @param windowSize the desired size.
+ * @return The initialized filter.
+ */
 - (id)initWithWindowSize:(NSUInteger)windowSize;
+
+/**
+ * Apply the filter to a new sample. This will multiply all samples by their
+ * weights, and divide the sum of these weighted values by the sum of their
+ * weights.
+ * @param input the input value.
+ * @param weight the weight of this input value.
+ * @return the output value.
+ */
 - (ARFilterValue)filterWithInput:(ARFilterValue)input weight:(double)weight;
 
 @end
