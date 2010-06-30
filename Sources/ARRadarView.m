@@ -214,13 +214,13 @@
 		[blipsLayer setHidden:YES];
 	}
 	else {
-		ARTransform3D ENUToRadarTransform;
+		ARTransform3D RadarToENUTransform;
 		if (deviceHorizontal) {
 			// The normal method (making the transforms) is unusable when the view vector is (almost) parallel to the up vector
 			ARPoint3D bearingInDeviceSpace = ARPoint3DMake(0, 1, 0);
 			ARPoint3D bearingInENUSpace = ARTransform3DHomogeneousVectorMatrixMultiply(bearingInDeviceSpace, [spatialState DeviceToENUSpaceTransform]);
 			
-			ENUToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DMake(0, 0, 1), bearingInENUSpace, ARPoint3DZero);
+			RadarToENUTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DMake(0, 0, 1), bearingInENUSpace, ARPoint3DZero);
 		}
 		else {
 			// ENU coordinates can be interpreted as having been projected onto the xy plane by ignoring the z-axis
@@ -229,9 +229,63 @@
 			ARTransform3D MapToRadarTransform = ARTransform3DLookAt(ARPoint3DZero, ARPoint3DMake(0, 0, 1), [spatialState upDirectionInDeviceSpace], ARPoint3DZero);
 			ARTransform3D RadarToMapTransform = ARTransform3DTranspose(MapToRadarTransform);
 			
-			ENUToRadarTransform = CATransform3DConcat(RadarToMapTransform, MapToENUTransform);
+			RadarToENUTransform = CATransform3DConcat(RadarToMapTransform, MapToENUTransform);
 		}
-		[blipsLayer setTransform:ENUToRadarTransform];
+		
+		//
+		// Setting RadarToENUTransform as transformation on blipsLayer may seem
+		// incorrect, because we should be converting ENU coordinates to
+		// device/screen coordinates. However, it is correct because we really
+		// want to do something different:
+		//
+		// We have a map image drawn on the blips layer in (scaled) ENU
+		// coordinates, which we want to display on the screen, in such way that
+		// the resulting image is displayed exactly the same as ENU (i.e. a
+		// point to the East that is displayed on the radar is in the ENU (real)
+		// East. We therefore want a final transformation
+		//
+		//   enu -> enu.
+		//
+		// Due to the display step in which our image in ENU coordinates is
+		// transformed to device space, the following conversion is implicitly
+		// performed:
+		//
+		//   enu -> device.
+		//
+		// To return from device to enu space, we can apply the following
+		// transformations:
+		//
+		//   (something in enu coordinates)
+		//   A. enu -> device
+		//   B. device -> radar
+		//   C. radar -> enu
+		//   (something in enu coordinates)
+		//
+		// Note that transformation A is the implicit display step, and that
+		// A*B*C gives the desired final transformation.
+		//
+		// By definition, both A*B and C are rotations around the Z axis. So
+		// it is evident that A*B*C = C*A*B:
+		//
+		//   (something in enu coordinates)
+		//   C. radar -> enu
+		//   A. enu -> device
+		//   B. device -> radar
+		//   (something in enu coordinates)
+		//
+		// Note that the input and output coordinate spaces of the
+		// transformations no longer match!
+		//
+		// Now, C is the transformation used below (RadarToENUTransform), A is
+		// still the transformation that is implicitly performed by displaying
+		// the radar on the screen. B, however, cannot be performed because the
+		// device's screen is flat: this transformation is the result of not
+		// holding the device flat. The user will have to interpret this by only
+		// looking at the screen, and can assume that "up" on the radar means
+		// "forward" in the real word when the device is held under an angle.
+		//
+		
+		[blipsLayer setTransform:RadarToENUTransform];
 		[blipsLayer setSpatialState:spatialState];
 		[blipsLayer setHidden:NO];
 	}
