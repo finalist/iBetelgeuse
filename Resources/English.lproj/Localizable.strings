@@ -31,11 +31,14 @@
    main controller alert button */
 "Close" = "Close";
 
-/* main controller alert title */
-"Could not update dimension" = "Could not update dimension";
-
 /* action sheet title */
 "Current Dimension: %@" = "Current Dimension: %@";
+
+/* main controller alert title */
+"Dimension failed to load" = "Dimension failed to load";
+
+/* main controller alert title */
+"Dimension failed to refresh, automatic refreshing disabled" = "Dimension failed to refresh, automatic refreshing disabled";
 
 /* dimension request error description */
 "Dimension not found." = "Dimension not found.";
