@@ -606,7 +606,12 @@ CGImageRef UIGetScreenImage(void);
 	[self createFeatureViews];
 	
 	// Set the refresh time
-	[self setRefreshTime:[NSDate dateWithTimeIntervalSinceNow:[[self dimension] refreshTime]]];
+	if ([[self dimension] refreshTime] == ARDimensionRefreshTimeInfinite) {
+		[self setRefreshTime:nil];
+	}
+	else {
+		[self setRefreshTime:[NSDate dateWithTimeIntervalSinceNow:[[self dimension] refreshTime]]];
+	}
 	
 	[self startRefreshingOnTime];
 	[self startRefreshingOnDistance];
@@ -1065,12 +1070,15 @@ CGImageRef UIGetScreenImage(void);
 
 	[request start];
 	
+	// Reset refresh time
+	[self setRefreshTime:nil];
+	
 	// Register the location we sent to the server
 	[self setRefreshLocation:[[request spatialState] location]];
 }
 
 - (void)startRefreshingOnTime {
-	if (!dimensionReliable || ![[self dimension] refreshURL] || [[self dimension] refreshTime] == ARDimensionRefreshTimeInfinite) {
+	if (!dimensionReliable || ![[self dimension] refreshURL] || [self refreshTime] == nil) {
 		[self setRefreshTimer:nil];
 		
 		DebugLog(@"Dimension refresh timer not scheduled");
