@@ -79,6 +79,10 @@ static ARCamera *currentInstance = nil;
 		// Inverted because the depth increases as the z-axis decreases (going from 0 towards negative values)
 		perspectiveTransform.m34 = -1. / distanceToViewPlane; 
 		perspectiveTransform.m44 = 0.;
+		
+		// Apparently, Apple has defined the view plane to be at z = 0 instead of z = -distanceToViewPlane. Possibly, they did this so the zPosition property of a CALayer can default to 0. In any case, this solves our flickering problems caused by depth buffering issues.
+		// Note: inspired by http://milen.me/post/649796017/core-animation-3d-model
+		perspectiveTransform.m43 = distanceToViewPlane;
 	}
 	return self;
 }
