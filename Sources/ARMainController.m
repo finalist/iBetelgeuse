@@ -764,7 +764,10 @@ CGImageRef UIGetScreenImage(void);
 			
 			[[self dimensionRequest] cancel];
 			[self setDimensionRequest:nil];
+			
 			[self setDimension:nil];
+			[self createOverlayViews];
+			[self createFeatureViews];
 			
 			if ([[[self spatialStateManager] spatialState] isLocationAvailable] && [[[self spatialStateManager] spatialState] isOrientationAvailable]) {
 				[self startDimensionRequestWithURL:url type:ARDimensionRequestTypeInit source:nil];
