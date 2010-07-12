@@ -762,6 +762,10 @@ CGImageRef UIGetScreenImage(void);
 		else {
 			DebugLog(@"Loading dimension by QR code: %@", [sym data]);
 			
+			[[self dimensionRequest] cancel];
+			[self setDimensionRequest:nil];
+			[self setDimension:nil];
+			
 			if ([[[self spatialStateManager] spatialState] isLocationAvailable] && [[[self spatialStateManager] spatialState] isOrientationAvailable]) {
 				[self startDimensionRequestWithURL:url type:ARDimensionRequestTypeInit source:nil];
 			}
@@ -1053,6 +1057,7 @@ CGImageRef UIGetScreenImage(void);
 	NSAssert(aURL, @"Expected non-nil URL.");
 	NSAssert([[spatialStateManager spatialState] isLocationAvailable], @"Expected location to be available");
 	NSAssert([[spatialStateManager spatialState] isOrientationAvailable], @"Expected orientation to be available");
+	NSAssert([self dimensionRequest] == nil, @"Expected no other dimension request to be in progress.");
 	
 	// Cancel loading any assets
 	[[self assetManagerIfAvailable] cancelLoadingAllAssets];
@@ -1078,7 +1083,7 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)startRefreshingOnTime {
-	if (!dimensionReliable || ![[self dimension] refreshURL] || [self refreshTime] == nil) {
+	if ([self dimensionRequest] != nil || !dimensionReliable || ![[self dimension] refreshURL] || [self refreshTime] == nil) {
 		[self setRefreshTimer:nil];
 		
 		DebugLog(@"Dimension refresh timer not scheduled");
@@ -1096,7 +1101,7 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)startRefreshingOnDistance {
-	if (!dimensionReliable || ![[self dimension] refreshURL] || [[self dimension] refreshDistance] == ARDimensionRefreshDistanceInfinite) {
+	if ([self dimensionRequest] != nil || !dimensionReliable || ![[self dimension] refreshURL] || [[self dimension] refreshDistance] == ARDimensionRefreshDistanceInfinite) {
 		[self setRefreshingOnDistance:NO];
 	}
 	else {
@@ -1248,7 +1253,7 @@ CGImageRef UIGetScreenImage(void);
 	
 	switch (state) {
 		case STATE_DIMENSION:
-			if (dimension) {
+			if ([self dimension]) {
 				[self startRefreshingOnTime];
 				[self startRefreshingOnDistance];
 			}
