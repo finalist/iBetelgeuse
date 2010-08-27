@@ -1,5 +1,5 @@
 //
-//  ARAppDelegate.h
+//  ARHTMLOverlay.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,16 +20,32 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <UIKit/UIKit.h>
+#import "AROverlay.h"
 
-
-@interface ARAppDelegate : NSObject <UIApplicationDelegate> {
-	UIImageView *splashView;
+/**
+ * Represents a html overlay in a Gamaray dimension.
+ */
+@interface ARHTMLOverlay : AROverlay {
 @private
-	NSURL *initialURL; // The URL to load when the application is started.
-	
-	UIWindow *window;
-	UIViewController *viewController;
+	NSString *url;
+	CGFloat width;
+	CGFloat height;
 }
 
+/**
+ * The url of the webpage that should be displayed.
+ */
+@property(nonatomic, readonly, copy) NSString *url;
+
+/**
+ * The width of the html box. Must either be strictly positive.
+ */
+@property(nonatomic, readonly) CGFloat width;
+
+/**
+ * The height of the html box. Must either be strictly positive.
+ */
+@property(nonatomic, readonly) CGFloat height;
+
 @end
+

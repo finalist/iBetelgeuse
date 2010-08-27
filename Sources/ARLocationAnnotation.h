@@ -1,5 +1,5 @@
 //
-//  ARAppDelegate.h
+//  ARLocationAnnotation.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,16 +20,19 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#import "ARLocation.h"
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
 
-@interface ARAppDelegate : NSObject <UIApplicationDelegate> {
-	UIImageView *splashView;
-@private
-	NSURL *initialURL; // The URL to load when the application is started.
-	
-	UIWindow *window;
-	UIViewController *viewController;
+@interface ARLocationAnnotation : NSObject <MKAnnotation> {
+	ARLocation *location;
 }
+
+@property (nonatomic,retain) ARLocation *location;
+
+- (ARLocationAnnotation *)initWithLocation:(ARLocation *) aLocation;
+- (CLLocationCoordinate2D)coordinate;
+- (void) setTite:(NSString *)aTitle;
 
 @end

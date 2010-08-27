@@ -26,6 +26,8 @@
 #import "ARLocation.h"
 #import "ARCamera.h"
 #import "ARTransform3D.h"
+#import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
 
 // Default radar view width and height
@@ -54,6 +56,7 @@
 @property(nonatomic, readonly) ARRadarBackgroundLayer *backgroundLayer;
 @property(nonatomic, readonly) ARRadarExtentOfViewLayer *extentOfViewLayer;
 @property(nonatomic, readonly) ARRadarBlipsLayer *blipsLayer;
+@property(nonatomic, readonly) MKMapView *mapView;
 
 @end
 
@@ -99,14 +102,15 @@
 @property(nonatomic, readwrite, copy) NSArray *features;
 @property(nonatomic, readwrite) CGFloat radius;
 @property(nonatomic, readwrite, retain) ARSpatialState *spatialState;
-
 @end
 
 
-@implementation ARRadarView
+@implementation ARRadarView : UIView
+
 
 @synthesize laidOutBounds, deviceHorizontal;
 @synthesize backgroundLayer, extentOfViewLayer, blipsLayer;
+@synthesize mapView;
 
 #pragma mark NSObject
 

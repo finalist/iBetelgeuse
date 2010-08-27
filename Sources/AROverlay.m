@@ -82,6 +82,7 @@
 }
 
 - (void)parsingDidFindSimpleElement:(NSString *)name attributes:(NSDictionary *)attributes content:(NSString *)content {
+	DebugLog(@"%@ %@ %@ ", name, attributes, content);
 	if ([name isEqualToString:@"x"]) {
 		double value = [content doubleValue];
 		if (value < -CGFLOAT_MAX || value > CGFLOAT_MAX) {

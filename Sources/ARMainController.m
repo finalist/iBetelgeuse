@@ -25,6 +25,7 @@
 #import "AROverlay.h"
 #import "AROverlayContainerView.h"
 #import "AROverlayView.h"
+#import "ARHTMLOverlay.h"
 #import "ARFeature.h"
 #import "ARFeatureContainerView.h"
 #import "ARFeatureView.h"
@@ -32,6 +33,7 @@
 #import "ARSpatialState.h"
 #import "ARWGS84.h"
 #import "ARLocation.h"
+#import "ARLocationAnnotation.h"
 #import "ARRadarView.h"
 #import "ARScannerOverlayView.h"
 #import "ARScannerFlash.h"
@@ -40,6 +42,7 @@
 #import "ARAboutController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <zbar/ZBarImageScanner.h>
+#import <MapKit/MapKit.h>
 
 
 #define DIMENSION_URL_DEFAULTS_KEY @"dimensionURL"
@@ -84,6 +87,7 @@ CGImageRef UIGetScreenImage(void);
 @property(nonatomic, readonly) ARFeatureContainerView *featureContainerView;
 @property(nonatomic, readonly) AROverlayContainerView *overlayContainerView;
 @property(nonatomic, readonly) ARRadarView *radarView;
+@property(nonatomic, readonly) MKMapView *mapView;
 @property(nonatomic, readonly) ARScannerOverlayView *scannerOverlayView;
 
 @property(nonatomic, retain) CADisplayLink *displayLink;
@@ -302,6 +306,7 @@ CGImageRef UIGetScreenImage(void);
 @synthesize featureContainerView;
 @synthesize overlayContainerView;
 @synthesize radarView;
+@synthesize mapView;
 
 @synthesize displayLink;
 
@@ -428,6 +433,13 @@ CGImageRef UIGetScreenImage(void);
 	[view addSubview:orientationWarningView];
 	[orientationWarningView release];
 	
+	mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
+	mapView.showsUserLocation = YES;
+	mapView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	[mapView setHidden:YES];
+	[view addSubview:mapView];
+	[mapView release];
+	
 	menuButton = [[ARButton alloc] init];
 	[menuButton setFrame:CGRectMake(CGRectGetMaxX(bounds) - MARGIN - MENU_BUTTON_WIDTH, CGRectGetMaxY(bounds) - MARGIN - BUTTON_HEIGHT, MENU_BUTTON_WIDTH, BUTTON_HEIGHT)];
 	[menuButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin];
@@ -436,6 +448,15 @@ CGImageRef UIGetScreenImage(void);
 	[menuButton setHidden:YES];
 	[view addSubview:menuButton];
 	[menuButton release];
+	
+	closeButton = [[ARButton alloc] init];
+	[closeButton setFrame:CGRectMake(CGRectGetMaxX(bounds) - MARGIN - MENU_BUTTON_WIDTH, CGRectGetMaxY(bounds) - MARGIN - BUTTON_HEIGHT, MENU_BUTTON_WIDTH, BUTTON_HEIGHT)];
+	[closeButton setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin];
+	[closeButton setImage:[UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
+	[closeButton addTarget:self action:@selector(refreshDimension) forControlEvents:UIControlEventTouchUpInside];
+	[closeButton setHidden:YES];
+	[view addSubview:closeButton];
+	[closeButton release];
 	
 	cancelButton = [[ARButton alloc] init];
 	[cancelButton setFrame:CGRectMake(CGRectGetMaxX(bounds) - MARGIN - CANCEL_BUTTON_WIDTH, CGRectGetMaxY(bounds) - MARGIN - BUTTON_HEIGHT, CANCEL_BUTTON_WIDTH, BUTTON_HEIGHT)];
@@ -448,6 +469,7 @@ CGImageRef UIGetScreenImage(void);
 	
 	[self createOverlayViews];
 	[self createFeatureViews];
+	[self updateAnnotations];
 	
 	// Use a display link to sync up with the screen, so that we don't update the screen more than necessary
 	CADisplayLink *link = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWithDisplayLink:)];
@@ -464,6 +486,7 @@ CGImageRef UIGetScreenImage(void);
 	cameraViewController = nil;
 	featureContainerView = nil;
 	radarView = nil;
+	mapView = nil;
 	overlayContainerView = nil;
 	scannerOverlayView = nil;
 	dimensionWarningView = nil;
@@ -602,8 +625,12 @@ CGImageRef UIGetScreenImage(void);
 	// Cancel loading any assets before we start reloading them in the create... methods below
 	[[self assetManagerIfAvailable] cancelLoadingAllAssets];
 	
+	[menuButton setHidden:NO];
+	[closeButton setHidden:YES];
+	
 	[self createOverlayViews];
 	[self createFeatureViews];
+	[self updateAnnotations];
 	
 	// Set the refresh time
 	if ([[self dimension] refreshTime] == ARDimensionRefreshTimeInfinite) {
@@ -809,9 +836,25 @@ CGImageRef UIGetScreenImage(void);
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 	}
 	else if (buttonIndex == menuButtonIndices.refresh) {
-		[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeInit source:nil];
+		[self refreshDimension];
+	}
+	else if (buttonIndex == menuButtonIndices.map) {
+		if (mapView.hidden) {
+			[mapView setHidden:NO];
+			
+			if ([mapView isUserLocationVisible]) {  
+				int mapRadius = dimension.radarRadius;
+				MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(mapView.userLocation.coordinate, mapRadius, mapRadius);
+				// for correcting map aspect view
+				[mapView setRegion:[mapView regionThatFits:region] animated:YES]; 
+			}
+			
+		} else {
+			[mapView setHidden:YES];
+		}
 	}
 	else if (buttonIndex == menuButtonIndices.qr) {
+		[mapView setHidden:YES];
 		[self setState:STATE_QR];
 	}
 	
@@ -821,6 +864,32 @@ CGImageRef UIGetScreenImage(void);
 			[self startRefreshingOnDistance];
 			break;
 	}
+}
+
+-(void) updateAnnotations {
+		DebugLog(@"Remove annotations");
+		NSMutableArray *toRemove = [NSMutableArray arrayWithCapacity:10];
+		for (id annotation in mapView.annotations) {
+			if (annotation != mapView.userLocation) {
+				DebugLog(@"   Remove annotation");
+				[toRemove addObject:annotation];
+			}
+		}
+		[mapView removeAnnotations:toRemove];
+		
+		DebugLog(@"locations: %@", dimension.locations);
+		for (ARLocation *location in dimension.locations) {
+			ARLocationAnnotation *locationAnnotation = [[ARLocationAnnotation alloc] initWithLocation:location];
+			DebugLog(@"Adding location %@", location);
+			[mapView addAnnotation:locationAnnotation];
+		}
+		
+		DebugLog(@"features: %@", dimension.features);
+		for (ARFeature *feature in dimension.features) {
+			ARLocationAnnotation *featureAnnotation = [[ARLocationAnnotation alloc] initWithLocation:feature.location];
+			DebugLog(@"Adding location %@", feature.location);
+			[mapView addAnnotation:featureAnnotation];
+		}
 }
 
 #pragma mark ARMainController
@@ -967,6 +1036,10 @@ CGImageRef UIGetScreenImage(void);
 	}
 	
 	for (AROverlay *overlay in [dimension overlays]) {
+		if ([overlay isKindOfClass:[ARHTMLOverlay class]]) {
+			[menuButton setHidden:YES];
+			[closeButton setHidden:NO];
+		}
 		AROverlayView *view = [AROverlayView viewForOverlay:overlay];
 		[[view layer] setPosition:[overlay origin]];
 		[overlayContainerView addSubview:view];
@@ -1057,10 +1130,13 @@ CGImageRef UIGetScreenImage(void);
 }
 
 - (void)startDimensionRequestWithURL:(NSURL *)aURL type:(ARDimensionRequestType)type source:(NSString *)source {
+	DebugLog(@"URL: %@", aURL);
 	NSAssert(aURL, @"Expected non-nil URL.");
 	NSAssert([[spatialStateManager spatialState] isLocationAvailable], @"Expected location to be available");
 	NSAssert([[spatialStateManager spatialState] isOrientationAvailable], @"Expected orientation to be available");
-	NSAssert([self dimensionRequest] == nil, @"Expected no other dimension request to be in progress.");
+	if([self dimensionRequest] != nil) {
+		[[self dimensionRequest] cancel];
+	}
 	
 	// Cancel loading any assets
 	[[self assetManagerIfAvailable] cancelLoadingAllAssets];
@@ -1162,6 +1238,10 @@ CGImageRef UIGetScreenImage(void);
 	[self performAction:[feature action] source:[feature identifier]];
 }
 
+- (void) refreshDimension {
+	[self startDimensionRequestWithURL:[[self dimension] refreshURL] type:ARDimensionRequestTypeInit source:nil];
+}
+
 - (void)didTapMenuButton {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] init];
 	[actionSheet setDelegate:self];
@@ -1182,13 +1262,20 @@ CGImageRef UIGetScreenImage(void);
 	[actionSheet addButtonWithTitle:NSLocalizedString(@"Info", @"actionsheet button")];
 	menuButtonIndices.about = index++;
 	
-	// Add refresh button
+	// Add refresh button and map
 	if (![[self dimension] refreshURL]) {
 		menuButtonIndices.refresh = -1;
+		menuButtonIndices.map = -1;
 	}
 	else {
 		[actionSheet addButtonWithTitle:NSLocalizedString(@"Refresh", @"actionsheet button")];
 		menuButtonIndices.refresh = index++;
+		if (mapView.hidden) {
+			[actionSheet addButtonWithTitle:NSLocalizedString(@"Map", @"actionsheet button")];
+		} else {
+			[actionSheet addButtonWithTitle:NSLocalizedString(@"Camera", @"actionsheet button")];			
+		}
+		menuButtonIndices.map = index++;
 	}
 
 	// Add QR code button, if appropriate

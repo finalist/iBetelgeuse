@@ -25,6 +25,7 @@
 #import "ARAsset.h"
 #import "ARImageOverlay.h"
 #import "ARTextOverlay.h"
+#import "ARHTMLOverlay.h"
 #import "ARImageFeature.h"
 #import "ARTextFeature.h"
 #import "TCXMLParserDelegate+Protected.h"
@@ -290,6 +291,10 @@ ARDefineClassInvariant(ARSuperClassInvariant && refreshTime >= 0 && refreshDista
 			}
 			else if ([elementName isEqualToString:@"overlayTxt"]) {
 				[ARTextOverlay startParsingWithXMLParser:parser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(parserDidFindOverlay:) userInfo:nil];
+				didHandOff = YES;
+			}
+			else if ([elementName isEqualToString:@"overlayHtml"]) {
+				[ARHTMLOverlay startParsingWithXMLParser:parser element:elementName attributes:attributeDict notifyTarget:self selector:@selector(parserDidFindOverlay:) userInfo:nil];
 				didHandOff = YES;
 			}
 			break;

@@ -1,5 +1,5 @@
 //
-//  ARAppDelegate.h
+//  ARHTMLOverlayView.h
 //  iBetelgeuse
 //
 //  Copyright 2010 Finalist IT Group. All rights reserved.
@@ -20,16 +20,19 @@
 //  along with iBetelgeuse.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#import <UIKit/UIKit.h>
+#import "AROverlayView.h"
 
 
-@interface ARAppDelegate : NSObject <UIApplicationDelegate> {
-	UIImageView *splashView;
+@class ARHTMLOverlay;
+
+
+/**
+ * Shows a html overlay.
+ */
+@interface ARHTMLOverlayView : AROverlayView {
 @private
-	NSURL *initialURL; // The URL to load when the application is started.
-	
-	UIWindow *window;
-	UIViewController *viewController;
+	ARHTMLOverlay *overlay;
+	UIWebView *webView; // Non-retained instance variable
 }
 
 @end

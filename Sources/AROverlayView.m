@@ -25,6 +25,8 @@
 #import "ARImageOverlayView.h"
 #import "ARTextOverlay.h"
 #import "ARTextOverlayView.h"
+#import "ARHTMLOverlay.h"
+#import "ARHTMLOverlayView.h"
 #import "ARViewUtil.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -81,6 +83,9 @@
 	}
 	else if ([overlay isKindOfClass:[ARTextOverlay class]]) {
 		return [[[ARTextOverlayView alloc] initWithOverlay:overlay] autorelease];
+	}
+	else if ([overlay isKindOfClass:[ARHTMLOverlay class]]) {
+		return [[[ARHTMLOverlayView alloc] initWithOverlay:overlay] autorelease];
 	}
 	else {
 		DebugLog(@"Unknown overlay type: %@", [overlay class]);

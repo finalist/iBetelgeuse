@@ -22,6 +22,7 @@
 
 #import "ARAppDelegate.h"
 #import "ARMainController.h"
+#import <UIKit/UIWebView.h>
 
 
 @interface ARAppDelegate ()
@@ -31,12 +32,14 @@
 @property(nonatomic, readonly) UIWindow *window;
 @property(nonatomic, readonly) UIViewController *viewController;
 
+@property(nonatomic, readonly) UIWebView *aWebView;
+
 @end
 
 
 @implementation ARAppDelegate
 
-@synthesize initialURL;
+@synthesize initialURL, aWebView;
 
 #pragma mark NSObject
 
@@ -45,6 +48,7 @@
 	
 	[window release];
 	[viewController release];
+	[aWebView release];
 	
 	[super dealloc];
 }

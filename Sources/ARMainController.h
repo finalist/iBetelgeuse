@@ -48,6 +48,7 @@
 	UIImageView *locationWarningView; // Non-retained instance variable
 	UIImageView *orientationWarningView; // Non-retained instance variable
 	UIButton *menuButton; // Non-retained instance variable
+	UIButton *closeButton; // Non-retained instance variable
 	UIButton *cancelButton; // Non-retained instance variable
 	
 	CADisplayLink *displayLink;
@@ -67,6 +68,7 @@
 	struct {
 		signed char about;
 		signed char refresh;
+		signed char map;
 		signed char qr;
 		signed char cancel;
 	} menuButtonIndices;
@@ -78,5 +80,9 @@
  * @return The receiver.
  */
 - (id)initWithURL:(NSURL *)url;
+
+- (void) refreshDimension;
+
+-(void) updateAnnotations;
 
 @end
