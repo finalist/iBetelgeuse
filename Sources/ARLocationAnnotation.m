@@ -41,14 +41,6 @@
 	return theCoordinate; 
 }
 
-/*- (NSString *)title {
-    return title;
-}*/
-
-- (void) setTite : (NSString *) aTitle {
-	title = aTitle;
-}
-
 - (void)dealloc {
 	[location release];
 	

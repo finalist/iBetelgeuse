@@ -39,7 +39,6 @@
 		9504CD3711C9238300128562 /* ARScannerOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC65F011C77D350027FF5D /* ARScannerOverlayView.m */; };
 		9504CD3911C9238500128562 /* ARScannerFlash.m in Sources */ = {isa = PBXBuildFile; fileRef = 95EC664711C7845F0027FF5D /* ARScannerFlash.m */; };
 		950ECB3411C8C22D009E1314 /* ARMenuButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 950ECB3311C8C22D009E1314 /* ARMenuButton@2x.png */; };
-		950ECB5211C8C325009E1314 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 950ECB5111C8C325009E1314 /* Default@2x.png */; };
 		958DF27B11ABB40000047790 /* ARImageFeatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 958DF27A11ABB40000047790 /* ARImageFeatureView.m */; };
 		958E3DA311D1EC9300466267 /* NSObject+ARClassInvariant.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E3DA211D1EC9300466267 /* NSObject+ARClassInvariant.m */; };
 		958E3F0B11D20E8E00466267 /* NSObject+ARClassInvariant.m in Sources */ = {isa = PBXBuildFile; fileRef = 958E3DA211D1EC9300466267 /* NSObject+ARClassInvariant.m */; };
@@ -105,11 +104,19 @@
 		95EC653111C769410027FF5D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC652A11C769410027FF5D /* Icon.png */; };
 		95EC653211C769410027FF5D /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC652B11C769410027FF5D /* Icon@2x.png */; };
 		95EC653311C769410027FF5D /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 95EC652C11C769410027FF5D /* iTunesArtwork */; };
-		95EC655811C76EEF0027FF5D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC655711C76EEF0027FF5D /* Default.png */; };
 		95EC658B11C7732A0027FF5D /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC658911C7732A0027FF5D /* Default-Landscape.png */; };
 		95EC658C11C7732A0027FF5D /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = 95EC658A11C7732A0027FF5D /* Default-Portrait.png */; };
 		95EC66CF11C79CF90027FF5D /* Scanner.wav in Resources */ = {isa = PBXBuildFile; fileRef = 95EC66CE11C79CF90027FF5D /* Scanner.wav */; };
 		95EC671611C7A02B0027FF5D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95EC671511C7A02B0027FF5D /* AudioToolbox.framework */; };
+		BFA655DE12192E7600209B06 /* ARHTMLOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = BFA655DD12192E7600209B06 /* ARHTMLOverlay.m */; };
+		BFA655FC1219507D00209B06 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BFA655FA1219507D00209B06 /* Default.png */; };
+		BFA655FD1219507D00209B06 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFA655FB1219507D00209B06 /* Default@2x.png */; };
+		BFA65698121965A900209B06 /* ARHTMLOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = BFA65697121965A900209B06 /* ARHTMLOverlayView.m */; };
+		BFA657971219937800209B06 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFA657951219937800209B06 /* MapViewController.m */; };
+		BFA657981219937800209B06 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFA657961219937800209B06 /* MapViewController.xib */; };
+		BFA657FD121A7F1800209B06 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA657FC121A7F1800209B06 /* MapKit.framework */; };
+		BFA658BB121AA5FC00209B06 /* ARLocationAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = BFA658BA121AA5FC00209B06 /* ARLocationAnnotation.m */; };
+		BFE648FB1226A983007B2468 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE648FA1226A983007B2468 /* close.png */; };
 		C32180E611CB5059000BE2E1 /* ARSpatialState.m in Sources */ = {isa = PBXBuildFile; fileRef = C32180E511CB5059000BE2E1 /* ARSpatialState.m */; };
 		C32180E711CB5059000BE2E1 /* ARSpatialState.m in Sources */ = {isa = PBXBuildFile; fileRef = C32180E511CB5059000BE2E1 /* ARSpatialState.m */; };
 		C32182B911D0EBC0000BE2E1 /* AROrientationFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = C329607411C0E136006859E7 /* AROrientationFilter.m */; };
@@ -221,7 +228,6 @@
 		9504CCDE11C912D500128562 /* About.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = About.css; sourceTree = "<group>"; };
 		9504CCDF11C912D500128562 /* AboutBackground.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = AboutBackground.jpg; sourceTree = "<group>"; };
 		950ECB3311C8C22D009E1314 /* ARMenuButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARMenuButton@2x.png"; sourceTree = "<group>"; };
-		950ECB5111C8C325009E1314 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		9575D1ED11D896DE00C69D2E /* lcov */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lcov; sourceTree = "<group>"; };
 		958DF27911ABB40000047790 /* ARImageFeatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARImageFeatureView.h; sourceTree = "<group>"; };
 		958DF27A11ABB40000047790 /* ARImageFeatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageFeatureView.m; sourceTree = "<group>"; };
@@ -351,7 +357,6 @@
 		95EC652A11C769410027FF5D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		95EC652B11C769410027FF5D /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		95EC652C11C769410027FF5D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
-		95EC655711C76EEF0027FF5D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		95EC658911C7732A0027FF5D /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		95EC658A11C7732A0027FF5D /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
 		95EC65EF11C77D350027FF5D /* ARScannerOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScannerOverlayView.h; sourceTree = "<group>"; };
@@ -360,6 +365,19 @@
 		95EC664711C7845F0027FF5D /* ARScannerFlash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScannerFlash.m; sourceTree = "<group>"; };
 		95EC66CE11C79CF90027FF5D /* Scanner.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Scanner.wav; sourceTree = "<group>"; };
 		95EC671511C7A02B0027FF5D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		BFA655DC12192E7600209B06 /* ARHTMLOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHTMLOverlay.h; sourceTree = "<group>"; };
+		BFA655DD12192E7600209B06 /* ARHTMLOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHTMLOverlay.m; sourceTree = "<group>"; };
+		BFA655FA1219507D00209B06 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		BFA655FB1219507D00209B06 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		BFA65696121965A900209B06 /* ARHTMLOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHTMLOverlayView.h; sourceTree = "<group>"; };
+		BFA65697121965A900209B06 /* ARHTMLOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARHTMLOverlayView.m; sourceTree = "<group>"; };
+		BFA657941219937800209B06 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		BFA657951219937800209B06 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		BFA657961219937800209B06 /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
+		BFA657FC121A7F1800209B06 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BFA658B9121AA5FC00209B06 /* ARLocationAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARLocationAnnotation.h; sourceTree = "<group>"; };
+		BFA658BA121AA5FC00209B06 /* ARLocationAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARLocationAnnotation.m; sourceTree = "<group>"; };
+		BFE648FA1226A983007B2468 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		C3217A7D11C8ACC2000BE2E1 /* ARPoint3DFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPoint3DFilter.h; sourceTree = "<group>"; };
 		C3217A7E11C8ACC2000BE2E1 /* ARPoint3DFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARPoint3DFilter.m; sourceTree = "<group>"; };
 		C3217A8211C8ADB9000BE2E1 /* ARQuaternionFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARQuaternionFilter.h; sourceTree = "<group>"; };
@@ -479,6 +497,7 @@
 				95E77C4A1198042000A1F2B9 /* CoreLocation.framework in Frameworks */,
 				C35C581911B507B500C0FF1A /* libiconv.dylib in Frameworks */,
 				95EC671611C7A02B0027FF5D /* AudioToolbox.framework in Frameworks */,
+				BFA657FD121A7F1800209B06 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +554,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BFE648FA1226A983007B2468 /* close.png */,
+				BFA655FA1219507D00209B06 /* Default.png */,
+				BFA655FB1219507D00209B06 /* Default@2x.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				95EC652C11C769410027FF5D /* iTunesArtwork */,
 				95EC652A11C769410027FF5D /* Icon.png */,
@@ -543,8 +565,6 @@
 				95EC652811C769410027FF5D /* Icon-Small.png */,
 				95EC652711C769410027FF5D /* Icon-Small-50.png */,
 				95EC652911C769410027FF5D /* Icon-Small@2x.png */,
-				95EC655711C76EEF0027FF5D /* Default.png */,
-				950ECB5111C8C325009E1314 /* Default@2x.png */,
 				95EC658911C7732A0027FF5D /* Default-Landscape.png */,
 				95EC658A11C7732A0027FF5D /* Default-Portrait.png */,
 				95EC66CE11C79CF90027FF5D /* Scanner.wav */,
@@ -578,6 +598,7 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				95EC671511C7A02B0027FF5D /* AudioToolbox.framework */,
 				95E77ECB1198097C00A1F2B9 /* Tests */,
+				BFA657FC121A7F1800209B06 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -718,6 +739,8 @@
 				C33465FD11A1795200228C9A /* ARAction.m */,
 				95D3D0CF11A2CA84007B7148 /* Overlay */,
 				95D3D0D011A2CA8E007B7148 /* Feature */,
+				BFA658B9121AA5FC00209B06 /* ARLocationAnnotation.h */,
+				BFA658BA121AA5FC00209B06 /* ARLocationAnnotation.m */,
 			);
 			name = Dimension;
 			sourceTree = "<group>";
@@ -732,6 +755,8 @@
 				95B9C0F411A1617B00EDD870 /* ARTextOverlay.m */,
 				95B9C0EF11A1617200EDD870 /* ARImageOverlay.h */,
 				95B9C0F011A1617200EDD870 /* ARImageOverlay.m */,
+				BFA655DC12192E7600209B06 /* ARHTMLOverlay.h */,
+				BFA655DD12192E7600209B06 /* ARHTMLOverlay.m */,
 			);
 			name = Overlay;
 			sourceTree = "<group>";
@@ -810,6 +835,11 @@
 				95EC65F011C77D350027FF5D /* ARScannerOverlayView.m */,
 				95EC664611C7845F0027FF5D /* ARScannerFlash.h */,
 				95EC664711C7845F0027FF5D /* ARScannerFlash.m */,
+				BFA65696121965A900209B06 /* ARHTMLOverlayView.h */,
+				BFA65697121965A900209B06 /* ARHTMLOverlayView.m */,
+				BFA657941219937800209B06 /* MapViewController.h */,
+				BFA657951219937800209B06 /* MapViewController.m */,
+				BFA657961219937800209B06 /* MapViewController.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -971,6 +1001,9 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Finalist IT Group";
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iBetelgeuse" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
@@ -1024,12 +1057,10 @@
 				95EC653111C769410027FF5D /* Icon.png in Resources */,
 				95EC653211C769410027FF5D /* Icon@2x.png in Resources */,
 				95EC653311C769410027FF5D /* iTunesArtwork in Resources */,
-				95EC655811C76EEF0027FF5D /* Default.png in Resources */,
 				95EC658B11C7732A0027FF5D /* Default-Landscape.png in Resources */,
 				95EC658C11C7732A0027FF5D /* Default-Portrait.png in Resources */,
 				95EC66CF11C79CF90027FF5D /* Scanner.wav in Resources */,
 				950ECB3411C8C22D009E1314 /* ARMenuButton@2x.png in Resources */,
-				950ECB5211C8C325009E1314 /* Default@2x.png in Resources */,
 				9504CC7D11C9017700128562 /* LocationWarning.png in Resources */,
 				9504CC7E11C9017700128562 /* LocationWarning@2x.png in Resources */,
 				9504CC7F11C9017700128562 /* OrientationWarning.png in Resources */,
@@ -1040,6 +1071,10 @@
 				95A8608311CB9491005DE882 /* DimensionWarning@2x.png in Resources */,
 				959247AE11D0A2B70012698B /* AssetFailed.png in Resources */,
 				959247AF11D0A2B70012698B /* AssetFailed@2x.png in Resources */,
+				BFA655FC1219507D00209B06 /* Default.png in Resources */,
+				BFA655FD1219507D00209B06 /* Default@2x.png in Resources */,
+				BFA657981219937800209B06 /* MapViewController.xib in Resources */,
+				BFE648FB1226A983007B2468 /* close.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1122,6 +1157,10 @@
 				C3946F8311D4E1A2000D1F88 /* ARFilter.m in Sources */,
 				C3946F8611D4E1AB000D1F88 /* ARAccelerometerFilter.m in Sources */,
 				C3946FCB11D4EA44000D1F88 /* ARSimplePoint3DFilter.m in Sources */,
+				BFA655DE12192E7600209B06 /* ARHTMLOverlay.m in Sources */,
+				BFA65698121965A900209B06 /* ARHTMLOverlayView.m in Sources */,
+				BFA657971219937800209B06 /* MapViewController.m in Sources */,
+				BFA658BB121AA5FC00209B06 /* ARLocationAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

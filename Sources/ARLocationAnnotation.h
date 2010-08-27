@@ -33,6 +33,5 @@
 
 - (ARLocationAnnotation *)initWithLocation:(ARLocation *) aLocation;
 - (CLLocationCoordinate2D)coordinate;
-- (void) setTite:(NSString *)aTitle;
 
 @end
